@@ -7,14 +7,23 @@ class Tower {
       y: y,
     };
 
-    this.spritesheet = ASSET_MANAGER.getAsset("./tower_pistol_lv3leftdown.png");
+    this.spritesheet = ASSET_MANAGER.getAsset("./prototpye-tower.png");
+
+    this.animations = [];
+
+    this.animations.push(
+      new Animator(this.spritesheet, 0, 0, 46, 75, 20, 1, 0, false, true)
+    );
 
     this.Enemy = Enemy;
 
     // basic = 10 for prototype
     this.cost = 10;
 
-    // basic = 1 for prototype
+    // depreciation rate is set to 0.8 for prototype
+    this.depreciated = 0.8;
+
+    // basic = 100 for prototype
     this.shootingRange = 100;
 
     this.shootable = false;
@@ -25,8 +34,8 @@ class Tower {
   showProjectile(context) {
     context.beginPath();
     context.arc(
-      this.position.x + 7.5,
-      this.position.y + 22,
+      this.position.x + 45,
+      this.position.y + 65,
       this.shootingRange,
       0,
       2 * Math.PI
@@ -35,6 +44,25 @@ class Tower {
     context.fillStyle = "#FD0";
 
     context.stroke();
+  }
+
+  buy() {
+    // check if the user has the sufficient fund
+    if (user.balance >= this.cost) {
+      // draw the tower onto the map
+
+      user.balance -= this.cost;
+    } else {
+      // debugging purpose
+      console.log(" You don't have the sufficient fund.");
+    }
+  }
+
+  sell() {
+    // Remove itself from the map
+
+    // Add the money back to the user balance
+    user.balance += this.cost * this.depreciated;
   }
 
   getShootingRange() {
@@ -69,12 +97,20 @@ class Tower {
   shoot() {
     if (this.isShootable) {
       // Shoot the bullet which animates the bullet to hit the target
+      // create collision (tower - bullet - monster)
     }
   }
   update(deltaTime) {}
 
   draw(context) {
     this.showProjectile(context);
-    context.drawImage(this.spritesheet, this.position.x, this.position.y);
+    this.animations[0].drawFrame(
+      this.Game.clockTick,
+      context,
+      this.position.x,
+      this.position.y,
+      2
+    );
+    // context.drawImage(this.spritesheet, this.position.x, this.position.y);
   }
 }

@@ -2,7 +2,7 @@ var gameEngine = new GameEngine();
 
 var ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./tower_pistol_lv3leftdown.png");
+ASSET_MANAGER.queueDownload("./prototpye-tower.png");
 
 ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
