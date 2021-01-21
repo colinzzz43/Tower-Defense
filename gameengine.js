@@ -60,6 +60,8 @@ class GameEngine {
             that.rightclick = getXandY(e);
             e.preventDefault();
         }, false);
+
+        // if debug mode is true -> addEventlistener for wasd for slimes
     };
 
     addEntity(entity) {
