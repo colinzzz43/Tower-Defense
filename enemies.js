@@ -1,157 +1,85 @@
 class Slime {
-    constructor() {
+  constructor() {
+    // this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime1_front.png");
+  }
 
-        this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime1_front.png");
+  updateBB() {}
 
-    }
+  update() {}
 
-    updateBB() {
+  draw() {}
 
-    }
+  attack() {}
 
-    update() {
-
-    }
-
-    draw() {
-
-    }
-
-    attack() {
-
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Goblin {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Skeleton {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Eyeball {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Mushroom {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Dragon {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
