@@ -14,7 +14,7 @@ class Slime {
     }
 
     draw() {
-
+        
     }
 
     attack() {
