@@ -1,4 +1,5 @@
 class Slime {
+<<<<<<< HEAD
     constructor(gameEngine) {
         Object.assign(this, {gameEngine});
         
@@ -63,133 +64,89 @@ class Slime {
 
     };
 };
+=======
+  constructor() {
+    // this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime1_front.png");
+  }
+
+  updateBB() {}
+
+  update() {}
+
+  draw() {}
+
+  attack() {}
+
+  isDead() {}
+}
+>>>>>>> Colin
 
 class Goblin {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Skeleton {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Eyeball {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Mushroom {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
 
 class Dragon {
-    constructor() {
+  constructor() {}
 
-    }
+  updateBB() {}
 
-    updateBB() {
-        
-    }
+  update() {}
 
-    update() {
+  draw() {}
 
-    }
+  attack() {}
 
-    draw() {
-
-    }
-
-    attack() {
-        
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
