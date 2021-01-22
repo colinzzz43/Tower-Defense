@@ -79,14 +79,14 @@ class Tower {
     return this.cost;
   }
 
-  calculateEnemyDistance(Enemy, Tower) {
+  calculateEnemyDistance(Enemy) {
     // my position = this.x and this.y
     // return my position - enemy's position
 
-    var dx = Math.abs(Tower.position.x - Enemy.BC.x);
-    var dy = Math.abs(Tower.position.y - Enemy.BC.y);
+    var dx = Math.abs(this.position.x - Enemy.BC.x);
+    var dy = Math.abs(this.position.y - Enemy.BC.y);
     var distance = Math.sqrt(dx * dx + dy * dy);
-    console.log(Tower.position.x, Tower.position.y, Enemy.BC.x, Enemy.BC.y);
+    console.log(this.position.x, this.position.y, Enemy.BC.x, Enemy.BC.y);
     console.log(distance);
     return distance;
   }
@@ -109,7 +109,9 @@ class Tower {
       Enemy.takeHit(this.damage);
     }
   }
-  update(deltaTime) {}
+  update(deltaTime) {
+    // how to constantly update the distance when the enemies move
+  }
 
   draw(context) {
     this.showProjectile(context);

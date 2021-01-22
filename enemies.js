@@ -1,6 +1,6 @@
 class Slime {
   constructor(gameEngine, x, y) {
-    Object.assign(this, { gameEngine, x, y});
+    Object.assign(this, { gameEngine, x, y });
 
     this.animations = [];
 
@@ -11,12 +11,34 @@ class Slime {
     );
 
     this.death = ASSET_MANAGER.getAsset(
-        "./sprites/monster/slime/slime_explode.png"
+      "./sprites/monster/slime/slime_explode.png"
     );
 
     // animations
-    this.aliveAnim = new Animator(this.spritesheet, 0, 0, 16, 16, 4, 0.15, 0, false, true);
-    this.deadAnim = new Animator(this.death, 0, 0, 37, 41, 8, 0.25, 0, false, false);
+    this.aliveAnim = new Animator(
+      this.spritesheet,
+      0,
+      0,
+      16,
+      16,
+      4,
+      0.15,
+      0,
+      false,
+      true
+    );
+    this.deadAnim = new Animator(
+      this.death,
+      0,
+      0,
+      37,
+      41,
+      8,
+      0.25,
+      0,
+      false,
+      false
+    );
 
     // states
     this.dead = false;
@@ -27,7 +49,7 @@ class Slime {
     // this.velocity = {}; // used for moving the enemy across the map
     this.HP = 10;
 
-    this.updateBB(); // might not be needed
+    this.updateBC(); // might not be needed
   }
 
   // BC = bounding circle
@@ -45,24 +67,36 @@ class Slime {
     // }
     // if (!this.paused && !this.dead) {
     //     // move slimes
-        // this.x = this.x + 1; // move right;
+    // this.x = this.x + 1; // move right;
     // }
     this.x += 1;
-  };
+  }
 
   draw(ctx) {
     if (this.dead) {
-        this.deadAnim.drawFrame(this.gameEngine.clockTick, ctx, this.x-PARAMS.SCALE*10.5, this.y-PARAMS.SCALE*25, PARAMS.SCALE);
+      this.deadAnim.drawFrame(
+        this.gameEngine.clockTick,
+        ctx,
+        this.x - PARAMS.SCALE * 10.5,
+        this.y - PARAMS.SCALE * 25,
+        PARAMS.SCALE
+      );
     } else {
-        this.aliveAnim.drawFrame(this.gameEngine.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
+      this.aliveAnim.drawFrame(
+        this.gameEngine.clockTick,
+        ctx,
+        this.x,
+        this.y,
+        PARAMS.SCALE
+      );
     }
-  };
+  }
 
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
-    
+
     if (this.HP === 0) {
-        this.dead = true;
+      this.dead = true;
     }
   }
 
