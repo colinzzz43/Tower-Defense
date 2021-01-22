@@ -1,3 +1,4 @@
+// might not be needed?
 class BoundingBox {
   constructor(x, y, width, height) {
     Object.assign(this, { x, y, width, height });
