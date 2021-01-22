@@ -27,13 +27,13 @@ class Slime {
     // this.velocity = {}; // used for moving the enemy across the map
     this.HP = 10;
 
-    this.updateBB(); // might not be needed
+    this.updateBC(); 
   }
 
   // BC = bounding circle
   updateBC() {
     this.lastBC = this.BC;
-    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a box
+    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a circle
   }
 
   update() {
