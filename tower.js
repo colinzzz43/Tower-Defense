@@ -95,6 +95,7 @@ class Tower {
   }
 
   shoot() {
+    // shoot the closest target to the tower
     if (this.isShootable) {
       // Shoot the bullet which animates the bullet to hit the target
       // create collision (tower - bullet - monster)
