@@ -1,15 +1,21 @@
 class Slime {
-    constructor(gameEngine, x, y) {
-        Object.assign(this, {gameEngine, x, y});
+    constructor(gameEngine) {
+        Object.assign(this, {gameEngine});
         
+        // constants
+        const WIDTH = 16;
+        const HEIGHT = 16;
+
+        this.animations= [];
+
         // spritesheet
         // might need to use slime1_side and flip so that slimes face right when animating
-        this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime/slime1_front.png");
-        this.death = ASSETMANAGER.getAsset("./sprites/monster/slime/slime_explode.png"); 
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/monster/slime/slime1_front.png");
+        // this.death = ASSET_MANAGER.getAsset("./sprites/monster/slime/slime_explode.png"); 
             
         // animations
-        this.animation = new Animator(this.spritesheet, 0, 0, 16, 16, 1, 1, 0, false, true);
-        this.deadAnim = new Animator(this.death, 0, 0, 37, 41, 8, 1, 0, false, false);
+        this.animations.push(new Animator(this.spritesheet, 0, 0, this.WIDTH, this.HEIGHT, 4, 1, 0, false, true));
+        // this.animations.push(new Animator(this.death, 0, 0, 37, 41, 8, 1, 0, false, false));
 
         // states
         this.dead = false;
@@ -22,34 +28,31 @@ class Slime {
     };
 
     updateBB() {
-        this.lastSlimeBB = this.slimeBB; // bounding box for slime collision with other slimes
-        this.lastTowerDetectBB = this.towerDetectBB; // bounding box for tower detection
+        // this.lastSlimeBB = this.slimeBB; // bounding box for slime collision with other slimes
+        // this.lastTowerDetectBB = this.towerDetectBB; // bounding box for tower detection
 
-        // this.slimeBB = new BoundingBox(); // create class for bounding box
-        // this.towerDetectBB = new BoundingBox();
+        // this.slimeBB = new BoundingBox(this.x, this.y, ); // create class for bounding box
+        // // this.towerDetectBB = new BoundingBox();
     };
 
     update() {
-        if(this.dead) {
-            // remove entity
-        }
+        // if(this.dead) {
+        //     // remove entity
+        // }
 
-        if(this.paused) {
-            // pause animation at certain frame
-        }
+        // if(this.paused) {
+        //     // pause animation at certain frame
+        // }
 
-        if (!this.paused && !this.dead) {
-            // move slimes
-            this.x = this.x + 1; // move right;
-        }
+        // if (!this.paused && !this.dead) {
+        //     // move slimes
+        //     this.x = this.x + 1; // move right;
+        // }
     };
 
-    draw() {
-        if (this.dead) {
-            // stop drawing
-        } else {
-            this.animations.drawFrame(this.gameEngine);
-        }
+    draw(ctx) {
+        this.animations[0].drawFrame(this.gameEngine.clockTick, ctx, 300, 300, 3);
+
     };
 
     attack() {

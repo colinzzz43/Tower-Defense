@@ -27,6 +27,7 @@ window.requestAnimFrame = (function () {
 
 // add global parameters here
 
-//var params = {
-// 
-//};
+var PARAMS = {
+    SCALE: 3
+
+};
