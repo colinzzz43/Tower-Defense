@@ -1,7 +1,7 @@
 class Slime {
     constructor() {
 
-        this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime1_front.png");
+        this.spritesheet = ASSETMANAGER.getAsset("./sprites/monster/slime/slime1_front.png");
 
     }
 
