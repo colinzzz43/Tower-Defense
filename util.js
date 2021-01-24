@@ -13,6 +13,13 @@ function hsl(h, s, l) {
     return "hsl(" + h + "," + s + "%," + l + "%)";
 };
 
+// computes pythagoras' theorem
+function distance(a, b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
+};
+
 // creates an alias for requestAnimationFrame for backwards compatibility
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||

@@ -26,6 +26,9 @@ class Tower {
     // basic = 100 for prototype
     this.shootingRange = 100;
 
+    this.shootBound = new BoundingCircle(this.position.x + 45, this.position.y + 65,
+      this.shootingRange);
+
     this.shootable = false;
 
     this.calculateEnemyDistance(this.Enemy, this.position);
@@ -95,6 +98,8 @@ class Tower {
   }
 
   shoot() {
+    // print shoot to console for testing
+    console.log("shoot enemy");
     // shoot the closest target to the tower
     if (this.isShootable) {
       // Shoot the bullet which animates the bullet to hit the target
