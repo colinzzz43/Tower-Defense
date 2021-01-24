@@ -17,8 +17,14 @@ class BoundingCircle {
     constructor(x, y, r) {
         Object.assign(this, {x, y, r});
 
-        this.x = x;
-        this.y = y;
-        this.r = r;
-    }
-}
+    };
+
+    collide(other) {
+        var dx = this.x - other.x;
+        var dy = this.y - other.y;
+        var distance = Math.sqrt(dx*dx + dy*dy);
+
+        if (distance < this.r + other.r) return true;
+        return false;
+    };
+};
