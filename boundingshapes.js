@@ -18,7 +18,14 @@ class BoundingCircle {
     this.x = x;
     this.y = y;
     this.r = r;
+  }
 
-    // two circles intesect if the distance between their center points is less than the sum of their radii.
+  collide(other) {
+    var dx = this.x - other.x;
+    var dy = this.y - other.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < this.r + other.r) return true;
+    return false;
   }
 }

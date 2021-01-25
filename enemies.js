@@ -55,7 +55,7 @@ class Slime {
   // BC = bounding circle
   updateBC() {
     this.lastBC = this.BC;
-    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a box
+    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a circle
   }
 
   update() {
@@ -69,6 +69,16 @@ class Slime {
     //     // move slimes
     // this.x = this.x + 1; // move right;
     // }
+    var that = this;
+
+    // tower detection
+    this.gameEngine.entities.forEach(function (entity) {
+      if (entity.BC && that.BC.collide(entity.BC)) {
+        if (entity instanceof Tower) that.attack();
+      }
+    });
+
+    // slime movement
     this.x += 1;
   }
 
@@ -100,7 +110,9 @@ class Slime {
     }
   }
 
-  attack() {}
+  attack() {
+    console.log("slime attack");
+  }
 
   isDead() {}
 }
