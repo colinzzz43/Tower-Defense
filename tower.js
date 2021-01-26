@@ -74,7 +74,7 @@ class Tower {
     if (User.balance >= this.cost) {
       // draw the tower onto the map
 
-      User.balance -= this.cost;
+      User.decreaseBalance(this.cost);
     } else {
       // debugging purpose
       console.log(" You don't have the sufficient fund.");
@@ -82,10 +82,15 @@ class Tower {
   }
 
   sell(User) {
-    // Remove itself from the map
-
     // Add the money back to the User balance
-    User.balance += this.cost * this.depreciated;
+    User.increaseBalance(this.cost * this.depreciated);
+    // Remove itself from the map (remove entity from the gameengine)
+    this.Game.removeEntity(this);
+  }
+
+  dead() {
+    // Remove itself from the map (remove entity from the gameengine)
+    this.Game.removeEntity(this);
   }
 
   getShootingRange() {
