@@ -12,7 +12,8 @@ ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
   var ctx = canvas.getContext("2d");
 
-  var enemy = new Slime(gameEngine, 20, 400);
+  var enemy = new Slime(gameEngine, 20, 400, true);
+  var enemy2 = new Slime(gameEngine, 300, 400, false);
   var tower1 = new Tower(gameEngine, enemy, 430, 370);
 
   var tower2 = new Tower(gameEngine, enemy, 100, 100);

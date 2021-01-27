@@ -28,6 +28,9 @@ class Tower {
     // basic = 100 for prototype
     this.shootingRange = 100;
 
+    this.shootBound = new BoundingCircle(this.position.x + 45, this.position.y + 65,
+      this.shootingRange);
+
     this.shootable = false;
 
     this.damage = 100;
@@ -109,8 +112,11 @@ class Tower {
     // shooting animation
 
     Enemy.takeHit(this.damage);
+  }
 
-    //
+  shoot() {
+    // print shoot to console for testing
+    console.log("shoot enemy");
   }
   update(deltaTime) {
     // how to constantly update the distance when the enemies move

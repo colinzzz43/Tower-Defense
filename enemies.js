@@ -1,6 +1,7 @@
 class Slime {
-  constructor(gameEngine, x, y) {
-    Object.assign(this, { gameEngine, x, y });
+  //add movement parameter for collision testing
+  constructor(gameEngine, x, y, moving) {
+    Object.assign(this, { gameEngine, x, y});
 
     this.animations = [];
 
@@ -49,14 +50,32 @@ class Slime {
     // other stats
     // this.velocity = {}; // used for moving the enemy across the map
     this.HP = 10;
+    this.radius = 30;
+    this.moving = moving;
 
     this.updateBC(); // might not be needed
+  }
+
+  // shows the bounding circle of the slime
+  showBounds(context) {
+    context.beginPath();
+    context.arc(
+      this.x + 24,
+      this.y + 24,
+      this.radius,
+      0,
+      2 * Math.PI
+    );
+    context.fill();
+    context.fillStyle = "#FD0";
+
+    context.stroke();
   }
 
   // BC = bounding circle
   updateBC() {
     this.lastBC = this.BC;
-    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a circle
+    this.BC = new BoundingCircle(this.x + 24, this.y + 24, this.radius); // bounds the slime itself in a circle
   }
 
   update() {
@@ -70,20 +89,69 @@ class Slime {
     //     // move slimes
     // this.x = this.x + 1; // move right;
     // }
-    var that = this;
 
-    // tower detection
-    this.gameEngine.entities.forEach(function (entity) {
-      if (entity.BC && that.BC.collide(entity.BC)) {
-        if (entity instanceof Tower) that.attack();
-      }
+    this.updateBC();
+
+    var that = this; 
+
+    this.gameEngine.entities.forEach(function(entity) {
+        // tower detection
+        if (entity instanceof Tower) {
+            // tower shoots enemy in shooting bounds
+            if (that.BC.collide(entity.shootBound)) {
+                entity.shoot();
+            }
+        }
+
+        // slime detection
+        if (entity instanceof Slime) {
+            if (entity !== that && that.BC.collide(entity.BC)) {
+                // slimes collide with each other
+                var dist = distance(that, entity);
+                var delta = that.radius + entity.radius - dist;
+                var difX = (that.x - entity.x) / dist;
+                var difY = (that.y - entity.y) / dist;
+
+                that.x += difX * delta / 2;
+                that.y += difY * delta / 2;
+                entity.x -= difX * delta / 2;
+                entity.y -= difY * delta / 2;                
+            }
+        }
+        
     });
 
-    // slime movement
-    this.x += 1;
-  }
+    // for (var i = 0; i < this.gameEngine.entities.length; i++) {
+    //     var ent = this.gameEngine[i];
 
-  draw(ctx) {
+    //     console.log(ent);
+    //     if (ent instanceof Slime) {
+    //         console.log("hello");
+
+
+    //         if (ent !== this && this.BC.collide(ent.BC)) {
+
+    //             console.log("hello2");
+    //             // push away from each other
+    //             var dist = distance(this, ent);
+    //             var delta = this.radius + ent.radius - dist;
+    //             var difX = (this.x - ent.x) / dist;
+    //             var difY = (this.y - ent.y) / dist;
+
+    //             this.x += difX * delta / 2;
+    //             this.y += difY * delta / 2;
+    //             ent.x -= difX * delta / 2;
+    //             ent.y -= difY * delta / 2;
+    //         }
+    //     }
+    // }
+
+    // slime movement
+    if (this.moving) this.x += 1;
+  };
+
+  draw(context) {
+      this.showBounds(context);
     if (this.dead) {
       this.deadAnim.drawFrame(
         this.gameEngine.clockTick,
