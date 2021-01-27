@@ -30,10 +30,31 @@ class Tower {
 
     this.shootable = false;
 
-    this.calculateEnemyDistance(this.Enemy, this.position);
+    this.damage = 100;
   }
 
-  showProjectile(context) {
+  updateBC() {
+    this.lastBC = this.BC;
+    this.BC = new BoundingCircle(this.x, this.y, this.shootingRange); // bounds the slime itself in a circle
+  }
+
+  update() {
+    var that = this;
+
+    // tower detection
+    this.gameEngine.entities.forEach(function (entity) {
+      if (entity.BC && that.BC.collide(entity.BC)) {
+        if (entity instanceof Slime) that.shoot();
+      }
+    });
+  }
+
+  showProjectile() {
+    // align the straight line
+    // animation
+  }
+
+  showBoundingCircle(context) {
     context.beginPath();
     context.arc(
       this.position.x + 45,
@@ -48,23 +69,28 @@ class Tower {
     context.stroke();
   }
 
-  buy() {
-    // check if the user has the sufficient fund
-    if (user.balance >= this.cost) {
+  buy(User) {
+    // check if the User has the sufficient fund
+    if (User.balance >= this.cost) {
       // draw the tower onto the map
 
-      user.balance -= this.cost;
+      User.decreaseBalance(this.cost);
     } else {
       // debugging purpose
       console.log(" You don't have the sufficient fund.");
     }
   }
 
-  sell() {
-    // Remove itself from the map
+  sell(User) {
+    // Add the money back to the User balance
+    User.increaseBalance(this.cost * this.depreciated);
+    // Remove itself from the map (remove entity from the gameengine)
+    this.Game.removeEntity(this);
+  }
 
-    // Add the money back to the user balance
-    user.balance += this.cost * this.depreciated;
+  dead() {
+    // Remove itself from the map (remove entity from the gameengine)
+    this.Game.removeEntity(this);
   }
 
   getShootingRange() {
@@ -79,42 +105,19 @@ class Tower {
     return this.cost;
   }
 
-  calculateEnemyDistance(Enemy) {
-    // my position = this.x and this.y
-    // return my position - enemy's position
-
-    var dx = Math.abs(this.position.x - Enemy.BC.x);
-    var dy = Math.abs(this.position.y - Enemy.BC.y);
-    var distance = Math.sqrt(dx * dx + dy * dy);
-    console.log(this.position.x, this.position.y, Enemy.BC.x, Enemy.BC.y);
-    console.log(distance);
-    return distance;
-  }
-
-  isShootable() {
-    // calculateEnemyDistance < shootingRange return true
-    if (
-      this.calculateEnemyDistance(this.Enemy, this.position) <=
-      this.getShootingRange() + this.Enemy.BC.r
-    )
-      this.shootable = true;
-    return this.shootable;
-  }
-
   shoot(Enemy) {
-    // shoot the closest target to the tower
-    if (this.isShootable) {
-      // Shoot the bullet which animates the bullet to hit the target
-      // create collision (tower - bullet - monster)
-      Enemy.takeHit(this.damage);
-    }
+    // shooting animation
+
+    Enemy.takeHit(this.damage);
+
+    //
   }
   update(deltaTime) {
     // how to constantly update the distance when the enemies move
   }
 
   draw(context) {
-    this.showProjectile(context);
+    this.showBoundingCircle(context);
     this.animations[0].drawFrame(
       this.Game.clockTick,
       context,

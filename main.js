@@ -6,6 +6,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime_explode.png");
 ASSET_MANAGER.queueDownload("./prototpye-tower.png");
+ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 
 ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
@@ -18,10 +19,22 @@ ASSET_MANAGER.downloadAll(function () {
 
   var tower3 = new Tower(gameEngine, enemy, 900, 320);
 
+  var user = new User();
+
+  var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
+  var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1);
+
   gameEngine.init(ctx);
+  gameEngine.addEntity(level);
   gameEngine.addEntity(tower1);
   gameEngine.addEntity(tower2);
   gameEngine.addEntity(tower3);
   gameEngine.addEntity(enemy);
+
+  // testing the user properties
+  // tower2.buy(user);
+  tower1.sell(user);
+  enemy.isDead(user);
+
   gameEngine.start();
 });

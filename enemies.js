@@ -4,6 +4,7 @@ class Slime {
 
     this.animations = [];
 
+    this.reward = 5;
     // spritesheet
     // might need to use slime1_side and flip so that slimes face right when animating
     this.spritesheet = ASSET_MANAGER.getAsset(
@@ -72,11 +73,11 @@ class Slime {
     var that = this;
 
     // tower detection
-    this.gameEngine.entities.forEach(function(entity) {
+    this.gameEngine.entities.forEach(function (entity) {
       if (entity.BC && that.BC.collide(entity.BC)) {
         if (entity instanceof Tower) that.attack();
       }
-    }); 
+    });
 
     // slime movement
     this.x += 1;
@@ -112,9 +113,12 @@ class Slime {
 
   attack() {
     console.log("slime attack");
-  };
+  }
 
-  isDead() {}
+  isDead(User) {
+    User.increaseBalance(this.reward);
+    this.gameEngine.removeEntity(this);
+  }
 }
 
 class Goblin {
