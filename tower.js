@@ -15,6 +15,8 @@ class Tower {
       new Animator(this.spritesheet, 0, 0, 46, 75, 20, 1, 0, false, true)
     );
 
+    this.damage = 10;
+
     this.Enemy = Enemy;
 
     // basic = 10 for prototype
@@ -77,31 +79,39 @@ class Tower {
     return this.cost;
   }
 
-  calculateEnemyDistance(Enemy, Tower) {
+  calculateEnemyDistance(Enemy) {
     // my position = this.x and this.y
     // return my position - enemy's position
 
-    var dx = Math.abs(Tower.x - Enemy.x);
-    var dy = Math.abs(Tower.y - Enemy.y);
+    var dx = Math.abs(this.position.x - Enemy.BC.x);
+    var dy = Math.abs(this.position.y - Enemy.BC.y);
     var distance = Math.sqrt(dx * dx + dy * dy);
+    console.log(this.position.x, this.position.y, Enemy.BC.x, Enemy.BC.y);
+    console.log(distance);
     return distance;
   }
 
   isShootable() {
     // calculateEnemyDistance < shootingRange return true
-    if (this.calculateEnemyDistance() <= this.getShootingRange())
+    if (
+      this.calculateEnemyDistance(this.Enemy, this.position) <=
+      this.getShootingRange() + this.Enemy.BC.r
+    )
       this.shootable = true;
     return this.shootable;
   }
 
-  shoot() {
+  shoot(Enemy) {
     // shoot the closest target to the tower
     if (this.isShootable) {
       // Shoot the bullet which animates the bullet to hit the target
       // create collision (tower - bullet - monster)
+      Enemy.takeHit(this.damage);
     }
   }
-  update(deltaTime) {}
+  update(deltaTime) {
+    // how to constantly update the distance when the enemies move
+  }
 
   draw(context) {
     this.showProjectile(context);
