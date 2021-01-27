@@ -26,12 +26,36 @@ class Tower {
     // basic = 100 for prototype
     this.shootingRange = 100;
 
+    this.shootBound = new BoundingCircle(this.position.x + 45, this.position.y + 65,
+      this.shootingRange);
+
     this.shootable = false;
 
-    this.calculateEnemyDistance(this.Enemy, this.position);
+    this.damage = 100;
   }
 
-  showProjectile(context) {
+  updateBC() {
+    this.lastBC = this.BC;
+    this.BC = new BoundingCircle(this.x, this.y, this.shootingRange); // bounds the slime itself in a circle
+  }
+
+  update() {
+    var that = this;
+
+    // tower detection
+    this.gameEngine.entities.forEach(function (entity) {
+      if (entity.BC && that.BC.collide(entity.BC)) {
+        if (entity instanceof Slime) that.shoot();
+      }
+    });
+  }
+
+  showProjectile() {
+    // align the straight line
+    // animation
+  }
+
+  showBoundingCircle(context) {
     context.beginPath();
     context.arc(
       this.position.x + 45,
@@ -46,23 +70,23 @@ class Tower {
     context.stroke();
   }
 
-  buy() {
-    // check if the user has the sufficient fund
-    if (user.balance >= this.cost) {
+  buy(User) {
+    // check if the User has the sufficient fund
+    if (User.balance >= this.cost) {
       // draw the tower onto the map
 
-      user.balance -= this.cost;
+      User.balance -= this.cost;
     } else {
       // debugging purpose
       console.log(" You don't have the sufficient fund.");
     }
   }
 
-  sell() {
+  sell(User) {
     // Remove itself from the map
 
-    // Add the money back to the user balance
-    user.balance += this.cost * this.depreciated;
+    // Add the money back to the User balance
+    User.balance += this.cost * this.depreciated;
   }
 
   getShootingRange() {
@@ -77,34 +101,21 @@ class Tower {
     return this.cost;
   }
 
-  calculateEnemyDistance(Enemy, Tower) {
-    // my position = this.x and this.y
-    // return my position - enemy's position
+  shoot(Enemy) {
+    // shooting animation
 
-    var dx = Math.abs(Tower.x - Enemy.x);
-    var dy = Math.abs(Tower.y - Enemy.y);
-    var distance = Math.sqrt(dx * dx + dy * dy);
-    return distance;
-  }
-
-  isShootable() {
-    // calculateEnemyDistance < shootingRange return true
-    if (this.calculateEnemyDistance() <= this.getShootingRange())
-      this.shootable = true;
-    return this.shootable;
+    Enemy.takeHit(this.damage);
   }
 
   shoot() {
-    // shoot the closest target to the tower
-    if (this.isShootable) {
-      // Shoot the bullet which animates the bullet to hit the target
-      // create collision (tower - bullet - monster)
-    }
+    // print shoot to console for testing
+    console.log("shoot enemy");
   }
+  
   update(deltaTime) {}
 
   draw(context) {
-    this.showProjectile(context);
+    this.showBoundingCircle(context);
     this.animations[0].drawFrame(
       this.Game.clockTick,
       context,

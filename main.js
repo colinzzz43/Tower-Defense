@@ -12,7 +12,8 @@ ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
   var ctx = canvas.getContext("2d");
 
-  var enemy = new Slime(gameEngine, 20, 400);
+  var enemy = new Slime(gameEngine, 20, 400, true);
+  var enemy2 = new Slime(gameEngine, 300, 400, false);
   var tower1 = new Tower(gameEngine, enemy, 430, 370);
 
   var tower2 = new Tower(gameEngine, enemy, 100, 100);
@@ -20,12 +21,13 @@ ASSET_MANAGER.downloadAll(function () {
   
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1);
-  
+
   gameEngine.init(ctx);
   gameEngine.addEntity(level);
   gameEngine.addEntity(tower1);
   gameEngine.addEntity(tower2);
   gameEngine.addEntity(tower3);
   gameEngine.addEntity(enemy);
+  gameEngine.addEntity(enemy2);
   gameEngine.start();
 });

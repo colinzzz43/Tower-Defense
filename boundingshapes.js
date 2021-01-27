@@ -20,11 +20,7 @@ class BoundingCircle {
     };
 
     collide(other) {
-        var dx = this.x - other.x;
-        var dy = this.y - other.y;
-        var distance = Math.sqrt(dx*dx + dy*dy);
-
-        if (distance < this.r + other.r) return true;
-        return false;
+        var dist = distance(this, other);
+        return dist < this.r + other.r;
     };
 };
