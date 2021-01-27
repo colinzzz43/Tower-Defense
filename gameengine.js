@@ -75,6 +75,8 @@ class GameEngine {
     this.entities.push(entity);
   }
 
+  // added by Colin, feel free to edit
+  // can be used to remove Towers, Slimes, other entities
   removeEntity(entity) {
     const index = this.entities.indexOf(entity);
     if (index > -1) {

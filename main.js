@@ -33,6 +33,8 @@ ASSET_MANAGER.downloadAll(function () {
 
   // testing the user properties
   // tower2.buy(user);
-  // tower1.sell(user);
+  tower1.sell(user);
+  enemy.isDead(user);
+
   gameEngine.start();
 });

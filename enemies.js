@@ -4,6 +4,7 @@ class Slime {
 
     this.animations = [];
 
+    this.reward = 5;
     // spritesheet
     // might need to use slime1_side and flip so that slimes face right when animating
     this.spritesheet = ASSET_MANAGER.getAsset(
@@ -114,7 +115,10 @@ class Slime {
     console.log("slime attack");
   }
 
-  isDead() {}
+  isDead(User) {
+    User.increaseBalance(this.reward);
+    this.gameEngine.removeEntity(this);
+  }
 }
 
 class Goblin {
