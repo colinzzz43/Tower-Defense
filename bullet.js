@@ -6,7 +6,7 @@ class Bullet {
     this.radius = 12;
     this.smooth = false;
 
-    this.spritesheet = ASSET_MANAGER.getAsset("");
+    this.spritesheet = ASSET_MANAGER.getAsset("prototype-bullet-rocket.png");
 
     var dist = distance(this, this.target);
     this.maxSpeed = 200; // pixels per second
@@ -41,7 +41,7 @@ class Bullet {
       offscreenCtx.translate(16, 16);
       offscreenCtx.rotate(radians);
       offscreenCtx.translate(-16, -16);
-      offscreenCtx.drawImage(this.spritesheet, 80, 0, 32, 32, 0, 0, 32, 32);
+      offscreenCtx.drawImage(this.spritesheet, 56, 0, 20, 17, 0, 0, 20, 17);
       offscreenCtx.restore();
       this.cache[angle] = offscreenCanvas;
     }

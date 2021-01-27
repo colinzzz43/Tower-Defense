@@ -5,14 +5,14 @@ class User {
     this.hp = 100;
   }
 
-  // it is to be used for sell and
+  // it is to be used for selling
 
   increaseBalance(amount) {
     this.balance += amount;
     console.log("After increased:" + this.balance);
   }
 
-  // it is to be used for buy
+  // it is to be used for buying
   decreaseBalance(amount) {
     this.balance -= amount;
     console.log("After decreased:" + this.balance);
