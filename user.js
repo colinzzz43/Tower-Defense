@@ -1,5 +1,8 @@
 class User {
-  constructor() {
+  constructor(gameEngine) {
+    Object.assign(this, {gameEngine});
+    this.gameEngine.user = this;
+    
     // initialization for the user
     this.balance = 100;
     this.hp = 100;

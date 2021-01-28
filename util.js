@@ -20,6 +20,27 @@ function distance(a, b) {
     return Math.sqrt(dx * dx + dy * dy);
 };
 
+function collide(a, b) {
+    return (distance(a, b) < a.radius + b.radius);
+}
+
+// mainly used for shooting enemies (i.e. Slime, Flying Eye, Dragon) and all towers
+// if the shooting entity's shootingBounds collide with target's entityBound, the entity can shoot.
+function canShoot(shootingEntity, target) {
+    console.log("shooting entity: " + shootingEntity.shootingRadius);
+    console.log(target.radius);
+    return (distance(shootingEntity.shootingRadius, target.radius) < shootingEntity.shootingRadius + target.radius);
+    
+}
+
+// only used for melee enemies (i.e. Goblin, Mushroom, Skeleton)
+// if the melee enemy's visualBounds collide with target's entityBound, the enemy locks on a specific tower to attack later
+function canSee(meleeEnemy, tower) {
+        console.log(meleeEnemy);
+        console.log(tower);
+        return (distance(meleeEnemy, tower) < meleeEnemy.visualRadius + tower.radius);
+}
+
 // creates an alias for requestAnimationFrame for backwards compatibility
 window.requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
@@ -35,6 +56,10 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 var PARAMS = {
-    SCALE: 3
-
+    SCALE: 3 
 };
+
+// Bullet array that contains different specs for each bullet
+var BULLETS = [];
+BULLETS["tomato"] = {asset: "./sprites/other/bullet_tomato.png", frameWidth: 22, frameHeight: 22, canRotate: false, type: "tomato"};
+BULLETS["bullet_b"] = {asset: "./sprites/other/bulletb.png", frameWidth: 10, frameHeight: 8, canRotate: true, type: "bullet_b"}
