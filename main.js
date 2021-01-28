@@ -26,8 +26,8 @@ ASSET_MANAGER.downloadAll(function () {
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1);
   gameEngine.addEntity(level);
   gameEngine.addEntity(new Tower(gameEngine, 90, 270));
-  gameEngine.addEntity(new Tower(gameEngine, 490, 330));
-  gameEngine.addEntity(new Tower(gameEngine, 700, 330));
+  gameEngine.addEntity(new Tower(gameEngine, 510, 330));
+  gameEngine.addEntity(new Tower(gameEngine, 690, 330));
 
   gameEngine.addEntity(new Slime(gameEngine, 10, 300));
   gameEngine.addEntity(user);
