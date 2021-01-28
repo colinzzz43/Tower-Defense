@@ -32,9 +32,13 @@ class Tower {
     var that = this;
 
     // tower detection
-    this.gameEngine.entities.forEach(function (entity) {
+    this.gameEngine.entities.forEach(function(entity) {
+      // tower detection
       if (entity instanceof Slime) {
-
+          // tower shoots enemy in shooting bounds
+          if (canShoot(that, entity)) {
+            console.log("tower attack");
+          }
       }
     });
   }
@@ -118,9 +122,6 @@ class Tower {
   shoot() {
     // print shoot to console for testing
     console.log("shoot enemy");
-  }
-  update(deltaTime) {
-    // how to constantly update the distance when the enemies move
   }
 
   draw(context) {

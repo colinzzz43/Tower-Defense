@@ -20,4 +20,7 @@ class User {
     this.balance -= amount;
     console.log("After decreased:" + this.balance);
   }
+
+  draw() {};
+  update() {};
 }

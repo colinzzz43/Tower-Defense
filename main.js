@@ -19,10 +19,12 @@ ASSET_MANAGER.downloadAll(function () {
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1);
   gameEngine.addEntity(level);
 
-  gameEngine.addEntity(new Slime(gameEngine, 10, 300));
-
-  gameEngine.addEntity(new Tower(gameEngine, 66, 175));
-
+  gameEngine.addEntity(new Tower(gameEngine, 90, 270));
+  gameEngine.addEntity(new Tower(gameEngine, 510, 330));
+  
+  gameEngine.addEntity(new Slime(gameEngine, 20, 360));
+  
+  gameEngine.addEntity(new User(gameEngine));
 
   gameEngine.start();
 });

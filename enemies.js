@@ -28,6 +28,7 @@ class Slime {
     
     // stats
     // this.velocity = {}; // used for moving the enemy across the map
+    this.removeFromWorld = false;
     this.HP = 10;
     this.reward = 5;
     this.radius = (this.frameWidth/2 + 1) * PARAMS.SCALE; // entity radius
@@ -82,7 +83,7 @@ class Slime {
       if (entity instanceof Tower) {
           // tower shoots enemy in shooting bounds
           if (canShoot(that, entity)) {
-            console.log("ATTACKKKK");
+            console.log("slime attack");
           }
       }
 
@@ -152,7 +153,7 @@ class Slime {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-    this.gameEngine.removeEntity(this);
+    this.removeFromWorld = true;
     // add coins when dropped
   }
 }

@@ -27,9 +27,7 @@ function collide(a, b) {
 // mainly used for shooting enemies (i.e. Slime, Flying Eye, Dragon) and all towers
 // if the shooting entity's shootingBounds collide with target's entityBound, the entity can shoot.
 function canShoot(shootingEntity, target) {
-    console.log("shooting entity: " + shootingEntity.shootingRadius);
-    console.log(target.radius);
-    return (distance(shootingEntity.shootingRadius, target.radius) < shootingEntity.shootingRadius + target.radius);
+    return (distance(shootingEntity, target) < shootingEntity.shootingRadius + target.radius);
     
 }
 
