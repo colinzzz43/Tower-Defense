@@ -4,7 +4,7 @@ class Slime {
     Object.assign(this, { gameEngine, x, y });
 
     this.user = this.gameEngine.user;
-
+    this.damage = 0.09;
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/monster/slime/slime1_front.png"
@@ -28,8 +28,8 @@ class Slime {
 
     // stats
     // this.velocity = {}; // used for moving the enemy across the map
-    this.HP = 10;
-    this.reward = 5;
+    this.HP = 35;
+    this.reward = 1000;
     this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
     this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
@@ -69,7 +69,8 @@ class Slime {
       if (entity instanceof Tower) {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity)) {
-          console.log("slime attack");
+          that.attack(entity);
+          console.log("Tower HP: ", entity.HP);
         }
       }
 
@@ -137,13 +138,13 @@ class Slime {
     }
   }
 
-  attack() {
-    console.log("slime shooting");
+  attack(tower) {
+    tower.takeHit(this.damage);
   }
 
   isDead() {
+    this.removeFromWorld = true;
     this.user.increaseBalance(this.reward);
-    this.gameEngine.removeEntity(this);
     // add coins when dropped
   }
 }

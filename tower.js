@@ -3,6 +3,8 @@ class Tower {
     Object.assign(this, { gameEngine, x, y });
 
     //assets
+    this.user = this.gameEngine.user;
+
     this.spritesheet = ASSET_MANAGER.getAsset("./prototype-tower.png");
     this.animations = [];
     this.animations.push(
@@ -119,8 +121,9 @@ class Tower {
     );
 
     //stats
+    this.HP = 20;
     this.facing = 0;
-    this.damage = 10;
+    this.damage = 0.05;
     this.cost = 10; // basic = 10 for prototype
     this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
     this.radius = 10 * PARAMS.SCALE; // entity radius
@@ -139,15 +142,11 @@ class Tower {
       if (entity instanceof Slime) {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity)) {
-          console.log("tower attack");
+          that.shoot(entity);
+          // console.log("Slime HP: ", entity.HP);
         }
       }
     });
-  }
-
-  shoot() {
-    // align the straight line
-    // animation
   }
 
   showBoundingCircle(context) {
@@ -186,8 +185,7 @@ class Tower {
   }
 
   dead() {
-    // Remove itself from the map (remove entity from the gameengine)
-    this.gameEngine.removeEntity(this);
+    this.removeFromWorld = true;
     // this.gameEngine.removeFromWorld = true;
   }
 
@@ -203,15 +201,17 @@ class Tower {
     return this.cost;
   }
 
-  shoot(Enemy) {
+  shoot(enemy) {
     // shooting animation
-
-    Enemy.takeHit(this.damage);
+    enemy.takeHit(this.damage);
   }
 
-  shoot() {
-    // print shoot to console for testing
-    console.log("shoot enemy");
+  takeHit(damage) {
+    this.HP = Math.max(0, this.HP - damage);
+
+    if (this.HP === 0) {
+      this.dead();
+    }
   }
 
   draw(context) {
