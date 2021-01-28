@@ -5,8 +5,7 @@ class User {
     this.hp = 100;
   }
 
-  // it is to be used for selling
-
+  // it is to be used for selling/ after killing enemies
   increaseBalance(amount) {
     this.balance += amount;
     console.log("After increased:" + this.balance);

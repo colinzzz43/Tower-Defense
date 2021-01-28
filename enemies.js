@@ -117,7 +117,7 @@ class Slime {
 
   isDead(User) {
     User.increaseBalance(this.reward);
-    this.gameEngine.removeEntity(this);
+    this.removeFromWorld = true;
   }
 }
 
