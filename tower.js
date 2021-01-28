@@ -1,21 +1,125 @@
 class Tower {
   constructor(gameEngine, x, y) {
     Object.assign(this, { gameEngine, x, y });
-    
+
     //assets
     this.spritesheet = ASSET_MANAGER.getAsset("./prototype-tower.png");
     this.animations = [];
-    this.animations.push(new Animator(this.spritesheet, 0, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*2, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*3, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*4, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*5, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*6, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
-    this.animations.push(new Animator(this.spritesheet, 16*7, 0, this.frameWidth = 16, this.frameHeight = 37, 1, 1, 0, false, true));
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        0,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 2,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 3,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 4,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 5,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 6,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
+    this.animations.push(
+      new Animator(
+        this.spritesheet,
+        16 * 7,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 37),
+        1,
+        1,
+        0,
+        false,
+        true
+      )
+    );
 
     //stats
-    this.facing = 0; 
+    this.facing = 0;
     this.damage = 10;
     this.cost = 10; // basic = 10 for prototype
     this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
@@ -24,21 +128,20 @@ class Tower {
 
     // other
     this.user = this.gameEngine.user; // the user interacting with the tower
-    this.xOffset = this.frameWidth*PARAMS.SCALE/2;
-    this.yOffset = this.frameHeight*PARAMS.SCALE - 5 * PARAMS.SCALE;
+    this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2;
+    this.yOffset = this.frameHeight * PARAMS.SCALE - 5 * PARAMS.SCALE;
   }
 
   update() {
     var that = this;
-
     // tower detection
     this.gameEngine.entities.forEach(function(entity) {
       // tower detection
       if (entity instanceof Slime) {
-          // tower shoots enemy in shooting bounds
-          if (canShoot(that, entity)) {
-            console.log("tower attack");
-          }
+        // tower shoots enemy in shooting bounds
+        if (canShoot(that, entity)) {
+          console.log("tower attack");
+        }
       }
     });
   }
@@ -52,13 +155,7 @@ class Tower {
     // entity bound
     context.setLineDash([]);
     context.beginPath();
-    context.arc(
-      this.x,
-      this.y,
-      this.radius,
-      0,
-      2 * Math.PI
-    );
+    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fill();
     context.fillStyle = "#FD0";
     context.stroke();
@@ -66,13 +163,7 @@ class Tower {
     // shooting bound
     context.setLineDash([8, 15]);
     context.beginPath();
-    context.arc(
-      this.x,
-      this.y,
-      this.shootingRadius,
-      0,
-      2 * Math.PI
-    );
+    context.arc(this.x, this.y, this.shootingRadius, 0, 2 * Math.PI);
     context.stroke();
   }
 
