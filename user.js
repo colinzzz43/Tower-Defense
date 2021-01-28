@@ -1,18 +1,18 @@
 class User {
   constructor(gameEngine) {
-    Object.assign(this, {gameEngine});
+    Object.assign(this, { gameEngine });
     this.gameEngine.user = this;
-    
+    this.removeFromWorld = false;
+
     // initialization for the user
     this.balance = 100;
     this.hp = 100;
   }
 
-  // it is to be used for selling
-
+  // it is to be used for selling/ after killing enemies
   increaseBalance(amount) {
     this.balance += amount;
-    console.log("After increased:" + this.balance);
+    this.printCoins(this.balance);
   }
 
   // it is to be used for buying
@@ -21,6 +21,10 @@ class User {
     console.log("After decreased:" + this.balance);
   }
 
-  draw() {};
-  update() {};
+  printCoins(balance) {
+    document.getElementById("printCoins").innerHTML = balance;
+  }
+
+  draw() {}
+  update() {}
 }
