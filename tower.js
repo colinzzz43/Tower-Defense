@@ -144,6 +144,7 @@ class Tower {
         if (canShoot(that, entity)) {
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
+          that.printMonsterHP(entity.HP);
         }
       }
     });
@@ -175,6 +176,10 @@ class Tower {
       // debugging purpose
       console.log(" You don't have the sufficient fund.");
     }
+  }
+
+  printMonsterHP(HP) {
+    document.getElementById("printMonsterHP").innerHTML = HP;
   }
 
   sell() {

@@ -70,7 +70,7 @@ class Slime {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity)) {
           that.attack(entity);
-          console.log("Tower HP: ", entity.HP);
+          that.printTowerHP(entity.HP);
         }
       }
 
@@ -117,6 +117,10 @@ class Slime {
 
     // slime movement
     if (this.moving) this.x += 1;
+  }
+
+  printTowerHP(HP) {
+    document.getElementById("printTowerHP").innerHTML = HP;
   }
 
   draw(context) {
