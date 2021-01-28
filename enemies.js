@@ -1,123 +1,150 @@
 class Slime {
+  //add movement parameter for collision testing
   constructor(gameEngine, x, y) {
     Object.assign(this, { gameEngine, x, y });
 
-    this.animations = [];
+    this.user = this.gameEngine.user;
 
-    this.reward = 5;
-    // spritesheet
-    // might need to use slime1_side and flip so that slimes face right when animating
+    // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/monster/slime/slime1_front.png"
     );
-
-    this.death = ASSET_MANAGER.getAsset(
-      "./sprites/monster/slime/slime_explode.png"
-    );
-
-    // animations
+    this.animations = [];
     this.aliveAnim = new Animator(
       this.spritesheet,
       0,
       0,
-      16,
-      16,
+      (this.frameWidth = 16),
+      (this.frameHeight = 16),
       4,
       0.15,
       0,
       false,
       true
     );
-    this.deadAnim = new Animator(
-      this.death,
-      0,
-      0,
-      37,
-      41,
-      8,
-      0.25,
-      0,
-      false,
-      false
-    );
 
     // states
-    this.dead = false;
-    this.takeHit = false;
     this.paused = false; // used when HUD is set up
 
-    // other stats
+    // stats
     // this.velocity = {}; // used for moving the enemy across the map
     this.HP = 10;
-
-    this.updateBC(); // might not be needed
+    this.reward = 5;
+    this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
+    this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
+    this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
+    this.yOffset = (this.frameHeight / 2) * PARAMS.SCALE + 1;
   }
 
-  // BC = bounding circle
-  updateBC() {
-    this.lastBC = this.BC;
-    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a circle
+  // shows entity bounds and shooting bounds
+  showBounds(context) {
+    // entity bound
+    context.setLineDash([]);
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    context.fill();
+    context.fillStyle = "#FD0";
+    context.stroke();
+
+    // shooting bound
+    context.setLineDash([8, 15]);
+    context.beginPath();
+    context.arc(this.x, this.y, this.shootingRadius, 0, 2 * Math.PI);
+    context.stroke();
   }
 
   update() {
-    // if(this.dead) {
-    //     // remove entity
-    // }
-    // if(this.paused) {
-    //     // pause animation at certain frame
-    // }
-    // if (!this.paused && !this.dead) {
-    //     // move slimes
-    // this.x = this.x + 1; // move right;
-    // }
+    if (this.paused) {
+      // pause animation at certain frame
+    }
+    if (!this.paused) {
+      // move slimes
+      this.x = this.x + 0.5; // move right;
+    }
+
     var that = this;
 
-    // tower detection
     this.gameEngine.entities.forEach(function (entity) {
-      if (entity.BC && that.BC.collide(entity.BC)) {
-        if (entity instanceof Tower) that.attack();
+      // tower detection
+      if (entity instanceof Tower) {
+        // tower shoots enemy in shooting bounds
+        if (canShoot(that, entity)) {
+          console.log("slime attack");
+        }
+      }
+
+      // slime detection
+      if (entity instanceof Slime) {
+        if (entity !== that && collide(that, entity)) {
+          // slimes collide with each other
+          var dist = distance(that, entity);
+          var delta = that.radius + entity.radius - dist;
+          var difX = (that.x - entity.x) / dist;
+          var difY = (that.y - entity.y) / dist;
+
+          that.x += (difX * delta) / 2;
+          that.y += (difY * delta) / 2;
+          entity.x -= (difX * delta) / 2;
+          entity.y -= (difY * delta) / 2;
+        }
       }
     });
 
+    // for (var i = 0; i < this.gameEngine.entities.length; i++) {
+    //     var ent = this.gameEngine[i];
+
+    //     console.log(ent);
+    //     if (ent instanceof Slime) {
+    //         console.log("hello");
+
+    //         if (ent !== this && this.BC.collide(ent.BC)) {
+
+    //             console.log("hello2");
+    //             // push away from each other
+    //             var dist = distance(this, ent);
+    //             var delta = this.radius + ent.radius - dist;
+    //             var difX = (this.x - ent.x) / dist;
+    //             var difY = (this.y - ent.y) / dist;
+
+    //             this.x += difX * delta / 2;
+    //             this.y += difY * delta / 2;
+    //             ent.x -= difX * delta / 2;
+    //             ent.y -= difY * delta / 2;
+    //         }
+    //     }
+    // }
+
     // slime movement
-    this.x += 1;
+    if (this.moving) this.x += 1;
   }
 
-  draw(ctx) {
-    if (this.dead) {
-      this.deadAnim.drawFrame(
-        this.gameEngine.clockTick,
-        ctx,
-        this.x - PARAMS.SCALE * 10.5,
-        this.y - PARAMS.SCALE * 25,
-        PARAMS.SCALE
-      );
-    } else {
-      this.aliveAnim.drawFrame(
-        this.gameEngine.clockTick,
-        ctx,
-        this.x,
-        this.y,
-        PARAMS.SCALE
-      );
-    }
+  draw(context) {
+    this.showBounds(context);
+    this.aliveAnim.drawFrame(
+      this.gameEngine.clockTick,
+      context,
+      this.x - this.xOffset,
+      this.y - this.yOffset,
+      PARAMS.SCALE
+    );
   }
 
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
 
     if (this.HP === 0) {
-      this.dead = true;
+      this.isDead();
     }
   }
 
   attack() {
-    console.log("slime attack");
+    console.log("slime shooting");
   }
 
-  isDead(User) {
-    User.increaseBalance(this.reward);
-    this.removeFromWorld = true;
+  isDead() {
+    this.user.increaseBalance(this.reward);
+    this.gameEngine.removeEntity(this);
+    // add coins when dropped
   }
 }
 
