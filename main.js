@@ -23,7 +23,7 @@ ASSET_MANAGER.downloadAll(function () {
   gameEngine.init(ctx);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
-  var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1);
+  var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
   gameEngine.addEntity(level);
   gameEngine.addEntity(new Tower(gameEngine, 90, 270));
   gameEngine.addEntity(new Tower(gameEngine, 510, 330));
