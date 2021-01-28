@@ -31,6 +31,5 @@ ASSET_MANAGER.downloadAll(function () {
   gameEngine.addEntity(new Slime(gameEngine, 10, 300));
 
   //gameEngine.addEntity(new Slime(gameEngine, 10, 350));
-
   gameEngine.start();
 });

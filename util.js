@@ -65,6 +65,9 @@ BULLETS["tomato"] = {
   asset: "./sprites/other/bullet_tomato.png",
   frameWidth: 22,
   frameHeight: 22,
+  xOffset: 11,
+  yOffset: 11,
+  radius: 6,
   canRotate: false,
   type: "tomato",
 };
@@ -72,6 +75,9 @@ BULLETS["bullet_b"] = {
   asset: "./sprites/other/bulletb.png",
   frameWidth: 10,
   frameHeight: 8,
+  xOffset: 6,
+  yOffset: 4,
+  radius: 4,
   canRotate: true,
   type: "bullet_b",
 };
