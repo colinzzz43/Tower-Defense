@@ -34,8 +34,7 @@ class Level {
 		this.towerTerrainOccupied = -1;
 		this.obstacle = 2;
 	}
-	
-	
+
 	/*
 		Update the level map by turning on and off the terrain grid map
 	*/
@@ -144,12 +143,12 @@ class Level {
 	addTower(row, column) {
 		var xTower = column * 40 * this.drawScale;
 		var yTower = row * 40 * this.drawScale;
-		var xOffset = -10 * this.drawScale;
-		var yOffset = -35 * this.drawScale;
-		this.gameEngine.addEntity(new Tower(this.gameEngine, null, xTower + xOffset, yTower + yOffset));
+		var xOffset = 20 * this.drawScale;
+		var yOffset = 20 * this.drawScale;
+		this.gameEngine.addEntity(new Tower(this.gameEngine, xTower + xOffset, yTower + yOffset));
 		this.changeStateOfTowerTerrain(row, column);
-	}
-	
+    }
+    	
 	getGrid() {
 		return this.terrainGridTiles;
 	}

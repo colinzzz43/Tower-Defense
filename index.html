@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Game Project Title Goes Here</title>
-    <script type="text/javascript" src="./animator.js"></script>
-    <script type="text/javascript" src="./boundingshapes.js"></script>
     <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="./animator.js"></script>
     <script type="text/javascript" src="./enemies.js"></script>
     <script type="text/javascript" src="./structures.js"></script>
     <script type="text/javascript" src="./hud.js"></script>
@@ -13,14 +12,34 @@
     <script type="text/javascript" src="./timer.js"></script>
     <script type="text/javascript" src="./gameengine.js"></script>
     <script type="text/javascript" src="./util.js"></script>
-    <script type="text/javascript" src="./main.js"></script>
     <script type="text/javascript" src="./level.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
     <script type="text/Javascript" src="./tower.js"></script>
 	<script type="text/Javascript" src="./movement.js"></script>
-</head>
-<body>
-    <canvas id="gameWorld" width="1024" height="768" style="background: white; border: 1px solid black"></canvas>
-	<br />
-	<input type="checkbox" id="grid_map"> Grid Map
-</body>
+    <script type="text/javascript" src="./user.js"></script>
+    <script type="text/javascript" src="./bullet.js"></script>
+  </head>
+  <body>
+    <canvas
+      id="gameWorld"
+      width="900"
+      height="600"
+      style="border: 1px solid black"
+    ></canvas>
+    <br />
+    <input type="checkbox" id="grid_map" /> Grid Map
+  </body>
+
+  <h2 style="text-align: center">
+    Please click on the map to place the tower.
+  </h2>
+
+  <div id="debug" style="text-align: center">
+    Slime HP:
+    <h3 id="printMonsterHP">-</h3>
+    Corresponding tower HP:
+    <h3 id="printTowerHP">-</h3>
+    Coins:
+    <h3 id="printCoins">100</h3>
+  </div>
 </html>
