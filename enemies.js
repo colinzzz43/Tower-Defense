@@ -61,10 +61,10 @@ class Slime {
     if (this.paused) {
       // pause animation at certain frame
     }
-    if (!this.paused) {
+ //   if (!this.paused) {
       // move slimes
-      this.x = this.x + 0.5; // move right;
-    }
+ //     this.x = this.x + 0.5; // move right;
+ //   }
 
     var that = this;
 
@@ -77,8 +77,11 @@ class Slime {
           that.printTowerHP(entity.HP);
         }
       }
+	// Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
+	// This section might need to be re-worked to deal with this collision issue
 
-      // slime detection
+      // slime detection     
+	  /*
       if (entity instanceof Slime) {
         if (entity !== that && collide(that, entity)) {
           // slimes collide with each other
@@ -93,6 +96,7 @@ class Slime {
           entity.y -= (difY * delta) / 2;
         }
       }
+	  */
     });
 
     // for (var i = 0; i < this.gameEngine.entities.length; i++) {
@@ -124,9 +128,10 @@ class Slime {
 	
 	// is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
 	if (this.movement.enemyIsOnGrid() && !this.movement.hasReachedDestination()) {
+		console.log("Enemy On Grid");
 		var tileScale = this.level.drawScale * 40;
-		var xCenterOfTile = (tileScale * coordinates.tileColumn) + 5;
-		var yCenterOfTile = (tileScale * coordinates.tileRow) + 5;
+		var xCenterOfTile = (tileScale * coordinates.tileColumn) + 30;
+		var yCenterOfTile = (tileScale * coordinates.tileRow) + 30;
 		
 		// has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
 		if ( coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile ) {
@@ -134,9 +139,8 @@ class Slime {
 			var nextTileInCurrentDirection = this.movement.getNextTerrainTileInCurrentDirection();
 					
 			// if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
-			if (currentTileInCurrentDirection !== nextTileInCurrentDirection && this.movement.moving === true) {
+			if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
 				this.movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
-				console.log(`Slime changed direction to ${this.movement.getDirection()}`);
 			} 
 		}	
 	}
