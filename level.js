@@ -20,7 +20,7 @@ class Level {
 		this.gameEngine.level = this;	
 		
 		// Initialize terrain map grid for this level
-		this.terrainGridTiles = new LevelTerrainMap(this.mapLevel, this.ctx);
+		this.terrainGridTiles = new LevelTerrainMap(this);
 		
 		// Switch to turn on (true) and off (false) the visual grid map
 		this.showGridMap = false;
@@ -34,10 +34,7 @@ class Level {
 		this.towerTerrainOccupied = -1;
 		this.obstacle = 2;
 	}
-	
-	
-	
-	
+
 	/*
 		Update the level map by turning on and off the terrain grid map
 	*/
@@ -150,6 +147,10 @@ class Level {
 		var yOffset = 20 * this.drawScale;
 		this.gameEngine.addEntity(new Tower(this.gameEngine, xTower + xOffset, yTower + yOffset));
 		this.changeStateOfTowerTerrain(row, column);
+    
+    	
+	getGrid() {
+		return this.terrainGridTiles;
 	}
 }
 
@@ -158,16 +159,16 @@ class LevelTerrainMap {
 	/*
 		Constructor for the LevelTerrainMap
 		- Parameters:
-			'mapLevel': the numerical level of the level terrain map
-			'ctx': the canvas that this terrain map will be applied to
+			'level': the level itself that this new terrain tile map will be put on
 	*/
-	constructor(mapLevel, ctx) {
-		Object.assign(this, {mapLevel, ctx});
+	constructor(level) {
+		Object.assign(this, {level});
 		this.mapArray = null;	
 		this.numOfTileRows = null;
 		this.numOfTileColumns = null;
 		this.squareTileSidePixelLength = null;
 		this.squareTileBorderPixelWeight = null;
+		this.destinationTile = null;
 		this.initializeGridMap();
 		console.log(this.mapArray);
 		
@@ -182,7 +183,7 @@ class LevelTerrainMap {
 		Create a pre-defined 2D array representing the terrain makeup of a level map.
 	*/
 	initializeGridMap() {
-		if (this.mapLevel === 1) {
+		if (this.level.mapLevel === 1) {
 			this.levelOneMap();
 		} 
 	}
@@ -196,6 +197,7 @@ class LevelTerrainMap {
 		this.numOfTileColumns = 15;
 		this.squareTileSidePixelLength = 40;
 		this.squareTileBorderPixelWeight = 1;
+		this.destinationTile = {row: 4, column: 14};
 		this.mapArray = [
 			[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -261,21 +263,23 @@ class LevelTerrainMap {
 		}
 	}
 	
+	getDestination() {
+		return this.destinationTile;
+	}
+	
 	
 	/*
 		Turn on or turn off the tile grid map that highlights the terrain tiles of the map
 		- Parameter:	
-			'visible': the boolean that determines if the grid map is on (if true) or off (if false),
-			'ctx': the ID of the canvas the grid map will be drawn on,
-			'scale': the scaling of the dimensions of the grid map 
+			'visible': the boolean that determines if the grid map is on (if true) or off (if false)
 	*/
-	showTileGrid(visible, ctx, scale) {
+	showTileGrid(visible) {
 		if (visible === true) {
-			var square = this.squareTileSidePixelLength * scale;	
-			ctx.lineWidth = this.squareTileBorderPixelWeight * scale;
+			var square = this.squareTileSidePixelLength * this.level.drawScale;	
+			this.level.ctx.lineWidth = this.squareTileBorderPixelWeight * this.level.drawScale;
 			for (var i = 0; i < this.numOfTileRows; i++) {
 				for (var j = 0; j < this.numOfTileColumns; j++) {
-					ctx.strokeRect(j * square, i * square, square, square);
+					this.level.ctx.strokeRect(j * square, i * square, square, square);
 				}
 			}			
 		}
