@@ -147,7 +147,7 @@ class Level {
 		var yOffset = 20 * this.drawScale;
 		this.gameEngine.addEntity(new Tower(this.gameEngine, xTower + xOffset, yTower + yOffset));
 		this.changeStateOfTowerTerrain(row, column);
-    
+	}
     	
 	getGrid() {
 		return this.terrainGridTiles;
