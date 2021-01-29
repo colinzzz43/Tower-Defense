@@ -10,13 +10,23 @@ class Level {
 			'mapWidth': the width in pixels from topLeftCornerX of the image to draw, 'mapHeight': the height in pixels from topLeftCornerY of the image to draw, 
 			'drawScale': the scaling of how the image on canvas is drawn,
 			'mapLevel': the numerical level of the image map
+			'ctx': the canvas that this level map image will be applied to
 	*/
-	constructor(gameEngine, mapImage, xCanvas, yCanvas, topLeftCornerX, topLeftCornerY, mapWidth, mapHeight, drawScale, mapLevel) {
+	constructor(gameEngine, mapImage, xCanvas, yCanvas, topLeftCornerX, topLeftCornerY, mapWidth, mapHeight, drawScale, mapLevel, ctx) {
 
-		Object.assign(this, {gameEngine, mapImage, xCanvas, yCanvas, topLeftCornerX, topLeftCornerY, mapWidth, mapHeight, drawScale, mapLevel} );
+		Object.assign(this, {gameEngine, mapImage, xCanvas, yCanvas, topLeftCornerX, topLeftCornerY, mapWidth, mapHeight, drawScale, mapLevel, ctx} );
+		
+		// Apply game engine
 		this.gameEngine.level = this;	
-		this.terrainGridTiles = new LevelTerrainMap(this.mapLevel);
+		
+		// Initialize terrain map grid for this level
+		this.terrainGridTiles = new LevelTerrainMap(this);
+		
+		// Switch to turn on (true) and off (false) the visual grid map
 		this.showGridMap = false;
+		
+		// Apply mouse click interaction to this level
+		this.mouseClick();
 		
 		// Numbers labeling a specific terrain for a tile.
 		this.path = 0;
@@ -24,6 +34,7 @@ class Level {
 		this.towerTerrainOccupied = -1;
 		this.obstacle = 2;
 	}
+	
 	
 	/*
 		Update the level map by turning on and off the terrain grid map
@@ -72,7 +83,7 @@ class Level {
 		} else if (tile === this.obstacle) {
 			return "obstacle";
 		} else {
-			return "not_an_obstacle_on_grid";
+			return "not_a_tile_on_grid";
 		}
 	}
 	
@@ -91,19 +102,74 @@ class Level {
 		} else {
 			this.terrainGridTiles.setTile(row, column, this.towerTerrainOccupied);
 		}
+		console.log(this.terrainGridTiles.getMapArray());
 	}
 	
+	/*
+		Apply a mouse click interaction to the level map image
+	*/
+	mouseClick() {
+		var that = this;
+		
+		// Get x,y coordinates of canvas where mouse pointer is
+		var getXandY = function (e) {
+			var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+			var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+			
+			return { x: x, y: y };
+		}
+		
+		// Add event listener to the mouse click for this level map
+		that.ctx.canvas.addEventListener("click", function (e) {
+			var canvasCoordinates = getXandY(e);
+			var tileSideLength = that.terrainGridTiles.squareTileSidePixelLength * that.drawScale;  // change 40 later
+			var row = Math.floor(canvasCoordinates.y / tileSideLength);
+			var column = Math.floor(canvasCoordinates.x / tileSideLength);
+			console.log(`Clicked {${canvasCoordinates.x}, ${canvasCoordinates.y}}, which is {row: ${row}, column: ${column}}`);
+			if ( that.terrainGridTiles.getTile(row, column) === that.towerTerrainOpen) {
+				that.addTower(row, column);
+				console.log(`New Tower Added at {row:${row}, column:${column}}`);
+			} else {
+				console.log(`Tower can't be placed at {row:${row}, column:${column}}.  There's either a tower already, it's non-tower terrain, or it's off-grid.`);
+			}
+		}, false);
+	}
+	
+	/*
+		Add a new tower entity to the level map grid and the game engine itself
+		- Parameters: 
+			'row': the row of the tile grid where new tower will be placed,
+			'column': the column of the tile grid where new tower will be placed
+	*/
+	addTower(row, column) {
+		var xTower = column * 40 * this.drawScale;
+		var yTower = row * 40 * this.drawScale;
+		var xOffset = -10 * this.drawScale;
+		var yOffset = -35 * this.drawScale;
+		this.gameEngine.addEntity(new Tower(this.gameEngine, null, xTower + xOffset, yTower + yOffset));
+		this.changeStateOfTowerTerrain(row, column);
+	}
+	
+	getGrid() {
+		return this.terrainGridTiles;
+	}
 }
 
 
 class LevelTerrainMap {
-	constructor(mapLevel) {
-		Object.assign(this, {mapLevel});
+	/*
+		Constructor for the LevelTerrainMap
+		- Parameters:
+			'level': the level itself that this new terrain tile map will be put on
+	*/
+	constructor(level) {
+		Object.assign(this, {level});
 		this.mapArray = null;	
 		this.numOfTileRows = null;
 		this.numOfTileColumns = null;
 		this.squareTileSidePixelLength = null;
 		this.squareTileBorderPixelWeight = null;
+		this.destinationTile = null;
 		this.initializeGridMap();
 		console.log(this.mapArray);
 		
@@ -118,7 +184,7 @@ class LevelTerrainMap {
 		Create a pre-defined 2D array representing the terrain makeup of a level map.
 	*/
 	initializeGridMap() {
-		if (this.mapLevel === 1) {
+		if (this.level.mapLevel === 1) {
 			this.levelOneMap();
 		} 
 	}
@@ -132,6 +198,7 @@ class LevelTerrainMap {
 		this.numOfTileColumns = 15;
 		this.squareTileSidePixelLength = 40;
 		this.squareTileBorderPixelWeight = 1;
+		this.destinationTile = {row: 4, column: 14};
 		this.mapArray = [
 			[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -179,7 +246,7 @@ class LevelTerrainMap {
 		if ( (row >= 0 && row < this.getNumOfRows()) && (column >= 0 && column < this.getNumOfColumns()) ) {
 			return this.mapArray[row][column];			
 		} else {
-			return "";
+			return "off_grid";
 		}	
 	}
 	
@@ -197,24 +264,25 @@ class LevelTerrainMap {
 		}
 	}
 	
+	getDestination() {
+		return this.destinationTile;
+	}
+	
 	
 	/*
 		Turn on or turn off the tile grid map that highlights the terrain tiles of the map
 		- Parameter:	
-			'visible': the boolean that determines if the grid map is on (if true) or off (if false),
-			'ctx': the ID of the canvas the grid map will be drawn on,
-			'scale': the scaling of the dimensions of the grid map 
+			'visible': the boolean that determines if the grid map is on (if true) or off (if false)
 	*/
-	showTileGrid(visible, ctx, scale) {
+	showTileGrid(visible) {
 		if (visible === true) {
-			var square = this.squareTileSidePixelLength * scale;	
-			ctx.lineWidth = this.squareTileBorderPixelWeight * scale;
+			var square = this.squareTileSidePixelLength * this.level.drawScale;	
+			this.level.ctx.lineWidth = this.squareTileBorderPixelWeight * this.level.drawScale;
 			for (var i = 0; i < this.numOfTileRows; i++) {
 				for (var j = 0; j < this.numOfTileColumns; j++) {
-					ctx.strokeRect(j * square, i * square, square, square);
+					this.level.ctx.strokeRect(j * square, i * square, square, square);
 				}
 			}			
 		}
 	}
 }
-

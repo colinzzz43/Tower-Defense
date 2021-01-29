@@ -1,7 +1,6 @@
 class Slime {
-  //add movement parameter for collision testing
-  constructor(gameEngine, x, y, moving) {
-    Object.assign(this, { gameEngine, x, y});
+  constructor(gameEngine, x, y, level) {
+    Object.assign(this, {gameEngine, x, y, level} );
 
     this.animations = [];
 
@@ -27,32 +26,18 @@ class Slime {
     // other stats
     // this.velocity = {}; // used for moving the enemy across the map
     this.HP = 10;
-    this.radius = 30;
-    this.moving = moving;
 
     this.updateBC(); 
-  }
-
-  // shows the bounding circle of the slime
-  showBounds(context) {
-    context.beginPath();
-    context.arc(
-      this.x + 24,
-      this.y + 24,
-      this.radius,
-      0,
-      2 * Math.PI
-    );
-    context.fill();
-    context.fillStyle = "#FD0";
-
-    context.stroke();
-  }
+	
+	// level grid and enemy movement
+	this.grid = this.level.getGrid();
+	this.movement = new EnemyMovement( 1, "right", this.x, this.y, this.grid );
+  };
 
   // BC = bounding circle
   updateBC() {
     this.lastBC = this.BC;
-    this.BC = new BoundingCircle(this.x + 24, this.y + 24, this.radius); // bounds the slime itself in a circle
+    this.BC = new BoundingCircle(this.x, this.y, 8); // bounds the slime itself in a circle
   }
 
   update() {
@@ -66,73 +51,61 @@ class Slime {
     //     // move slimes
         // this.x = this.x + 1; // move right;
     // }
+    var that = this;
 
-    this.updateBC();
-
-    var that = this; 
-
+    // tower detection
     this.gameEngine.entities.forEach(function(entity) {
-        // tower detection
-        if (entity instanceof Tower) {
-            // tower shoots enemy in shooting bounds
-            if (that.BC.collide(entity.shootBound)) {
-                entity.shoot();
-            }
-        }
+      if (entity.BC && that.BC.collide(entity.BC)) {
+        if (entity instanceof Tower) that.attack();
+      }
+    }); 
+	
+	// slime determines which direction it must go on
+	var coordinates = this.movement.getCoordinates();
+				//	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
+	
+	// is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
+	if (this.movement.enemyIsOnGrid() && !this.movement.hasReachedDestination()) {
+		var tileScale = this.level.drawScale * 40;
+		var xCenterOfTile = (tileScale * coordinates.tileColumn) + 5;
+		var yCenterOfTile = (tileScale * coordinates.tileRow) + 5;
+		
+		// has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
+		if ( coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile ) {
+			var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
+			var nextTileInCurrentDirection = this.movement.getNextTerrainTileInCurrentDirection();
+					
+			// if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
+			if (currentTileInCurrentDirection !== nextTileInCurrentDirection && this.movement.moving === true) {
+				this.movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
+				console.log(`Slime changed direction to ${this.movement.getDirection()}`);
+			} 
+		}	
+	}
 
-        // slime detection
-        if (entity instanceof Slime) {
-            if (entity !== that && that.BC.collide(entity.BC)) {
-                // slimes collide with each other
-                var dist = distance(that, entity);
-                var delta = that.radius + entity.radius - dist;
-                var difX = (that.x - entity.x) / dist;
-                var difY = (that.y - entity.y) / dist;
-
-                that.x += difX * delta / 2;
-                that.y += difY * delta / 2;
-                entity.x -= difX * delta / 2;
-                entity.y -= difY * delta / 2;                
-            }
-        }
-        
-    });
-
-    // for (var i = 0; i < this.gameEngine.entities.length; i++) {
-    //     var ent = this.gameEngine[i];
-
-    //     console.log(ent);
-    //     if (ent instanceof Slime) {
-    //         console.log("hello");
-
-
-    //         if (ent !== this && this.BC.collide(ent.BC)) {
-
-    //             console.log("hello2");
-    //             // push away from each other
-    //             var dist = distance(this, ent);
-    //             var delta = this.radius + ent.radius - dist;
-    //             var difX = (this.x - ent.x) / dist;
-    //             var difY = (this.y - ent.y) / dist;
-
-    //             this.x += difX * delta / 2;
-    //             this.y += difY * delta / 2;
-    //             ent.x -= difX * delta / 2;
-    //             ent.y -= difY * delta / 2;
-    //         }
-    //     }
-    // }
-
-    // slime movement
-    if (this.moving) this.x += 1;
+	// slime movement	
+	var speed = this.movement.getSpeed();
+	if (this.movement.getDirection() === "up") {
+		this.y += -speed;
+	} else if (this.movement.getDirection() === "right") {
+		this.x += speed;
+	} else if (this.movement.getDirection() === "down") {
+		this.y += speed;
+	} else if (this.movement.getDirection() === "left") {
+		this.x += -speed;
+	} else {
+		this.x += 0;
+		this.y += 0;
+	}
+	
+	this.movement.updatePosition(this.x, this.y);
   };
 
-  draw(context) {
-      this.showBounds(context);
+  draw(ctx) {
     if (this.dead) {
-        this.deadAnim.drawFrame(this.gameEngine.clockTick, context, this.x-PARAMS.SCALE*10.5, this.y-PARAMS.SCALE*25, PARAMS.SCALE);
+        this.deadAnim.drawFrame(this.gameEngine.clockTick, ctx, this.x-PARAMS.SCALE*10.5, this.y-PARAMS.SCALE*25, PARAMS.SCALE);
     } else {
-        this.aliveAnim.drawFrame(this.gameEngine.clockTick, context, this.x, this.y, PARAMS.SCALE);
+        this.aliveAnim.drawFrame(this.gameEngine.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
     }
   };
 
@@ -142,13 +115,13 @@ class Slime {
     if (this.HP === 0) {
         this.dead = true;
     }
-  }
+  };
 
   attack() {
     console.log("slime attack");
   };
 
-  isDead() {}
+  isDead() {};
 }
 
 class Goblin {
@@ -220,3 +193,4 @@ class Dragon {
 
   isDead() {}
 }
+
