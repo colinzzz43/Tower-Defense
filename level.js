@@ -198,13 +198,16 @@ class LevelTerrainMap {
 		this.squareTileSidePixelLength = 40;
 		this.squareTileBorderPixelWeight = 1;
 		this.destinationTile = {row: 4, column: 14};
+		
+		// edited map array: filled Base's 3x3 grid location with path values (0's)
+		// to disallow tower placement but allow enemies to reach base.
 		this.mapArray = [
 			[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 			[1, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-			[1, 1, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 1, 1, 1],
+			[1, 1, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 0, 0, 0],
 			[1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+			[0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0],
 			[1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
 			[1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
