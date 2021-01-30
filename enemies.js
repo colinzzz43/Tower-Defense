@@ -27,6 +27,7 @@ class Slime {
 
     // stats
     this.HP = 35;
+    this.damageAgainstBase = 1;
     this.reward = 1000;
     this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
@@ -189,6 +190,10 @@ class Slime {
 
   attack(tower) {
     this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y + 15, BULLETS["tomato"], tower, this));
+  }
+
+  attackBase() {
+    this.removeFromWorld = true;
   }
 
 

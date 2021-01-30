@@ -32,7 +32,7 @@ ASSET_MANAGER.downloadAll(function () {
 //  gameEngine.addEntity(new Tower(gameEngine, 510, 330));
 //  gameEngine.addEntity(new Tower(gameEngine, 690, 330));
 
-  var base = new Base(gameEngine, 720, 270);
+  var base = new Base(gameEngine, 810, 270);
   var enemy1 = new Slime(gameEngine, -80, 330, level);
   var enemy2 = new Slime(gameEngine, -200, 330, level);
   var enemy3 = new Slime(gameEngine, -300, 330, level);
