@@ -2,6 +2,7 @@ var gameEngine = new GameEngine();
 
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
+ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 
 //queue download
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png");
@@ -22,13 +23,11 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
 
   gameEngine.init(ctx);
+  var Scene = new SceneManager(gameEngine);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
   gameEngine.addEntity(level);
-//  gameEngine.addEntity(new Tower(gameEngine, 90, 270));
-//  gameEngine.addEntity(new Tower(gameEngine, 510, 330));
-//  gameEngine.addEntity(new Tower(gameEngine, 690, 330));
 
   var enemy1 = new Slime(gameEngine, -80, 330, level);
   var enemy2 = new Slime(gameEngine, -200, 330, level);
@@ -40,9 +39,10 @@ ASSET_MANAGER.downloadAll(function () {
   var enemy8 = new Slime(gameEngine, -850, 330, level);
   var enemy9 = new Slime(gameEngine, -920, 330, level);
   var enemy10 = new Slime(gameEngine, -1000, 330, level);
-  
+
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
+  gameEngine.addEntity(Scene);
   gameEngine.addEntity(enemy1);
   gameEngine.addEntity(enemy2);
   gameEngine.addEntity(enemy3);
