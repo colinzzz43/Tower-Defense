@@ -1,6 +1,6 @@
 class Slime {
-  constructor(gameEngine, x, y, level) {
-    Object.assign(this, {gameEngine, x, y, level} );
+  constructor(gameEngine, x, y, level, spawnTime) {
+    Object.assign(this, {gameEngine, x, y, level, spawnTime} );
 
     this.user = this.gameEngine.user;
     this.damage = 0.09;
@@ -61,11 +61,17 @@ class Slime {
   }
 
   update() {
+    
+
     if (this.paused) {
       // pause animation at certain frame
     }
 
     this.elapsedTime += this.gameEngine.clockTick;
+
+    if (this.spawnTime >= this.elapsedTime) {
+      return;
+    }
 
     var that = this;
     this.gameEngine.entities.forEach(function (entity) {
@@ -170,6 +176,10 @@ class Slime {
   }
 
   draw(context) {
+    if (this.spawnTime >= this.elapsedTime) {
+      return;
+    }
+
     this.showBounds(context);
     this.aliveAnim.drawFrame(
       this.gameEngine.clockTick,
@@ -193,7 +203,7 @@ class Slime {
   }
 
   attackBase() {
-    this.removeFromWorld = true;
+    this.removeFromWorld = true; // disappear when reaching the base
   }
 
 

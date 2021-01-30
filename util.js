@@ -20,6 +20,29 @@ function distance(a, b) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**
+ * Enemy spawner.
+ * @gameEngine GameEngine
+ * @x x coordinate
+ * @y y coordinate
+ * @level Level
+ * @intialSpawnTime # of seconds until spawning starts
+ * @spawnIntervalTime # of seconds between spawns
+ * @enemyType String of type of enemy
+ * @n Total # of enemies to be spawned
+ **/
+function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
+  switch (enemyType) {
+    case "Slime":
+      while (n > 0) {
+        console.log(n);
+        gameEngine.addEntity(new Slime(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+  }
+}
+
 function collide(a, b) {
   return distance(a, b) < a.radius + b.radius;
 }
