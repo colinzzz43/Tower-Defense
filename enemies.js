@@ -26,18 +26,20 @@ class Slime {
     this.paused = false; // used when HUD is set up
 
     // stats
-    // this.velocity = {}; // used for moving the enemy across the map
-
     this.HP = 35;
     this.reward = 1000;
     this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
     this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
     this.yOffset = (this.frameHeight / 2) * PARAMS.SCALE + 1;
+    this.fireRate = 1;
     
     // level grid and enemy movement
 	  this.grid = this.level.getGrid();
-	  this.movement = new EnemyMovement( 1, "right", this.x, this.y, this.grid );
+    this.movement = new EnemyMovement( 1, "right", this.x, this.y, this.grid );
+    
+    // elapsed time to keep track of cooldown
+    this.elapsedTime = 0;
   }
 
   // shows entity bounds and shooting bounds
@@ -61,18 +63,16 @@ class Slime {
     if (this.paused) {
       // pause animation at certain frame
     }
- //   if (!this.paused) {
-      // move slimes
- //     this.x = this.x + 0.5; // move right;
- //   }
+
+    this.elapsedTime += this.gameEngine.clockTick;
 
     var that = this;
-
     this.gameEngine.entities.forEach(function (entity) {
       // tower detection
       if (entity instanceof Tower) {
         // tower shoots enemy in shooting bounds
-        if (canShoot(that, entity)) {
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
+          that.elapsedTime = 0;
           that.attack(entity);
           that.printTowerHP(entity.HP);
         }
@@ -122,45 +122,46 @@ class Slime {
     //         }
     //     }
     // }
-	// slime determines which direction it must go on
-	var coordinates = this.movement.getCoordinates();
-				//	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
-	
-	// is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
-	if (this.movement.enemyIsOnGrid() && !this.movement.hasReachedDestination()) {
-		console.log("Enemy On Grid");
-		var tileScale = this.level.drawScale * 40;
-		var xCenterOfTile = (tileScale * coordinates.tileColumn) + 30;
-		var yCenterOfTile = (tileScale * coordinates.tileRow) + 30;
-		
-		// has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
-		if ( coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile ) {
-			var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
-			var nextTileInCurrentDirection = this.movement.getNextTerrainTileInCurrentDirection();
-					
-			// if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
-			if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
-				this.movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
-			} 
-		}	
-	}
 
-	// slime movement	
-	var speed = this.movement.getSpeed();
-	if (this.movement.getDirection() === "up") {
-		this.y += -speed;
-	} else if (this.movement.getDirection() === "right") {
-		this.x += speed;
-	} else if (this.movement.getDirection() === "down") {
-		this.y += speed;
-	} else if (this.movement.getDirection() === "left") {
-		this.x += -speed;
-	} else {
-		this.x += 0;
-		this.y += 0;
-	}
-	
-	this.movement.updatePosition(this.x, this.y);
+    // slime determines which direction it must go on
+    var coordinates = this.movement.getCoordinates();
+          //	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
+    
+    // is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
+    if (this.movement.enemyIsOnGrid() && !this.movement.hasReachedDestination()) {
+      console.log("Enemy On Grid");
+      var tileScale = this.level.drawScale * 40;
+      var xCenterOfTile = (tileScale * coordinates.tileColumn) + 30;
+      var yCenterOfTile = (tileScale * coordinates.tileRow) + 30;
+      
+      // has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
+      if ( coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile ) {
+        var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
+        var nextTileInCurrentDirection = this.movement.getNextTerrainTileInCurrentDirection();
+            
+        // if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
+        if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
+          this.movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
+        } 
+      }	
+    }
+
+    // slime movement	
+    var speed = this.movement.getSpeed();
+    if (this.movement.getDirection() === "up") {
+      this.y += -speed;
+    } else if (this.movement.getDirection() === "right") {
+      this.x += speed;
+    } else if (this.movement.getDirection() === "down") {
+      this.y += speed;
+    } else if (this.movement.getDirection() === "left") {
+      this.x += -speed;
+    } else {
+      this.x += 0;
+      this.y += 0;
+    }
+    
+    this.movement.updatePosition(this.x, this.y);
   }
 
   printTowerHP(HP) {
@@ -187,7 +188,7 @@ class Slime {
   };
 
   attack(tower) {
-    tower.takeHit(this.damage);
+    this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y + 15, BULLETS["tomato"], tower, this));
   }
 
 
