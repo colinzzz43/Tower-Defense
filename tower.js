@@ -146,6 +146,7 @@ class Tower {
       if (entity instanceof Slime) {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
+          that.elapsedTime = 0;
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
           that.printMonsterHP(entity.HP);
@@ -213,7 +214,7 @@ class Tower {
   shoot(enemy) {
     // shooting animation
     // enemy.takeHit(this.damage);
-    this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y - 30, BULLETS["bullet_b"], enemy, this));
+    this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y - 90, BULLETS["bullet_b"], enemy, this));
   }
 
   takeHit(damage) {
