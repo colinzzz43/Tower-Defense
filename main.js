@@ -5,6 +5,7 @@ ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 
 //queue download
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png");
+ASSET_MANAGER.queueDownload("./sprites/other/base.png");
 ASSET_MANAGER.queueDownload("./prototype-tower.png");
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
@@ -30,6 +31,7 @@ ASSET_MANAGER.downloadAll(function () {
 //  gameEngine.addEntity(new Tower(gameEngine, 510, 330));
 //  gameEngine.addEntity(new Tower(gameEngine, 690, 330));
 
+  var base = new Base(gameEngine, 720, 270);
   var enemy1 = new Slime(gameEngine, -80, 330, level);
   var enemy2 = new Slime(gameEngine, -200, 330, level);
   var enemy3 = new Slime(gameEngine, -300, 330, level);
@@ -43,6 +45,7 @@ ASSET_MANAGER.downloadAll(function () {
   
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
+  gameEngine.addEntity(base);
   gameEngine.addEntity(enemy1);
   gameEngine.addEntity(enemy2);
   gameEngine.addEntity(enemy3);
