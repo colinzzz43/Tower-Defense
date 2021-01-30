@@ -328,5 +328,4 @@ class SpazerTower {
     isDead() {
 
     }
-
 }

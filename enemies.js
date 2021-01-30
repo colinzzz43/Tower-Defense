@@ -1,7 +1,6 @@
 class Slime {
-  //add movement parameter for collision testing
-  constructor(gameEngine, x, y) {
-    Object.assign(this, { gameEngine, x, y });
+  constructor(gameEngine, x, y, level) {
+    Object.assign(this, {gameEngine, x, y, level} );
 
     this.user = this.gameEngine.user;
     this.damage = 0.09;
@@ -28,12 +27,17 @@ class Slime {
 
     // stats
     // this.velocity = {}; // used for moving the enemy across the map
+
     this.HP = 35;
     this.reward = 1000;
     this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
     this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
     this.yOffset = (this.frameHeight / 2) * PARAMS.SCALE + 1;
+    
+    // level grid and enemy movement
+	  this.grid = this.level.getGrid();
+	  this.movement = new EnemyMovement( 1, "right", this.x, this.y, this.grid );
   }
 
   // shows entity bounds and shooting bounds
@@ -57,10 +61,10 @@ class Slime {
     if (this.paused) {
       // pause animation at certain frame
     }
-    if (!this.paused) {
+ //   if (!this.paused) {
       // move slimes
-      this.x = this.x + 0.5; // move right;
-    }
+ //     this.x = this.x + 0.5; // move right;
+ //   }
 
     var that = this;
 
@@ -73,8 +77,11 @@ class Slime {
           that.printTowerHP(entity.HP);
         }
       }
+	// Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
+	// This section might need to be re-worked to deal with this collision issue
 
-      // slime detection
+      // slime detection     
+	  /*
       if (entity instanceof Slime) {
         if (entity !== that && collide(that, entity)) {
           // slimes collide with each other
@@ -89,6 +96,7 @@ class Slime {
           entity.y -= (difY * delta) / 2;
         }
       }
+	  */
     });
 
     // for (var i = 0; i < this.gameEngine.entities.length; i++) {
@@ -114,9 +122,45 @@ class Slime {
     //         }
     //     }
     // }
+	// slime determines which direction it must go on
+	var coordinates = this.movement.getCoordinates();
+				//	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
+	
+	// is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
+	if (this.movement.enemyIsOnGrid() && !this.movement.hasReachedDestination()) {
+		console.log("Enemy On Grid");
+		var tileScale = this.level.drawScale * 40;
+		var xCenterOfTile = (tileScale * coordinates.tileColumn) + 30;
+		var yCenterOfTile = (tileScale * coordinates.tileRow) + 30;
+		
+		// has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
+		if ( coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile ) {
+			var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
+			var nextTileInCurrentDirection = this.movement.getNextTerrainTileInCurrentDirection();
+					
+			// if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
+			if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
+				this.movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
+			} 
+		}	
+	}
 
-    // slime movement
-    if (this.moving) this.x += 1;
+	// slime movement	
+	var speed = this.movement.getSpeed();
+	if (this.movement.getDirection() === "up") {
+		this.y += -speed;
+	} else if (this.movement.getDirection() === "right") {
+		this.x += speed;
+	} else if (this.movement.getDirection() === "down") {
+		this.y += speed;
+	} else if (this.movement.getDirection() === "left") {
+		this.x += -speed;
+	} else {
+		this.x += 0;
+		this.y += 0;
+	}
+	
+	this.movement.updatePosition(this.x, this.y);
   }
 
   printTowerHP(HP) {
@@ -140,11 +184,12 @@ class Slime {
     if (this.HP === 0) {
       this.isDead();
     }
-  }
+  };
 
   attack(tower) {
     tower.takeHit(this.damage);
   }
+
 
   isDead() {
     this.removeFromWorld = true;
@@ -222,3 +267,4 @@ class Dragon {
 
   isDead() {}
 }
+
