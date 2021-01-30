@@ -57,6 +57,7 @@ window.requestAnimFrame = (function () {
 
 var PARAMS = {
   SCALE: 3,
+  BULLETSCALE: 2
 };
 
 // Bullet array that contains different specs for each bullet
