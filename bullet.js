@@ -42,7 +42,7 @@ class Bullet {
 
     if (!this.cache[angle]) {
       let radians = angle * Math.PI / 180; 
-      let offscreenCanvas = document.getElementById('canvas');
+      let offscreenCanvas = document.createElement('canvas');
 
       offscreenCanvas.width = this.bulletProperties.frameWidth * PARAMS.BULLETSCALE;
       offscreenCanvas.height = this.bulletProperties.frameHeight * PARAMS.BULLETSCALE;
@@ -89,8 +89,8 @@ class Bullet {
         this.removeFromWorld = true;
       }
 
-      if (ent instanceof Slime && shootingEntity instanceof Tower && collide(this, ent)) {
-        ent.takeHit(shootingEntity.damage);
+      if ((ent instanceof Slime) && collide(this, ent)) {
+        ent.takeHit(this.shootingEntity.damage);
         this.removeFromWorld = true;
       }
     }
@@ -105,7 +105,7 @@ class Bullet {
       if (angle < 0) angle += 2*Math.PI;
       let degrees = Math.floor(angle * 180 / Math.PI);
 
-      this.draw(ctx, degrees);
+      this.drawAngle(ctx, degrees);
 
     } else {
       this.animation.drawFrame(this.gameEngine.clockTick, ctx, this.x - xOffset, this.y - yOffset, PARAMS.BULLETSCALE);
