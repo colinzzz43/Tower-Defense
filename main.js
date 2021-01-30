@@ -9,6 +9,7 @@ ASSET_MANAGER.queueDownload("./sprites/other/base.png");
 ASSET_MANAGER.queueDownload("./prototype-tower.png");
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
+ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
 
 function sleep(milliseconds) {
   const date = Date.now();
