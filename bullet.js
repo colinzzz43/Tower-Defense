@@ -11,9 +11,8 @@ Arguments
 class Bullet {
 
   constructor(game, x, y, bulletProperties, target, shootingEntity) {
-    Object.assign(this, { game, x, y, bulletProperties, target, towerTeam});
-
-    
+    Object.assign(this, { game, x, y, bulletProperties, target, shootingEntity});
+ 
     // animations
     this.spritesheet = ASSET_MANAGER.getAsset(this.bulletProperties.asset);
     this.animation = new Animator(
@@ -27,7 +26,7 @@ class Bullet {
     // this.cache = [];
      
     // stats
-    // this.maxSpeed = 200; // pixels per second
+    this.maxSpeed = 200; // pixels per second
     this.radius = this.bulletProperties.radius * PARAMS.SCALE;
       
     var dist = distance(this, this.target);
@@ -41,7 +40,9 @@ class Bullet {
 
   drawAngle(ctx, angle) {}
 
-  update() {}
+  update() {
+    var dist = distance()
+  }
 
   draw(ctx) {
     var xOffset = this.bulletProperties.xOffset * PARAMS.SCALE;
