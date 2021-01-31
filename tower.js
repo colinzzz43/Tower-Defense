@@ -123,7 +123,7 @@ class Tower {
     //stats
     this.HP = 20;
     this.facing = 0;
-    this.damage = 0.05;
+    this.damage = 10;
     this.cost = 10; // basic = 10 for prototype
     this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
     this.radius = 10 * PARAMS.SCALE; // entity radius
@@ -145,7 +145,7 @@ class Tower {
       // tower detection
       if (entity instanceof Slime) {
         // tower shoots enemy in shooting bounds
-        if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate && entity.exist) {
           that.elapsedTime = 0;
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
