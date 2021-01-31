@@ -41,6 +41,9 @@ class Slime {
     
     // elapsed time to keep track of cooldown
     this.elapsedTime = 0;
+    this.gameTime = 0;
+    // does not exist until spawned
+    this.exist = false;
   }
 
   // shows entity bounds and shooting bounds
@@ -68,8 +71,13 @@ class Slime {
     }
 
     this.elapsedTime += this.gameEngine.clockTick;
+    this.gameTime += this.gameEngine.clockTick;
 
-    if (this.spawnTime >= this.elapsedTime) {
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
+    } else {
       return;
     }
 
@@ -176,7 +184,12 @@ class Slime {
   }
 
   draw(context) {
-    if (this.spawnTime >= this.elapsedTime) {
+
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
+    } else {
       return;
     }
 

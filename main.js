@@ -41,8 +41,8 @@ ASSET_MANAGER.downloadAll(function () {
   // enemy spawner
   let x = 80;
   let y = 330
-  let initalSpawnTime = 0;
-  let interval = 3;
+  let initalSpawnTime = 1;
+  let interval = 2;
   let n = 10
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
   gameEngine.start();

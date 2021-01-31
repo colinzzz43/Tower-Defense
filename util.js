@@ -35,7 +35,6 @@ function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTi
   switch (enemyType) {
     case "Slime":
       while (n > 0) {
-        console.log(n);
         gameEngine.addEntity(new Slime(gameEngine, x, y, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
