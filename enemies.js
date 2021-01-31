@@ -1,6 +1,6 @@
 class Slime {
-  constructor(gameEngine, x, y, level) {
-    Object.assign(this, { gameEngine, x, y, level });
+  constructor(gameEngine, x, y, level, spawnTime) {
+    Object.assign(this, { gameEngine, x, y, level, spawnTime });
 
     this.user = this.gameEngine.user;
     this.damage = 0.09;
@@ -26,19 +26,25 @@ class Slime {
     this.paused = false; // used when HUD is set up
 
     // stats
-    // this.velocity = {}; // used for moving the enemy across the map
-
     this.HP = 35;
     this.maxHP = this.HP;
+    this.damageAgainstBase = 1;
     this.reward = 1000;
     this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
     this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
     this.yOffset = (this.frameHeight / 2) * PARAMS.SCALE + 1;
+    this.fireRate = 1;
 
     // level grid and enemy movement
     this.grid = this.level.getGrid();
     this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+
+    // elapsed time to keep track of cooldown
+    this.elapsedTime = 0;
+    this.gameTime = 0;
+    // does not exist until spawned
+    this.exist = false;
   }
 
   // shows entity bounds and shooting bounds
@@ -62,18 +68,25 @@ class Slime {
     if (this.paused) {
       // pause animation at certain frame
     }
-    //   if (!this.paused) {
-    // move slimes
-    //     this.x = this.x + 0.5; // move right;
-    //   }
+
+    this.elapsedTime += this.gameEngine.clockTick;
+    this.gameTime += this.gameEngine.clockTick;
+
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
+    } else {
+      return;
+    }
 
     var that = this;
-
     this.gameEngine.entities.forEach(function (entity) {
       // tower detection
       if (entity instanceof Tower) {
         // tower shoots enemy in shooting bounds
-        if (canShoot(that, entity)) {
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
+          that.elapsedTime = 0;
           that.attack(entity);
           that.printTowerHP(entity.HP);
         }
@@ -123,6 +136,7 @@ class Slime {
     //         }
     //     }
     // }
+
     // slime determines which direction it must go on
     var coordinates = this.movement.getCoordinates();
     //	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
@@ -188,6 +202,8 @@ class Slime {
     }
     ctx.closePath();
     ctx.fill();
+
+    this.movement.updatePosition(this.x, this.y);
   }
 
   printTowerHP(HP) {
@@ -195,6 +211,14 @@ class Slime {
   }
 
   draw(context) {
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
+    } else {
+      return;
+    }
+
     this.showBounds(context);
     this.drawHealth(
       context,
@@ -222,7 +246,20 @@ class Slime {
   }
 
   attack(tower) {
-    tower.takeHit(this.damage);
+    this.gameEngine.addEntity(
+      new Bullet(
+        this.gameEngine,
+        this.x,
+        this.y + 15,
+        BULLETS["tomato"],
+        tower,
+        this
+      )
+    );
+  }
+
+  attackBase() {
+    this.removeFromWorld = true; // disappear when reaching the base
   }
 
   isDead() {
