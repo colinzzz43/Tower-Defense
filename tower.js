@@ -122,6 +122,7 @@ class Tower {
 
     //stats
     this.HP = 20;
+    this.maxHP = this.HP;
     this.facing = 0;
     this.damage = 0.05;
     this.cost = 10; // basic = 10 for prototype
@@ -221,6 +222,14 @@ class Tower {
 
   draw(context) {
     this.showBoundingCircle(context);
+    this.drawHealth(
+      context,
+      this.x,
+      this.y - this.yOffset - 30,
+      this.HP,
+      100,
+      10
+    );
     this.animations[this.facing].drawFrame(
       this.gameEngine.clockTick,
       context,
@@ -229,5 +238,22 @@ class Tower {
       PARAMS.SCALE
     );
     // context.drawImage(this.spritesheet, this.x, this.y);
+  }
+
+  drawHealth(ctx, x, y, HP, width, thickness) {
+    var percentage = width * (HP / this.maxHP);
+    ctx.beginPath();
+    ctx.rect(x - width / 2, y, percentage, thickness);
+    if (percentage > 63) {
+      ctx.fillStyle = "green";
+    } else if (percentage > 37) {
+      ctx.fillStyle = "gold";
+    } else if (percentage > 13) {
+      ctx.fillStyle = "orange";
+    } else {
+      ctx.fillStyle = "red";
+    }
+    ctx.closePath();
+    ctx.fill();
   }
 }
