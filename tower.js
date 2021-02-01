@@ -122,26 +122,32 @@ class Tower {
 
     //stats
     this.HP = 20;
+    this.maxHP = this.HP;
     this.facing = 0;
-    this.damage = 0.05;
+    this.damage = 10;
     this.cost = 10; // basic = 10 for prototype
     this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
     this.radius = 10 * PARAMS.SCALE; // entity radius
     this.shootingRadius = 30 * PARAMS.SCALE; // basic = 90 for prototype
+    this.fireRate = 1;
 
     // other
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 5 * PARAMS.SCALE;
+    this.elapsedTime = 0;
   }
 
   update() {
+    this.elapsedTime += this.gameEngine.clockTick;
     var that = this;
     // tower detection
-    this.gameEngine.entities.forEach(function (entity) {
+    this.gameEngine.entities.forEach(function(entity) {
+      // tower detection
       if (entity instanceof Slime) {
         // tower shoots enemy in shooting bounds
-        if (canShoot(that, entity)) {
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate && entity.exist) {
+          that.elapsedTime = 0;
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
           that.printMonsterHP(entity.HP);
@@ -208,7 +214,8 @@ class Tower {
 
   shoot(enemy) {
     // shooting animation
-    enemy.takeHit(this.damage);
+    // enemy.takeHit(this.damage);
+    this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y - 90, BULLETS["bullet_b"], enemy, this));
   }
 
   takeHit(damage) {
@@ -221,6 +228,14 @@ class Tower {
 
   draw(context) {
     this.showBoundingCircle(context);
+    this.drawHealth(
+      context,
+      this.x,
+      this.y - this.yOffset - 30,
+      this.HP,
+      100,
+      10
+    );
     this.animations[this.facing].drawFrame(
       this.gameEngine.clockTick,
       context,
@@ -229,5 +244,22 @@ class Tower {
       PARAMS.SCALE
     );
     // context.drawImage(this.spritesheet, this.x, this.y);
+  }
+
+  drawHealth(ctx, x, y, HP, width, thickness) {
+    var percentage = width * (HP / this.maxHP);
+    ctx.beginPath();
+    ctx.rect(x - width / 2, y, percentage, thickness);
+    if (percentage > 63) {
+      ctx.fillStyle = "green";
+    } else if (percentage > 37) {
+      ctx.fillStyle = "gold";
+    } else if (percentage > 13) {
+      ctx.fillStyle = "orange";
+    } else {
+      ctx.fillStyle = "red";
+    }
+    ctx.closePath();
+    ctx.fill();
   }
 }

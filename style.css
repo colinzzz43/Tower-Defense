@@ -1,4 +1,5 @@
-#gameWorld {
-  background: url("./Level/map_prototype.png");
-  background-size: cover;
+#debug {
+  background: yellow;
+
+  padding: 5px;
 }

@@ -51,7 +51,7 @@ class GameEngine {
     this.ctx.canvas.addEventListener(
       "click",
       function (e) {
-//        console.log(getXandY(e));
+        //        console.log(getXandY(e));
         that.click = getXandY(e);
       },
       false
@@ -75,8 +75,21 @@ class GameEngine {
     this.entities.push(entity);
   }
 
+  // added by Colin, feel free to edit
+  // can be used to remove Towers, Slimes, other entities
+  removeEntity(entity) {
+    const index = this.entities.indexOf(entity);
+    if (index > -1) {
+      this.entities.splice(index, 1);
+    } else {
+      // debug purpose
+      console.log(entity, " does not exist.");
+    }
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.imageSmoothingEnabled = false;
     for (var i = 0; i < this.entities.length; i++) {
       this.entities[i].draw(this.ctx);
     }

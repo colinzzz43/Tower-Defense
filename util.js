@@ -20,6 +20,28 @@ function distance(a, b) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**
+ * Enemy spawner.
+ * @gameEngine GameEngine
+ * @x x coordinate
+ * @y y coordinate
+ * @level Level
+ * @intialSpawnTime # of seconds until spawning starts
+ * @spawnIntervalTime # of seconds between spawns
+ * @enemyType String of type of enemy
+ * @n Total # of enemies to be spawned
+ **/
+function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
+  switch (enemyType) {
+    case "Slime":
+      while (n > 0) {
+        gameEngine.addEntity(new Slime(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+  }
+}
+
 function collide(a, b) {
   return distance(a, b) < a.radius + b.radius;
 }
@@ -27,10 +49,8 @@ function collide(a, b) {
 // mainly used for shooting enemies (i.e. Slime, Flying Eye, Dragon) and all towers
 // if the shooting entity's shootingBounds collide with target's entityBound, the entity can shoot.
 function canShoot(shootingEntity, target) {
-  return (
-    distance(shootingEntity, target) <
-    shootingEntity.shootingRadius + target.radius
-  );
+    return (distance(shootingEntity, target) < shootingEntity.shootingRadius + target.radius);
+    
 }
 
 // only used for melee enemies (i.e. Goblin, Mushroom, Skeleton)
@@ -59,6 +79,7 @@ window.requestAnimFrame = (function () {
 
 var PARAMS = {
   SCALE: 3,
+  BULLETSCALE: 2
 };
 
 // Bullet array that contains different specs for each bullet
@@ -67,6 +88,9 @@ BULLETS["tomato"] = {
   asset: "./sprites/other/bullet_tomato.png",
   frameWidth: 22,
   frameHeight: 22,
+  xOffset: 11,
+  yOffset: 11,
+  radius: 6,
   canRotate: false,
   type: "tomato",
 };
@@ -74,6 +98,9 @@ BULLETS["bullet_b"] = {
   asset: "./sprites/other/bulletb.png",
   frameWidth: 10,
   frameHeight: 8,
+  xOffset: 6,
+  yOffset: 4,
+  radius: 4,
   canRotate: true,
   type: "bullet_b",
 };
