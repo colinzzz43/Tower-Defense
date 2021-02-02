@@ -15,35 +15,43 @@ class SceneManager {
       false,
       true
     );
-    this.HP = 0;
-    this.coins = 0;
-    this.round = 0;
-    this.waves = 0;
+    this.base = this.game.base;
+    this.user = this.game.user;
+    this.waves = 1;
+    this.scores = 0;
   }
 
-  update() {}
+  update() {
+    this.HP = this.base.HP;
+    this.coins = this.user.balance;
+  }
 
   addCoin() {}
 
   draw(ctx) {
-    ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
-    ctx.fillStyle = "White";
-    ctx.fillText("MARRIOTT", 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-    ctx.fillText(
-      (this.score + "").padStart(8, "0"),
-      1.5 * PARAMS.BLOCKWIDTH,
-      1.5 * PARAMS.BLOCKWIDTH
-    );
-    ctx.fillText(
-      "x" + (this.coins < 10 ? "0" : "") + this.coins,
-      6.5 * PARAMS.BLOCKWIDTH,
-      1.5 * PARAMS.BLOCKWIDTH
-    );
-    ctx.fillText("WORLD", 9 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-    ctx.fillText("1-1", 9.5 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-    ctx.fillText("TIME", 12.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-    ctx.fillText("400", 13 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-
+    this.gameStatsDisplay(ctx);
     this.coinAnimation.drawFrame(this.game.clockTick, ctx, 500, 200, 3);
   }
+  gameStatsDisplay(ctx) {
+    ctx.font = "30px Langar, cursive, serif, sans-serif";
+    ctx.fillStyle = "White";
+    ctx.fillText("Tower Defense", 1.5 * 60, 1 * 60);
+    ctx.fillText(
+      ("Scores: " + this.scores).padStart(8, "0"),
+      1.5 * 60,
+      1.5 * 60
+    );
+    ctx.fillText(
+      "x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
+      6.5 * 60,
+      1.5 * 60
+    );
+    ctx.fillText("HP" + " " + this.HP, 9 * 60, 1 * 60);
+    ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.5 * 60);
+    ctx.fillText("TIME", 12.7 * 60, 1 * 60);
+    ctx.fillText("400", 13 * 60, 1.5 * 60);
+  }
+  // stats: score, currency, HP, waves
+  // Store
+  //
 }
