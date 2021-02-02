@@ -6,7 +6,8 @@ class User {
 
     // initialization for the user
     this.balance = 100;
-    this.hp = 100;
+
+    this.gameEngine.user = this;
   }
 
   // it is to be used for selling/ after killing enemies

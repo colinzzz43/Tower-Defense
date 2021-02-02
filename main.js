@@ -25,17 +25,17 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
 
   gameEngine.init(ctx);
-  var Scene = new SceneManager(gameEngine);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
   gameEngine.addEntity(level);
-
   var base = new Base(gameEngine, 810, 270);
+  var scene = new SceneManager(gameEngine);
 
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
   gameEngine.addEntity(base);
+  gameEngine.addEntity(scene);
 
   // enemy spawner
   let x = 80;

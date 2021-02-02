@@ -1,383 +1,248 @@
 class Base {
-    constructor(gameEngine, x, y) { // x and y are center coordinates of base
-        Object.assign(this, {gameEngine, x, y});
+  constructor(gameEngine, x, y) {
+    // x and y are center coordinates of base
+    Object.assign(this, { gameEngine, x, y });
 
-        // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/base.png");
-        this.animation = new Animator(this.spritesheet, 0, 0, 48, 48, 1, 0.1, 0, false, true);
+    this.gameEngine.base = this;
 
-        // stats
-        this.HP = 5;
-        this.SCALE = 3.75; // SCALE = 3.75, to take up 3x3 of grid on map
-        this.diameter = 48 * this.SCALE;
-        this.radius = this.diameter / 2;
+    // spritesheet
+    this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/base.png");
+    this.animation = new Animator(
+      this.spritesheet,
+      0,
+      0,
+      48,
+      48,
+      1,
+      0.1,
+      0,
+      false,
+      true
+    );
 
+    // stats
+    this.HP = 5;
+    this.SCALE = 3.75; // SCALE = 3.75, to take up 3x3 of grid on map
+    this.diameter = 48 * this.SCALE;
+    this.radius = this.diameter / 2;
+  }
 
+  // show base's bounding circle
+  showBoundingCircle(context) {
+    context.beginPath();
+    // draw circle representing bounding box
+    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    context.fill();
+    context.fillStyle = "#FD0";
+    context.stroke();
+  }
 
+  // print current health to html doc
+  printBaseHP(HP) {
+    if (HP > 0) {
+      document.getElementById("printBaseHP").innerHTML = HP;
+    } else {
+      document.getElementById("printBaseHP").innerHTML = "DEFEAT";
     }
+  }
 
-    // show base's bounding circle
-    showBoundingCircle(context) {
-        context.beginPath();
-        // draw circle representing bounding box
-        context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        context.fill();
-        context.fillStyle = "#FD0";
-        context.stroke();
-    }
-
-    // print current health to html doc
-    printBaseHP(HP) {
-        if (HP > 0) {
-            document.getElementById("printBaseHP").innerHTML = HP;
-        } else {
-            document.getElementById("printBaseHP").innerHTML = "DEFEAT";
+  update() {
+    var that = this;
+    this.gameEngine.entities.forEach(function (entity) {
+      if (entity instanceof Slime) {
+        if (collide(that, entity)) {
+          entity.attackBase(); // enemies disapear on collision with base
+          that.HP -= entity.damageAgainstBase; // base loses 1 hp
         }
       }
-
-    update() {
-        var that = this;
-        this.gameEngine.entities.forEach(function (entity) {
-            if (entity instanceof Slime) {
-              if (collide(that, entity)) { 
-                entity.attackBase(); // enemies disapear on collision with base
-                that.HP -= entity.damageAgainstBase;  // base loses 1 hp
-              }
-            }
-        });
-        that.printBaseHP(that.HP);
-        if (this.HP == 0) {
-            this.isDead();
-        }
+    });
+    that.printBaseHP(that.HP);
+    if (this.HP == 0) {
+      this.isDead();
     }
+  }
 
-    draw(context) {
-        // show bounds for collision testing
-        this.showBoundingCircle(context);
+  draw(context) {
+    // show bounds for collision testing
+    this.showBoundingCircle(context);
 
-        // x an y are center coordinates, subtract radius for drawing offset
-        this.animation.drawFrame(this.gameEngine.clockTick, context, this.x - this.radius, 
-            this.y - this.radius, this.SCALE);
-    }
+    // x an y are center coordinates, subtract radius for drawing offset
+    this.animation.drawFrame(
+      this.gameEngine.clockTick,
+      context,
+      this.x - this.radius,
+      this.y - this.radius,
+      this.SCALE
+    );
+  }
 
-
-    isDead() {
-        this.removeFromWorld = true;
-    }
+  isDead() {
+    this.removeFromWorld = true;
+  }
 }
 
 class PistolTower {
-    constructor() {
+  constructor() {
+    this.spritesheet = ASSET_MANAGER.getAsset(
+      "./sprites/towers/pistol/tower_pistol_down.png"
+    );
+  }
 
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/pistol/tower_pistol_down.png");
+  draw() {}
 
-    }
+  buy() {}
 
-    draw() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    buy() {
+  aim() {}
 
-    }
+  fireProjectile() {}
 
-    sell() {
-
-    }
-
-    upgrade() {
-
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class MachineGunTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class ShotgunTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class CannonTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class FlamethrowerTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class LaserTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class MatterTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class RocketTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
-
+  isDead() {}
 }
 
 class SpazerTower {
-    constructor() {
+  constructor() {}
 
-    }
+  draw() {}
 
-    draw() {
+  buy() {}
 
-    }
-  
-    buy() {
+  sell() {}
 
-    }
+  upgrade() {}
 
-    sell() {
-        
-    }
+  aim() {}
 
-    upgrade() {
+  fireProjectile() {}
 
-    }
-
-    aim() {
-
-    }
-
-    fireProjectile() {
-
-    }
-
-    isDead() {
-
-    }
+  isDead() {}
 }
