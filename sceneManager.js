@@ -40,7 +40,7 @@ class SceneManager {
   }
 
   update() {
-    this.HP = this.base.HP;
+    this.HP = this.game.base.HP;
     this.coins = this.user.balance;
     this.scores = this.game.user.scores;
   }
@@ -65,6 +65,7 @@ class SceneManager {
       6.5 * 60,
       1.5 * 60
     );
+
     ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * 60);
     ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.5 * 60);
     ctx.fillText("TIME", 12.7 * 60, 1 * 60);
