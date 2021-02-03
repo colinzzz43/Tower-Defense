@@ -1,5 +1,18 @@
-#debug {
+/* #debug {
   background: yellow;
 
   padding: 5px;
+<<<<<<< HEAD
+=======
+} */
+
+#gameWorld {
+  border: 3px solid black;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 800px;
+>>>>>>> Colin
 }
