@@ -48,22 +48,29 @@ class SceneManager {
   addCoin() {}
 
   draw(ctx) {
-    ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
+    this.gameStatsDisplay(ctx);
+    this.coinAnimation.drawFrame(this.game.clockTick, ctx, 500, 200, 3);
+  }
+  gameStatsDisplay(ctx) {
+    ctx.font = "30px Langar, cursive, serif, sans-serif";
     ctx.fillStyle = "White";
-    ctx.fillText("MARRIOTT", 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
+    ctx.fillText("Tower Defense", 1.5 * 60, 1 * 60);
     ctx.fillText(
-      (this.score + "").padStart(8, "0"),
-      1.5 * PARAMS.BLOCKWIDTH,
-      1.5 * PARAMS.BLOCKWIDTH
+      ("Scores: " + this.scores).padStart(8, "0"),
+      1.5 * 60,
+      1.5 * 60
     );
     ctx.fillText(
-      "x" + (this.coins < 10 ? "0" : "") + this.coins,
-      6.5 * PARAMS.BLOCKWIDTH,
-      1.5 * PARAMS.BLOCKWIDTH
+      "x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
+      6.5 * 60,
+      1.5 * 60
     );
     ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * 60);
     ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.5 * 60);
     ctx.fillText("TIME", 12.7 * 60, 1 * 60);
     ctx.fillText(this.timeLeft, 13 * 60, 1.5 * 60);
   }
+  // stats: score, currency, HP, waves
+  // Store
+  //
 }
