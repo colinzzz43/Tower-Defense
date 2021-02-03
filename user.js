@@ -14,7 +14,7 @@ class User {
   // it is to be used for selling/ after killing enemies
   increaseBalance(amount) {
     this.balance += amount;
-    this.printCoins(this.balance);
+    // this.printCoins(this.balance);
   }
 
   // it is to be used for buying
@@ -23,9 +23,9 @@ class User {
     console.log("After decreased:" + this.balance);
   }
 
-  printCoins(balance) {
-    document.getElementById("printCoins").innerHTML = balance;
-  }
+  // printCoins(balance) {
+  //   document.getElementById("printCoins").innerHTML = balance;
+  // }
 
   increaseScores() {
     this.scores += 1;

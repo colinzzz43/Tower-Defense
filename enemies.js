@@ -88,7 +88,7 @@ class Slime {
         if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
           that.elapsedTime = 0;
           that.attack(entity);
-          that.printTowerHP(entity.HP);
+          // that.printTowerHP(entity.HP);
         }
       }
       // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
@@ -206,9 +206,9 @@ class Slime {
     this.movement.updatePosition(this.x, this.y);
   }
 
-  printTowerHP(HP) {
-    document.getElementById("printTowerHP").innerHTML = HP;
-  }
+  // printTowerHP(HP) {
+  //   document.getElementById("printTowerHP").innerHTML = HP;
+  // }
 
   draw(context) {
     // spawn enemy if elapsed game time is greater than time to spawn
