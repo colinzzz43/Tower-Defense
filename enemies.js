@@ -265,6 +265,7 @@ class Slime {
   isDead() {
     this.removeFromWorld = true;
     this.user.increaseBalance(this.reward);
+    this.user.increaseScores();
     // add coins when dropped
   }
 }

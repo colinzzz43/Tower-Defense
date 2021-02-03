@@ -19,11 +19,30 @@ class SceneManager {
     this.user = this.game.user;
     this.waves = 1;
     this.scores = 0;
+
+    // Timer
+    this.TIME_LIMIT = 20;
+
+    this.timePassed = 0;
+    this.timeLeft = this.TIME_LIMIT;
+    this.timerInterval = null;
+    this.startTimer();
+  }
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      // The amount of time passed increments by one
+      this.timePassed = this.timePassed += 1;
+      this.timeLeft = this.TIME_LIMIT - this.timePassed;
+      if (this.timeLeft < 1) {
+        this.timeLeft = 0;
+      }
+    }, 1000);
   }
 
   update() {
     this.HP = this.base.HP;
     this.coins = this.user.balance;
+    this.scores = this.game.user.scores;
   }
 
   addCoin() {}
@@ -46,10 +65,10 @@ class SceneManager {
       6.5 * 60,
       1.5 * 60
     );
-    ctx.fillText("HP" + " " + this.HP, 9 * 60, 1 * 60);
+    ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * 60);
     ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.5 * 60);
     ctx.fillText("TIME", 12.7 * 60, 1 * 60);
-    ctx.fillText("400", 13 * 60, 1.5 * 60);
+    ctx.fillText(this.timeLeft, 13 * 60, 1.5 * 60);
   }
   // stats: score, currency, HP, waves
   // Store

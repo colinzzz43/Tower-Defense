@@ -4,6 +4,7 @@ class User {
     this.gameEngine.user = this;
     this.removeFromWorld = false;
 
+    this.scores = 0;
     // initialization for the user
     this.balance = 100;
 
@@ -24,6 +25,10 @@ class User {
 
   printCoins(balance) {
     document.getElementById("printCoins").innerHTML = balance;
+  }
+
+  increaseScores() {
+    this.scores += 1;
   }
 
   draw() {}

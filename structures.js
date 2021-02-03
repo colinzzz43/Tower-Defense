@@ -38,13 +38,13 @@ class Base {
   }
 
   // print current health to html doc
-  printBaseHP(HP) {
-    if (HP > 0) {
-      document.getElementById("printBaseHP").innerHTML = HP;
-    } else {
-      document.getElementById("printBaseHP").innerHTML = "DEFEAT";
-    }
-  }
+  // printBaseHP(HP) {
+  //   if (HP > 0) {
+  //     document.getElementById("printBaseHP").innerHTML = HP;
+  //   } else {
+  //     document.getElementById("printBaseHP").innerHTML = "DEFEAT";
+  //   }
+  // }
 
   update() {
     var that = this;
@@ -56,7 +56,7 @@ class Base {
         }
       }
     });
-    that.printBaseHP(that.HP);
+    // that.printBaseHP(that.HP);
     if (this.HP == 0) {
       this.isDead();
     }
