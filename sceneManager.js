@@ -20,6 +20,7 @@ class SceneManager {
     this.waves = 1;
     this.scores = 0;
 
+    this.height = 480;
     // Timer
     this.TIME_LIMIT = 20;
 
@@ -49,27 +50,33 @@ class SceneManager {
 
   draw(ctx) {
     this.gameStatsDisplay(ctx);
-    this.coinAnimation.drawFrame(this.game.clockTick, ctx, 500, 200, 3);
+    this.coinAnimation.drawFrame(
+      this.game.clockTick,
+      ctx,
+      5.7 * 60,
+      1.035 * this.height,
+      3
+    );
   }
   gameStatsDisplay(ctx) {
     ctx.font = "30px Langar, cursive, serif, sans-serif";
     ctx.fillStyle = "White";
-    ctx.fillText("Tower Defense", 1.5 * 60, 1 * 60);
+    ctx.fillText("Tower Defense", 1.5 * 60, 1 * this.height);
     ctx.fillText(
       ("Scores: " + this.scores).padStart(8, "0"),
       1.5 * 60,
-      1.5 * 60
+      1.1 * this.height
     );
     ctx.fillText(
       "x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
       6.5 * 60,
-      1.5 * 60
+      1.1 * this.height
     );
 
-    ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * 60);
-    ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.5 * 60);
-    ctx.fillText("TIME", 12.7 * 60, 1 * 60);
-    ctx.fillText(this.timeLeft, 13 * 60, 1.5 * 60);
+    ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * this.height);
+    ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.1 * this.height);
+    ctx.fillText("TIME", 12.7 * 60, 1 * this.height);
+    ctx.fillText(this.timeLeft, 13 * 60, 1.1 * this.height);
   }
   // stats: score, currency, HP, waves
   // Store
