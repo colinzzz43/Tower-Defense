@@ -1,7 +1,6 @@
 var gameEngine = new GameEngine();
 
 var ASSET_MANAGER = new AssetManager();
-ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 
 //queue download
@@ -11,6 +10,7 @@ ASSET_MANAGER.queueDownload("./prototype-tower.png");
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/tower_pistol_up.png");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -29,20 +29,22 @@ ASSET_MANAGER.downloadAll(function () {
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
-  gameEngine.addEntity(level);
+  var pistolTowerIcon = ASSET_MANAGER.getAsset("./sprites/towers/pistol/tower_pistol_up.png");
+  var towerIcon = new TowerIcon(gameEngine, pistolTowerIcon, 30, 620, 16, 37, ctx, level);
 
   var base = new Base(gameEngine, 810, 270);
 
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
   gameEngine.addEntity(base);
+  gameEngine.addEntity(towerIcon);
 
   // enemy spawner
   let x = 80;
   let y = 330;
   let initalSpawnTime = 1;
   let interval = 2;
-  let n = 10;
+  let n = 25;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
   gameEngine.start();
 });

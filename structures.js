@@ -11,6 +11,8 @@ class Base {
         this.SCALE = 3.75; // SCALE = 3.75, to take up 3x3 of grid on map
         this.diameter = 48 * this.SCALE;
         this.radius = this.diameter / 2;
+		
+		this.removeFromWorld = false;
 
 
 
@@ -21,8 +23,8 @@ class Base {
         context.beginPath();
         // draw circle representing bounding box
         context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+		context.fillStyle = "#FD0";
         context.fill();
-        context.fillStyle = "#FD0";
         context.stroke();
     }
 
