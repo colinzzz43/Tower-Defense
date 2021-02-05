@@ -3,7 +3,8 @@ class Slime {
     Object.assign(this, { gameEngine, x, y, level, spawnTime });
 
     this.user = this.gameEngine.user;
-    this.damage = 0.09;
+    this.damage = 5;
+
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/monster/slime/slime1_front.png"
@@ -53,8 +54,8 @@ class Slime {
     context.setLineDash([]);
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+	  context.fillStyle = "#FD0";
     context.fill();
-    context.fillStyle = "#FD0";
     context.stroke();
 
     // shooting bound
@@ -146,7 +147,6 @@ class Slime {
       this.movement.enemyIsOnGrid() &&
       !this.movement.hasReachedDestination()
     ) {
-      console.log("Enemy On Grid");
       var tileScale = this.level.drawScale * 40;
       var xCenterOfTile = tileScale * coordinates.tileColumn + 30;
       var yCenterOfTile = tileScale * coordinates.tileRow + 30;
@@ -205,7 +205,7 @@ class Slime {
 
     this.movement.updatePosition(this.x, this.y);
   }
-
+  
   // printTowerHP(HP) {
   //   document.getElementById("printTowerHP").innerHTML = HP;
   // }
@@ -266,6 +266,7 @@ class Slime {
     this.removeFromWorld = true;
     this.user.increaseBalance(this.reward);
     this.user.increaseScores();
+
     // add coins when dropped
   }
 }
