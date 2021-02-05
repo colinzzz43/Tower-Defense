@@ -10,7 +10,7 @@ ASSET_MANAGER.queueDownload("./prototype-tower.png");
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
-ASSET_MANAGER.queueDownload("./sprites/towers/pistol/tower_pistol_up.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/tower_pistol_up.png");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -25,13 +25,13 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
 
   gameEngine.init(ctx);
-  var Scene = new SceneManager(gameEngine);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
-  var pistolTowerIcon = ASSET_MANAGER.getAsset("./sprites/towers/pistol/tower_pistol_up.png");
+  var pistolTowerIcon = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/tower_pistol_up.png");
   var towerIcon = new TowerIcon(gameEngine, pistolTowerIcon, 30, 620, 16, 37, ctx, level);
   var base = new Base(gameEngine, 810, 270);
+  var Scene = new SceneManager(gameEngine);
 
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
