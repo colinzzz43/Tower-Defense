@@ -3,8 +3,8 @@ class User {
     Object.assign(this, { gameEngine });
     this.gameEngine.user = this;
     this.removeFromWorld = false;
-
     this.scores = 0;
+
     // initialization for the user
     this.balance = 100;
     this.hp = 100;

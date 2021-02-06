@@ -1,6 +1,6 @@
 class Tower {
-  constructor(gameEngine, x, y) {
-    Object.assign(this, { gameEngine, x, y });
+  constructor(gameEngine, x, y, level) {
+  Object.assign(this, { gameEngine, x, y, level });
 
     //assets
     this.user = this.gameEngine.user;
@@ -165,8 +165,8 @@ class Tower {
     context.setLineDash([]);
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+	  context.fillStyle = "#FD0";
     context.fill();
-    context.fillStyle = "#FD0";
     context.stroke();
 
     // shooting bound
@@ -201,7 +201,10 @@ class Tower {
 
   dead() {
     this.removeFromWorld = true;
-    // this.gameEngine.removeFromWorld = true;
+	
+	  // After tower is removed from world, set the terrain tile it was on to open tower terrain
+	  var tilePosition = this.getTilePosition();
+	  this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
   }
 
   getShootingRange() {
@@ -210,6 +213,13 @@ class Tower {
 
   getPosition() {
     return [this.x, this.y];
+  }
+  
+  getTilePosition() {
+	  var tileSideLength = this.level.getTilePixelImageSize();
+	  var row = Math.floor(this.y / tileSideLength);
+	  var column = Math.floor(this.x / tileSideLength);
+	  return {row: row, column: column};
   }
 
   getCost() {

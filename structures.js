@@ -79,6 +79,7 @@ class Base {
   isDead() {
     this.removeFromWorld = true;
   }
+
 }
 
 class PistolTower {
