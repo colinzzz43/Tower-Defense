@@ -3,31 +3,31 @@ class Slime {
     Object.assign(this, { gameEngine, x, y, level, spawnTime });
 
     this.user = this.gameEngine.user;
-    this.damage = 5;
-
+    
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/monster/slime/slime1_front.png"
-    );
-    this.animations = [];
-    this.aliveAnim = new Animator(
-      this.spritesheet,
-      0,
-      0,
-      (this.frameWidth = 16),
-      (this.frameHeight = 16),
-      4,
-      0.15,
-      0,
-      false,
-      true
-    );
-
+      );
+      this.animations = [];
+      this.aliveAnim = new Animator(
+        this.spritesheet,
+        0,
+        0,
+        (this.frameWidth = 16),
+        (this.frameHeight = 16),
+        4,
+        0.15,
+        0,
+        false,
+        true
+        );
+        
     // states
     this.paused = false; // used when HUD is set up
-
+        
     // stats
     this.HP = 35;
+    this.damage = 5;
     this.maxHP = this.HP;
     this.damageAgainstBase = 1;
     this.reward = 1000;
@@ -272,7 +272,25 @@ class Slime {
 }
 
 class Goblin {
-  constructor() {}
+  constructor(gameEngine, x, y, level, spawnTime) {
+    Object.assign(this, { gameEngine, x, y, level, spawnTime });
+    this.user = this.gameEngine.user;
+
+    // sprites
+    this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack.png");
+    this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death.png");
+    this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run.png");
+    this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Take Hit.png");
+
+    // animations
+    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 1, 0, false, true);
+    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 1, 0, false, true);
+    this.runAnim = new Animator(this.runImg, 0, 0, 150, 150, 8, 1, 0, false, true);
+    this.takehitAnim = new Animator(this.takehitImg, 0, 0, 150, 150, 4, 1, 0, false, true);
+
+
+
+  }
 
   updateBB() {}
 
@@ -286,7 +304,22 @@ class Goblin {
 }
 
 class Skeleton {
-  constructor() {}
+  constructor(gameEngine, x, y, level, spawnTime) {
+    Object.assign(this, { gameEngine, x, y, level, spawnTime });
+    this.user = this.gameEngine.user;
+
+    // sprites
+    this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Attack.png");
+    this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Death.png");
+    this.walkImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Walk.png");
+    this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Take Hit.png");
+
+    // animations
+    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 1, 0, false, true);
+    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 1, 0, false, true);
+    this.walkAnim = new Animator(this.walkImg, 0, 0, 150, 150, 8, 1, 0, false, true);
+    this.takehitAnim = new Animator(this.takehitImg, 0, 0, 150, 150, 4, 1, 0, false, true);
+  }
 
   updateBB() {}
 
