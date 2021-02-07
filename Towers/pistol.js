@@ -12,15 +12,15 @@ class Pistol extends Tower {
         }
 
         // stats
-        this.HP = 20;
+        this.HP = 10;
         this.maxHP = this.HP;
-        this.facing = 6;
-        this.damage = 10;
-        this.cost = 10; // basic = 10 for prototype
-        this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
-        this.radius = 10 * PARAMS.SCALE; // entity radius
-        this.shootingRadius = 50 * PARAMS.SCALE; // basic = 90 for prototype
-        this.fireRate = 1;
+        this.fireRate = 1; // Fire rate: Moderate
+        this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
+        this.damage = 10; // Damage: Moderate
+        this.cost = 10; // Cost: 10 coins
+        this.facing = 6; // facing left default
+        this.depreciated = 0.8;
+        this.radius = 10 * PARAMS.SCALE;
 
         // other
         this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2;

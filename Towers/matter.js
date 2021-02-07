@@ -15,13 +15,13 @@ class Matter extends Tower {
         //stats
         this.HP = 10;
         this.maxHP = this.HP;
-        this.facing = 2; // facing left default
-        this.damage = 10;
-        this.cost = 10; // basic = 10 for prototype
-        this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
-        this.radius = 10 * PARAMS.SCALE; // entity radius
-        this.shootingRadius = 50 * PARAMS.SCALE; // basic = 90 for prototype
-        this.fireRate = 0.5;
+        this.fireRate = 1.3; // Fire rate: Slow
+        this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
+        this.damage = 15; // Damage: Strong
+        this.cost = 75; // Cost: 75 coins
+        this.facing = 6; // facing left default
+        this.depreciated = 0.8;
+        this.radius = 10 * PARAMS.SCALE;
 
         // other
         this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 + 2;
