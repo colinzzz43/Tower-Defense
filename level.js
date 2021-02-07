@@ -39,6 +39,8 @@ class Level {
 		this.towerTerrainOccupied = -1;
 		this.obstacle = 2;
 		
+		// Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
+		this.placeTowerType = "";
 	}
 
 	/*
@@ -204,7 +206,36 @@ class Level {
 		var yTower = row * 40 * this.drawScale;
 		var xOffset = 20 * this.drawScale;
 		var yOffset = 20 * this.drawScale;
-		var newTower = new Tower(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+		switch (this.placeTowerType) {
+			case "Pistol":
+				var newTower = new Pistol(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "MG":
+				var newTower = new MG(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Shotgun":
+				var newTower = new Shotgun(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Cannon":
+				var newTower = new Cannon(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Flamethrower":
+				var newTower = new Flamethrower(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Laser":
+				var newTower = new Laser(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Matter":
+				var newTower = new Matter(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Rocket":
+				var newTower = new Rocket(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+			case "Spazer":
+				var newTower = new Spazer(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+				break;
+
+		}
 		this.gameEngine.addEntity(newTower);
 		this.changeStateOfTowerTerrain(row, column);
     };

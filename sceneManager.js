@@ -73,7 +73,11 @@ class SceneManager {
       1.1 * this.height
     );
 
-    ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * this.height);
+    if (this.HP > 0) { // show hp when above 0, else show defeat
+      ctx.fillText(this.HP + " " + "HP", 9.5 * 60, 1 * this.height);
+    } else  {
+      ctx.fillText("DEFEAT" , 9.5 * 60, 1 * this.height);
+    }
     ctx.fillText(this.waves + " / 10 waves", 9.5 * 60, 1.1 * this.height);
     ctx.fillText("TIME", 12.7 * 60, 1 * this.height);
     ctx.fillText(this.timeLeft, 13 * 60, 1.1 * this.height);
