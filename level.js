@@ -204,7 +204,7 @@ class Level {
 		var yTower = row * 40 * this.drawScale;
 		var xOffset = 20 * this.drawScale;
 		var yOffset = 20 * this.drawScale;
-		var newTower = new PistolTower(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
+		var newTower = new Tower(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
 		this.gameEngine.addEntity(newTower);
 		this.changeStateOfTowerTerrain(row, column);
     };

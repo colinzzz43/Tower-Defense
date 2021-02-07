@@ -84,12 +84,12 @@ class Bullet {
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
       
-      if ((ent instanceof PistolTower) && (this.shootingEntity instanceof Slime) && collide(this, ent)) {
+      if ((ent instanceof Tower) && (this.shootingEntity instanceof Slime) && collide(this, ent)) {
         ent.takeHit(this.shootingEntity.damage);
         this.removeFromWorld = true;
       } 
 
-      if ((ent instanceof Slime) && (this.shootingEntity instanceof PistolTower) && collide(this, ent)) {
+      if ((ent instanceof Slime) && (this.shootingEntity instanceof Tower) && collide(this, ent)) {
         ent.takeHit(this.shootingEntity.damage);
         this.removeFromWorld = true;
       }
