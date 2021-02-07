@@ -84,7 +84,7 @@ class Slime {
     var that = this;
     this.gameEngine.entities.forEach(function (entity) {
       // tower detection
-      if (entity instanceof Tower) {
+      if (entity instanceof PistolTower) {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
           that.elapsedTime = 0;
