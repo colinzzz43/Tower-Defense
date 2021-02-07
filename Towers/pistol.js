@@ -3,7 +3,7 @@ class Pistol extends Tower {
         super(gameEngine, x, y, level);
 
         // spritesheet and animation
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/pistol-tower-sheet.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_sheet.png");
         this.animations = [];
         var i;
         for (i = 0; i < 8; i++) {

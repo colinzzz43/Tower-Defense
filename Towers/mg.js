@@ -8,7 +8,7 @@ class MG extends Tower {
 
         var i;
         for (i = 0; i < 8; i++) {
-        this.animations.push(new Animator(this.spritesheet, 0, 40 * i,
+        this.animations.push(new Animator(this.spritesheet, 22 * i, 0,
             (this.frameWidth = 22), (this.frameHeight = 40), 1, 1, 0, false, true));
         }
 
