@@ -4,6 +4,7 @@ class TowerIcon {
 		
 		Parameters:
 		@gameEngine			the game engine that uses this tower icon object
+		@towerType			the type of tower as a String
 		@iconImage			the source file of the tower icon image
 		@xCanvas 			the x-coordinate in canvas where top left corner of map will be drawn
 		@yCanvas 			the y-coordinate in canvas where top left corner of map will be drawn
@@ -12,8 +13,8 @@ class TowerIcon {
 		@ctx				the canvas that this level map image will be applied to
 		@level				the level that will use this tower icon
 	*/
-	constructor(gameEngine, iconImage, xCanvas, yCanvas, imageWidth, imageHeight, ctx, level) {
-		Object.assign(this, {gameEngine, iconImage, xCanvas, yCanvas, imageWidth, imageHeight, ctx, level});
+	constructor(gameEngine, towerType, iconImage, xCanvas, yCanvas, imageWidth, imageHeight, ctx, level) {
+		Object.assign(this, {gameEngine, towerType, iconImage, xCanvas, yCanvas, imageWidth, imageHeight, ctx, level});
 		
 		this.selected = false;
 		this.mouseover = false;
@@ -70,7 +71,7 @@ class TowerIcon {
 	drawText(ctx) {
 		ctx.lineWidth = 1;
 		ctx.font = "15px Ariel";
-		ctx.strokeText("Pistol Tower", this.xCanvas - 17, this.yCanvas + 68);
+		ctx.strokeText(this.towerType, this.xCanvas, this.yCanvas + 68);
 	};
 
 	/*
@@ -100,11 +101,15 @@ class TowerIcon {
 		if grid is on (true) then it enables users to place towers on map; otherwise if off (false) user can't place towers
 	*/
 	update() {
-		if (this.selected) {
-			this.level.showGridMap = true;
-		} else {
-			this.level.showGridMap = false;
-		}
+		/* 
+			With multiple icons, updating showGridMap runs into issues as each icon is calling their own update method,
+			overrwriting each others change to showGridMap. Moved changing showGridMap into the mouseInteraction method.
+		*/
+		// if (this.selected) {
+		// 	this.level.showGridMap = true;
+		// } else {
+		// 	this.level.showGridMap = false;
+		// }
 	};
 	
 	/*
@@ -129,8 +134,15 @@ class TowerIcon {
 			if ( (x >= that.xCanvas && x <= that.xCanvas + that.iconBoxWidth) && (y >= that.yCanvas && y <= that.yCanvas + that.iconBoxHeight) ) {					
 				if (!that.selected && !that.transparent) {		
 					that.selected = true;
+		
+					// on select, change showGridMap to true and set placeTowerType of Level object to this towerType
+					that.level.showGridMap = true;
+					that.level.placeTowerType = that.towerType;
 				} else {
 					that.selected = false;
+
+					// on deselect, change showGridMap to false
+					that.level.showGridMap = false;
 				}
 			}
 		}, false);
