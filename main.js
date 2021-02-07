@@ -33,8 +33,15 @@ ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon
 
 // towers + base
 ASSET_MANAGER.queueDownload("./sprites/other/base.png");
-ASSET_MANAGER.queueDownload("./prototype-tower.png");
-ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/tower_pistol_up.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_sheet.png");
+
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_down.png");
+
 
 // bullets
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
@@ -56,7 +63,7 @@ ASSET_MANAGER.downloadAll(function () {
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
-  var pistolTowerIcon = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/tower_pistol_up.png");
+  var pistolTowerIcon = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_down.png");
   var towerIcon = new TowerIcon(gameEngine, pistolTowerIcon, 30, 620, 16, 37, ctx, level);
   var base = new Base(gameEngine, 810, 270);
   var Scene = new SceneManager(gameEngine);
