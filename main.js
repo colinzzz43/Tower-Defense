@@ -15,6 +15,8 @@ ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png");
 ASSET_MANAGER.queueDownload("./sprites/other/base.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/pistol-tower-sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/tower_pistol_up.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level1/1_sheet.png");
+
 
 // bullets
 ASSET_MANAGER.queueDownload("./sprites/other/bullet_tomato.png");
