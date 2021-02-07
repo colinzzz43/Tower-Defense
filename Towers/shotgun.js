@@ -5,15 +5,16 @@ class Shotgun extends Tower {
         // spritesheet and animation
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_sheet.png");
         this.animations = [];
-
+        this.frameWidth = 22;
+        this.frameHeight = 34;
         var i;
         for (i = 0; i < 8; i++) {
-        this.animations.push(new Animator(this.spritesheet, 22 * i, 0,
-            (this.frameWidth = 22), (this.frameHeight = 36), 1, 1, 0, false, true));
+        this.animations.push(new Animator(this.spritesheet, this.frameWidth * i, 0,
+            this.frameWidth, this.frameHeight, 1, 1, 0, false, true));
         }
 
         //stats
-        this.HP = 10;
+        this.HP = 50;
         this.maxHP = this.HP;
         this.fireRate = 1; // Fire rate: Moderate
         this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short

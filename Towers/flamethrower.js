@@ -5,17 +5,18 @@ class Flamethrower extends Tower {
         // spritesheet and animation
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_sheet.png");
         this.animations = [];
-
+        this.frameWidth = 33;
+        this.frameHeight = 36;
         var i;
         for (i = 0; i < 8; i++) {
-        this.animations.push(new Animator(this.spritesheet, 33 * i, 0,
-            (this.frameWidth = 33), (this.frameHeight = 36), 1, 1, 0, false, true));
+        this.animations.push(new Animator(this.spritesheet, this.frameWidth * i, 0,
+            this.frameWidth, this.frameHeight, 1, 1, 0, false, true));
         }
 
         //stats
-        this.HP = 10;
+        this.HP = 50;
         this.maxHP = this.HP;
-        this.fireRate = 0.4; // Fire rate: Very Fast
+        this.fireRate = 0.5; // Fire rate: Very Fast
         this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
         this.damage = 5; // Damage: Weak
         this.cost = 40; // Cost: 40 coins

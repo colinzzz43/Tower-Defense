@@ -5,11 +5,12 @@ class Matter extends Tower {
         // spritesheet and animation
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_sheet.png");
         this.animations = [];
-
+        this.frameWidth = 24;
+        this.frameHeight = 37;
         var i;
         for (i = 0; i < 8; i++) {
-        this.animations.push(new Animator(this.spritesheet, 24 * i, 0,
-            (this.frameWidth = 23), (this.frameHeight = 36), 1, 1, 0, false, true));
+        this.animations.push(new Animator(this.spritesheet, this.frameWidth * i, 0,
+            this.frameWidth, this.frameHeight, 1, 1, 0, false, true));
         }
 
         //stats

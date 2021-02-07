@@ -94,12 +94,12 @@ ASSET_MANAGER.downloadAll(function () {
   var pistolIcon = new TowerIcon(gameEngine, "Pistol", pistolImage, 30, 620, 16, 37, ctx, level);
   var mgIcon = new TowerIcon(gameEngine, "MG", mgImage, 130, 620, 24, 40, ctx, level);
   var shotgunIcon = new TowerIcon(gameEngine, "Shotgun", shotgunImage, 230, 620, 22, 34, ctx, level);
-  var cannonIcon = new TowerIcon(gameEngine, "Cannon", cannonImage, 330, 620, 24, 40, ctx, level);
+  var cannonIcon = new TowerIcon(gameEngine, "Cannon", cannonImage, 330, 620, 23, 33, ctx, level);
   var flamethrowerIcon = new TowerIcon(gameEngine, "Flamethrower", flamethrowerImage, 430, 620, 33, 36, ctx, level);
-  var laserIcon = new TowerIcon(gameEngine, "Laser", laserImage, 530, 620, 24, 40, ctx, level);
-  var matterIcon = new TowerIcon(gameEngine, "Matter", matterImage, 630, 620, 24, 40, ctx, level);
-  var rocketIcon = new TowerIcon(gameEngine, "Rocket", rocketImage, 730, 620, 24, 40, ctx, level);
-  var spazerIcon = new TowerIcon(gameEngine, "Spazer", spazerImage, 830, 620, 24, 40, ctx, level);
+  var laserIcon = new TowerIcon(gameEngine, "Laser", laserImage, 530, 620, 22, 35, ctx, level);
+  var matterIcon = new TowerIcon(gameEngine, "Matter", matterImage, 630, 620, 24, 37, ctx, level);
+  var rocketIcon = new TowerIcon(gameEngine, "Rocket", rocketImage, 730, 620, 23, 37, ctx, level);
+  var spazerIcon = new TowerIcon(gameEngine, "Spazer", spazerImage, 830, 620, 22, 30, ctx, level);
 
 
   var base = new Base(gameEngine, 810, 270);
