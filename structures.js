@@ -32,19 +32,11 @@ class Base {
     context.beginPath();
     // draw circle representing bounding box
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-    context.fill();
     context.fillStyle = "#FD0";
+    context.fill();
+
     context.stroke();
   }
-
-  // print current health to html doc
-  // printBaseHP(HP) {
-  //   if (HP > 0) {
-  //     document.getElementById("printBaseHP").innerHTML = HP;
-  //   } else {
-  //     document.getElementById("printBaseHP").innerHTML = "DEFEAT";
-  //   }
-  // }
 
   update() {
     var that = this;
@@ -76,8 +68,9 @@ class Base {
     );
   }
 
+  // use this method for effects of base dying.
   isDead() {
-    this.removeFromWorld = true;
+    
   }
 
 }
