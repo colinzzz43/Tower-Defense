@@ -8,14 +8,14 @@ class MG extends Tower {
 
         var i;
         for (i = 0; i < 8; i++) {
-        this.animations.push(new Animator(this.spritesheet, 22 * i, 0,
-            (this.frameWidth = 22), (this.frameHeight = 40), 1, 1, 0, false, true));
+        this.animations.push(new Animator(this.spritesheet, 24 * i, 0,
+            (this.frameWidth = 24), (this.frameHeight = 40), 1, 1, 0, false, true));
         }
 
         //stats
         this.HP = 10;
         this.maxHP = this.HP;
-        this.facing = 0;
+        this.facing = 6;
         this.damage = 10;
         this.cost = 10; // basic = 10 for prototype
         this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
@@ -24,7 +24,7 @@ class MG extends Tower {
         this.fireRate = 0.5;
 
         // other
-        this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2;
-        this.yOffset = this.frameHeight * PARAMS.SCALE - 5 * PARAMS.SCALE;
+        this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 - 3;
+        this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
     }
 }

@@ -39,7 +39,12 @@ ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level1/1_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level1/1_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level1/1_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_sheet.png");
 
+
+// tower icons
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_down.png");
 
 

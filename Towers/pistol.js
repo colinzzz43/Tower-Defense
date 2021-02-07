@@ -14,7 +14,7 @@ class Pistol extends Tower {
         // stats
         this.HP = 20;
         this.maxHP = this.HP;
-        this.facing = 0;
+        this.facing = 6;
         this.damage = 10;
         this.cost = 10; // basic = 10 for prototype
         this.depreciated = 0.8; // depreciation rate is set to 0.8 for prototype
@@ -24,6 +24,6 @@ class Pistol extends Tower {
 
         // other
         this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2;
-        this.yOffset = this.frameHeight * PARAMS.SCALE - 5 * PARAMS.SCALE;
+        this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
     }
 }
