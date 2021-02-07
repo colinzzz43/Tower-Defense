@@ -39,6 +39,43 @@ function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTi
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
+      break;
+    case "Goblin":
+      while (n > 0) {
+        gameEngine.addEntity(new Goblin(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+      break;
+    case "Skeleton":
+      while (n > 0) {
+        gameEngine.addEntity(new Skeleton(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+      break;
+    case "Flying Eye":
+      while (n > 0) {
+        gameEngine.addEntity(new FlyingEye(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+      break;
+    case "Mushroom":
+      while (n > 0) {
+        gameEngine.addEntity(new Mushroom(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+      break;
+    case "Dragon":
+      while (n > 0) {
+        gameEngine.addEntity(new Dragon(gameEngine, x, y, level, initalSpawnTime));
+        initalSpawnTime += spawnIntervalTime;
+        n--;
+      }
+      break;
+    
   }
 }
 
@@ -49,15 +86,12 @@ function collide(a, b) {
 // mainly used for shooting enemies (i.e. Slime, Flying Eye, Dragon) and all towers
 // if the shooting entity's shootingBounds collide with target's entityBound, the entity can shoot.
 function canShoot(shootingEntity, target) {
-    return (distance(shootingEntity, target) < shootingEntity.shootingRadius + target.radius);
-    
+    return (distance(shootingEntity, target) < shootingEntity.shootingRadius + target.radius);   
 }
 
 // only used for melee enemies (i.e. Goblin, Mushroom, Skeleton)
 // if the melee enemy's visualBounds collide with target's entityBound, the enemy locks on a specific tower to attack later
 function canSee(meleeEnemy, tower) {
-  console.log(meleeEnemy);
-  console.log(tower);
   return distance(meleeEnemy, tower) < meleeEnemy.visualRadius + tower.radius;
 }
 

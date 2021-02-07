@@ -144,7 +144,7 @@ class Tower {
     // tower detection
     this.gameEngine.entities.forEach(function (entity) {
       // tower detection
-      if (entity instanceof Slime) {
+      if (entity instanceof Enemy) {
         // tower shoots enemy in shooting bounds
         if (
           canShoot(that, entity) &&

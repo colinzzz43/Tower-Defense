@@ -9,7 +9,27 @@ ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
 
 // enemies
-ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slime
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Attack.png"); // goblin
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Death.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Take Hit.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Attack.png"); // skeleton
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Death.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Walk.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Take Hit.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Attack.png"); // flying eye
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Death.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Flight.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Take Hit.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Attack.png"); // mushroom
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Death.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Take Hit.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-gold.png"); // dragon
+ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-red.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon-blue.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon-red.png");
 
 // towers + base
 ASSET_MANAGER.queueDownload("./sprites/other/base.png");
@@ -52,7 +72,42 @@ ASSET_MANAGER.downloadAll(function () {
   let y = 330;
   let initalSpawnTime = 1;
   let interval = 2;
-  let n = 25;
+  let n = 2;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
+
+   x = 80;
+   y = 330;
+   initalSpawnTime = 5;
+   interval = 2;
+   n = 2;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
+
+   x = 80;
+   y = 330;
+   initalSpawnTime = 10;
+   interval = 2;
+   n = 2;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
+
+   x = 80;
+   y = 330;
+   initalSpawnTime = 15;
+   interval = 2;
+   n = 2;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
+
+   x = 80;
+   y = 330;
+   initalSpawnTime = 20;
+   interval = 2;
+   n = 2;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
+
+   x = 80;
+   y = 330;
+   initalSpawnTime = 25;
+   interval = 2;
+   n = 2;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });
