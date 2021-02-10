@@ -51,9 +51,11 @@ class Tower {
       // draw the tower onto the map
 
       this.user.decreaseBalance(this.cost);
+      return true;
     } else {
       // debugging purpose
       console.log(" You don't have the sufficient fund.");
+      return false;
     }
   }
 
