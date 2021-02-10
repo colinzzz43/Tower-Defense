@@ -1,4 +1,5 @@
 class Laser extends Tower {
+  static cost = 90;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -33,7 +34,6 @@ class Laser extends Tower {
     this.fireRate = 0.4; // Fire rate: Very Fast
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 5; // Damage: Weak
-    this.cost = 90; // Cost: 90 coins
     this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -42,6 +42,6 @@ class Laser extends Tower {
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 - 3;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
-    this.buy();
+    this.buy(Laser.cost);
   }
 }

@@ -45,17 +45,12 @@ class Tower {
     context.stroke();
   }
 
-  buy() {
+  buy(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= this.cost) {
+    if (this.user.balance >= cost) {
       // draw the tower onto the map
-
-      this.user.decreaseBalance(this.cost);
-      return true;
-    } else {
-      // debugging purpose
-      console.log(" You don't have the sufficient fund.");
-      return false;
+      this.user.decreaseBalance(cost);
+      console.log("decreased.");
     }
   }
 

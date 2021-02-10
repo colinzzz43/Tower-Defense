@@ -1,4 +1,6 @@
 class Flamethrower extends Tower {
+  static cost = 40; // Cost: 40 coins
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -33,7 +35,6 @@ class Flamethrower extends Tower {
     this.fireRate = 0.5; // Fire rate: Very Fast
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
     this.damage = 5; // Damage: Weak
-    this.cost = 40; // Cost: 40 coins
     this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -42,6 +43,6 @@ class Flamethrower extends Tower {
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 + 2;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
-    this.buy();
+    this.buy(Flamethrower.cost);
   }
 }

@@ -1,4 +1,6 @@
 class Matter extends Tower {
+  static cost = 75;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -33,7 +35,6 @@ class Matter extends Tower {
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 15; // Damage: Strong
-    this.cost = 75; // Cost: 75 coins
     this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -42,6 +43,6 @@ class Matter extends Tower {
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 + 2;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
-    this.buy();
+    this.buy(Matter.cost);
   }
 }

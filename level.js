@@ -285,81 +285,109 @@ class Level {
     var yOffset = 20 * this.drawScale;
     switch (this.placeTowerType) {
       case "Pistol":
-        var newTower = new Pistol(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Pistol.cost)) {
+          var newTower = new Pistol(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "MG":
-        var newTower = new MG(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(MG.cost)) {
+          var newTower = new MG(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Shotgun":
-        var newTower = new Shotgun(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Shotgun.cost)) {
+          var newTower = new Shotgun(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Cannon":
-        var newTower = new Cannon(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Cannon.cost)) {
+          var newTower = new Cannon(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Flamethrower":
-        var newTower = new Flamethrower(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Flamethrower.cost)) {
+          var newTower = new Flamethrower(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Laser":
-        var newTower = new Laser(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
-        newTower.buy();
+        if (this.enoughPurchasePower(Laser.cost)) {
+          var newTower = new Laser(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Matter":
-        var newTower = new Matter(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Matter.cost)) {
+          var newTower = new Matter(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Rocket":
-        var newTower = new Rocket(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Rocket.cost)) {
+          var newTower = new Rocket(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
       case "Spazer":
-        var newTower = new Spazer(
-          this.gameEngine,
-          xTower + xOffset,
-          yTower + yOffset,
-          this
-        );
+        if (this.enoughPurchasePower(Spazer.cost)) {
+          var newTower = new Spazer(
+            this.gameEngine,
+            xTower + xOffset,
+            yTower + yOffset,
+            this
+          );
+        }
         break;
     }
-    this.gameEngine.addEntity(newTower);
-    this.changeStateOfTowerTerrain(row, column);
+    if (newTower) {
+      this.gameEngine.addEntity(newTower);
+      this.changeStateOfTowerTerrain(row, column);
+    }
+  }
+
+  /*
+    Check balance before placing the towers
+  */
+  enoughPurchasePower(cost) {
+    console.log("Balance is: ", this.user.balance, " and it costs: ", cost);
+    if (this.user.balance >= cost) return true;
+    else return false;
   }
 
   /*

@@ -1,8 +1,8 @@
 class Spazer extends Tower {
+  static cost = 75;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
-    this.cost = 75; // Cost: 75 coins
     // spritesheet and animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/towers/spazer/Level1/1_sheet.png"
@@ -41,5 +41,7 @@ class Spazer extends Tower {
     // other
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 - 3;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
+
+    this.buy(Spazer.cost);
   }
 }

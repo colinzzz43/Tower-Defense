@@ -1,4 +1,5 @@
 class Cannon extends Tower {
+  static cost = 40;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -33,7 +34,6 @@ class Cannon extends Tower {
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 15; // Damage: Strong
-    this.cost = 40; // Cost: 40 coins
     this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -42,6 +42,6 @@ class Cannon extends Tower {
     this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 + 2;
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
-    this.buy();
+    this.buy(Cannon.cost);
   }
 }
