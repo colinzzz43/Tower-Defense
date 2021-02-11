@@ -34,7 +34,11 @@ class Cannon extends Tower {
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 15; // Damage: Strong
+<<<<<<< HEAD
     this.facing = 6; // facing left default
+=======
+    this.cost = 40; // Cost: 40 coins
+>>>>>>> Khue
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

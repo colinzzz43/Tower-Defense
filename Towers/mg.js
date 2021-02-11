@@ -34,7 +34,11 @@ class MG extends Tower {
     this.fireRate = 0.7; // Fire rate: Fast
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 10; // Damage: Moderate
+<<<<<<< HEAD
     this.facing = 6; // facing left default
+=======
+    this.cost = 25; // Cost: 25 coins
+>>>>>>> Khue
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

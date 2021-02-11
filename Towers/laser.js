@@ -34,7 +34,11 @@ class Laser extends Tower {
     this.fireRate = 0.4; // Fire rate: Very Fast
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 5; // Damage: Weak
+<<<<<<< HEAD
     this.facing = 6; // facing left default
+=======
+    this.cost = 90; // Cost: 90 coins
+>>>>>>> Khue
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

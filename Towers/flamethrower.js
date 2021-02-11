@@ -35,7 +35,11 @@ class Flamethrower extends Tower {
     this.fireRate = 0.5; // Fire rate: Very Fast
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
     this.damage = 5; // Damage: Weak
+<<<<<<< HEAD
     this.facing = 6; // facing left default
+=======
+    this.cost = 40; // Cost: 40 coins
+>>>>>>> Khue
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 
