@@ -51,15 +51,6 @@ class Level {
     // Switch to turn on (true) and off (false) the visual grid map
     this.showGridMap = false;
 
-    // Apply mouse click interaction of tiles to this level
-    this.mouseInteraction();
-    this.mouseHighlightedTile = {
-      row: -1,
-      column: -1,
-      color: "lightyellow",
-      mouse: "offMap",
-    };
-
     // Numbers labeling a specific terrain for a tile.
     this.path = 0;
     this.towerTerrainOpen = 1;
@@ -68,6 +59,16 @@ class Level {
 
     // Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
     this.placeTowerType = "";
+
+    // Apply mouse click interaction of tiles to this level
+    this.mouseInteraction();
+    this.mouseHighlightedTile = {
+      row: -1,
+      column: -1,
+      color: "lightyellow",
+      mouse: "offMap",
+    };
+    this.interactionScale = widthScaling();
 
     this.user = this.gameEngine.user; // the user interacting with the tower
   }
@@ -182,15 +183,19 @@ class Level {
         var tileSideLength = that.getTilePixelImageSize();
         var x = canvasCoordinates.x;
         var y = canvasCoordinates.y;
-        var row = Math.floor(y / tileSideLength);
-        var column = Math.floor(x / tileSideLength);
-        var canvasWidth = that.drawScale * that.mapWidth;
-        var canvasHeight = that.drawScale * that.mapHeight;
+        var row = Math.floor(y / (tileSideLength * that.interactionScale));
+        var column = Math.floor(x / (tileSideLength * that.interactionScale));
+        var topLeftX = that.xCanvas * that.interactionScale;
+        var topLeftY = that.yCanvas * that.interactionScale;
+        var canvasWidth =
+          that.drawScale * that.mapWidth * that.interactionScale;
+        var canvasHeight =
+          that.drawScale * that.mapHeight * that.interactionScale;
         if (
-          x >= that.xCanvas &&
-          x < that.xCanvas + canvasWidth &&
-          y >= that.yCanvas &&
-          y < that.yCanvas + canvasHeight &&
+          x >= topLeftX &&
+          x < topLeftX + canvasWidth &&
+          y >= topLeftY &&
+          y < topLeftY + canvasHeight &&
           that.showGridMap
         ) {
           if (
@@ -226,15 +231,19 @@ class Level {
         var tileSideLength = that.getTilePixelImageSize();
         var x = canvasCoordinates.x;
         var y = canvasCoordinates.y;
-        var row = Math.floor(y / tileSideLength);
-        var column = Math.floor(x / tileSideLength);
-        var canvasWidth = that.drawScale * that.mapWidth;
-        var canvasHeight = that.drawScale * that.mapHeight;
+        var row = Math.floor(y / (tileSideLength * that.interactionScale));
+        var column = Math.floor(x / (tileSideLength * that.interactionScale));
+        var topLeftX = that.xCanvas * that.interactionScale;
+        var topLeftY = that.yCanvas * that.interactionScale;
+        var canvasWidth =
+          that.drawScale * that.mapWidth * that.interactionScale;
+        var canvasHeight =
+          that.drawScale * that.mapHeight * that.interactionScale;
         if (
-          x >= that.xCanvas &&
-          x < that.xCanvas + canvasWidth &&
-          y >= that.yCanvas &&
-          y < that.yCanvas + canvasHeight &&
+          x >= topLeftX &&
+          x < topLeftX + canvasWidth &&
+          y >= topLeftY &&
+          y < topLeftY + canvasHeight &&
           that.showGridMap
         ) {
           that.mouseHighlightedTile = {
@@ -324,7 +333,7 @@ class Level {
           );
         }
         break;
-      case "Flamethrower":
+      case "Flame":
         if (this.enoughPurchasePower(Flamethrower.cost)) {
           var newTower = new Flamethrower(
             this.gameEngine,
