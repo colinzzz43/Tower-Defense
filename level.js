@@ -31,7 +31,8 @@ class Level {
 		
 		// Apply mouse click interaction of tiles to this level
 		this.mouseInteraction();
-		this.mouseHighlightedTile = {row: -1, column: -1, color: "lightyellow", mouse: "offMap"};		
+		this.mouseHighlightedTile = {row: -1, column: -1, color: "lightyellow", mouse: "offMap"};
+		this.interactionScale = widthScaling();
 		
 		// Numbers labeling a specific terrain for a tile.
 		this.path = 0;
@@ -153,11 +154,13 @@ class Level {
 			var tileSideLength = that.getTilePixelImageSize();
 			var x = canvasCoordinates.x;
 			var y = canvasCoordinates.y;
-			var row = Math.floor(y / tileSideLength);
-			var column = Math.floor(x / tileSideLength);
-			var canvasWidth = that.drawScale * that.mapWidth;
-			var canvasHeight = that.drawScale * that.mapHeight;
-			if ( (x >= that.xCanvas && x < that.xCanvas + canvasWidth) && (y >= that.yCanvas && y < that.yCanvas + canvasHeight) && that.showGridMap) {
+			var row = Math.floor(y / (tileSideLength * that.interactionScale) );
+			var column = Math.floor(x / (tileSideLength * that.interactionScale) );
+			var topLeftX = that.xCanvas * that.interactionScale;
+			var topLeftY = that.yCanvas * that.interactionScale;
+			var canvasWidth = that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight = that.drawScale * that.mapHeight * that.interactionScale;
+			if ( (x >= topLeftX && x < topLeftX + canvasWidth) && (y >= topLeftY && y < topLeftY + canvasHeight) && that.showGridMap) {
 				if ( that.terrainGridTiles.getTile(row, column) === that.towerTerrainOpen && that.showGridMap) {
 					that.placeTower(row, column);
 					that.mouseHighlightedTile = {row: row, column: column, color: "lawngreen", mouse: "onMap"};
@@ -174,11 +177,13 @@ class Level {
 			var tileSideLength = that.getTilePixelImageSize();
 			var x = canvasCoordinates.x;
 			var y = canvasCoordinates.y;			
-			var row = Math.floor(y / tileSideLength);
-			var column = Math.floor(x / tileSideLength);
-			var canvasWidth = that.drawScale * that.mapWidth;
-			var canvasHeight = that.drawScale * that.mapHeight;
-			if ( (x >= that.xCanvas && x < that.xCanvas + canvasWidth) && (y >= that.yCanvas && y < that.yCanvas + canvasHeight) && that.showGridMap) {
+			var row = Math.floor(y / (tileSideLength * that.interactionScale) );
+			var column = Math.floor(x / (tileSideLength * that.interactionScale) );
+			var topLeftX = that.xCanvas * that.interactionScale;
+			var topLeftY = that.yCanvas * that.interactionScale;
+			var canvasWidth = that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight = that.drawScale * that.mapHeight * that.interactionScale;
+			if ( (x >= topLeftX && x < topLeftX + canvasWidth) && (y >= topLeftY && y < topLeftY + canvasHeight) && that.showGridMap) {
 				that.mouseHighlightedTile = {row: row, column: column, color: "white", mouse: "onMap"};
 			} else {
 				that.mouseHighlightedTile = {row: row, column: column, color: "white", mouse: "offMap"};				
@@ -219,7 +224,7 @@ class Level {
 			case "Cannon":
 				var newTower = new Cannon(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
 				break;
-			case "Flamethrower":
+			case "Flame":
 				var newTower = new Flamethrower(this.gameEngine, xTower + xOffset, yTower + yOffset, this);
 				break;
 			case "Laser":

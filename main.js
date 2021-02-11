@@ -74,33 +74,33 @@ function sleep(milliseconds) {
 ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
   var ctx = canvas.getContext("2d");
-
+  
   gameEngine.init(ctx);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
 
   // tower icon buttons
+  var towerIconImages = [];
   var pistolImage = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_left.png");
+  towerIconImages.push(pistolImage);
   var mgImage = ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_left.png");
+  towerIconImages.push(mgImage);
   var shotgunImage = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_left.png");
+  towerIconImages.push(shotgunImage);
   var cannonImage = ASSET_MANAGER.getAsset("./sprites/towers/cannon/Level1/1_left.png");
+  towerIconImages.push(cannonImage);
   var flamethrowerImage = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_left.png");
+  towerIconImages.push(flamethrowerImage);
   var laserImage = ASSET_MANAGER.getAsset("./sprites/towers/laser/Level1/1_left.png");
+  towerIconImages.push(laserImage);
   var matterImage = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_left.png");
+  towerIconImages.push(matterImage);
   var rocketImage = ASSET_MANAGER.getAsset("./sprites/towers/rocket/Level1/1_left.png");
+  towerIconImages.push(rocketImage);
   var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
-
-  var pistolIcon = new TowerIcon(gameEngine, "Pistol", pistolImage, 30, 620, 16, 37, ctx, level);
-  var mgIcon = new TowerIcon(gameEngine, "MG", mgImage, 130, 620, 24, 40, ctx, level);
-  var shotgunIcon = new TowerIcon(gameEngine, "Shotgun", shotgunImage, 230, 620, 22, 34, ctx, level);
-  var cannonIcon = new TowerIcon(gameEngine, "Cannon", cannonImage, 330, 620, 23, 33, ctx, level);
-  var flamethrowerIcon = new TowerIcon(gameEngine, "Flamethrower", flamethrowerImage, 430, 620, 33, 36, ctx, level);
-  var laserIcon = new TowerIcon(gameEngine, "Laser", laserImage, 530, 620, 22, 35, ctx, level);
-  var matterIcon = new TowerIcon(gameEngine, "Matter", matterImage, 630, 620, 24, 37, ctx, level);
-  var rocketIcon = new TowerIcon(gameEngine, "Rocket", rocketImage, 730, 620, 23, 37, ctx, level);
-  var spazerIcon = new TowerIcon(gameEngine, "Spazer", spazerImage, 830, 620, 22, 30, ctx, level);
-
+  towerIconImages.push(spazerImage);
+  var towerStoreMenu = new TowerStoreMenu(gameEngine, 905, 5, towerIconImages, ctx, level);
 
   var base = new Base(gameEngine, 810, 270);
   var Scene = new SceneManager(gameEngine);
@@ -108,16 +108,7 @@ ASSET_MANAGER.downloadAll(function () {
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
   gameEngine.addEntity(base);
-
-  gameEngine.addEntity(pistolIcon);
-  gameEngine.addEntity(mgIcon);
-  gameEngine.addEntity(shotgunIcon);
-  gameEngine.addEntity(cannonIcon);
-  gameEngine.addEntity(flamethrowerIcon);
-  gameEngine.addEntity(laserIcon);
-  gameEngine.addEntity(matterIcon);
-  gameEngine.addEntity(rocketIcon);
-  gameEngine.addEntity(spazerIcon);
+  gameEngine.addEntity(towerStoreMenu);
 
   gameEngine.addEntity(Scene);
   
