@@ -34,7 +34,6 @@ class Shotgun extends Tower {
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
     this.damage = 15; // Damage: Strong
     this.cost = 25; // 25 coins
-    this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

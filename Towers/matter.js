@@ -34,7 +34,6 @@ class Matter extends Tower {
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 15; // Damage: Strong
     this.cost = 75; // Cost: 75 coins
-    this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

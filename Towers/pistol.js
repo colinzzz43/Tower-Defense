@@ -34,7 +34,6 @@ class Pistol extends Tower {
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 10; // Damage: Moderate
     this.cost = 10; // Cost: 10 coins
-    this.facing = 6; // facing left default
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

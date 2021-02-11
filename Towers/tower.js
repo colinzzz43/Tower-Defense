@@ -3,6 +3,7 @@ class Tower {
   constructor(gameEngine, x, y, level) {
     Object.assign(this, { gameEngine, x, y, level });
 
+    this.facing = 6; // facing left default
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
   }
@@ -21,6 +22,7 @@ class Tower {
           entity.exist
         ) {
           that.elapsedTime = 0;
+          that.facing = getFacing(entity, that);
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
           // that.printMonsterHP(entity.HP);
