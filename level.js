@@ -42,6 +42,7 @@ class Level {
       ctx,
     });
 
+
     // Apply game engine
     this.gameEngine.level = this;
 
@@ -51,6 +52,18 @@ class Level {
     // Switch to turn on (true) and off (false) the visual grid map
     this.showGridMap = false;
 
+		
+		
+		// Numbers labeling a specific terrain for a tile.
+		this.path = 0;
+		this.towerTerrainOpen = 1;
+		this.towerTerrainOccupied = -1;
+		this.obstacle = 2;
+		
+		// Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
+		this.placeTowerType = "";
+	}
+
     // Apply mouse click interaction of tiles to this level
     this.mouseInteraction();
     this.mouseHighlightedTile = {
@@ -59,15 +72,7 @@ class Level {
       color: "lightyellow",
       mouse: "offMap",
     };
-
-    // Numbers labeling a specific terrain for a tile.
-    this.path = 0;
-    this.towerTerrainOpen = 1;
-    this.towerTerrainOccupied = -1;
-    this.obstacle = 2;
-
-    // Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
-    this.placeTowerType = "";
+    this.interactionScale = widthScaling();
 
     this.user = this.gameEngine.user; // the user interacting with the tower
   }
@@ -163,115 +168,98 @@ class Level {
   /*
 		Apply a mouse click interaction to the level map image
 	*/
-  mouseInteraction() {
-    var that = this;
+	mouseInteraction() {
+		var that = this;
+		
+		// Get x,y coordinates of canvas where mouse pointer is
+		var getXandY = function (e) {
+			var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+			var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+			
+			return { x: x, y: y };
+		}
+		
+		// Add mouse click event listener that enables mouse user to place towers via clicking tiles on this level map, and highlight the clicked tiles a specific color: green if tower is successuful placed, red if otherwise
+		that.ctx.canvas.addEventListener("click", function (e) {
+			var canvasCoordinates = getXandY(e);
+			var tileSideLength = that.getTilePixelImageSize();
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+			var row = Math.floor(y / (tileSideLength * that.interactionScale) );
+			var column = Math.floor(x / (tileSideLength * that.interactionScale) );
+			var topLeftX = that.xCanvas * that.interactionScale;
+			var topLeftY = that.yCanvas * that.interactionScale;
+			var canvasWidth = that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight = that.drawScale * that.mapHeight * that.interactionScale;
+			if (   x >= topLeftX
+          && x < topLeftX + canvasWidth) 
+          && y >= topLeftY 
+          && y < topLeftY + canvasHeight
+          && that.showGridMap) {
+				if ( that.terrainGridTiles.getTile(row, column) === that.towerTerrainOpen 
+            && that.showGridMap) {
+					that.placeTower(row, column);
+					that.mouseHighlightedTile = {
+            row: row, 
+            column: column, 
+            color: "lawngreen", 
+            mouse: "onMap"};
+				} else {
+					that.mouseHighlightedTile = {
+            row: row, 
+            column: column, 
+            color: "red", 
+            mouse: "onMap"};
+				}				
+			}
 
-    // Get x,y coordinates of canvas where mouse pointer is
-    var getXandY = function (e) {
-      var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
-      var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+		}, false);
+		
+		// Add mouse move event listener that enables mouse user to highlight a terrain tile via moving over it on this level map
+		that.ctx.canvas.addEventListener("mousemove", function (e) {
+			var canvasCoordinates = getXandY(e);
+			var tileSideLength = that.getTilePixelImageSize();
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;			
+			var row = Math.floor(y / (tileSideLength * that.interactionScale) );
+			var column = Math.floor(x / (tileSideLength * that.interactionScale) );
+			var topLeftX = that.xCanvas * that.interactionScale;
+			var topLeftY = that.yCanvas * that.interactionScale;
+			var canvasWidth = that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight = that.drawScale * that.mapHeight * that.interactionScale;
+			if (   x >= topLeftX 
+          && x < topLeftX + canvasWidth 
+          && y >= topLeftY 
+          && y < topLeftY + canvasHeight
+          && that.showGridMap) {
+				that.mouseHighlightedTile = {
+          row: row, 
+          column: column, 
+          color: "white", 
+          mouse: "onMap"};
+			} else {
+				that.mouseHighlightedTile = {
+          row: row, 
+          column: column, 
+          color: "white", 
+          mouse: "offMap"};				
+			}
+		}, false);	
 
-      return { x: x, y: y };
-    };
 
-    // Add mouse click event listener that enables mouse user to place towers via clicking tiles on this level map, and highlight the clicked tiles a specific color: green if tower is successuful placed, red if otherwise
-    that.ctx.canvas.addEventListener(
-      "click",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var tileSideLength = that.getTilePixelImageSize();
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        var row = Math.floor(y / tileSideLength);
-        var column = Math.floor(x / tileSideLength);
-        var canvasWidth = that.drawScale * that.mapWidth;
-        var canvasHeight = that.drawScale * that.mapHeight;
-        if (
-          x >= that.xCanvas &&
-          x < that.xCanvas + canvasWidth &&
-          y >= that.yCanvas &&
-          y < that.yCanvas + canvasHeight &&
-          that.showGridMap
-        ) {
-          if (
-            that.terrainGridTiles.getTile(row, column) ===
-              that.towerTerrainOpen &&
-            that.showGridMap
-          ) {
-            that.placeTower(row, column);
-            that.mouseHighlightedTile = {
-              row: row,
-              column: column,
-              color: "lawngreen",
-              mouse: "onMap",
-            };
-          } else {
-            that.mouseHighlightedTile = {
-              row: row,
-              column: column,
-              color: "red",
-              mouse: "onMap",
-            };
-          }
-        }
-      },
-      false
-    );
+		// Add mouse out event listener that enables level to un-highlight any tile the mouse cursor last moved over when the cursor moved outside the level boundaries
+		that.ctx.canvas.addEventListener("mouseout", function (e) {
+			var canvasCoordinates = getXandY(e); 
+			that.mouseHighlightedTile = {
+        row: 0, 
+        column: 0, 
+        color: "white", 
+        mouse: "offMap"};
+		}, false);
+	};
 
-    // Add mouse move event listener that enables mouse user to highlight a terrain tile via moving over it on this level map
-    that.ctx.canvas.addEventListener(
-      "mousemove",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var tileSideLength = that.getTilePixelImageSize();
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        var row = Math.floor(y / tileSideLength);
-        var column = Math.floor(x / tileSideLength);
-        var canvasWidth = that.drawScale * that.mapWidth;
-        var canvasHeight = that.drawScale * that.mapHeight;
-        if (
-          x >= that.xCanvas &&
-          x < that.xCanvas + canvasWidth &&
-          y >= that.yCanvas &&
-          y < that.yCanvas + canvasHeight &&
-          that.showGridMap
-        ) {
-          that.mouseHighlightedTile = {
-            row: row,
-            column: column,
-            color: "white",
-            mouse: "onMap",
-          };
-        } else {
-          that.mouseHighlightedTile = {
-            row: row,
-            column: column,
-            color: "white",
-            mouse: "offMap",
-          };
-        }
-      },
-      false
-    );
-
-    // Add mouse out event listener that enables level to un-highlight any tile the mouse cursor last moved over when the cursor moved outside the level boundaries
-    that.ctx.canvas.addEventListener(
-      "mouseout",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        that.mouseHighlightedTile = {
-          row: 0,
-          column: 0,
-          color: "white",
-          mouse: "offMap",
-        };
-      },
-      false
-    );
-  }
-
-  /*
+	
+	/*
 		Add a new tower entity to the level map grid and the game engine itself
 		
 		Parameters: 
@@ -316,7 +304,7 @@ class Level {
           this
         );
         break;
-      case "Flamethrower":
+      case "Flame":
         var newTower = new Flamethrower(
           this.gameEngine,
           xTower + xOffset,

@@ -20,6 +20,14 @@ function distance(a, b) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+// compute the pixel scaling via dividing the canvas width defined in style.css by canvas width defined in index.html
+function widthScaling() {
+  var canvas = document.getElementById("gameWorld");
+  var htmlCanvasWidth = canvas.width;
+  var cssCanvasWidth = parseFloat(window.getComputedStyle(canvas).width);
+  return cssCanvasWidth / htmlCanvasWidth;
+}
+
 /**
  * Enemy spawner.
  * @gameEngine GameEngine
