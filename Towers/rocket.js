@@ -34,11 +34,7 @@ class Rocket extends Tower {
     this.fireRate = 1.15; // Fire rate: Moderately Slow
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 15; // Damage: Strong
-<<<<<<< HEAD
-    this.facing = 6; // facing left default
-=======
     this.cost = 75; // Cost: 75 coins
->>>>>>> Khue
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 
