@@ -15,45 +15,43 @@ class Level {
 			@mapLevel 			the numerical level of the image map
 			@ctx 				the canvas that this level map image will be applied to
 	*/
-  constructor(
-    gameEngine,
-    mapImage,
-    xCanvas,
-    yCanvas,
-    topLeftCornerX,
-    topLeftCornerY,
-    mapWidth,
-    mapHeight,
-    drawScale,
-    mapLevel,
-    ctx
-  ) {
-    Object.assign(this, {
-      gameEngine,
-      mapImage,
-      xCanvas,
-      yCanvas,
-      topLeftCornerX,
-      topLeftCornerY,
-      mapWidth,
-      mapHeight,
-      drawScale,
-      mapLevel,
-      ctx,
-    });
+	constructor(
+		gameEngine,
+		mapImage,
+		xCanvas,
+		yCanvas,
+		topLeftCornerX,
+		topLeftCornerY,
+		mapWidth,
+		mapHeight,
+		drawScale,
+		mapLevel,
+		ctx
+	) {
+		Object.assign(this, {
+		  gameEngine,
+		  mapImage,
+		  xCanvas,
+		  yCanvas,
+		  topLeftCornerX,
+		  topLeftCornerY,
+		  mapWidth,
+		  mapHeight,
+		  drawScale,
+		  mapLevel,
+		  ctx
+		});
 
 
-    // Apply game engine
-    this.gameEngine.level = this;
+		// Apply game engine
+		this.gameEngine.level = this;
 
-    // Initialize terrain map grid for this level
-    this.terrainGridTiles = new LevelTerrainMap(this);
+		// Initialize terrain map grid for this level
+		this.terrainGridTiles = new LevelTerrainMap(this);
 
-    // Switch to turn on (true) and off (false) the visual grid map
-    this.showGridMap = false;
+		// Switch to turn on (true) and off (false) the visual grid map
+		this.showGridMap = false;
 
-		
-		
 		// Numbers labeling a specific terrain for a tile.
 		this.path = 0;
 		this.towerTerrainOpen = 1;
@@ -62,20 +60,19 @@ class Level {
 		
 		// Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
 		this.placeTowerType = "";
-	}
 
-    // Apply mouse click interaction of tiles to this level
-    this.mouseInteraction();
-    this.mouseHighlightedTile = {
-      row: -1,
-      column: -1,
-      color: "lightyellow",
-      mouse: "offMap",
-    };
-    this.interactionScale = widthScaling();
+		// Apply mouse click interaction of tiles to this level
+		this.mouseInteraction();
+		this.mouseHighlightedTile = {
+		  row: -1,
+		  column: -1,
+		  color: "lightyellow",
+		  mouse: "offMap",
+		};
+		this.interactionScale = widthScaling();
 
-    this.user = this.gameEngine.user; // the user interacting with the tower
-  }
+		this.user = this.gameEngine.user; // the user interacting with the tower
+  };
 
   /*
 		Update does nothing to level
@@ -192,7 +189,7 @@ class Level {
 			var canvasWidth = that.drawScale * that.mapWidth * that.interactionScale;
 			var canvasHeight = that.drawScale * that.mapHeight * that.interactionScale;
 			if (   x >= topLeftX
-          && x < topLeftX + canvasWidth) 
+          && x < topLeftX + canvasWidth 
           && y >= topLeftY 
           && y < topLeftY + canvasHeight
           && that.showGridMap) {
