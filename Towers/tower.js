@@ -5,6 +5,7 @@ class Tower {
 
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
+    this.towerLevel = 1;
   }
 
   update() {
@@ -48,9 +49,16 @@ class Tower {
   buy(cost) {
     // check if the user has the sufficient fund
     if (this.user.balance >= cost) {
-      // draw the tower onto the map
       this.user.decreaseBalance(cost);
-      console.log("decreased.");
+    }
+  }
+
+  // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
+  upgrade(cost) {
+    // check if the user has the sufficient fund
+    if (this.user.balance >= cost) {
+      this.user.decreaseBalance(cost);
+      this.towerLevel++;
     }
   }
 
