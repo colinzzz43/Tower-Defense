@@ -28,6 +28,24 @@ function widthScaling() {
   return cssCanvasWidth / htmlCanvasWidth;
 }
 
+// determing which direction each tower will be facing
+function getFacing(enemy, tower) {
+
+  let deltaX = enemy.x - tower.x;
+  let deltaY = enemy.y - tower.y;
+
+  let angle = Math.atan2(deltaY, deltaX) / Math.PI;
+
+  if (-0.625 < angle && angle < -0.375) return 0;
+  if (-0.375 < angle && angle < -0.125) return 1;
+  if (-0.125 < angle && angle < 0.125) return 2;
+  if (0.125 < angle && angle < 0.375) return 3;
+  if (0.375 < angle && angle < 0.625) return 4;
+  if (0.625 < angle && angle < 0.875) return 5;
+  if (-0.875 > angle || angle > 0.875) return 6;
+  if (-0.875 < angle && angle < -0.625) return 7;
+};
+
 /**
  * Enemy spawner.
  * @gameEngine GameEngine
