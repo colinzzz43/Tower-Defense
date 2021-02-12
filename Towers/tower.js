@@ -6,6 +6,7 @@ class Tower {
     this.facing = 6; // facing left default
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
+    this.towerLevel = 1;
   }
 
   update() {
@@ -50,9 +51,16 @@ class Tower {
   buy(cost) {
     // check if the user has the sufficient fund
     if (this.user.balance >= cost) {
-      // draw the tower onto the map
       this.user.decreaseBalance(cost);
-      console.log("decreased.");
+    }
+  }
+
+  // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
+  upgrade(cost) {
+    // check if the user has the sufficient fund
+    if (this.user.balance >= cost) {
+      this.user.decreaseBalance(cost);
+      this.towerLevel++;
     }
   }
 
@@ -62,7 +70,7 @@ class Tower {
 
   sell() {
     // Add the money back to the user balance
-    this.user.increaseBalance(this.cost * this.depreciated);
+    this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated);
     // Remove itself from the map (remove entity from the gameengine)
     this.gameEngine.removeEntity(this);
   }
@@ -79,19 +87,11 @@ class Tower {
     return this.shootingRadius;
   }
 
-  getPosition() {
-    return [this.x, this.y];
-  }
-
   getTilePosition() {
     var tileSideLength = this.level.getTilePixelImageSize();
     var row = Math.floor(this.y / tileSideLength);
     var column = Math.floor(this.x / tileSideLength);
     return { row: row, column: column };
-  }
-
-  getCost() {
-    return this.cost;
   }
 
   shoot(enemy) {
