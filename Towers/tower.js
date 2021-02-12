@@ -68,7 +68,7 @@ class Tower {
 
   sell() {
     // Add the money back to the user balance
-    this.user.increaseBalance(this.cost * this.depreciated);
+    this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated);
     // Remove itself from the map (remove entity from the gameengine)
     this.gameEngine.removeEntity(this);
   }
@@ -85,19 +85,11 @@ class Tower {
     return this.shootingRadius;
   }
 
-  getPosition() {
-    return [this.x, this.y];
-  }
-
   getTilePosition() {
     var tileSideLength = this.level.getTilePixelImageSize();
     var row = Math.floor(this.y / tileSideLength);
     var column = Math.floor(this.x / tileSideLength);
     return { row: row, column: column };
-  }
-
-  getCost() {
-    return this.cost;
   }
 
   shoot(enemy) {
