@@ -1,6 +1,6 @@
 class Tower {
   constructor(gameEngine, x, y, level) {
-  Object.assign(this, { gameEngine, x, y, level });
+    Object.assign(this, { gameEngine, x, y, level });
 
     //assets
     this.user = this.gameEngine.user;
@@ -142,19 +142,15 @@ class Tower {
     this.elapsedTime += this.gameEngine.clockTick;
     var that = this;
     // tower detection
-    this.gameEngine.entities.forEach(function (entity) {
+    this.gameEngine.entities.forEach(function(entity) {
       // tower detection
       if (entity instanceof Slime) {
         // tower shoots enemy in shooting bounds
-        if (
-          canShoot(that, entity) &&
-          that.elapsedTime > that.fireRate &&
-          entity.exist
-        ) {
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate && entity.exist) {
           that.elapsedTime = 0;
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
-          // that.printMonsterHP(entity.HP);
+          that.printMonsterHP(entity.HP);
         }
       }
     });
@@ -165,7 +161,7 @@ class Tower {
     context.setLineDash([]);
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-	  context.fillStyle = "#FD0";
+	context.fillStyle = "#FD0";
     context.fill();
     context.stroke();
 
@@ -188,9 +184,9 @@ class Tower {
     }
   }
 
-  // printMonsterHP(HP) {
-  //   document.getElementById("printMonsterHP").innerHTML = HP;
-  // }
+  printMonsterHP(HP) {
+    document.getElementById("printMonsterHP").innerHTML = HP;
+  }
 
   sell() {
     // Add the money back to the user balance
@@ -201,10 +197,12 @@ class Tower {
 
   dead() {
     this.removeFromWorld = true;
+//	this.gameEngine.removeEntity(this);
 	
-	  // After tower is removed from world, set the terrain tile it was on to open tower terrain
-	  var tilePosition = this.getTilePosition();
-	  this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+	// After tower is removed from world, set the terrain tile it was on to open tower terrain
+	var tilePosition = this.getTilePosition();
+	this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+    // this.gameEngine.removeFromWorld = true;
   }
 
   getShootingRange() {
@@ -229,16 +227,7 @@ class Tower {
   shoot(enemy) {
     // shooting animation
     // enemy.takeHit(this.damage);
-    this.gameEngine.addEntity(
-      new Bullet(
-        this.gameEngine,
-        this.x,
-        this.y - 90,
-        BULLETS["bullet_b"],
-        enemy,
-        this
-      )
-    );
+    this.gameEngine.addEntity(new Bullet(this.gameEngine, this.x, this.y - 90, BULLETS["bullet_b"], enemy, this));
   }
 
   takeHit(damage) {

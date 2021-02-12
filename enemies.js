@@ -3,31 +3,31 @@ class Slime {
     Object.assign(this, { gameEngine, x, y, level, spawnTime });
 
     this.user = this.gameEngine.user;
-    
+	
+    this.damage = 5;
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/monster/slime/slime1_front.png"
-      );
-      this.animations = [];
-      this.aliveAnim = new Animator(
-        this.spritesheet,
-        0,
-        0,
-        (this.frameWidth = 16),
-        (this.frameHeight = 16),
-        4,
-        0.15,
-        0,
-        false,
-        true
-        );
-        
+    );
+    this.animations = [];
+    this.aliveAnim = new Animator(
+      this.spritesheet,
+      0,
+      0,
+      (this.frameWidth = 16),
+      (this.frameHeight = 16),
+      4,
+      0.15,
+      0,
+      false,
+      true
+    );
+
     // states
     this.paused = false; // used when HUD is set up
-        
+
     // stats
     this.HP = 35;
-    this.damage = 5;
     this.maxHP = this.HP;
     this.damageAgainstBase = 1;
     this.reward = 1000;
@@ -46,6 +46,7 @@ class Slime {
     this.gameTime = 0;
     // does not exist until spawned
     this.exist = false;
+	
   }
 
   // shows entity bounds and shooting bounds
@@ -54,7 +55,7 @@ class Slime {
     context.setLineDash([]);
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-	  context.fillStyle = "#FD0";
+	context.fillStyle = "#FD0";
     context.fill();
     context.stroke();
 
@@ -89,7 +90,7 @@ class Slime {
         if (canShoot(that, entity) && that.elapsedTime > that.fireRate) {
           that.elapsedTime = 0;
           that.attack(entity);
-          // that.printTowerHP(entity.HP);
+          that.printTowerHP(entity.HP);
         }
       }
       // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
@@ -205,10 +206,10 @@ class Slime {
 
     this.movement.updatePosition(this.x, this.y);
   }
-  
-  // printTowerHP(HP) {
-  //   document.getElementById("printTowerHP").innerHTML = HP;
-  // }
+
+  printTowerHP(HP) {
+    document.getElementById("printTowerHP").innerHTML = HP;
+  }
 
   draw(context) {
     // spawn enemy if elapsed game time is greater than time to spawn
@@ -265,32 +266,12 @@ class Slime {
   isDead() {
     this.removeFromWorld = true;
     this.user.increaseBalance(this.reward);
-    this.user.increaseScores();
-
     // add coins when dropped
   }
 }
 
 class Goblin {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    Object.assign(this, { gameEngine, x, y, level, spawnTime });
-    this.user = this.gameEngine.user;
-
-    // sprites
-    this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack.png");
-    this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death.png");
-    this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run.png");
-    this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Take Hit.png");
-
-    // animations
-    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 1, 0, false, true);
-    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 1, 0, false, true);
-    this.runAnim = new Animator(this.runImg, 0, 0, 150, 150, 8, 1, 0, false, true);
-    this.takehitAnim = new Animator(this.takehitImg, 0, 0, 150, 150, 4, 1, 0, false, true);
-
-
-
-  }
+  constructor() {}
 
   updateBB() {}
 
@@ -304,22 +285,7 @@ class Goblin {
 }
 
 class Skeleton {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    Object.assign(this, { gameEngine, x, y, level, spawnTime });
-    this.user = this.gameEngine.user;
-
-    // sprites
-    this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Attack.png");
-    this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Death.png");
-    this.walkImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Walk.png");
-    this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Take Hit.png");
-
-    // animations
-    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 1, 0, false, true);
-    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 1, 0, false, true);
-    this.walkAnim = new Animator(this.walkImg, 0, 0, 150, 150, 8, 1, 0, false, true);
-    this.takehitAnim = new Animator(this.takehitImg, 0, 0, 150, 150, 4, 1, 0, false, true);
-  }
+  constructor() {}
 
   updateBB() {}
 

@@ -19,15 +19,15 @@ class User {
   // it is to be used for buying
   decreaseBalance(amount) {
     this.balance -= amount;
-    console.log("After decreased:" + this.balance);
+    // console.log("After decreased:" + this.balance);
   }
 
   // printCoins(balance) {
   //   document.getElementById("printCoins").innerHTML = balance;
   // }
 
-  increaseScores() {
-    this.scores += 1;
+  increaseScores(amount) {
+    this.scores += amount;
   }
 
   draw() {}
