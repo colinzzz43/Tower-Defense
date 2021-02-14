@@ -121,16 +121,6 @@ class Dragon extends Enemy {
         if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
           this.cooldownTime = 0;
           this.attack(ent);
-          this.gameEngine.addEntity(
-            new Bullet(
-              this.gameEngine,
-              this.x + this.xOffset,
-              this.y - this.yOffset / 2,
-              BULLETS["tomato"],
-              ent,
-              this
-            )
-          );
         }
 
         if (ent.removeFromWorld) this.state = 0;
@@ -181,7 +171,12 @@ class Dragon extends Enemy {
       this.y - this.yOffset,
       this.scale
     );
-  }
+  };
+
+  attack(tower) {
+    tower.takeHit(this.damage);
+    // this.gameEngine.addEntity(new Flame(this.gameEngine, this.x, this.y, tower, this));
+  };
 
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
@@ -189,7 +184,7 @@ class Dragon extends Enemy {
     if (this.HP === 0) {
       this.isDead();
     }
-  }
+  };
 
   isDead() {
     this.removeFromWorld = true;
@@ -197,5 +192,5 @@ class Dragon extends Enemy {
     console.log("Dragon+$", this.reward);
     this.user.increaseScores(this.score);
     this.gameEngine.addEntity(new Coin(this.gameEngine, this.x, this.y));
-  }
+  };
 }

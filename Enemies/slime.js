@@ -22,15 +22,16 @@ class Slime extends Enemy {
     this.frameWidth = 16;
 
     // stats
+    this.scale = 3;
     this.HP = 15;
     this.damage = 5;
     this.maxHP = this.HP;
     this.reward = 1;
     this.score = 10;
-    this.radius = (this.frameWidth / 2 + 1) * PARAMS.SCALE; // entity radius
-    this.shootingRadius = (this.frameWidth / 2 + 5) * PARAMS.SCALE; // shooting radius
-    this.xOffset = (this.frameWidth / 2) * PARAMS.SCALE;
-    this.yOffset = (this.frameHeight / 2) * PARAMS.SCALE + 1;
+    this.radius = (this.frameWidth / 2 + 1) * this.scale; // entity radius
+    this.shootingRadius = (this.frameWidth / 2 + 5) * this.scale; // shooting radius
+    this.xOffset = (this.frameWidth / 2) * this.scale;
+    this.yOffset = (this.frameHeight / 2) * this.scale + 1;
     this.fireRate = 1;
 
     // level grid and enemy movement
@@ -131,7 +132,7 @@ class Slime extends Enemy {
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,
-      PARAMS.SCALE
+      this.scale
     );
   }
 
@@ -144,15 +145,9 @@ class Slime extends Enemy {
   }
 
   attack(tower) {
+    tower.takeHit(this.damage);
     this.gameEngine.addEntity(
-      new Bullet(
-        this.gameEngine,
-        this.x,
-        this.y + 15,
-        BULLETS["tomato"],
-        tower,
-        this
-      )
+      new TomatoBullet(this.gameEngine, this.x, this.y, tower, this)
     );
   }
 
