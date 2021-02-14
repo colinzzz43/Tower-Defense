@@ -114,13 +114,13 @@ ASSET_MANAGER.downloadAll(function () {
   let initalSpawnTime = 1;
   let interval = 2;
   let n = 2;
-  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
 
-  //  x = 80;
-  //  y = 330;
-  //  initalSpawnTime = 5;
-  //  interval = 2;
-  //  n = 10;
+   x = 80;
+   y = 330;
+   initalSpawnTime = 5;
+   interval = 2;
+   n = 10;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
   //  x = 80;
