@@ -75,10 +75,10 @@ class FlyingEye extends Enemy {
     this.scale = 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 15;
+    this.damage = 5;
     this.reward = 20;
     this.radius = 20 * this.scale; // entity radius
-    this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
+    this.shootingRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 5) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
     this.fireRate = 0.8;
@@ -151,7 +151,7 @@ class FlyingEye extends Enemy {
 
     // draw bounds
     // this.showBounds(context, position, this.radius, false); // entity radius
-    // this.showBounds(context, position, this.visualRadius, true); // visual bound
+    // this.showBounds(context, position, this.shootingRadius, true); // visual bound
 
     // health bar
     this.drawHealth(

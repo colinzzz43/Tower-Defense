@@ -123,7 +123,7 @@ function collide(a, b) {
 
 
 function canShoot(shootingEntity, target) {
-  return distance(shootingEntity, target) < shootingEntity.visualRadius + target.radius;
+  return distance(shootingEntity, target) < shootingEntity.shootingRadius + target.radius;
 } // only used for melee enemies (i.e. Goblin, Mushroom, Skeleton)
 // if the melee enemy's visualBounds collide with target's entityBound, the enemy locks on a specific tower to attack later
 

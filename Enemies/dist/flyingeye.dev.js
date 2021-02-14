@@ -51,11 +51,11 @@ function (_Enemy) {
     _this.HP = 70;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 15;
+    _this.damage = 5;
     _this.reward = 20;
     _this.radius = 20 * _this.scale; // entity radius
 
-    _this.visualRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
+    _this.shootingRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
 
     _this.xOffset = (_this.frameWidth / 2 + 5) * _this.scale;
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
@@ -133,7 +133,7 @@ function (_Enemy) {
         y: this.y
       }; // draw bounds
       // this.showBounds(context, position, this.radius, false); // entity radius
-      // this.showBounds(context, position, this.visualRadius, true); // visual bound
+      // this.showBounds(context, position, this.shootingRadius, true); // visual bound
       // health bar
 
       this.drawHealth(context, this.x, this.y - this.yOffset / 2, this.HP, this.maxHP, this.movement, position);
