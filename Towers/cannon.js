@@ -44,4 +44,52 @@ class Cannon extends Tower {
 
     this.buy(Cannon.cost);
   }
+
+  shoot(enemy) {
+    // shooting animation
+    // enemy.takeHit(this.damage);
+    
+    var bulletX = this.x;
+    var bulletY = this.y - this.yOffset;
+    switch(this.facing) {
+      case 1:
+        bulletX = this.x + 10*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 2*PARAMS.SCALE;
+        break;
+      case 2:
+        bulletX = this.x + 9*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 3:
+        bulletX = this.x + 8*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 14*PARAMS.SCALE;
+        break;
+      case 4:
+        bulletX = this.x;
+        bulletY = this.y - this.yOffset + 15*PARAMS.SCALE;
+        break;
+      case 5:
+        bulletX = this.x - 8*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 14*PARAMS.SCALE;
+        break;
+      case 6:
+        bulletX = this.x - 9*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 7:
+        bulletX = this.x - 10*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 2*PARAMS.SCALE;
+        break;
+    }
+
+    this.gameEngine.addEntity(
+      new Cannonball(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this
+      )
+    );
+  }
 }

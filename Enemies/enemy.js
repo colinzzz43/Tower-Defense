@@ -115,10 +115,6 @@ class Enemy {
     movement.updatePosition(entityPosition.x, entityPosition.y);
   }
 
-  attack(tower) {
-    tower.takeHit(this.damage);
-  }
-
   attackBase() {
     this.removeFromWorld = true; // disappear when reaching the base
   }
