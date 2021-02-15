@@ -1,10 +1,12 @@
-class Tower { // abstract class for towers
+class Tower {
+  // abstract class for towers
   constructor(gameEngine, x, y, level) {
     Object.assign(this, { gameEngine, x, y, level });
 
-    this.user = this.gameEngine.user;
+    this.facing = 6; // facing left default
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
+    this.towerLevel = 1;
   }
 
   update() {
@@ -21,6 +23,7 @@ class Tower { // abstract class for towers
           entity.exist
         ) {
           that.elapsedTime = 0;
+          that.facing = getFacing(entity, that);
           that.shoot(entity);
           // console.log("Slime HP: ", entity.HP);
           // that.printMonsterHP(entity.HP);
@@ -34,7 +37,7 @@ class Tower { // abstract class for towers
     context.setLineDash([]);
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-	  context.fillStyle = "#FD0";
+    context.fillStyle = "#FD0";
     context.fill();
     context.stroke();
 
@@ -45,15 +48,19 @@ class Tower { // abstract class for towers
     context.stroke();
   }
 
-  buy() {
+  buy(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= this.cost) {
-      // draw the tower onto the map
+    if (this.user.balance >= cost) {
+      this.user.decreaseBalance(cost);
+    }
+  }
 
-      this.user.decreaseBalance(this.cost);
-    } else {
-      // debugging purpose
-      console.log(" You don't have the sufficient fund.");
+  // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
+  upgrade(cost) {
+    // check if the user has the sufficient fund
+    if (this.user.balance >= cost) {
+      this.user.decreaseBalance(cost);
+      this.towerLevel++;
     }
   }
 
@@ -63,51 +70,32 @@ class Tower { // abstract class for towers
 
   sell() {
     // Add the money back to the user balance
-    this.user.increaseBalance(this.cost * this.depreciated);
+    this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated);
     // Remove itself from the map (remove entity from the gameengine)
     this.gameEngine.removeEntity(this);
   }
 
   dead() {
     this.removeFromWorld = true;
-	
-	  // After tower is removed from world, set the terrain tile it was on to open tower terrain
-	  var tilePosition = this.getTilePosition();
-	  this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+
+    // After tower is removed from world, set the terrain tile it was on to open tower terrain
+    var tilePosition = this.getTilePosition();
+    this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
   }
 
   getShootingRange() {
     return this.shootingRadius;
   }
 
-  getPosition() {
-    return [this.x, this.y];
-  }
-  
   getTilePosition() {
-	  var tileSideLength = this.level.getTilePixelImageSize();
-	  var row = Math.floor(this.y / tileSideLength);
-	  var column = Math.floor(this.x / tileSideLength);
-	  return {row: row, column: column};
+    var tileSideLength = this.level.getTilePixelImageSize();
+    var row = Math.floor(this.y / tileSideLength);
+    var column = Math.floor(this.x / tileSideLength);
+    return { row: row, column: column };
   }
 
   getCost() {
     return this.cost;
-  }
-
-  shoot(enemy) {
-    // shooting animation
-    // enemy.takeHit(this.damage);
-    this.gameEngine.addEntity(
-      new Bullet(
-        this.gameEngine,
-        this.x,
-        this.y - 90,
-        BULLETS["bullet_b"],
-        enemy,
-        this
-      )
-    );
   }
 
   takeHit(damage) {
