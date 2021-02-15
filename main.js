@@ -53,6 +53,7 @@ ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_left.png");
 // bullets
 ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
 ASSET_MANAGER.queueDownload("./sprites/other/bulletc.png");
+ASSET_MANAGER.queueDownload("./sprites/other/flamethrower_bullet.png");
 
 ASSET_MANAGER.queueDownload("./sprites/other/cannonball.png");
 ASSET_MANAGER.queueDownload("./sprites/other/rocket.png");
