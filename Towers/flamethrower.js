@@ -51,7 +51,7 @@ class Flamethrower extends Tower {
     
     var bulletX = this.x;
     var bulletY = this.y - this.yOffset;
-    switch(this.facing) {
+    switch(this.facing) { // TODO make bullets start from turret barrel
       case 1:
         bulletX = this.x + 6*PARAMS.SCALE;
         bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;

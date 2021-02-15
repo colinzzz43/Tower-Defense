@@ -33,7 +33,7 @@ class Shotgun extends Tower {
     this.maxHP = this.HP;
     this.fireRate = 1; // Fire rate: Moderate
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
-    this.damage = 10; // Damage: Strong
+    this.damage = 15; // Damage: Strong
     this.cost = 25; // 25 coins
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -49,7 +49,7 @@ class Shotgun extends Tower {
     
     var bulletX = this.x;
     var bulletY = this.y - this.yOffset;
-    switch(this.facing) {
+    switch(this.facing) { // TODO make bullets start from turret barrel
       case 1:
         bulletX = this.x + 6*PARAMS.SCALE;
         bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
