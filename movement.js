@@ -1,19 +1,21 @@
 class EnemyMovement {
 	/*
 		Constructor fot the EnemyMovement class
-		- Parameters:
-			'speed': the speed of the enemy's movement,
-			'direction': the direction of the enemy's movement,
-			'x': the current x-coordinate on canvas of where the enemy is located,
-			'y': the current y-coordiante on canvas of where the enemy is located,
-			'levelGrid': the terrain tile grid that the enemy will move on
+		
+		Parameters:
+		@speed 			the speed of the enemy's movement,
+		@direction 		the direction of the enemy's movement,
+		@x 				the current x-coordinate on canvas of where the enemy is located,
+		@y 				the current y-coordiante on canvas of where the enemy is located,
+		@levelGrid 		the terrain tile grid that the enemy will move on
 	*/
 	constructor(speed, direction, x, y, levelGrid) {
 		Object.assign(this, {speed, direction, x, y, levelGrid});
 		
 		// The tile on the level grid of where the enemy is located
-		this.currentTileRow = Math.floor(this.y/(40*1.5));
-		this.currentTileColumn = Math.floor(this.x/(40*1.5));
+		this.tileSideScale = this.levelGrid.getScaledSquareTilePixelLength();
+		this.currentTileRow = Math.floor(this.y/this.tileSideScale);
+		this.currentTileColumn = Math.floor(this.x/this.tileSideScale);
 		
 		// The possible directions for the enemy to go
 		this.up = "up";
@@ -21,14 +23,19 @@ class EnemyMovement {
 		this.down = "down";
 		this.left = "left";
 		this.neutral = "neutral";
+		
+		// Number of turns the enemy has already made, and the tile locationwhere it'll make it's next turn
+		this.turns = 0;
+		this.nextTurnAtTile = this.levelGrid.pathTurns[this.turns];
 	}
 	
 	
 	/*
 		Change the current direction of the enemy by making it turn 'left' or 'right' that is relative to the enemy's current direction
-		- Parameters: 
-			'row': the tile row where the enemy currently is, 
-			'column': the tile column where the enemy currently is
+		
+		Parameters: 
+		@row		 the tile row where the enemy currently is, 
+		@column		 the tile column where the enemy currently is
 	*/
 	changeDirection(row, column) {
 		switch(this.direction) {
@@ -42,6 +49,7 @@ class EnemyMovement {
 			case "right":  // if enemy is currently horizontally right on map, make it go vertically up or down relative to view from map
 				if (this.levelGrid.getTile(row - 1, column) === 0) {					
 					this.direction = "up";
+					
 				} else {
 					this.direction = "down";
 				}
@@ -64,6 +72,7 @@ class EnemyMovement {
 				this.direction = "neutral";
 				break;
 		}
+		this.turns++;
 	}
 	
 	
@@ -103,22 +112,34 @@ class EnemyMovement {
 	
 	/*
 		Update the current canvas position and tile position of enemy on level tile grid.
-		- Parameters:
-			'x': the x-coordinate on canvas of where the enemy's position will be,
-			'y': the y-coordainte on canvas of where the enemy's position will be
+		
+		Parameters:
+		@x	 the x-coordinate on canvas of where the enemy's position will be,
+		@y	 the y-coordainte on canvas of where the enemy's position will be
 	*/
 	updatePosition(x, y) {
 		this.x = x;
 		this.y = y;
 			
-		this.currentTileRow = Math.floor(this.y/(40*1.5));
-		this.currentTileColumn = Math.floor(this.x/(40*1.5));
+		this.currentTileRow = Math.floor(this.y / this.tileSideScale);
+		this.currentTileColumn = Math.floor(this.x / this.tileSideScale);
 	}
 	
 	
 	// Return the current speed of the enemy
 	getSpeed() {
 		return this.speed;
+	}
+	
+	/* Return the tile and its center xy coordinates on grid map where the 
+		enemy will have to change its current direction on
+	*/
+	getTileToMakeTurnAt() {
+		if (this.turns < this.levelGrid.pathTurns.length) {		
+			return this.levelGrid.pathTurns[this.turns];
+		} else {
+			return {row: -1, column: -1, centerX: -10, centerY: -10};
+		}
 	}
 	
 	
