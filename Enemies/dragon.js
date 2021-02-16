@@ -97,7 +97,7 @@ class Dragon extends Enemy {
     this.fireRate = 2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
   }
 
   update() {
