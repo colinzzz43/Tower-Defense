@@ -82,7 +82,7 @@ class Mushroom extends Enemy {
     this.attackRate = 1.2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.3, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
