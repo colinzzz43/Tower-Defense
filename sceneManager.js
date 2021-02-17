@@ -28,6 +28,8 @@ class SceneManager {
     this.timeLeft = this.TIME_LIMIT;
     this.timerInterval = null;
     this.startTimer();
+
+    this.playBGM();
   }
   startTimer() {
     this.timerInterval = setInterval(() => {
@@ -38,6 +40,12 @@ class SceneManager {
         this.timeLeft = 0;
       }
     }, 1000);
+  }
+
+  playBGM() {
+    var BGM = new Audio("./BGM/20176709_battle-loop_by_wormwoodmusic_preview.mp3");
+    BGM.volume = 0.1;
+    BGM.play();
   }
 
   update() {
