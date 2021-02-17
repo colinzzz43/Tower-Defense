@@ -41,10 +41,11 @@ class Base {
   update() {
     var that = this;
     this.gameEngine.entities.forEach(function (entity) {
-      if (entity instanceof Slime) {
+      if (entity instanceof Enemy) {
         if (collide(that, entity)) {
           entity.attackBase(); // enemies disapear on collision with base
           that.HP -= entity.damageAgainstBase; // base loses 1 hp
+          that.playSoundEffect();
         }
       }
     });
@@ -52,6 +53,14 @@ class Base {
     if (this.HP == 0) {
       this.isDead();
     }
+  }
+
+
+
+  playSoundEffect() {
+    var BGM = new Audio("./soundeffects/Popping.mp3");
+    BGM.volume = 0.4;
+    BGM.play();
   }
 
   draw(context) {

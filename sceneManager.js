@@ -43,7 +43,8 @@ class SceneManager {
   }
 
   playBGM() {
-    var BGM = new Audio("./BGM/20176709_battle-loop_by_wormwoodmusic_preview.mp3");
+    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
+    var BGM = new Audio("./soundeffects/BGM.mp3");
     BGM.volume = 0.1;
     BGM.play();
   }
