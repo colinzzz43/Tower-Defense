@@ -30,7 +30,7 @@ class Matter extends Tower {
     }
 
     //stats
-    this.HP = 10;
+    this.HP = 100;
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
@@ -44,5 +44,52 @@ class Matter extends Tower {
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
     this.buy(Matter.cost);
+  }
+
+  shoot(enemy) {
+    // shooting animation
+    
+    var bulletX = this.x;
+    var bulletY = this.y - this.yOffset;
+    switch(this.facing) { // TODO make bullets start from turret barrel
+      case 1:
+        bulletX = this.x + 6*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        break;
+      case 2:
+        bulletX = this.x + 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        break;
+      case 3:
+        bulletX = this.x + 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 4:
+        bulletX = this.x;
+        bulletY = this.y - this.yOffset + 11*PARAMS.SCALE;
+        break;
+      case 5:
+        bulletX = this.x - 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 6:
+        bulletX = this.x - 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        break;
+      case 7:
+        bulletX = this.x - 6*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        break;
+    }
+
+    this.gameEngine.addEntity(
+      new MatterRay(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this,
+      )
+    );
   }
 }
