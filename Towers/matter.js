@@ -30,7 +30,7 @@ class Matter extends Tower {
     }
 
     //stats
-    this.HP = 100;
+    this.HP = 10;
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
