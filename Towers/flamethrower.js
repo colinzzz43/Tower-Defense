@@ -32,9 +32,9 @@ class Flamethrower extends Tower {
     //stats
     this.HP = 50;
     this.maxHP = this.HP;
-    this.fireRate = 0.5; // Fire rate: Very Fast
+    this.fireRate = 0.2; // Fire rate: Very Fast
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
-    this.damage = 5; // Damage: Weak
+    this.damage = 0.05; // Damage: Weak (scaled for multiple lingering flames)
     this.cost = 40; // Cost: 40 coins
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
@@ -89,7 +89,18 @@ class Flamethrower extends Tower {
         bulletY,
         enemy,
         this,
-        50
+        30
+      )
+    );
+
+    this.gameEngine.addEntity(
+      new FlamethrowerFlames(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this,
+        20
       )
     );
     
@@ -100,7 +111,7 @@ class Flamethrower extends Tower {
         bulletY,
         enemy,
         this,
-        25
+        10
       )
     );
 
@@ -122,7 +133,7 @@ class Flamethrower extends Tower {
         bulletY,
         enemy,
         this,
-        -25
+        -10
       )
     );
 
@@ -134,7 +145,18 @@ class Flamethrower extends Tower {
         bulletY,
         enemy,
         this,
-        -50
+        -20
+      )
+    );
+
+    this.gameEngine.addEntity(
+      new FlamethrowerFlames(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this,
+        -30
       )
     );
   }

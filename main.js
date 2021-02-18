@@ -51,9 +51,11 @@ ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_left.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_left.png");
 
 // bullets
-ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
+ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png"); // pistol & shotgun
 ASSET_MANAGER.queueDownload("./sprites/other/bulletc.png");
 ASSET_MANAGER.queueDownload("./sprites/other/flamethrower_bullet.png");
+ASSET_MANAGER.queueDownload("./sprites/other/shockwave.png"); // matter ray
+ASSET_MANAGER.queueDownload("./sprites/other/mine1.png"); // spazer ray
 
 ASSET_MANAGER.queueDownload("./sprites/other/cannonball.png");
 ASSET_MANAGER.queueDownload("./sprites/other/rocket.png");
@@ -114,43 +116,43 @@ ASSET_MANAGER.downloadAll(function () {
   let x = 80;
   let y = 330;
   let initalSpawnTime = 1;
-  let interval = 2;
-  let n = 2;
+  let interval = 1;
+  let n = 15;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
 
-   x = 80;
-   y = 330;
-   initalSpawnTime = 5;
-   interval = 2;
-   n = 10;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
+  //  x = 80;
+  //  y = 330;
+  //  initalSpawnTime = 5;
+  //  interval = 2;
+  //  n = 10;
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
-   x = 80;
-   y = 330;
-   initalSpawnTime = 10;
-   interval = 2;
-   n = 2;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
+  //  x = 80;
+  //  y = 330;
+  //  initalSpawnTime = 10;
+  //  interval = 2;
+  //  n = 2;
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
 
-   x = 80;
-   y = 330;
-   initalSpawnTime = 15;
-   interval = 2;
-   n = 2;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
+  //  x = 80;
+  //  y = 330;
+  //  initalSpawnTime = 15;
+  //  interval = 2;
+  //  n = 2;
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
 
-   x = 80;
-   y = 330;
-   initalSpawnTime = 20;
-   interval = 2;
-   n = 2;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
+  //  x = 80;
+  //  y = 330;
+  //  initalSpawnTime = 20;
+  //  interval = 2;
+  //  n = 2;
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
 
-   x = 80;
-   y = 330;
-   initalSpawnTime = 25;
-   interval = 2;
-   n = 2;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
+  //  x = 80;
+  //  y = 330;
+  //  initalSpawnTime = 25;
+  //  interval = 2;
+  //  n = 2;
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });
