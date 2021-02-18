@@ -72,5 +72,5 @@ class MatterRay extends Projectile {
         } else {
           this.animation.drawFrame(this.gameEngine.clockTick, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
         }
-      }
+    }
 }
