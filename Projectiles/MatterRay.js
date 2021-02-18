@@ -4,7 +4,7 @@ class MatterRay extends Projectile {
 
         // animations
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/shockwave.png");
-        this.animation = new Animator(this.spritesheet, 0, 0, 80, 80, 1, 1, 0, false, true);
+        this.animation = new Animator(this.spritesheet, 0, 0, 80, 80, 9, 0.3, 80, false, true);
 
         // animation stats
         this.scale = 1;
@@ -17,6 +17,12 @@ class MatterRay extends Projectile {
         this.canRotate = false;
         this.radius = 8.5 * this.scale;
         this.maxSpeed = 150; // pixels per second
+
+        var dist = distance(this, this.target);
+        this.velocity = {
+            x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+            y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+        }; 
     }
 
     update() {
