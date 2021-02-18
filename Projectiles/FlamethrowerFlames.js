@@ -11,14 +11,14 @@ class FlamethrowerFlames extends Projectile {
 
         // animation stats
         this.scale = 1;
-        this.xOffset = 4 * this.scale;
-        this.yOffset = 4 * this.scale;
+        this.xOffset = 13 * this.scale;
+        this.yOffset = 5 * this.scale;
         this.frameWidth = 26;
         this.frameHeight = 10;
 
         // stats
         this.canRotate = true;
-        this.radius = 4 * this.scale;
+        this.radius = 13 * this.scale;
         this.maxSpeed = 150; // pixels per second
 
         var dist = distance(this, this.target);
