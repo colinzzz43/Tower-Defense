@@ -28,6 +28,8 @@ class SceneManager {
     this.timeLeft = this.TIME_LIMIT;
     this.timerInterval = null;
     this.startTimer();
+
+    this.playBGM();
   }
   startTimer() {
     this.timerInterval = setInterval(() => {
@@ -38,6 +40,13 @@ class SceneManager {
         this.timeLeft = 0;
       }
     }, 1000);
+  }
+
+  playBGM() {
+    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
+    var BGM = new Audio("./soundeffects/BGM.mp3");
+    BGM.volume = 0.1;
+    BGM.play();
   }
 
   update() {

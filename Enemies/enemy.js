@@ -55,12 +55,45 @@ class Enemy {
 
     // is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
     if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {
-      var tileScale = this.level.drawScale * 40;
-      var xCenterOfTile = tileScale * coordinates.tileColumn + 30;
-      var yCenterOfTile = tileScale * coordinates.tileRow + 30;
+	  var direction = movement.getDirection();
+	  var nextTurnAt = movement.getTileToMakeTurnAt();
+	  
+	  // Depending on the enemy's current direction, if enemy happens to be just on or just moved over
+	  // a turn tile's center coordinates, then make the enemy's current x- or y-position match that
+	  // of the tile's center x- or y-coordinate in which the enemy will change directions on
+	  switch (direction) {
+		  case "up":
+			if (coordinates.x === nextTurnAt.centerX && coordinates.y <= nextTurnAt.centerY) {
+				coordinates.y = nextTurnAt.centerY;
+				coordinates.tileRow = Math.floor(coordinates.y / movement.tileSideScale);
+				this.y = nextTurnAt.centerY;
+			}
+			break;
+		  case "right":		
+			if (coordinates.x >= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
+				coordinates.x = nextTurnAt.centerX;	
+				coordinates.tileColumn = Math.floor(coordinates.x / movement.tileSideScale);				
+				this.x = nextTurnAt.centerX;				
+			}				
+			break;
+		  case "down":
+			if (coordinates.x === nextTurnAt.centerX && coordinates.y >= nextTurnAt.centerY) {
+				coordinates.y = nextTurnAt.centerY;	
+				coordinates.tileRow = Math.floor(coordinates.y / movement.tileSideScale);				
+				this.y = nextTurnAt.centerY;				
+			}				
+			break;  
+		  case "left":
+			if (coordinates.x <= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
+				coordinates.x = nextTurnAt.centerX;		
+				coordinates.tileColumn = Math.floor(coordinates.x / movement.tileSideScale);				
+				this.x = nextTurnAt.centerX;					
+			}				
+			break;
+	  }
 
       // has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
-      if (coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile) {
+      if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
         var currentTileInCurrentDirection = this.grid.getTile(
           coordinates.tileRow,
           coordinates.tileColumn
@@ -113,10 +146,6 @@ class Enemy {
     ctx.fill();
 
     movement.updatePosition(entityPosition.x, entityPosition.y);
-  }
-
-  attack(tower) {
-    tower.takeHit(this.damage);
   }
 
   attackBase() {

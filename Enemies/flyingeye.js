@@ -75,17 +75,17 @@ class FlyingEye extends Enemy {
     this.scale = 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 15;
+    this.damage = 5;
     this.reward = 20;
     this.radius = 20 * this.scale; // entity radius
-    this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
+    this.shootingRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 5) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
     this.fireRate = 0.8;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
-  }
+    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+  };
 
   loadAnimation() {
     this.animations = [];
@@ -93,7 +93,7 @@ class FlyingEye extends Enemy {
     this.animations.push(this.attackAnim);
     this.animations.push(this.takehitAnim);
     this.animations.push(this.deathAnim);
-  }
+  };
 
   update() {
     if (this.paused) {
@@ -112,32 +112,24 @@ class FlyingEye extends Enemy {
 
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
-      if (ent instanceof Tower) {
-        if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-          this.cooldownTime = 0;
-          this.state = 1;
-          this.gameEngine.addEntity(
-            new Bullet(
-              this.gameEngine,
-              this.x,
-              this.y + this.yOffset,
-              BULLETS["tomato"],
-              ent,
-              this
-            )
-          );
-        }
-
-        if (ent.removeFromWorld) this.state = 0;
+      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+        this.cooldownTime = 0;
+        this.state = 1;
+        this.target = ent;
+        this.attack(this.target);
       }
     }
 
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
+
     // only move when flying
     if (this.state == 0) {
-      // skeleton direction
+      // direction
       this.determineDirection(this.movement);
 
-      // skeleton movement
+      // movement
       let position = this.getMovement(this.movement, this.x, this.y);
       this.x = position.x;
       this.y = position.y;
@@ -148,7 +140,7 @@ class FlyingEye extends Enemy {
       this.deathAnimationTime += this.gameEngine.clockTick;
       if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
     }
-  }
+  };
 
   draw(context) {
     // spawn enemy if elapsed game time is greater than time to spawn
@@ -163,7 +155,7 @@ class FlyingEye extends Enemy {
 
     // draw bounds
     // this.showBounds(context, position, this.radius, false); // entity radius
-    // this.showBounds(context, position, this.visualRadius, true); // visual bound
+    // this.showBounds(context, position, this.shootingRadius, true); // visual bound
 
     // health bar
     this.drawHealth(
@@ -183,7 +175,7 @@ class FlyingEye extends Enemy {
       this.y - this.yOffset,
       this.scale
     );
-  }
+  };
 
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
@@ -191,7 +183,12 @@ class FlyingEye extends Enemy {
     if (this.HP === 0) {
       this.isDead();
     }
-  }
+  };
+
+  attack(tower) {
+    tower.takeHit(this.damage);
+    this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x, this.y, tower, this));
+  };
 
   isDead() {
     this.state = 3;
@@ -199,5 +196,5 @@ class FlyingEye extends Enemy {
     console.log("Flyingeye+$", this.reward);
 
     this.user.increaseScores(this.score);
-  }
+  };
 }

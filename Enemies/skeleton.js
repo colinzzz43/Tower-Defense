@@ -84,7 +84,7 @@ class Skeleton extends Enemy {
     this.attackRate = 1;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.7, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
@@ -113,17 +113,19 @@ class Skeleton extends Enemy {
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
       if (ent instanceof Tower) {
-        if (this.state != 3 && canSee(this, ent) && !this.target) {
-          if (collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.attack(ent);
-          }
-
-          if (ent.removeFromWorld) this.state = 0;
+        if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
+          this.state = 1;
+          this.cooldownTime = 0;
+          this.target = ent;
+          this.attack(this.target);
         }
       }
     }
+
+
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
 
     // only move when running
     if (this.state == 0) {
@@ -184,6 +186,10 @@ class Skeleton extends Enemy {
     if (this.HP === 0) {
       this.isDead();
     }
+  }
+
+  attack(tower) {
+    tower.takeHit(this.damage);
   }
 
   isDead() {

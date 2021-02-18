@@ -1,63 +1,74 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Game Project Title Goes Here</title>
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="./animator.js"></script>
 
-    <script type="text/javascript" src="./Enemies/enemy.js"></script>
-    <script type="text/javascript" src="./Enemies/slime.js"></script>
-    <script type="text/javascript" src="./Enemies/goblin.js"></script>
-    <script type="text/javascript" src="./Enemies/skeleton.js"></script>
-    <script type="text/javascript" src="./Enemies/flyingeye.js"></script>
-    <script type="text/javascript" src="./Enemies/mushroom.js"></script>
-    <script type="text/javascript" src="./Enemies/dragon.js"></script>
+<head>
+  <meta charset="utf-8" />
+  <title>Game Project Title Goes Here</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="text/javascript" src="./animator.js"></script>
 
-    <script type="text/javascript" src="./coin.js"></script>
-    <script type="text/javascript" src="./base.js"></script>
-    <script type="text/javascript" src="./assetmanager.js"></script>
-    <script type="text/javascript" src="./timer.js"></script>
-    <script type="text/javascript" src="./gameengine.js"></script>
-    <script type="text/javascript" src="./util.js"></script>
-    <script type="text/javascript" src="./level.js"></script>
-    <script type="text/javascript" src="./main.js"></script>
-	<script type="text/javascript" src="./hud.js"></script>
+  <script type="text/javascript" src="./Enemies/enemy.js"></script>
+  <script type="text/javascript" src="./Enemies/slime.js"></script>
+  <script type="text/javascript" src="./Enemies/goblin.js"></script>
+  <script type="text/javascript" src="./Enemies/skeleton.js"></script>
+  <script type="text/javascript" src="./Enemies/flyingeye.js"></script>
+  <script type="text/javascript" src="./Enemies/mushroom.js"></script>
+  <script type="text/javascript" src="./Enemies/dragon.js"></script>
 
-    <script type="text/Javascript" src="./Towers/tower.js"></script>
-    <script type="text/javascript" src="./Towers/cannon.js"></script>
-    <script type="text/javascript" src="./Towers/flamethrower.js"></script>
-    <script type="text/javascript" src="./Towers/laser.js"></script>
-    <script type="text/javascript" src="./Towers/matter.js"></script>
-    <script type="text/javascript" src="./Towers/mg.js"></script>
-    <script type="text/javascript" src="./Towers/pistol.js"></script>
-    <script type="text/javascript" src="./Towers/rocket.js"></script>
-    <script type="text/javascript" src="./Towers/shotgun.js"></script>
-    <script type="text/javascript" src="./Towers/spazer.js"></script>
+  <script type="text/javascript" src="./coin.js"></script>
+  <script type="text/javascript" src="./base.js"></script>
+  <script type="text/javascript" src="./assetmanager.js"></script>
+  <script type="text/javascript" src="./timer.js"></script>
+  <script type="text/javascript" src="./gameengine.js"></script>
+  <script type="text/javascript" src="./util.js"></script>
+  <script type="text/javascript" src="./level.js"></script>
+  <script type="text/javascript" src="./main.js"></script>
+  <script type="text/javascript" src="./hud.js"></script>
 
-    <script type="text/Javascript" src="./movement.js"></script>
-    <script type="text/javascript" src="./user.js"></script>
-    <script type="text/javascript" src="./sceneManager.js"></script>
-    <script type="text/javascript" src="./bullet.js"></script>
-  	<script type="text/javascript" src="./icon.js"></script>
+  <script type="text/Javascript" src="./Towers/tower.js"></script>
+  <script type="text/javascript" src="./Towers/cannon.js"></script>
+  <script type="text/javascript" src="./Towers/flamethrower.js"></script>
+  <script type="text/javascript" src="./Towers/laser.js"></script>
+  <script type="text/javascript" src="./Towers/matter.js"></script>
+  <script type="text/javascript" src="./Towers/mg.js"></script>
+  <script type="text/javascript" src="./Towers/pistol.js"></script>
+  <script type="text/javascript" src="./Towers/rocket.js"></script>
+  <script type="text/javascript" src="./Towers/shotgun.js"></script>
+  <script type="text/javascript" src="./Towers/spazer.js"></script>
+  
+  <script type="text/javascript" src="./Projectiles/projectile.js"></script>
+  <script type="text/javascript" src="./Projectiles/PistolBullet.js"></script>
+  <script type="text/javascript" src="./Projectiles/MachineGunBullet.js"></script>
+  <script type="text/javascript" src="./Projectiles/ShotgunBullet.js"></script>
+  <script type="text/javascript" src="./Projectiles/FlamethrowerFlames.js"></script>
+  <script type="text/javascript" src="./Projectiles/MatterRay.js"></script>
+  <script type="text/javascript" src="./Projectiles/SpazerRay.js"></script>
+
+  <script type="text/javascript" src="./Projectiles/LaserBullet.js"></script>
+  <script type="text/javascript" src="./Projectiles/RocketMissile.js"></script>
+  <script type="text/javascript" src="./Projectiles/Cannonball.js"></script>
+  <script type="text/javascript" src="./Projectiles/TomatoBullet.js"></script>
+
+  <script type="text/Javascript" src="./movement.js"></script>
+  <script type="text/javascript" src="./user.js"></script>
+  <script type="text/javascript" src="./sceneManager.js"></script>
+  <script type="text/javascript" src="./icon.js"></script>
 
 
-  </head>
-  <body>
-    <canvas
-      id="gameWorld"
-      width="1050"
-      height="600"
-      style="border: 1px solid black"
-    ></canvas>
-    <br />
-  </body>
+</head>
 
-  <h2 style="text-align: center">
-    To place a tower on the map, first click Pistol Tower icon in bottom-left corner to bring up a grid and then click a grid tile on the map.  Click Pistol Tower icon again to de-select it and turn off grid.
-  </h2>
+<body>
+  <canvas id="gameWorld" width="1050" height="600" style="border: 1px solid black"></canvas>
+  <br />
 
-  <!-- <div id="debug" style="text-align: center">
+</body>
+
+<h2 style="text-align: center">
+  To place a tower on the map, first click a tower icon in the Tower Store menu on the right then click a
+  grid tile on the map. Click the selected icon again to de-select it and turn off grid.
+</h2>
+
+<!-- <div id="debug" style="text-align: center">
     Base HP:
     <h3 id="printBaseHP">-</h3>
     Slime HP:
@@ -68,5 +79,6 @@
     <h3 id="printCoins">100</h3>
   </div> -->
 
-  <br />
+<br />
+
 </html>

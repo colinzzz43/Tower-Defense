@@ -94,19 +94,8 @@ class Tower {
     return { row: row, column: column };
   }
 
-  shoot(enemy) {
-    // shooting animation
-    // enemy.takeHit(this.damage);
-    this.gameEngine.addEntity(
-      new Bullet(
-        this.gameEngine,
-        this.x,
-        this.y - 90,
-        BULLETS["bullet_b"],
-        enemy,
-        this
-      )
-    );
+  getCost() {
+    return this.cost;
   }
 
   takeHit(damage) {

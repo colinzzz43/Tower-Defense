@@ -31,7 +31,7 @@ class MG extends Tower {
     //stats
     this.HP = 30;
     this.maxHP = this.HP;
-    this.fireRate = 0.7; // Fire rate: Fast
+    this.fireRate = 0.5; // Fire rate: Fast
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 10; // Damage: Moderate
     this.cost = 25; // Cost: 25 coins
@@ -43,5 +43,53 @@ class MG extends Tower {
     this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
 
     this.buy(MG.cost);
+  }
+
+  shoot(enemy) {
+    // shooting animation
+    // enemy.takeHit(this.damage);
+    
+    var bulletX = this.x;
+    var bulletY = this.y - this.yOffset;
+    switch(this.facing) {
+      case 1:
+        bulletX = this.x + 9*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 5*PARAMS.SCALE;
+        break;
+      case 2:
+        bulletX = this.x + 12*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 10*PARAMS.SCALE;
+        break;
+      case 3:
+        bulletX = this.x + 12*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 16*PARAMS.SCALE;
+        break;
+      case 4:
+        bulletX = this.x;
+        bulletY = this.y - this.yOffset + 20*PARAMS.SCALE;
+        break;
+      case 5:
+        bulletX = this.x - 12*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 16*PARAMS.SCALE;
+        break;
+      case 6:
+        bulletX = this.x - 12*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 10*PARAMS.SCALE;
+        break;
+      case 7:
+        bulletX = this.x - 12*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 5*PARAMS.SCALE;
+        break;
+    }
+
+    this.gameEngine.addEntity(
+      new MachineGunBullet(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this
+      )
+    );
   }
 }
