@@ -61,7 +61,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.fireRate = 0.8; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.5, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -97,16 +97,11 @@ function (_Enemy) {
           this.cooldownTime = 0;
           this.state = 1;
           this.target = ent;
-          this.attack(ent);
+          this.attack(this.target);
         }
       }
 
-      if (this.target) {
-        if (this.target.removeFromWorld) {
-          this.state = 0;
-        }
-      } // only move when flying
-
+      if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when flying
 
       if (this.state == 0) {
         // direction

@@ -115,10 +115,14 @@ class FlyingEye extends Enemy {
       if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
         this.cooldownTime = 0;
         this.state = 1;
-        this.attack(ent);
-        if (ent.removeFromWorld) this.state = 0;
+        this.target = ent;
+        this.attack(this.target);
       }
     }
+
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
 
     // only move when flying
     if (this.state == 0) {

@@ -111,16 +111,18 @@ class Mushroom extends Enemy {
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
       if (ent instanceof Tower) {
-        if (this.state != 3 /* && canSee(this, ent) */ && collide(this, ent) && this.cooldownTime > this.attackRate) {
+        if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
           this.state = 1;
           this.cooldownTime = 0;
-          this.attack(ent);
+          this.target = ent;
+          this.attack(this.target);
         }
-
-        if (ent.removeFromWorld) this.state = 0;
       }
     }
 
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
 
     // only move when running
     if (this.state == 0) {
@@ -186,7 +188,7 @@ class Mushroom extends Enemy {
   attack(tower) {
     tower.takeHit(this.damage);
   };
-  
+
   isDead() {
     this.state = 3;
     this.user.increaseBalance(this.reward);
