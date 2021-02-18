@@ -52,9 +52,14 @@ ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level1/1_left.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_left.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_left.png"); // bullets
 
-ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
+ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png"); // pistol & shotgun
+
 ASSET_MANAGER.queueDownload("./sprites/other/bulletc.png");
 ASSET_MANAGER.queueDownload("./sprites/other/flamethrower_bullet.png");
+ASSET_MANAGER.queueDownload("./sprites/other/shockwave.png"); // matter ray
+
+ASSET_MANAGER.queueDownload("./sprites/other/mine1.png"); // spazer ray
+
 ASSET_MANAGER.queueDownload("./sprites/other/cannonball.png");
 ASSET_MANAGER.queueDownload("./sprites/other/rocket.png");
 ASSET_MANAGER.queueDownload("./sprites/other/laserbullet.png");
@@ -110,7 +115,7 @@ ASSET_MANAGER.downloadAll(function () {
   var y = 330;
   var initalSpawnTime = 1;
   var interval = 2;
-  var n = 2;
+  var n = 5;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
   x = 80;
   y = 330;

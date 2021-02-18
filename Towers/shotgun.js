@@ -87,7 +87,7 @@ class Shotgun extends Tower {
         bulletY,
         enemy,
         this,
-        50
+        30
       )
     );
     
@@ -98,7 +98,7 @@ class Shotgun extends Tower {
         bulletY,
         enemy,
         this,
-        25
+        15
       )
     );
 
@@ -120,7 +120,7 @@ class Shotgun extends Tower {
         bulletY,
         enemy,
         this,
-        -25
+        -15
       )
     );
 
@@ -132,7 +132,7 @@ class Shotgun extends Tower {
         bulletY,
         enemy,
         this,
-        -50
+        -30
       )
     );
   }
