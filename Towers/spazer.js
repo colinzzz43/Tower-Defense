@@ -43,4 +43,52 @@ class Spazer extends Tower {
 
     this.buy(Spazer.cost);
   }
+
+  shoot(enemy) {
+    // shooting animation
+    // enemy.takeHit(this.damage);
+    
+    var bulletX = this.x;
+    var bulletY = this.y - this.yOffset;
+    switch(this.facing) {
+      case 1:
+        bulletX = this.x + 6*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        break;
+      case 2:
+        bulletX = this.x + 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        break;
+      case 3:
+        bulletX = this.x + 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 4:
+        bulletX = this.x;
+        bulletY = this.y - this.yOffset + 11*PARAMS.SCALE;
+        break;
+      case 5:
+        bulletX = this.x - 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        break;
+      case 6:
+        bulletX = this.x - 5*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        break;
+      case 7:
+        bulletX = this.x - 6*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        break;
+    }
+
+    this.gameEngine.addEntity(
+      new SpazerRay(
+        this.gameEngine,
+        bulletX,
+        bulletY,
+        enemy,
+        this
+      )
+    );
+  }
 }

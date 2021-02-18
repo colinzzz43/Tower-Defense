@@ -51,11 +51,11 @@ ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_left.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_left.png");
 
 // bullets
-ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png");
+ASSET_MANAGER.queueDownload("./sprites/other/bulletb.png"); // pistol & shotgun
 ASSET_MANAGER.queueDownload("./sprites/other/bulletc.png");
 ASSET_MANAGER.queueDownload("./sprites/other/flamethrower_bullet.png");
-ASSET_MANAGER.queueDownload("./sprites/other/shockwave.png");
-
+ASSET_MANAGER.queueDownload("./sprites/other/shockwave.png"); // matter ray
+ASSET_MANAGER.queueDownload("./sprites/other/mine1.png"); // spazer ray
 
 ASSET_MANAGER.queueDownload("./sprites/other/cannonball.png");
 ASSET_MANAGER.queueDownload("./sprites/other/rocket.png");
