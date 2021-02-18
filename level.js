@@ -71,14 +71,14 @@ class Level {
     this.interactionScale = widthScaling();
 
     this.user = this.gameEngine.user; // the user interacting with the tower
-  }
+  };
 
   /*
 		Update does nothing to level
 	*/
   update() {
     // do nothing for now
-  }
+  };
 
   /*
 	    Used by the game engine to officially draw the level map on canvas.
@@ -97,7 +97,7 @@ class Level {
       this.mouseHighlightedTile.color,
       this.mouseHighlightedTile.mouse
     );
-  }
+  };
 
   /*
 		Draw the graphical image of the level map.
@@ -118,7 +118,7 @@ class Level {
       this.mapWidth * scale,
       this.mapHeight * scale
     );
-  }
+  };
 
   /* 
 		Get the terrain type that is assigned to a specified grid tile.
@@ -140,7 +140,7 @@ class Level {
     } else {
       return "not_a_tile_on_grid";
     }
-  }
+  };
 
   /*
 		Set a specific tile, if it is tower terrain, to either occupied (-1) or unoccupied (1)
@@ -159,7 +159,7 @@ class Level {
       this.terrainGridTiles.setTile(row, column, this.towerTerrainOccupied);
     }
     // console.log(this.terrainGridTiles.getMapArray());
-  }
+  };
 
   /*
 		Apply a mouse click interaction to the level map image
@@ -278,7 +278,7 @@ class Level {
       },
       false
     );
-  }
+  };
 
   /*
 		Add a new tower entity to the level map grid and the game engine itself
@@ -388,7 +388,7 @@ class Level {
       this.gameEngine.addEntity(newTower);
       this.changeStateOfTowerTerrain(row, column);
     }
-  }
+  };
 
   /*
     Check balance before placing the towers
@@ -397,14 +397,14 @@ class Level {
     console.log("Balance is: ", this.user.balance, " and it costs: ", cost);
     if (this.user.balance >= cost) return true;
     else return false;
-  }
+  };
 
   /*
 		Return the tile grid that this level uses
 	*/
   getGrid() {
     return this.terrainGridTiles;
-  }
+  };
 
   /*
 		Return the pixel length of a square tile as drawn to scale on the canvas
@@ -413,32 +413,46 @@ class Level {
     return (
       this.terrainGridTiles.getSquareTileSidePixelLength() * this.drawScale
     );
-  }
+  };
 }
 
 class LevelTerrainMap {
   /*
 		Constructor for the LevelTerrainMap
 		
-		Parameters:
+		Parameter:
 		@level		the level itself that this new terrain tile map will be put on
 	*/
   constructor(level) {
     Object.assign(this, { level });
+	
+	// The grid map array itself
     this.mapArray = null;
+	
+	// Number of tile rows and columns, the pixel length of each tile, and thickness of tile border
     this.numOfTileRows = null;
     this.numOfTileColumns = null;
     this.squareTileSidePixelLength = null;
     this.squareTileBorderPixelWeight = null;
+	
+	// tile where fixed path begins
+	this.startTile = null;
+	
+	// tile where fixed path ends
     this.destinationTile = null;
+	
+	// array of tiles that each mark a turn of direction on the fixed path
+	// they are listed in the order relative from the path's beginning to the end
+	this.pathTurns = [];
+	
+	// initiailize the grip map for the specific level
     this.initializeGridMap();
-    // console.log(this.mapArray);
 
     this.path = 0;
     this.towerTerrainOpen = 1;
     this.towerTerrainOccupied = -1;
     this.obstacle = 2;
-  }
+  };
 
   /*
 		Create a pre-defined 2D array representing the terrain makeup of a level map.
@@ -447,7 +461,7 @@ class LevelTerrainMap {
     if (this.level.mapLevel === 1) {
       this.levelOneMap();
     }
-  }
+  };
 
   /*
 		Creates a 2D-array pre-defined for the first level
@@ -457,10 +471,7 @@ class LevelTerrainMap {
     this.numOfTileColumns = 15;
     this.squareTileSidePixelLength = 40;
     this.squareTileBorderPixelWeight = 1;
-    this.destinationTile = { row: 4, column: 14 };
 
-    // edited map array: filled Base's 3x3 grid location with path values (0's)
-    // to disallow tower placement but allow enemies to reach base.
     this.mapArray = [
       [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -473,28 +484,104 @@ class LevelTerrainMap {
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1],
     ];
-  }
+	
+	this.startTile = {row: 5, column: 0};	
+    this.destinationTile = { row: 4, column: 14 };
+	
+	// first turn at tile [5,2], last turn at tile [4,9]
+	var tileTurns = [ [5,2], [2,2], [2,5], [6,5], [6,9], [4,9] ];
+	console.log(tileTurns);
+	this.initializePathTurns(tileTurns);
+	
+	/*
+	this.pathTurns.push(
+		{ row: 5, column: 2, 
+		  centerX: (this.tileSideLength * 2) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 5) + this.tileCenterOffset
+		}
+	);
+	this.pathTurns.push(
+		{ row: 2, column: 2, 
+		  centerX: (this.tileSideLength * 2) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 2) + this.tileCenterOffset
+		}
+	);	
+	this.pathTurns.push(
+		{ row: 2, column: 5, 
+		  centerX: (this.tileSideLength * 5) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 2) + this.tileCenterOffset
+		}
+	);	
+	this.pathTurns.push(
+		{ row: 6, column: 5, 
+		  centerX: (this.tileSideLength * 5) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 6) + this.tileCenterOffset
+		}
+	);	
+	this.pathTurns.push(
+		{ row: 6, column: 9, 
+		  centerX: (this.tileSideLength * 9) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 6) + this.tileCenterOffset
+		}
+	);	
+	this.pathTurns.push(
+		{ row: 4, column: 9, 
+		  centerX: (this.tileSideLength * 9) + this.tileCenterOffset
+		  centerY: (this.tileSideLength * 4) + this.tileCenterOffset
+		}
+	);	
+	*/
+	
+  };
+
+  /*
+		Initialize the array that contains all the tiles in which the path changes direction 
+		on the tile grid, and that each tile contains the xy coordinates marking their tile center
+		in which the enemy changes direction on
+		
+		Parameter:
+		
+		@tileTurns	the array containing all the tile locations where the path changes direction
+    */
+  initializePathTurns(tileTurns) {
+	  
+	// values used to calculate a square tile's center coordinates
+	var tileSideLength = this.level.drawScale * this.squareTileSidePixelLength;
+	var tileCenterOffset = tileSideLength / 2;	  	  
+	  
+	for (var i = 0; i < tileTurns.length; i++) {
+		var turnRow = tileTurns[i][0];
+		var turnColumn = tileTurns[i][1];
+		this.pathTurns.push(
+			{ row: turnRow, 
+			  column: turnColumn, 
+			  centerX: (tileSideLength * turnColumn) + tileCenterOffset,
+			  centerY: (tileSideLength * turnRow) + tileCenterOffset
+			}
+		);
+	}
+  };
 
   /*
 		Return the 2D terrain map array
 	*/
   getMapArray() {
     return this.mapArray;
-  }
+  };
 
   /*
 		Get the number of rows of the 2D terrain array
 	*/
   getNumOfRows() {
     return this.numOfTileRows;
-  }
+  };
 
   /*
 		Get the number of columns of the 2D terrain array
 	*/
   getNumOfColumns() {
     return this.numOfTileColumns;
-  }
+  };
 
   /*
 		Return the value of a specific tile of the 2D terrain map array
@@ -514,7 +601,7 @@ class LevelTerrainMap {
     } else {
       return "off_grid";
     }
-  }
+  };
 
   /*
 		Set the value of a specific tile of the 2D terrain map array
@@ -533,6 +620,13 @@ class LevelTerrainMap {
     ) {
       this.mapArray[row][column] = newValue;
     }
+  };
+
+  /*
+		Return the tile that is marked the start tile on this tile grid
+    */
+  getStart() {
+	return this.startTile;
   }
 
   /*
@@ -540,14 +634,21 @@ class LevelTerrainMap {
 	*/
   getDestination() {
     return this.destinationTile;
-  }
+  };
 
   /*
 		Return the pixel length of the side of the grid tile
 	*/
   getSquareTileSidePixelLength() {
     return this.squareTileSidePixelLength;
-  }
+  };
+  
+  /*
+		Return the pixel length of the side of the grid tile, but it is scaled to the map drawn on cavnas
+	*/
+  getScaledSquareTilePixelLength() {
+	  return this.squareTileSidePixelLength * this.level.drawScale;
+  };
 
   /*
 		Turn on or turn off the tile grid map that highlights the terrain tiles of the map
@@ -572,7 +673,7 @@ class LevelTerrainMap {
       this.level.ctx.strokeStyle = "black";
       this.level.ctx.closePath();
     }
-  }
+  };
 
   /*
 		Draw a transparent square of a specified color that highlights one terrain tile grid
@@ -629,5 +730,5 @@ class LevelTerrainMap {
     this.level.ctx.strokeStyle = "black";
     this.level.ctx.lineWidth = 1;
     this.level.ctx.closePath();
-  }
+  };
 }

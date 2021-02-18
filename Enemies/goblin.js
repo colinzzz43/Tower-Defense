@@ -82,7 +82,7 @@ class Goblin extends Enemy {
     this.attackRate = 0.7;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.7, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
