@@ -34,7 +34,7 @@ class Matter extends Tower {
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
-    this.damage = 15; // Damage: Strong
+    this.damage = 1; // Damage: Strong (shockwave damage scaled down because it lingers)
     this.cost = 75; // Cost: 75 coins
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;

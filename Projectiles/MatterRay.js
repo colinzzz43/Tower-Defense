@@ -10,14 +10,14 @@ class MatterRay extends Projectile {
 
         // animation stats
         this.scale = 1;
-        this.xOffset = 8.5 * this.scale;
-        this.yOffset = 8.5 * this.scale;
+        this.xOffset = 40 * this.scale;
+        this.yOffset = 40 * this.scale;
         this.frameWidth = 80;
         this.frameHeight = 80;
 
         // stats
         this.canRotate = false;
-        this.radius = 8.5 * this.scale;
+        this.radius = 10;
         this.maxSpeed = 150; // pixels per second
 
         var dist = distance(this, this.target);
@@ -30,6 +30,8 @@ class MatterRay extends Projectile {
     update() {
         this.x += this.velocity.x * this.gameEngine.clockTick;
         this.y += this.velocity.y * this.gameEngine.clockTick;
+
+        this.radius += .4;
     
         for (var i = 0; i < this.gameEngine.entities.length; i++) {
             var ent = this.gameEngine.entities[i];
@@ -47,5 +49,28 @@ class MatterRay extends Projectile {
             }
         }
     };
+
+    showBoundingCircle(ctx) {
+        // entity bound
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FD0";
+        ctx.fill();
+        ctx.stroke();
+      }
+
+    draw(ctx) {
+        this.showBoundingCircle(ctx);
+        if (this.canRotate) {
+          let angle = Math.atan2(this.velocity.y, this.velocity.x);
+          if (angle < 0) angle += 2 * Math.PI;
+          let degrees = Math.floor(angle * 180 / Math.PI);
     
+          this.drawAngle(ctx, degrees);
+    
+        } else {
+          this.animation.drawFrame(this.gameEngine.clockTick, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+        }
+      }
 }
