@@ -44,7 +44,12 @@ class SceneManager {
 	// Game speed
 	this.speed = 1;
 	this.game.speed = this.speed;
+    
+  // Play Background Music  
+  this.playBGM();
+    
   }
+  
   startTimer() {
     this.timerInterval = setInterval(() => {
       // The amount of time passed increments by one
@@ -54,6 +59,13 @@ class SceneManager {
         this.timeLeft = 0;
       }
     }, 1000);
+  }
+
+  playBGM() {
+    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
+    var BGM = new Audio("./soundeffects/BGM.mp3");
+    BGM.volume = 0.1;
+    BGM.play();
   }
 
   update() {

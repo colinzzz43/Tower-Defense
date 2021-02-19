@@ -113,15 +113,19 @@ class FlyingEye extends Enemy {
 		  return;
 		}
 
-		for (var i = 0; i < this.gameEngine.entities.length; i++) {
-		  var ent = this.gameEngine.entities[i];
-		  if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-			this.cooldownTime = 0;
-			this.state = 1;
-			this.attack(ent);
-			if (ent.removeFromWorld) this.state = 0;
-		  }
-		}
+    for (var i = 0; i < this.gameEngine.entities.length; i++) {
+      var ent = this.gameEngine.entities[i];
+      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+        this.cooldownTime = 0;
+        this.state = 1;
+        this.target = ent;
+        this.attack(this.target);
+      }
+    }
+
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
 
 		// only move when flying
 		if (this.state == 0) {

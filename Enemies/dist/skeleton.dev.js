@@ -61,7 +61,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.attackRate = 1; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.7, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -94,18 +94,16 @@ function (_Enemy) {
         var ent = this.gameEngine.entities[i];
 
         if (ent instanceof Tower) {
-          if (this.state != 3 && canSee(this, ent)) {
-            if (collide(this, ent) && this.cooldownTime > this.attackRate) {
-              this.state = 1;
-              this.cooldownTime = 0;
-              this.attack(ent);
-            }
-
-            if (ent.removeFromWorld) this.state = 0;
+          if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
+            this.state = 1;
+            this.cooldownTime = 0;
+            this.target = ent;
+            this.attack(this.target);
           }
         }
-      } // only move when running
+      }
 
+      if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when running
 
       if (this.state == 0) {
         // skeleton direction

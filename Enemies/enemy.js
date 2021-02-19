@@ -56,8 +56,10 @@ class Enemy {
     // slime determines which direction it must go on
     var coordinates = movement.getCoordinates();
 
+
     // Is the enemy on the terrain tile grid? If so then it has to be fixed on the path terrain until it reaches destination
     if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {  
+
 	  var direction = movement.getDirection();
 	  var nextTurnAt = movement.getTileToMakeTurnAt();
 	  
