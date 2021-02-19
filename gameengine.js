@@ -90,8 +90,21 @@ class GameEngine {
   draw() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.imageSmoothingEnabled = false;
+	var lastEntitiesToDraw = [];
     for (var i = 0; i < this.entities.length; i++) {
-      this.entities[i].draw(this.ctx);
+		
+		// If an entity is of a certain type such as SceneManager,
+		// then don't draw it until all other entities have been fully drawn.
+		if (!(this.entities[i] instanceof SceneManager)) {
+			this.entities[i].draw(this.ctx);
+		} else {
+			lastEntitiesToDraw.push(this.entities[i]);
+		}
+    }
+	
+	// Draw any entity types that are supposed to be drawn last in this draw method
+	for (var i = 0; i < lastEntitiesToDraw.length; i++) {
+		lastEntitiesToDraw[i].draw(this.ctx);
     }
   }
 
@@ -114,8 +127,8 @@ class GameEngine {
   }
 
   loop() {
-    this.clockTick = this.timer.tick();
-    this.update();
-    this.draw();
+	this.clockTick = this.timer.tick();
+	this.update();
+	this.draw();		
   }
 }
