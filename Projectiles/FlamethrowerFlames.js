@@ -29,25 +29,32 @@ class FlamethrowerFlames extends Projectile {
     }
 
     update() {
-        this.x += this.velocity.x * this.gameEngine.clockTick;
-        this.y += this.velocity.y * this.gameEngine.clockTick;
-    
+      this.projectileSpeedMultiplier = this.gameEngine.speed;	
+      this.projectilePaused = this.gameEngine.paused;	
+
+      if (this.projectilePaused) {
+        // do nothing
+      } else {
+        this.x += this.velocity.x * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+        this.y += this.velocity.y * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+
         for (var i = 0; i < this.gameEngine.entities.length; i++) {
-            let ent = this.gameEngine.entities[i];
-            if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
-                ent.takeHit(this.shootingEntity.damage);
-            }
+          let ent = this.gameEngine.entities[i];
+          if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
+            ent.takeHit(this.shootingEntity.damage);
+            this.removeFromWorld = true;
+          }
 
-            let dx = this.x - this.xStart;
-            let dy = this.y - this.yStart;
-            let distTraveled = Math.sqrt(dx * dx + dy * dy);
+          let dx = this.x - this.xStart;
+          let dy = this.y - this.yStart;
+          let distTraveled = Math.sqrt(dx * dx + dy * dy);
 
 
-            if (distTraveled > this.shootingEntity.shootingRadius) {
-                this.removeFromWorld = true;
-            }
-
-        }
+          if (distTraveled > this.shootingEntity.shootingRadius) {
+            this.removeFromWorld = true;
+          }
+        }			
+      }
     };
     
 }
