@@ -44,6 +44,8 @@ class Level {
 
     // Apply game engine
     this.gameEngine.level = this;
+	this.levelSpeedMultiplier = this.gameEngine.speed;
+	this.levelPaused = this.gameEngine.paused;
 
     // Initialize terrain map grid for this level
     this.terrainGridTiles = new LevelTerrainMap(this);
@@ -77,7 +79,8 @@ class Level {
 		Update does nothing to level
 	*/
   update() {
-    // do nothing for now
+	  this.levelSpeedMultiplier = this.gameEngine.speed;
+	  this.levelPaused = this.gameEngine.paused;
   };
 
   /*
@@ -183,8 +186,9 @@ class Level {
         var tileSideLength = that.getTilePixelImageSize();
         var x = canvasCoordinates.x;
         var y = canvasCoordinates.y;
-        var row = Math.floor(y / (tileSideLength * that.interactionScale));
-        var column = Math.floor(x / (tileSideLength * that.interactionScale));
+        var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+        var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+//		console.log(`Clicked on tile {${row}, ${column}}`);
         var topLeftX = that.xCanvas * that.interactionScale;
         var topLeftY = that.yCanvas * that.interactionScale;
         var canvasWidth =
@@ -231,10 +235,10 @@ class Level {
         var tileSideLength = that.getTilePixelImageSize();
         var x = canvasCoordinates.x;
         var y = canvasCoordinates.y;
-        var row = Math.floor(y / (tileSideLength * that.interactionScale));
-        var column = Math.floor(x / (tileSideLength * that.interactionScale));
-        var topLeftX = that.xCanvas * that.interactionScale;
-        var topLeftY = that.yCanvas * that.interactionScale;
+        var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+        var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+        var topLeftX = (that.xCanvas * that.interactionScale);
+        var topLeftY = (that.yCanvas * that.interactionScale);
         var canvasWidth =
           that.drawScale * that.mapWidth * that.interactionScale;
         var canvasHeight =
@@ -288,10 +292,10 @@ class Level {
 		@column		the column of the tile grid where new tower will be placed
 	*/
   placeTower(row, column) {
-    var xTower = column * 40 * this.drawScale;
-    var yTower = row * 40 * this.drawScale;
-    var xOffset = 20 * this.drawScale;
-    var yOffset = 20 * this.drawScale;
+    var xTower = (column * this.getTilePixelImageSize()) + this.xCanvas;
+    var yTower = (row * this.getTilePixelImageSize()) + this.yCanvas;
+    var xOffset = (this.terrainGridTiles.squareTileSidePixelLength / 2) * this.drawScale;
+    var yOffset = (this.terrainGridTiles.squareTileSidePixelLength / 2) * this.drawScale;
     switch (this.placeTowerType) {
       case "Pistol":
         if (this.enoughPurchasePower(Pistol.cost)) {
@@ -428,6 +432,8 @@ class LevelTerrainMap {
 	
 	// The grid map array itself
     this.mapArray = null;
+	this.xCanvas = this.level.xCanvas;
+	this.yCanvas = this.level.yCanvas;
 	
 	// Number of tile rows and columns, the pixel length of each tile, and thickness of tile border
     this.numOfTileRows = null;
@@ -437,6 +443,7 @@ class LevelTerrainMap {
 	
 	// tile where fixed path begins
 	this.startTile = null;
+	this.startDirection = null;
 	
 	// tile where fixed path ends
     this.destinationTile = null;
@@ -485,53 +492,14 @@ class LevelTerrainMap {
       [2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1],
     ];
 	
-	this.startTile = {row: 5, column: 0};	
+	this.startTile = {row: 5, column: 0};
+	this.startDirection = "right";
     this.destinationTile = { row: 4, column: 14 };
 	
 	// first turn at tile [5,2], last turn at tile [4,9]
 	var tileTurns = [ [5,2], [2,2], [2,5], [6,5], [6,9], [4,9] ];
 	console.log(tileTurns);
-	this.initializePathTurns(tileTurns);
-	
-	/*
-	this.pathTurns.push(
-		{ row: 5, column: 2, 
-		  centerX: (this.tileSideLength * 2) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 5) + this.tileCenterOffset
-		}
-	);
-	this.pathTurns.push(
-		{ row: 2, column: 2, 
-		  centerX: (this.tileSideLength * 2) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 2) + this.tileCenterOffset
-		}
-	);	
-	this.pathTurns.push(
-		{ row: 2, column: 5, 
-		  centerX: (this.tileSideLength * 5) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 2) + this.tileCenterOffset
-		}
-	);	
-	this.pathTurns.push(
-		{ row: 6, column: 5, 
-		  centerX: (this.tileSideLength * 5) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 6) + this.tileCenterOffset
-		}
-	);	
-	this.pathTurns.push(
-		{ row: 6, column: 9, 
-		  centerX: (this.tileSideLength * 9) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 6) + this.tileCenterOffset
-		}
-	);	
-	this.pathTurns.push(
-		{ row: 4, column: 9, 
-		  centerX: (this.tileSideLength * 9) + this.tileCenterOffset
-		  centerY: (this.tileSideLength * 4) + this.tileCenterOffset
-		}
-	);	
-	*/
-	
+	this.initializePathTurns(tileTurns);	
   };
 
   /*
@@ -555,10 +523,12 @@ class LevelTerrainMap {
 		this.pathTurns.push(
 			{ row: turnRow, 
 			  column: turnColumn, 
-			  centerX: (tileSideLength * turnColumn) + tileCenterOffset,
-			  centerY: (tileSideLength * turnRow) + tileCenterOffset
+			  centerX: (tileSideLength * turnColumn) + tileCenterOffset + this.xCanvas,
+			  centerY: (tileSideLength * turnRow) + tileCenterOffset + this.yCanvas
 			}
 		);
+//		console.log(`New Path Turn: ${this.pathTurns[i].row}, ${this.pathTurns[i].column},
+//			${this.pathTurns[i].centerX}, ${this.pathTurns[i].centerY}`);
 	}
   };
 
@@ -661,12 +631,12 @@ class LevelTerrainMap {
       var square = this.squareTileSidePixelLength * this.level.drawScale;
       this.level.ctx.beginPath();
       this.level.ctx.setLineDash([]);
-      this.level.ctx.lineWidth =
-        this.squareTileBorderPixelWeight * this.level.drawScale;
+      this.level.ctx.lineWidth = 1;
+      this.squareTileBorderPixelWeight * this.level.drawScale;
       this.level.ctx.strokeStyle = "gold";
       for (var i = 0; i < this.numOfTileRows; i++) {
         for (var j = 0; j < this.numOfTileColumns; j++) {
-          this.level.ctx.strokeRect(j * square, i * square, square, square);
+          this.level.ctx.strokeRect((j * square) + this.xCanvas, (i * square) + this.yCanvas, square, square);
         }
       }
       this.level.ctx.lineWidth = 1;
@@ -692,29 +662,34 @@ class LevelTerrainMap {
     this.level.ctx.lineWidth = this.squareTileBorderPixelWeight * 3;
     this.level.ctx.strokeStyle = color;
     this.level.ctx.setLineDash([]);
+	var xOffset = this.level.xCanvas;
+	var yOffset = this.level.yCanvas;
 
     // if mouse is "onMap" then draw highlight; otherwise don't draw a highlight
     if (mouse === "onMap") {
       this.level.ctx.rect(
-        column * squarePixelSide,
-        row * squarePixelSide,
+        (column * squarePixelSide) + xOffset,
+        (row * squarePixelSide) + yOffset,
         squarePixelSide,
         squarePixelSide
       );
       if (color === "red") {
         // if the highlight color is red, draw an 'X' inside the red box
-        this.level.ctx.moveTo(column * squarePixelSide, row * squarePixelSide);
+        this.level.ctx.moveTo(
+			(column * squarePixelSide) + xOffset, 
+			(row * squarePixelSide) + yOffset
+		);
         this.level.ctx.lineTo(
-          (column + 1) * squarePixelSide,
-          (row + 1) * squarePixelSide
+          ((column + 1) * squarePixelSide) + xOffset,
+          ((row + 1) * squarePixelSide) + yOffset
         );
         this.level.ctx.moveTo(
-          column * squarePixelSide,
-          (row + 1) * squarePixelSide
+          (column * squarePixelSide) + xOffset,
+          ((row + 1) * squarePixelSide) + yOffset
         );
         this.level.ctx.lineTo(
-          (column + 1) * squarePixelSide,
-          row * squarePixelSide
+          ((column + 1) * squarePixelSide) + xOffset,
+          (row * squarePixelSide) + yOffset
         );
       }
     } else {

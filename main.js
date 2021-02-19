@@ -73,10 +73,12 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
   
+  var moveX = 150;
+  
   gameEngine.init(ctx);
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
-  var level = new Level(gameEngine, map, 0, 0, 0, 0, 600, 400, 1.5, 1, ctx);
+  var level = new Level(gameEngine, map, 150, 0, 0, 0, 600, 400, 1.5, 1, ctx);
 
   // tower icon buttons
   var towerIconImages = [];
@@ -98,55 +100,58 @@ ASSET_MANAGER.downloadAll(function () {
   towerIconImages.push(rocketImage);
   var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
   towerIconImages.push(spazerImage);
-  var towerStoreMenu = new TowerStoreMenu(gameEngine, 905, 5, towerIconImages, ctx, level);
+  var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, towerIconImages, ctx, level);
+  
+  var userMenu = new UserMenu(gameEngine, 5, 5, ctx, level);
 
-  var base = new Base(gameEngine, 810, 270);
+  var base = new Base(gameEngine, 960, 270);
   var Scene = new SceneManager(gameEngine);
 
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
   gameEngine.addEntity(base);
   gameEngine.addEntity(towerStoreMenu);
+  gameEngine.addEntity(userMenu);
 
   gameEngine.addEntity(Scene);
   
   // enemy spawner
-  let x = 80;
+  let x = 200;
   let y = 330;
   let initalSpawnTime = 1;
   let interval = 2;
   let n = 2;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
 
-   x = 80;
+   x = 200;
    y = 330;
    initalSpawnTime = 5;
    interval = 2;
    n = 10;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
-   x = 80;
+   x = 200;
    y = 330;
    initalSpawnTime = 10;
    interval = 2;
    n = 2;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
 
-   x = 80;
+   x = 200;
    y = 330;
    initalSpawnTime = 15;
    interval = 2;
    n = 2;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
 
-   x = 80;
+   x = 200;
    y = 330;
    initalSpawnTime = 20;
    interval = 2;
    n = 2;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
 
-   x = 80;
+   x = 200;
    y = 330;
    initalSpawnTime = 25;
    interval = 2;

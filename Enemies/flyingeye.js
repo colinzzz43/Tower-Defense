@@ -96,46 +96,51 @@ class FlyingEye extends Enemy {
   };
 
   update() {
-    if (this.paused) {
+	this.enemyPaused = this.level.levelPaused;
+	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+	this.movement.speed = 1.5 * this.enemySpeedMultipler;
+    if (this.enemyPaused) {
       // pause animation at certain frame
-    }
-    this.cooldownTime += this.gameEngine.clockTick;
-    this.gameTime += this.gameEngine.clockTick;
-
-    // spawn enemy if elapsed game time is greater than time to spawn
-    // else do not do anything
-    if (this.gameTime >= this.spawnTime) {
-      this.exist = true;
     } else {
-      return;
-    }
+		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-    for (var i = 0; i < this.gameEngine.entities.length; i++) {
-      var ent = this.gameEngine.entities[i];
-      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-        this.cooldownTime = 0;
-        this.state = 1;
-        this.attack(ent);
-        if (ent.removeFromWorld) this.state = 0;
-      }
-    }
+		// spawn enemy if elapsed game time is greater than time to spawn
+		// else do not do anything
+		if (this.gameTime >= this.spawnTime) {
+		  this.exist = true;
+		} else {
+		  return;
+		}
 
-    // only move when flying
-    if (this.state == 0) {
-      // direction
-      this.determineDirection(this.movement);
+		for (var i = 0; i < this.gameEngine.entities.length; i++) {
+		  var ent = this.gameEngine.entities[i];
+		  if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+			this.cooldownTime = 0;
+			this.state = 1;
+			this.attack(ent);
+			if (ent.removeFromWorld) this.state = 0;
+		  }
+		}
 
-      // movement
-      let position = this.getMovement(this.movement, this.x, this.y);
-      this.x = position.x;
-      this.y = position.y;
-      this.movement.updatePosition(this.x, this.y);
-    }
+		// only move when flying
+		if (this.state == 0) {
+		  // direction
+		  this.determineDirection(this.movement);
 
-    if (this.state == 3) {
-      this.deathAnimationTime += this.gameEngine.clockTick;
-      if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
-    }
+		  // movement
+		  let position = this.getMovement(this.movement, this.x, this.y);
+		  this.x = position.x;
+		  this.y = position.y;
+		  this.movement.updatePosition(this.x, this.y);
+		}
+
+		if (this.state == 3) {
+		  this.deathAnimationTime += this.gameEngine.clockTick;
+		  if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
+		}		
+	}
+
   };
 
   draw(context) {
@@ -164,8 +169,16 @@ class FlyingEye extends Enemy {
       position
     );
 
+	// the animation speed multiplier
+	var speedMultiplier = this.enemySpeedMultipler;
+	
+	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+	if (this.enemyPaused) {
+		speedMultiplier = 0;
+	};
+	
     this.animations[this.state].drawFrame(
-      this.gameEngine.clockTick,
+      this.gameEngine.clockTick * speedMultiplier,
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,

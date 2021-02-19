@@ -14,8 +14,8 @@ class EnemyMovement {
 		
 		// The tile on the level grid of where the enemy is located
 		this.tileSideScale = this.levelGrid.getScaledSquareTilePixelLength();
-		this.currentTileRow = Math.floor(this.y/this.tileSideScale);
-		this.currentTileColumn = Math.floor(this.x/this.tileSideScale);
+		this.currentTileRow = Math.floor( (this.y - this.levelGrid.yCanvas)  /this.tileSideScale);
+		this.currentTileColumn = Math.floor( (this.x - this.levelGrid.xCanvas)  /this.tileSideScale);
 		
 		// The possible directions for the enemy to go
 		this.up = "up";
@@ -38,8 +38,11 @@ class EnemyMovement {
 		@column		 the tile column where the enemy currently is
 	*/
 	changeDirection(row, column) {
+//		console.log(`Turn at row ${row}, column ${column}`);
 		switch(this.direction) {
 			case "up":   // if enemy is currently moving vertically up on map, make it go horizontally left or right relative to view from map
+//				console.log(`Next tile in Left Direction: ${this.levelGrid.getTile(row, column - 1)}`);
+//				console.log(`Next tile in Right Direction: ${this.levelGrid.getTile(row, column + 1)}`);				
 				if (this.levelGrid.getTile(row, column - 1) === 0) {
 					this.direction = "left";
 				} else {
@@ -48,8 +51,7 @@ class EnemyMovement {
 				break;
 			case "right":  // if enemy is currently horizontally right on map, make it go vertically up or down relative to view from map
 				if (this.levelGrid.getTile(row - 1, column) === 0) {					
-					this.direction = "up";
-					
+					this.direction = "up";					
 				} else {
 					this.direction = "down";
 				}
@@ -73,6 +75,7 @@ class EnemyMovement {
 				break;
 		}
 		this.turns++;
+//		console.log(`Enemy made turn number ${this.turns}, now moving ${this.direction}`);
 	}
 	
 	
@@ -121,8 +124,8 @@ class EnemyMovement {
 		this.x = x;
 		this.y = y;
 			
-		this.currentTileRow = Math.floor(this.y / this.tileSideScale);
-		this.currentTileColumn = Math.floor(this.x / this.tileSideScale);
+		this.currentTileRow = Math.floor( (this.y-this.levelGrid.yCanvas) / this.tileSideScale);
+		this.currentTileColumn = Math.floor( (this.x-this.levelGrid.xCanvas) / this.tileSideScale);
 	}
 	
 	
