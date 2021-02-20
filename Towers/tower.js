@@ -71,7 +71,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost) {
+    if (this.user.balance >= cost && this.level < 3) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }
