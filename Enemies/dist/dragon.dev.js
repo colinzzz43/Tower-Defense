@@ -81,40 +81,44 @@ function (_Enemy) {
   _createClass(Dragon, [{
     key: "update",
     value: function update() {
-      if (this.paused) {// pause animation at certain frame
-      }
+      this.enemyPaused = this.level.levelPaused;
+      this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+      this.movement.speed = 1.5 * this.enemySpeedMultipler;
 
-      this.cooldownTime += this.gameEngine.clockTick;
-      this.gameTime += this.gameEngine.clockTick; // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
+      if (this.enemyPaused) {// pause animation at certain frame
       } else {
-        return;
-      }
+        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+        // else do not do anything
 
-      for (var i = 0; i < this.gameEngine.entities.length; i++) {
-        var ent = this.gameEngine.entities[i];
-
-        if (ent instanceof Tower) {
-          if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-            this.cooldownTime = 0;
-            this.attack(ent);
-          }
-
-          if (ent.removeFromWorld) this.state = 0;
+        if (this.gameTime >= this.spawnTime) {
+          this.exist = true;
+        } else {
+          return;
         }
-      } // only move when flying
-      // skeleton direction
+
+        for (var i = 0; i < this.gameEngine.entities.length; i++) {
+          var ent = this.gameEngine.entities[i];
+
+          if (ent instanceof Tower) {
+            if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+              this.cooldownTime = 0;
+              this.attack(ent);
+            }
+
+            if (ent.removeFromWorld) this.state = 0;
+          }
+        } // only move when flying
+        // skeleton direction
 
 
-      this.determineDirection(this.movement); // skeleton movement
+        this.determineDirection(this.movement); // skeleton movement
 
-      var position = this.getMovement(this.movement, this.x, this.y);
-      this.x = position.x;
-      this.y = position.y;
-      this.movement.updatePosition(this.x, this.y);
+        var position = this.getMovement(this.movement, this.x, this.y);
+        this.x = position.x;
+        this.y = position.y;
+        this.movement.updatePosition(this.x, this.y);
+      }
     }
   }, {
     key: "draw",
@@ -135,8 +139,16 @@ function (_Enemy) {
       // this.showBounds(context, position, this.shootingRadius, true); // visual bound
       // health bar
 
-      this.drawHealth(context, this.x, this.y - this.yOffset - 10, this.HP, this.maxHP, this.movement, position);
-      this.animation.drawFrame(this.gameEngine.clockTick, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.drawHealth(context, this.x, this.y - this.yOffset - 10, this.HP, this.maxHP, this.movement, position); // the animation speed multiplier
+
+      var speedMultiplier = this.enemySpeedMultipler; // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+
+      if (this.enemyPaused) {
+        speedMultiplier = 0;
+      }
+
+      ;
+      this.animation.drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "attack",

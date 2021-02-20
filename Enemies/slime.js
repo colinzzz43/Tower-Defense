@@ -39,63 +39,67 @@ class Slime extends Enemy {
   }
 
   update() {
-    if (this.paused) {
+	this.enemyPaused = this.level.levelPaused;
+	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+	this.movement.speed = 1 * this.enemySpeedMultipler;
+    if (this.enemyPaused) {
       // pause animation at certain frame
-    }
-
-    this.cooldownTime += this.gameEngine.clockTick;
-    this.gameTime += this.gameEngine.clockTick;
-
-    // spawn enemy if elapsed game time is greater than time to spawn
-    // else do not do anything
-    if (this.gameTime >= this.spawnTime) {
-      this.exist = true;
     } else {
-      return;
-    }
+		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-    var that = this;
-    this.gameEngine.entities.forEach(function (entity) {
-      // tower detection
-      if (entity instanceof Tower) {
-        // tower shoots enemy in shooting bounds
-        if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-          that.cooldownTime = 0;
-          that.attack(entity);
-          // that.printTowerHP(entity.HP);
-        }
-      }
-      // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
-      // This section might need to be re-worked to deal with this collision issue
+		// spawn enemy if elapsed game time is greater than time to spawn
+		// else do not do anything
+		if (this.gameTime >= this.spawnTime) {
+		  this.exist = true;
+		} else {
+		  return;
+		}
 
-      // slime detection
-      /*
-        if (entity instanceof Slime) {
-          if (entity !== that && collide(that, entity)) {
-            // slimes collide with each other
-            var dist = distance(that, entity);
-            var delta = that.radius + entity.radius - dist;
-            var difX = (that.x - entity.x) / dist;
-            var difY = (that.y - entity.y) / dist;
-  
-            that.x += (difX * delta) / 2;
-            that.y += (difY * delta) / 2;
-            entity.x -= (difX * delta) / 2;
-            entity.y -= (difY * delta) / 2;
-          }
-        }
-        */
-    });
+		var that = this;
+		this.gameEngine.entities.forEach(function (entity) {
+		  // tower detection
+		  if (entity instanceof Tower) {
+			// tower shoots enemy in shooting bounds
+			if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+			  that.cooldownTime = 0;
+			  that.attack(entity);
+			  // that.printTowerHP(entity.HP);
+			}
+		  }
+		  // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
+		  // This section might need to be re-worked to deal with this collision issue
 
-    // slime direction
-    this.determineDirection(this.movement);
+		  // slime detection
+		  /*
+			if (entity instanceof Slime) {
+			  if (entity !== that && collide(that, entity)) {
+				// slimes collide with each other
+				var dist = distance(that, entity);
+				var delta = that.radius + entity.radius - dist;
+				var difX = (that.x - entity.x) / dist;
+				var difY = (that.y - entity.y) / dist;
+	  
+				that.x += (difX * delta) / 2;
+				that.y += (difY * delta) / 2;
+				entity.x -= (difX * delta) / 2;
+				entity.y -= (difY * delta) / 2;
+			  }
+			}
+			*/
+		});
 
-    // slime movement
-    let position = this.getMovement(this.movement, this.x, this.y);
-    this.x = position.x;
-    this.y = position.y;
-    this.movement.updatePosition(this.x, this.y);
-  }
+		// slime direction
+		this.determineDirection(this.movement);
+
+		// slime movement
+		let position = this.getMovement(this.movement, this.x, this.y);
+		this.x = position.x;
+		this.y = position.y;
+		this.movement.updatePosition(this.x, this.y);		
+	}
+
+  };
 
   // printTowerHP(HP) {
   //   document.getElementById("printTowerHP").innerHTML = HP;
@@ -113,8 +117,8 @@ class Slime extends Enemy {
     let position = { x: this.x, y: this.y };
 
     // draw bounds
-    this.showBounds(context, position, this.radius, false); // entity radius
-    this.showBounds(context, position, this.shootingRadius, true); // shooting bound
+//    this.showBounds(context, position, this.radius, false); // entity radius
+//    this.showBounds(context, position, this.shootingRadius, true); // shooting bound
 
     // health bar
     this.drawHealth(
@@ -127,8 +131,16 @@ class Slime extends Enemy {
       position
     );
 
+	// the animation speed multiplier
+	var speedMultiplier = this.enemySpeedMultipler;
+	
+	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+	if (this.enemyPaused) {
+		speedMultiplier = 0;
+	};
+	
     this.animation.drawFrame(
-      this.gameEngine.clockTick,
+      (this.gameEngine.clockTick * speedMultiplier),
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,

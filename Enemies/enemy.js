@@ -10,7 +10,7 @@ class Enemy {
     this.frameWidth = 150;
 
     // states
-    this.paused = false; // used when HUD is set up
+    this.enemyPaused = this.level.levelPaused; // used when HUD is set up
 
     // stats
     this.damageAgainstBase = 1;
@@ -25,6 +25,9 @@ class Enemy {
 
     // does not exist until spawned
     this.exist = false;
+	
+	// speed multiplier
+	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
   }
 
   // show bounds based on given radius
@@ -49,12 +52,14 @@ class Enemy {
   }
 
   determineDirection(movement) {
+	  
     // slime determines which direction it must go on
     var coordinates = movement.getCoordinates();
-    //	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
 
-    // is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
-    if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {
+
+    // Is the enemy on the terrain tile grid? If so then it has to be fixed on the path terrain until it reaches destination
+    if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {  
+
 	  var direction = movement.getDirection();
 	  var nextTurnAt = movement.getTileToMakeTurnAt();
 	  
@@ -65,41 +70,41 @@ class Enemy {
 		  case "up":
 			if (coordinates.x === nextTurnAt.centerX && coordinates.y <= nextTurnAt.centerY) {
 				coordinates.y = nextTurnAt.centerY;
-				coordinates.tileRow = Math.floor(coordinates.y / movement.tileSideScale);
+				coordinates.tileRow = Math.floor( (coordinates.y - this.level.yCanvas) / movement.tileSideScale);
 				this.y = nextTurnAt.centerY;
 			}
 			break;
 		  case "right":		
 			if (coordinates.x >= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
 				coordinates.x = nextTurnAt.centerX;	
-				coordinates.tileColumn = Math.floor(coordinates.x / movement.tileSideScale);				
+				coordinates.tileColumn = Math.floor( (coordinates.x - this.level.xCanvas) / movement.tileSideScale);				
 				this.x = nextTurnAt.centerX;				
 			}				
 			break;
 		  case "down":
 			if (coordinates.x === nextTurnAt.centerX && coordinates.y >= nextTurnAt.centerY) {
 				coordinates.y = nextTurnAt.centerY;	
-				coordinates.tileRow = Math.floor(coordinates.y / movement.tileSideScale);				
+				coordinates.tileRow = Math.floor( (coordinates.y - this.level.yCanvas) / movement.tileSideScale);				
 				this.y = nextTurnAt.centerY;				
 			}				
 			break;  
 		  case "left":
 			if (coordinates.x <= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
 				coordinates.x = nextTurnAt.centerX;		
-				coordinates.tileColumn = Math.floor(coordinates.x / movement.tileSideScale);				
+				coordinates.tileColumn = Math.floor( (coordinates.x - this.level.xCanvas) / movement.tileSideScale);				
 				this.x = nextTurnAt.centerX;					
 			}				
 			break;
 	  }
-
-      // has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
+	  
+      // Has it reached the center of the tile it's located in? If it has then enemy takes note of the next tile in its current direction	 
       if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
         var currentTileInCurrentDirection = this.grid.getTile(
           coordinates.tileRow,
           coordinates.tileColumn
         );
-        var nextTileInCurrentDirection = movement.getNextTerrainTileInCurrentDirection();
-
+        var nextTileInCurrentDirection = movement.getNextTerrainTileInCurrentDirection();	
+		
         // if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
         if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
           movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
@@ -110,7 +115,11 @@ class Enemy {
 
   getMovement(movement, x, y) {
     // slime movement
-    var speed = movement.getSpeed();
+	if (!this.enemyPaused) {	
+		var speed = movement.getSpeed();
+	} else {
+		var speed = 0;
+	}
     if (movement.getDirection() === "up") {
       y += -speed;
     } else if (movement.getDirection() === "right") {

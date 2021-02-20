@@ -58,7 +58,7 @@ function (_Enemy) {
 
     _this.xOffset = (_this.frameWidth / 2 + 3) * _this.scale;
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
-    _this.attackRate = 1; // level grid and enemy movement
+    _this.attackRate = 4.5; // level grid and enemy movement
 
     _this.movement = new EnemyMovement(1.5, "right", _this.x, _this.y, _this.grid);
     return _this;
@@ -76,50 +76,54 @@ function (_Enemy) {
   }, {
     key: "update",
     value: function update() {
-      if (this.paused) {// pause animation at certain frame
-      }
+      this.enemyPaused = this.level.levelPaused;
+      this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+      this.movement.speed = 1.7 * this.enemySpeedMultipler;
 
-      this.cooldownTime += this.gameEngine.clockTick;
-      this.gameTime += this.gameEngine.clockTick; // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
+      if (this.enemyPaused) {// pause animation at certain frame
       } else {
-        return;
-      }
+        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+        // else do not do anything
 
-      for (var i = 0; i < this.gameEngine.entities.length; i++) {
-        var ent = this.gameEngine.entities[i];
+        if (this.gameTime >= this.spawnTime) {
+          this.exist = true;
+        } else {
+          return;
+        }
 
-        if (ent instanceof Tower) {
-          if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.target = ent;
-            this.attack(this.target);
+        for (var i = 0; i < this.gameEngine.entities.length; i++) {
+          var ent = this.gameEngine.entities[i];
+
+          if (ent instanceof Tower) {
+            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
           }
         }
-      }
 
-      if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when running
+        if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when running
 
-      if (this.state == 0) {
-        // skeleton direction
-        this.determineDirection(this.movement); // skeleton movement
+        if (this.state == 0) {
+          // skeleton direction
+          this.determineDirection(this.movement); // skeleton movement
 
-        var position = this.getMovement(this.movement, this.x, this.y);
-        this.x = position.x;
-        this.y = position.y;
-        this.movement.updatePosition(this.x, this.y);
-      }
+          var position = this.getMovement(this.movement, this.x, this.y);
+          this.x = position.x;
+          this.y = position.y;
+          this.movement.updatePosition(this.x, this.y);
+        }
 
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
+        if (this.state == 3) {
+          this.deathAnimationTime += this.gameEngine.clockTick;
 
-        if (this.deathAnimationTime > 0.8) {
-          this.removeFromWorld = true;
-          this.isDead();
+          if (this.deathAnimationTime > 0.8) {
+            this.removeFromWorld = true;
+            this.isDead();
+          }
         }
       }
     }
@@ -142,8 +146,16 @@ function (_Enemy) {
       // this.showBounds(context, position, this.visualRadius, true); // visual bound
       // health bar
 
-      this.drawHealth(context, this.x, this.y - this.yOffset / 2, this.HP, this.maxHP, this.movement, position);
-      this.animations[this.state].drawFrame(this.gameEngine.clockTick, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.drawHealth(context, this.x, this.y - this.yOffset / 2, this.HP, this.maxHP, this.movement, position); // the animation speed multiplier
+
+      var speedMultiplier = this.enemySpeedMultipler; // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+
+      if (this.enemyPaused) {
+        speedMultiplier = 0;
+      }
+
+      ;
+      this.animations[this.state].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",

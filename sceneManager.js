@@ -3,6 +3,9 @@ class SceneManager {
     this.game = game;
     this.game.camera = this;
 
+    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
+    this.BGM = new Audio("./soundeffects/BGM.mp3");
+
     this.coinAnimation = new Animator(
       ASSET_MANAGER.getAsset("./sprites/other/coin2.png"),
       0,
@@ -28,9 +31,28 @@ class SceneManager {
     this.timeLeft = this.TIME_LIMIT;
     this.timerInterval = null;
     this.startTimer();
+	
+	// Level Map Screen
+	this.levelMap = {
+		xCanvas: 150,
+		yCanvas: 0,
+		width: 900,
+		height: 600
+	}
+	
+	// Pause Screen
+	this.paused = false;
+	this.game.paused = this.paused;
+	
+	// Game speed
+	this.speed = 1;
+	this.game.speed = this.speed;
+    
+  this.muted = false;
 
-    this.playBGM();
+
   }
+  
   startTimer() {
     this.timerInterval = setInterval(() => {
       // The amount of time passed increments by one
@@ -42,14 +64,12 @@ class SceneManager {
     }, 1000);
   }
 
-  playBGM() {
-    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
-    var BGM = new Audio("./soundeffects/BGM.mp3");
-    BGM.volume = 0.1;
-    BGM.play();
-  }
+
 
   update() {
+  this.muted = this.game.muted;
+	this.speed = this.game.speed;
+	this.paused = this.game.paused;
     this.HP = this.game.base.HP;
     this.coins = this.user.balance;
     this.scores = this.game.user.scores;
@@ -66,6 +86,12 @@ class SceneManager {
       1.035 * this.height,
       3
     );
+	if (this.paused) this.drawPauseScreen(ctx);
+  if (this.muted || this.paused) this.muteBGM()
+  else {
+    this.BGM.volume = 0.1;
+    this.BGM.play(); 
+  };
   }
   gameStatsDisplay(ctx) {
     ctx.font = "30px Langar, cursive, serif, sans-serif";
@@ -94,4 +120,34 @@ class SceneManager {
   // stats: score, currency, HP, waves
   // Store
   //
+
+  muteBGM () {
+      this.BGM.volume = 0;
+      this.BGM.play();
+     
+  }
+  
+  drawPauseScreen(ctx) {
+	ctx.beginPath();
+	ctx.globalAlpha = 0.5;
+	ctx.fillStyle = "black";
+	ctx.fillRect(
+		this.levelMap.xCanvas, 
+		this.levelMap.yCanvas, 
+		this.levelMap.width, 
+		this.levelMap.height
+	);
+	ctx.globalAlpha = 1;	  
+	ctx.fillStyle = "white";
+	ctx.font = "60px Langar, cursive, serif, sans-serif";	
+	var canvasWidthCenter = this.game.ctx.canvas.width;
+	var centerX = (canvasWidthCenter - (this.game.ctx.measureText("Paused").width)) / 2 ;
+	ctx.fillText("Paused", centerX, 600 / 2);
+	ctx.font = "20px Langar, cursive, serif, sans-serif";	
+	var pauseSubtitle = "Click Resume to Continue Game"
+	centerX = (canvasWidthCenter - (this.game.ctx.measureText(pauseSubtitle).width)) / 2 ;
+	ctx.fillText(pauseSubtitle, centerX, 700 / 2);	
+	ctx.closePath();
+  }
+ 
 }

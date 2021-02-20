@@ -7,29 +7,42 @@ class Tower {
     this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
     this.towerLevel = 1;
+	
+	// speed multiplier
+	this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
+	
+	// pause state
+	this.towerPaused = this.level.levelPaused;
   }
 
   update() {
-    this.elapsedTime += this.gameEngine.clockTick;
-    var that = this;
-    // tower detection
-    this.gameEngine.entities.forEach(function (entity) {
-      // tower detection
-      if (entity instanceof Enemy) {
-        // tower shoots enemy in shooting bounds
-        if (
-          canShoot(that, entity) &&
-          that.elapsedTime > that.fireRate &&
-          entity.exist
-        ) {
-          that.elapsedTime = 0;
-          that.facing = getFacing(entity, that);
-          that.shoot(entity);
-          // console.log("Slime HP: ", entity.HP);
-          // that.printMonsterHP(entity.HP);
-        }
-      }
-    });
+	this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
+	this.towerPaused = this.level.levelPaused;
+	if (this.towerPaused) {
+		// do nothing
+	} else {
+		this.elapsedTime += (this.gameEngine.clockTick * this.towerSpeedMultipler);
+		var that = this;
+		// tower detection
+		this.gameEngine.entities.forEach(function (entity) {
+		  // tower detection
+		  if (entity instanceof Enemy) {
+			// tower shoots enemy in shooting bounds
+			if (
+			  canShoot(that, entity) &&
+			  that.elapsedTime > that.fireRate &&
+			  entity.exist
+			) {
+			  that.elapsedTime = 0;
+			  that.facing = getFacing(entity, that);
+			  that.shoot(entity);
+			  // console.log("Slime HP: ", entity.HP);
+			  // that.printMonsterHP(entity.HP);
+			}
+		  }
+		});		
+	}
+	
   }
 
   showBoundingCircle(context) {
@@ -58,7 +71,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost) {
+    if (this.user.balance >= cost && this.level < 3) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }
@@ -89,8 +102,8 @@ class Tower {
 
   getTilePosition() {
     var tileSideLength = this.level.getTilePixelImageSize();
-    var row = Math.floor(this.y / tileSideLength);
-    var column = Math.floor(this.x / tileSideLength);
+    var row = Math.floor( (this.y - this.level.yCanvas) / tileSideLength);
+    var column = Math.floor( (this.x - this.level.xCanvas) / tileSideLength);
     return { row: row, column: column };
   }
 
@@ -116,8 +129,14 @@ class Tower {
       100,
       10
     );
+	
+	var speedMultiplier = this.towerSpeedMultipler;
+	if (this.towerPaused) {
+		speedMultiplier = 0;
+	}
+	
     this.animations[this.facing].drawFrame(
-      this.gameEngine.clockTick,
+      (this.gameEngine.clockTick * speedMultiplier),
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,

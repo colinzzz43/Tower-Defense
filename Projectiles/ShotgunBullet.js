@@ -27,17 +27,23 @@ class ShotgunBullet extends Projectile {
     }
 
     update() {
-        this.x += this.velocity.x * this.gameEngine.clockTick;
-        this.y += this.velocity.y * this.gameEngine.clockTick;
-    
-        for (var i = 0; i < this.gameEngine.entities.length; i++) {
-            var ent = this.gameEngine.entities[i];
-            if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
-                ent.takeHit(this.shootingEntity.damage);
-                this.removeFromWorld = true;
-            }
-
-        }
+		this.projectileSpeedMultiplier = this.gameEngine.speed;	
+		this.projectilePaused = this.gameEngine.paused;	
+		
+		if (this.projectilePaused) {
+			// do nothing
+		} else {
+			this.x += this.velocity.x * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+			this.y += this.velocity.y * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+		
+			for (var i = 0; i < this.gameEngine.entities.length; i++) {
+				var ent = this.gameEngine.entities[i];
+				if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
+					ent.takeHit(this.shootingEntity.damage);
+					this.removeFromWorld = true;
+				}
+			}
+		}
     };
     
 }

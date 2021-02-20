@@ -25,7 +25,7 @@ function () {
     this.frameHeight = 150;
     this.frameWidth = 150; // states
 
-    this.paused = false; // used when HUD is set up
+    this.enemyPaused = this.level.levelPaused; // used when HUD is set up
     // stats
 
     this.damageAgainstBase = 1; // grid
@@ -36,7 +36,9 @@ function () {
     this.gameTime = 0;
     this.deathAnimationTime = 0; // does not exist until spawned
 
-    this.exist = false;
+    this.exist = false; // speed multiplier
+
+    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
   } // show bounds based on given radius
 
 
@@ -63,15 +65,54 @@ function () {
     key: "determineDirection",
     value: function determineDirection(movement) {
       // slime determines which direction it must go on
-      var coordinates = movement.getCoordinates(); //	console.log(`Slime is at tile ${currentRow}, ${currentColumn}`);
-      // is the enemy on the terrain tile grid, if so then it has to be fixed on the path terrain until it reaches destination
+      var coordinates = movement.getCoordinates(); // Is the enemy on the terrain tile grid? If so then it has to be fixed on the path terrain until it reaches destination
 
       if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {
-        var tileScale = this.level.drawScale * 40;
-        var xCenterOfTile = tileScale * coordinates.tileColumn + 30;
-        var yCenterOfTile = tileScale * coordinates.tileRow + 30; // has it reached the center of the tile it's located in, if it has then enemy takes note of the next tile in its current direction
+        var direction = movement.getDirection();
+        var nextTurnAt = movement.getTileToMakeTurnAt(); // Depending on the enemy's current direction, if enemy happens to be just on or just moved over
+        // a turn tile's center coordinates, then make the enemy's current x- or y-position match that
+        // of the tile's center x- or y-coordinate in which the enemy will change directions on
 
-        if (coordinates.x === xCenterOfTile && coordinates.y === yCenterOfTile) {
+        switch (direction) {
+          case "up":
+            if (coordinates.x === nextTurnAt.centerX && coordinates.y <= nextTurnAt.centerY) {
+              coordinates.y = nextTurnAt.centerY;
+              coordinates.tileRow = Math.floor((coordinates.y - this.level.yCanvas) / movement.tileSideScale);
+              this.y = nextTurnAt.centerY;
+            }
+
+            break;
+
+          case "right":
+            if (coordinates.x >= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
+              coordinates.x = nextTurnAt.centerX;
+              coordinates.tileColumn = Math.floor((coordinates.x - this.level.xCanvas) / movement.tileSideScale);
+              this.x = nextTurnAt.centerX;
+            }
+
+            break;
+
+          case "down":
+            if (coordinates.x === nextTurnAt.centerX && coordinates.y >= nextTurnAt.centerY) {
+              coordinates.y = nextTurnAt.centerY;
+              coordinates.tileRow = Math.floor((coordinates.y - this.level.yCanvas) / movement.tileSideScale);
+              this.y = nextTurnAt.centerY;
+            }
+
+            break;
+
+          case "left":
+            if (coordinates.x <= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
+              coordinates.x = nextTurnAt.centerX;
+              coordinates.tileColumn = Math.floor((coordinates.x - this.level.xCanvas) / movement.tileSideScale);
+              this.x = nextTurnAt.centerX;
+            }
+
+            break;
+        } // Has it reached the center of the tile it's located in? If it has then enemy takes note of the next tile in its current direction	 
+
+
+        if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
           var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
           var nextTileInCurrentDirection = movement.getNextTerrainTileInCurrentDirection(); // if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
 
@@ -85,7 +126,11 @@ function () {
     key: "getMovement",
     value: function getMovement(movement, x, y) {
       // slime movement
-      var speed = movement.getSpeed();
+      if (!this.enemyPaused) {
+        var speed = movement.getSpeed();
+      } else {
+        var speed = 0;
+      }
 
       if (movement.getDirection() === "up") {
         y += -speed;

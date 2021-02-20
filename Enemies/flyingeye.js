@@ -83,19 +83,22 @@ class FlyingEye extends Enemy {
   };
 
   update() {
-    if (this.paused) {
+	this.enemyPaused = this.level.levelPaused;
+	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+	this.movement.speed = 1.5 * this.enemySpeedMultipler;
+    if (this.enemyPaused) {
       // pause animation at certain frame
-    }
-    this.cooldownTime += this.gameEngine.clockTick;
-    this.gameTime += this.gameEngine.clockTick;
-
-    // spawn enemy if elapsed game time is greater than time to spawn
-    // else do not do anything
-    if (this.gameTime >= this.spawnTime) {
-      this.exist = true;
     } else {
-      return;
-    }
+		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+		// spawn enemy if elapsed game time is greater than time to spawn
+		// else do not do anything
+		if (this.gameTime >= this.spawnTime) {
+		  this.exist = true;
+		} else {
+		  return;
+		}
 
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
@@ -111,23 +114,28 @@ class FlyingEye extends Enemy {
       if (this.target.removeFromWorld)
         this.state = 0;
 
-    // only move when flying
-    if (this.state == 0) {
-      // direction
-      this.determineDirection(this.movement);
+		// only move when flying
+		if (this.state == 0) {
+		  // direction
+		  this.determineDirection(this.movement);
 
-      // movement
-      let position = this.getMovement(this.movement, this.x, this.y);
-      this.x = position.x;
-      this.y = position.y;
-      this.movement.updatePosition(this.x, this.y);
-    }
+		  // movement
+		  let position = this.getMovement(this.movement, this.x, this.y);
+		  this.x = position.x;
+		  this.y = position.y;
+		  this.movement.updatePosition(this.x, this.y);
+		}
+
+		if (this.state == 3) {
+		  this.deathAnimationTime += this.gameEngine.clockTick;
+		  if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
+		}		
+	}
 
     if (this.state == 3) {
       this.deathAnimationTime += this.gameEngine.clockTick;
       if (this.deathAnimationTime > 0.7) {
         this.removeFromWorld = true;
-        console.log(this.removeFromWorld);
         this.isDead();
       }
     }
@@ -159,8 +167,16 @@ class FlyingEye extends Enemy {
       position
     );
 
+	// the animation speed multiplier
+	var speedMultiplier = this.enemySpeedMultipler;
+	
+	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+	if (this.enemyPaused) {
+		speedMultiplier = 0;
+	};
+	
     this.animations[this.state].drawFrame(
-      this.gameEngine.clockTick,
+      this.gameEngine.clockTick * speedMultiplier,
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,
