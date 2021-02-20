@@ -37,7 +37,7 @@ class Goblin extends Enemy {
       0.3,
       0,
       false,
-      true
+      false
     );
     this.runAnim = new Animator(
       this.runImg,
@@ -51,30 +51,19 @@ class Goblin extends Enemy {
       false,
       true
     );
-    this.takehitAnim = new Animator(
-      this.takehitImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.2,
-      0,
-      false,
-      true
-    );
+    
     this.loadAnimation();
 
     // state
     this.state = 0; // 0: run, 1: attack, 2: takehit, 3: dead
 
     // stats
-    this.score = 30;
+    this.score = 20;
     this.scale = 2;
     this.HP = 30;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 5; //8;
-    this.reward = 5;
+    this.damage = 10; //8;
+    this.reward = 15;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
@@ -82,7 +71,7 @@ class Goblin extends Enemy {
     this.attackRate = 0.7;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.7, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
@@ -138,7 +127,10 @@ class Goblin extends Enemy {
 
     if (this.state == 3) {
       this.deathAnimationTime += this.gameEngine.clockTick;
-      if (this.deathAnimationTime > 1) this.removeFromWorld = true;
+      if (this.deathAnimationTime > 1) {
+        this.removeFromWorld = true;
+        this.isDead();
+      }
     }
   }
 
@@ -181,7 +173,7 @@ class Goblin extends Enemy {
     // this.state = 2;
     this.HP = Math.max(0, this.HP - damage);
     if (this.HP === 0) {
-      this.isDead();
+      this.state = 3;
     }
   };
 
@@ -190,10 +182,8 @@ class Goblin extends Enemy {
   }
 
   isDead() {
-    this.state = 3;
     this.user.increaseBalance(this.reward);
     console.log("Goblin+$", this.reward);
-
     this.user.increaseScores(this.score);
   }
 }

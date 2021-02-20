@@ -13,7 +13,9 @@ class Projectile {
     Object.assign(this, { gameEngine, x, y, target, shootingEntity });
 
     this.cache = []; // to store rotated image
-    
+    this.startX = x;
+    this.startY = y;
+
     var dist = distance(this, this.target);
     this.velocity = {
       x: ((this.target.x - this.x) / dist) * this.maxSpeed,
@@ -60,7 +62,7 @@ class Projectile {
       this.removeFromWorld = true;
     }
 
-    if (this.target.removeFromWorld) {
+    if (distance({x: this.x, y: this.y}, {x: this.startX, y: this.startY}) > this.shootingEntity.shootingRadius) {
       this.removeFromWorld = true;
     }
   };

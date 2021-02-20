@@ -64,8 +64,7 @@ function (_Enemy) {
     _this.HP = 200;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 1; //90;
-
+    _this.damage = 30;
     _this.reward = 250;
     _this.radius = (_this.frameWidth / 2 - 10) * _this.scale; // entity radius
 
@@ -75,7 +74,7 @@ function (_Enemy) {
     _this.yOffset = _this.frameHeight * _this.scale;
     _this.fireRate = 2; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.25, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -142,7 +141,7 @@ function (_Enemy) {
   }, {
     key: "attack",
     value: function attack(tower) {
-      tower.takeHit(this.damage); // this.gameEngine.addEntity(new Flame(this.gameEngine, this.x, this.y, tower, this));
+      tower.takeHit(this.damage); // this.gameEngine.addEntity(new FlamethrowerFlames(this.gameEngine, this.x + this.xOffset, this.y - this.yOffset + 10, tower, this, 0));
     }
   }, {
     key: "takeHit",

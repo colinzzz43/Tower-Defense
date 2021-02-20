@@ -39,7 +39,7 @@ class Skeleton extends Enemy {
       0.2,
       0,
       false,
-      true
+      false
     );
     this.walkAnim = new Animator(
       this.walkImg,
@@ -53,30 +53,19 @@ class Skeleton extends Enemy {
       false,
       true
     );
-    this.takehitAnim = new Animator(
-      this.takehitImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.2,
-      0,
-      false,
-      true
-    );
+
     this.loadAnimation();
 
     // state
     this.state = 0; // 0: walk, 1: attack, 2: takehit, 3: dead
 
     // stats
-    this.score = 40;
+    this.score = 30;
     this.scale = 2;
     this.HP = 40;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 12;
-    this.reward = 10;
+    this.damage = 15;
+    this.reward = 30;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 3) * this.scale;
@@ -84,7 +73,7 @@ class Skeleton extends Enemy {
     this.attackRate = 1;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.7, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
@@ -141,7 +130,10 @@ class Skeleton extends Enemy {
 
     if (this.state == 3) {
       this.deathAnimationTime += this.gameEngine.clockTick;
-      if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
+      if (this.deathAnimationTime > 0.8) {
+        this.removeFromWorld = true;
+        this.isDead();
+      }
     }
   }
 
@@ -184,7 +176,7 @@ class Skeleton extends Enemy {
     this.HP = Math.max(0, this.HP - damage);
 
     if (this.HP === 0) {
-      this.isDead();
+      this.state = 3;
     }
   }
 
@@ -193,10 +185,8 @@ class Skeleton extends Enemy {
   }
 
   isDead() {
-    this.state = 3;
     this.user.increaseBalance(this.reward);
     console.log("Skeleton+$", this.reward);
-
     this.user.increaseScores(this.score);
   }
 }

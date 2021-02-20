@@ -12,9 +12,7 @@ class FlyingEye extends Enemy {
     this.flyImg = ASSET_MANAGER.getAsset(
       "./sprites/monster/flyingeye/Flight.png"
     );
-    this.takehitImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/flyingeye/Take Hit.png"
-    );
+
 
     // animations
     this.attackAnim = new Animator(
@@ -39,7 +37,7 @@ class FlyingEye extends Enemy {
       0.2,
       0,
       false,
-      true
+      false
     );
     this.flyAnim = new Animator(
       this.flyImg,
@@ -53,30 +51,19 @@ class FlyingEye extends Enemy {
       false,
       true
     );
-    this.takehitAnim = new Animator(
-      this.takehitImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.15,
-      0,
-      false,
-      true
-    );
+
     this.loadAnimation();
 
     // state
     this.state = 0; // 0: fly, 1: attack, 2: takehit, 3: dead
 
     // stats
-    this.score = 20;
+    this.score = 40;
     this.scale = 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 5;
-    this.reward = 20;
+    this.damage = 20;
+    this.reward = 60;
     this.radius = 20 * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 5) * this.scale;
@@ -84,7 +71,7 @@ class FlyingEye extends Enemy {
     this.fireRate = 0.8;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
   };
 
   loadAnimation() {
@@ -138,7 +125,11 @@ class FlyingEye extends Enemy {
 
     if (this.state == 3) {
       this.deathAnimationTime += this.gameEngine.clockTick;
-      if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
+      if (this.deathAnimationTime > 0.7) {
+        this.removeFromWorld = true;
+        console.log(this.removeFromWorld);
+        this.isDead();
+      }
     }
   };
 
@@ -181,7 +172,7 @@ class FlyingEye extends Enemy {
     this.HP = Math.max(0, this.HP - damage);
 
     if (this.HP === 0) {
-      this.isDead();
+      this.state = 3;
     }
   };
 
@@ -191,7 +182,6 @@ class FlyingEye extends Enemy {
   };
 
   isDead() {
-    this.state = 3;
     this.user.increaseBalance(this.reward);
     console.log("Flyingeye+$", this.reward);
 

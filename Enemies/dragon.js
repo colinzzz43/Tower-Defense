@@ -88,7 +88,7 @@ class Dragon extends Enemy {
     this.scale = 1.5;
     this.HP = 200;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 1; //90;
+    this.damage = 30;
     this.reward = 250;
     this.radius = (this.frameWidth / 2 - 10) * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 50) * this.scale; // shooting radius
@@ -97,7 +97,7 @@ class Dragon extends Enemy {
     this.fireRate = 2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
   }
 
   update() {
@@ -175,7 +175,7 @@ class Dragon extends Enemy {
 
   attack(tower) {
     tower.takeHit(this.damage);
-    // this.gameEngine.addEntity(new Flame(this.gameEngine, this.x, this.y, tower, this));
+    // this.gameEngine.addEntity(new FlamethrowerFlames(this.gameEngine, this.x + this.xOffset, this.y - this.yOffset + 10, tower, this, 0));
   };
 
   takeHit(damage) {

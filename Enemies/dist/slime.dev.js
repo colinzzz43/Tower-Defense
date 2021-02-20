@@ -39,7 +39,7 @@ function (_Enemy) {
     _this.HP = 15;
     _this.damage = 5;
     _this.maxHP = _this.HP;
-    _this.reward = 1;
+    _this.reward = 5;
     _this.score = 10;
     _this.radius = (_this.frameWidth / 2 + 1) * _this.scale; // entity radius
 
@@ -49,7 +49,7 @@ function (_Enemy) {
     _this.yOffset = _this.frameHeight / 2 * _this.scale + 1;
     _this.fireRate = 1; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(0.5, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 

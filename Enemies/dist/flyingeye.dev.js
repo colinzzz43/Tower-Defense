@@ -32,13 +32,11 @@ function (_Enemy) {
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Death.png");
-    _this.flyImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Flight.png");
-    _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Take Hit.png"); // animations
+    _this.flyImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Flight.png"); // animations
 
     _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
-    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.2, 0, false, true);
+    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.2, 0, false, false);
     _this.flyAnim = new Animator(_this.flyImg, 0, 0, 150, 150, 8, 0.07, 0, false, true);
-    _this.takehitAnim = new Animator(_this.takehitImg, 0, 0, 150, 150, 4, 0.15, 0, false, true);
 
     _this.loadAnimation(); // state
 
@@ -46,13 +44,13 @@ function (_Enemy) {
     _this.state = 0; // 0: fly, 1: attack, 2: takehit, 3: dead
     // stats
 
-    _this.score = 20;
+    _this.score = 40;
     _this.scale = 2;
     _this.HP = 70;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5;
-    _this.reward = 20;
+    _this.damage = 20;
+    _this.reward = 60;
     _this.radius = 20 * _this.scale; // entity radius
 
     _this.shootingRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
@@ -61,7 +59,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.fireRate = 0.8; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.5, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.25, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -115,7 +113,12 @@ function (_Enemy) {
 
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
+
+        if (this.deathAnimationTime > 0.7) {
+          this.removeFromWorld = true;
+          console.log(this.removeFromWorld);
+          this.isDead();
+        }
       }
     }
   }, {
@@ -146,7 +149,7 @@ function (_Enemy) {
       this.HP = Math.max(0, this.HP - damage);
 
       if (this.HP === 0) {
-        this.isDead();
+        this.state = 3;
       }
     }
   }, {
@@ -158,7 +161,6 @@ function (_Enemy) {
   }, {
     key: "isDead",
     value: function isDead() {
-      this.state = 3;
       this.user.increaseBalance(this.reward);
       console.log("Flyingeye+$", this.reward);
       this.user.increaseScores(this.score);
