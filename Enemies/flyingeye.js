@@ -88,7 +88,7 @@ class FlyingEye extends Enemy {
     this.movement.speed = 1.5 * this.enemySpeedMultipler;
   
     if (this.controlled) {
-      this.movement.speed = 0.1;
+      this.movement.speed = 0.2;
     }
 
 

@@ -90,7 +90,7 @@ class Skeleton extends Enemy {
     this.movement.speed = 1.7 * this.enemySpeedMultipler;
 
     if (this.controlled) {
-      this.movement.speed = 0;
+      this.movement.speed = 0.2;
     }
 
     if (this.enemyPaused) {
