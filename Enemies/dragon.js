@@ -126,6 +126,11 @@ class Dragon extends Enemy {
 
 		for (var i = 0; i < this.gameEngine.entities.length; i++) {
 		  var ent = this.gameEngine.entities[i];
+      if (this.controlled) {
+
+      } else {
+        
+      }
 		  if (ent instanceof Tower) {
 			if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
 			  this.cooldownTime = 0;

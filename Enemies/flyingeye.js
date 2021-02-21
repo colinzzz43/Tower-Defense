@@ -88,7 +88,7 @@ class FlyingEye extends Enemy {
     this.movement.speed = 1.5 * this.enemySpeedMultipler;
   
     if (this.controlled) {
-      this.movement.speed = 0;
+      this.movement.speed = 0.1;
     }
 
 
@@ -108,11 +108,22 @@ class FlyingEye extends Enemy {
 
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
-      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && !this.controlled) {
-        this.cooldownTime = 0;
-        this.state = 1;
-        this.target = ent;
-        this.attack(this.target);
+
+      if (this.controlled) {
+        if (ent instanceof Enemy && ent.exist && canShoot(this, ent) 
+          && this.cooldownTime > this.fireRate && ent !== this) {
+          this.cooldownTime = 0;
+          this.state = 1;
+          this.target = ent;
+          this.attack(this.target);
+        }
+      } else {
+        if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+          this.cooldownTime = 0;
+          this.state = 1;
+          this.target = ent;
+          this.attack(this.target);
+        }
       }
     }
 
