@@ -26,19 +26,17 @@ class Tower {
 		// tower detection
 		this.gameEngine.entities.forEach(function (entity) {
 		  // tower detection
-		  if (entity instanceof Enemy) {
-			// tower shoots enemy in shooting bounds
-			if (
-			  canShoot(that, entity) &&
-			  that.elapsedTime > that.fireRate &&
-			  entity.exist
-			) {
-			  that.elapsedTime = 0;
-			  that.facing = getFacing(entity, that);
-			  that.shoot(entity);
-			  // console.log("Slime HP: ", entity.HP);
-			  // that.printMonsterHP(entity.HP);
-			}
+      // Spazer tower does not shoot controlled enemies
+		  if (entity instanceof Enemy && !(that instanceof Spazer && entity.controlled)) {
+        // tower shoots enemy in shooting bounds
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
+          entity.exist) {
+          that.elapsedTime = 0;
+          that.facing = getFacing(entity, that);
+          that.shoot(entity);
+          // console.log("Slime HP: ", entity.HP);
+          // that.printMonsterHP(entity.HP);
+        }
 		  }
 		});		
 	}
@@ -71,7 +69,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost) {
+    if (this.user.balance >= cost && this.level < 3) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }

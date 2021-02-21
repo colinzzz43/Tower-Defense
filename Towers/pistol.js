@@ -29,7 +29,7 @@ class Pistol extends Tower {
     }
 
     // stats
-    this.HP = 30;
+    this.HP = 100;
     this.maxHP = this.HP;
     this.fireRate = 1; // Fire rate: Moderate
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
