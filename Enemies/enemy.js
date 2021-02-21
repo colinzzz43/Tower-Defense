@@ -31,6 +31,7 @@ class Enemy {
 
     // Spazer control of enemy
     this.controlled = false;
+    this.controlTime = 0;
   }
 
   // show bounds based on given radius

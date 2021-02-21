@@ -45,6 +45,11 @@ class Slime extends Enemy {
 
     if (this.controlled) {
       this.movement.speed = 0.2;
+      this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+      if (this.controlTime <= 0) {
+        this.controlled = false;
+      }
     }
 
     if (this.enemyPaused) {

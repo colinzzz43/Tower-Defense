@@ -41,7 +41,7 @@ class SpazerRay extends Projectile {
               this.target.takeHit(this.shootingEntity.damage);
               this.removeFromWorld = true;
               this.target.controlled = true;
-              console.log("hello " + this.target.controlled);
+              this.target.controlTime = 3;
             }
     
             if (this.target.removeFromWorld) {
