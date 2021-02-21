@@ -109,12 +109,23 @@ class Skeleton extends Enemy {
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
-        if (ent instanceof Tower) {
-          if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.target = ent;
-            this.attack(this.target);
+        if (this.controlled) {
+          if (ent instanceof Enemy && ent.exist && ent !== this) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
+          }
+        } else {
+          if (ent instanceof Tower) {
+            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
           }
         }
       }

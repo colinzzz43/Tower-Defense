@@ -23,7 +23,7 @@ class Slime extends Enemy {
 
     // stats
     this.scale = 3;
-    this.HP = 15;
+    this.HP = 100;
     this.damage = 5;
     this.maxHP = this.HP;
     this.reward = 5;
@@ -44,7 +44,7 @@ class Slime extends Enemy {
     this.movement.speed = 1 * this.enemySpeedMultipler;
 
     if (this.controlled) {
-      this.movement.speed = 0.1;
+      this.movement.speed = 0.3;
     }
 
     if (this.enemyPaused) {

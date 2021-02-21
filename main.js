@@ -134,14 +134,14 @@ ASSET_MANAGER.downloadAll(function () {
 
    x = 200;
    y = 330;
-   initalSpawnTime = 1;
+   initalSpawnTime = 9;
    interval = 2;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
 
    x = 200;
    y = 330;
-   initalSpawnTime = 12;
+   initalSpawnTime = 1;
    interval = 2;
    n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
@@ -151,13 +151,13 @@ ASSET_MANAGER.downloadAll(function () {
    initalSpawnTime = 15;
    interval = 2;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
 
    x = 200;
    y = 330;
    initalSpawnTime = 18;
    interval = 2;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });

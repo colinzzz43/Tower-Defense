@@ -119,7 +119,7 @@ class Goblin extends Enemy {
           }
         } else {
           if (ent instanceof Tower) {
-            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
