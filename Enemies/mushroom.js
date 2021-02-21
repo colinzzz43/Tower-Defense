@@ -128,20 +128,10 @@ class Mushroom extends Enemy {
         this.movement.updatePosition(this.x, this.y);
       }
 
-<<<<<<< HEAD
-    if (this.state == 3) {
-      this.deathAnimationTime += this.gameEngine.clockTick;
-      if (this.deathAnimationTime > 1.2) {
-        this.removeFromWorld = true;
-        this.isDead();
-      }
-        
-=======
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
         if (this.deathAnimationTime > 1.2) this.removeFromWorld = true;
       }		
->>>>>>> Page
     }
   }
 

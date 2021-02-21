@@ -81,20 +81,6 @@ class Projectile {
 	}
 	
 
-<<<<<<< HEAD
-    this.x += this.velocity.x * this.gameEngine.clockTick;
-    this.y += this.velocity.y * this.gameEngine.clockTick;
-
-    if (collide(this, this.target)) {
-      this.target.takeHit(this.shootingEntity.damage);
-      this.removeFromWorld = true;
-    }
-
-    if (distance({x: this.x, y: this.y}, {x: this.startX, y: this.startY}) > this.shootingEntity.shootingRadius) {
-      this.removeFromWorld = true;
-    }
-=======
->>>>>>> Page
   };
 
   draw(ctx) {
