@@ -165,7 +165,7 @@ class Mushroom extends Enemy {
 	var speedMultiplier = this.enemySpeedMultipler;
 	
 	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
-	if (this.enemyPaused) {
+	if (this.enemyPaused || this.controlled) {
 		speedMultiplier = 0;
 	};
 	

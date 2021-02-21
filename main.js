@@ -123,7 +123,7 @@ ASSET_MANAGER.downloadAll(function () {
   let initalSpawnTime = 1;
   let interval = 2;
   let n = 5;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
 
    x = 200;
    y = 330;

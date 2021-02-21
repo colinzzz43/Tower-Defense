@@ -11,6 +11,7 @@ class Enemy {
 
     // states
     this.enemyPaused = this.level.levelPaused; // used when HUD is set up
+    this.controlled = false; // used to determine SpazerRay control of enemy
 
     // stats
     this.damageAgainstBase = 1;
