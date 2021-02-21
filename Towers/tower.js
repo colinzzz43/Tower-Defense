@@ -26,19 +26,16 @@ class Tower {
 		// tower detection
 		this.gameEngine.entities.forEach(function (entity) {
 		  // tower detection
-		  if (entity instanceof Enemy) {
-			// tower shoots enemy in shooting bounds
-			if (
-			  canShoot(that, entity) &&
-			  that.elapsedTime > that.fireRate &&
-			  entity.exist
-			) {
-			  that.elapsedTime = 0;
-			  that.facing = getFacing(entity, that);
-			  that.shoot(entity);
-			  // console.log("Slime HP: ", entity.HP);
-			  // that.printMonsterHP(entity.HP);
-			}
+		  if (entity instanceof Enemy && !entity.controlled) { // if an uncontrolled enemy
+        // tower shoots enemy in shooting bounds
+        if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
+          entity.exist) {
+          that.elapsedTime = 0;
+          that.facing = getFacing(entity, that);
+          that.shoot(entity);
+          // console.log("Slime HP: ", entity.HP);
+          // that.printMonsterHP(entity.HP);
+        }
 		  }
 		});		
 	}

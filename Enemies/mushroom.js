@@ -83,9 +83,14 @@ class Mushroom extends Enemy {
   }
 
   update() {
-    this.enemyPaused = this.level.levelPaused;
-    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-    this.movement.speed = 1.3 * this.enemySpeedMultipler;
+      this.enemyPaused = this.level.levelPaused;
+      this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+      this.movement.speed = 1.3 * this.enemySpeedMultipler;
+
+    if (this.controlled) {
+      this.movement.speed = 0;
+    }
+
       if (this.enemyPaused) {
         // pause animation at certain frame
       } else {
@@ -165,7 +170,7 @@ class Mushroom extends Enemy {
 	var speedMultiplier = this.enemySpeedMultipler;
 	
 	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
-	if (this.enemyPaused || this.controlled) {
+	if (this.enemyPaused) {
 		speedMultiplier = 0;
 	};
 	

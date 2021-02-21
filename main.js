@@ -120,44 +120,44 @@ ASSET_MANAGER.downloadAll(function () {
   // enemy spawner
   let x = 200;
   let y = 330;
-  let initalSpawnTime = 1;
+  let initalSpawnTime = 3;
   let interval = 2;
-  let n = 5;
-  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
+  let n = 1;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
 
    x = 200;
    y = 330;
-   initalSpawnTime = 5;
+   initalSpawnTime = 6;
    interval = 2;
-   n = 10;
+   n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
    x = 200;
    y = 330;
-   initalSpawnTime = 10;
+   initalSpawnTime = 9;
    interval = 2;
-   n = 2;
+   n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
+
+   x = 200;
+   y = 330;
+   initalSpawnTime = 12;
+   interval = 2;
+   n = 1;
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
 
    x = 200;
    y = 330;
    initalSpawnTime = 15;
    interval = 2;
-   n = 2;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 20;
-   interval = 2;
-   n = 2;
+   n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
 
    x = 200;
    y = 330;
-   initalSpawnTime = 25;
+   initalSpawnTime = 18;
    interval = 2;
-   n = 2;
+   n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });

@@ -86,7 +86,12 @@ class Goblin extends Enemy {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.25 * this.enemySpeedMultipler;
-    if (this.enemyPaused || this.controlled) {
+
+    if (this.controlled) {
+      this.movement.speed = 0;
+    }
+
+    if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
