@@ -49,7 +49,7 @@ function (_Enemy) {
     _this.HP = 70;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 20;
+    _this.damage = 5;
     _this.reward = 60;
     _this.radius = 20 * _this.scale; // entity radius
 
@@ -89,20 +89,52 @@ function (_Enemy) {
           this.exist = true;
         } else {
           return;
+        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+
+
+        console.log(this.state == 3);
+
+        if (this.state == 3) {
+          this.deathAnimationTime += this.gameEngine.clockTick;
+
+          if (this.deathAnimationTime > 0.6) {
+            this.removeFromWorld = true;
+            this.isDead();
+          }
+        } // enemy controlled by spazer
+
+
+        if (this.controlled) {
+          this.movement.speed = 0.2;
+          this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
+
+          if (this.controlTime <= 0) {
+            this.controlled = false;
+            this.state = 0;
+          }
         }
 
         for (var i = 0; i < this.gameEngine.entities.length; i++) {
           var ent = this.gameEngine.entities[i];
 
-          if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-            this.cooldownTime = 0;
-            this.state = 1;
-            this.target = ent;
-            this.attack(this.target);
+          if (this.controlled) {
+            if (ent instanceof Enemy && ent.exist && canShoot(this, ent) && this.cooldownTime > this.fireRate && ent !== this && this.state != 3) {
+              this.cooldownTime = 0;
+              this.state = 1;
+              this.target = ent;
+              this.attack(this.target);
+            }
+          } else {
+            if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && this.state != 3) {
+              this.cooldownTime = 0;
+              this.state = 1;
+              this.target = ent;
+              this.attack(this.target);
+            }
           }
         }
 
-        if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when flying
+        if (this.target) if ((this.target.removeFromWorld || !canShoot(this, this.target)) && this.state != 3) this.state = 0; // only move when flying
 
         if (this.state == 0) {
           // direction
@@ -112,20 +144,6 @@ function (_Enemy) {
           this.x = position.x;
           this.y = position.y;
           this.movement.updatePosition(this.x, this.y);
-        }
-
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
-          if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
-        }
-      }
-
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-
-        if (this.deathAnimationTime > 0.7) {
-          this.removeFromWorld = true;
-          this.isDead();
         }
       }
     }
@@ -172,7 +190,7 @@ function (_Enemy) {
     key: "attack",
     value: function attack(tower) {
       tower.takeHit(this.damage);
-      this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x, this.y, tower, this));
+      this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x + 5 * this.scale, this.y - this.yOffset / 4, tower, this));
     }
   }, {
     key: "isDead",
