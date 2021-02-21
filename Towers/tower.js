@@ -26,7 +26,8 @@ class Tower {
 		// tower detection
 		this.gameEngine.entities.forEach(function (entity) {
 		  // tower detection
-		  if (entity instanceof Enemy && !entity.controlled) { // if an uncontrolled enemy
+      // Spazer tower does not shoot controlled enemies
+		  if (entity instanceof Enemy && !(that instanceof Spazer && entity.controlled)) {
         // tower shoots enemy in shooting bounds
         if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
           entity.exist) {
