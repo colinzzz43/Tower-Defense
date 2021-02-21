@@ -108,7 +108,7 @@ class FlyingEye extends Enemy {
 
     for (var i = 0; i < this.gameEngine.entities.length; i++) {
       var ent = this.gameEngine.entities[i];
-      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && !this.controlled) {
         this.cooldownTime = 0;
         this.state = 1;
         this.target = ent;

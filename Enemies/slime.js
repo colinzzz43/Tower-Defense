@@ -42,7 +42,7 @@ class Slime extends Enemy {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1 * this.enemySpeedMultipler;
-    
+
     if (this.controlled) {
       this.movement.speed = 0;
     }
@@ -63,15 +63,26 @@ class Slime extends Enemy {
 
 		var that = this;
 		this.gameEngine.entities.forEach(function (entity) {
-		  // tower detection
-		  if (entity instanceof Tower) {
-			// tower shoots enemy in shooting bounds
-			if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-			  that.cooldownTime = 0;
-			  that.attack(entity);
-			  // that.printTowerHP(entity.HP);
-			}
-		  }
+		  // shoot other enemies if controlled
+      if (that.controlled) {
+        if (entity instanceof Enemy && entity.exist && entity !== that) {
+          // enemy shoots target in shooting bounds
+            if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+              that.cooldownTime = 0;
+              that.attack(entity);
+              // that.printTowerHP(entity.HP);
+            }
+          }
+      } else {
+        if (entity instanceof Tower) {
+          // enemy shoots target in shooting bounds
+            if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+              that.cooldownTime = 0;
+              that.attack(entity);
+              // that.printTowerHP(entity.HP);
+            }
+          }
+      }
 		  // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
 		  // This section might need to be re-worked to deal with this collision issue
 
