@@ -101,8 +101,14 @@ class FlyingEye extends Enemy {
         return;
       }
 
+      // enemy controlled by spazer
       if (this.controlled) {
         this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
       }
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
@@ -146,7 +152,7 @@ class FlyingEye extends Enemy {
         this.deathAnimationTime += this.gameEngine.clockTick;
         if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
       }		
-	}
+	  }
 
     if (this.state == 3) {
       this.deathAnimationTime += this.gameEngine.clockTick;

@@ -62,7 +62,7 @@ class Mushroom extends Enemy {
     this.scale = 2;
     this.HP = 100;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 25;
+    this.damage = 1;
     this.reward = 120;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
@@ -87,10 +87,6 @@ class Mushroom extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.3 * this.enemySpeedMultipler;
 
-    if (this.controlled) { // stats when controlled by Spazer
-      this.movement.speed = 0.2;
-    }
-
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
@@ -105,6 +101,16 @@ class Mushroom extends Enemy {
         return;
       }
 
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
+      }
+      
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
         if (this.controlled) {

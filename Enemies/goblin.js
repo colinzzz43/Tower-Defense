@@ -87,10 +87,6 @@ class Goblin extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.25 * this.enemySpeedMultipler;
 
-    if (this.controlled) {
-      this.movement.speed = 0.2;
-    }
-
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
@@ -103,6 +99,16 @@ class Goblin extends Enemy {
         this.exist = true;
       } else {
         return;
+      }
+
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
       }
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {

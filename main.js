@@ -130,7 +130,7 @@ ASSET_MANAGER.downloadAll(function () {
    initalSpawnTime = 10;
    interval = 12;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
    x = 200;
    y = 330;

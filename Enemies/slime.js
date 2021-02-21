@@ -43,51 +43,52 @@ class Slime extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1 * this.enemySpeedMultipler;
 
-    if (this.controlled) {
-      this.movement.speed = 0.2;
-      this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-
-      if (this.controlTime <= 0) {
-        this.controlled = false;
-      }
-    }
-
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
-		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-		// spawn enemy if elapsed game time is greater than time to spawn
-		// else do not do anything
-		if (this.gameTime >= this.spawnTime) {
-		  this.exist = true;
-		} else {
-		  return;
-		}
-
-		var that = this;
-		this.gameEngine.entities.forEach(function (entity) {
-		  // shoot other enemies if controlled
-      if (that.controlled) {
-        if (entity instanceof Enemy && entity.exist && entity !== that) {
-          // enemy shoots target in shooting bounds
-            if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-              that.cooldownTime = 0;
-              that.attack(entity);
-              // that.printTowerHP(entity.HP);
-            }
-          }
+      // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
       } else {
-        if (entity instanceof Tower) {
-          // enemy shoots target in shooting bounds
-            if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-              that.cooldownTime = 0;
-              that.attack(entity);
-              // that.printTowerHP(entity.HP);
-            }
-          }
+        return;
       }
+
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
+      }
+
+      var that = this;
+      this.gameEngine.entities.forEach(function (entity) {
+        // shoot other enemies if controlled
+        if (that.controlled) {
+          if (entity instanceof Enemy && entity.exist && entity !== that) {
+            // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity);
+                // that.printTowerHP(entity.HP);
+              }
+            }
+        } else {
+          if (entity instanceof Tower) {
+            // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity);
+                // that.printTowerHP(entity.HP);
+              }
+            }
+        }
 		  // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
 		  // This section might need to be re-worked to deal with this collision issue
 
@@ -108,17 +109,17 @@ class Slime extends Enemy {
 			  }
 			}
 			*/
-		});
+		  });
 
-		// slime direction
-		this.determineDirection(this.movement);
+      // slime direction
+      this.determineDirection(this.movement);
 
-		// slime movement
-		let position = this.getMovement(this.movement, this.x, this.y);
-		this.x = position.x;
-		this.y = position.y;
-		this.movement.updatePosition(this.x, this.y);		
-	}
+      // slime movement
+      let position = this.getMovement(this.movement, this.x, this.y);
+      this.x = position.x;
+      this.y = position.y;
+      this.movement.updatePosition(this.x, this.y);		
+	  }
 
   };
 

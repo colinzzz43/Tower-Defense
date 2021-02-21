@@ -89,10 +89,6 @@ class Skeleton extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.7 * this.enemySpeedMultipler;
 
-    if (this.controlled) {
-      this.movement.speed = 0.2;
-    }
-
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
@@ -106,6 +102,16 @@ class Skeleton extends Enemy {
       } else {
         return;
       }
+
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
+      }      
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
