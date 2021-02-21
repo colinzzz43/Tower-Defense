@@ -106,7 +106,7 @@ class Dragon extends Enemy {
     this.movement.speed = 1.5 * this.enemySpeedMultipler;
 
     if (this.controlled) {
-      this.movement.speed = 0;
+      this.movement.speed = 0.2;
     }
 
     if (this.enemyPaused) {
@@ -127,19 +127,24 @@ class Dragon extends Enemy {
 		for (var i = 0; i < this.gameEngine.entities.length; i++) {
 		  var ent = this.gameEngine.entities[i];
       if (this.controlled) {
-
+        if (ent instanceof Enemy && ent.exist && canShoot(this, ent) 
+          && this.cooldownTime > this.fireRate && ent !== this) {
+          this.cooldownTime = 0;
+          this.target = ent;
+          this.attack(this.target);
+        }
       } else {
-        
+        if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+          this.cooldownTime = 0;
+          this.target = ent;
+          this.attack(this.target);
+        }
       }
-		  if (ent instanceof Tower) {
-			if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-			  this.cooldownTime = 0;
-			  this.attack(ent);
-			}
-
-			if (ent.removeFromWorld) this.state = 0;
-		  }
 		}
+
+    if (this.target)
+      if (this.target.removeFromWorld)
+        this.state = 0;
 
 		// only move when flying
 		// skeleton direction

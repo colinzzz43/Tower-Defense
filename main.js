@@ -144,7 +144,7 @@ ASSET_MANAGER.downloadAll(function () {
    initalSpawnTime = 1;
    interval = 2;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
 
    x = 200;
    y = 330;
@@ -155,9 +155,9 @@ ASSET_MANAGER.downloadAll(function () {
 
    x = 200;
    y = 330;
-   initalSpawnTime = 18;
+   initalSpawnTime = 1;
    interval = 2;
    n = 1;
-  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
+  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });
