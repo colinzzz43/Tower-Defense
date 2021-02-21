@@ -86,9 +86,14 @@ class Mushroom extends Enemy {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.3 * this.enemySpeedMultipler;
-      if (this.enemyPaused) {
-        // pause animation at certain frame
-      } else {
+
+    if (this.controlled) { // stats when controlled by Spazer
+      this.movement.speed = 0.2;
+    }
+
+    if (this.enemyPaused) {
+      // pause animation at certain frame
+    } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
@@ -102,12 +107,23 @@ class Mushroom extends Enemy {
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
-        if (ent instanceof Tower) {
-          if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.target = ent;
-            this.attack(this.target);
+        if (this.controlled) {
+          if (ent instanceof Enemy && ent.exist && ent !== this) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
+          }
+        } else {
+          if (ent instanceof Tower) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
           }
         }
       }

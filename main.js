@@ -130,11 +130,11 @@ ASSET_MANAGER.downloadAll(function () {
    initalSpawnTime = 6;
    interval = 2;
    n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
+  // addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
 
    x = 200;
    y = 330;
-   initalSpawnTime = 9;
+   initalSpawnTime = 1;
    interval = 2;
    n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
@@ -148,7 +148,7 @@ ASSET_MANAGER.downloadAll(function () {
 
    x = 200;
    y = 330;
-   initalSpawnTime = 1;
+   initalSpawnTime = 15;
    interval = 2;
    n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
