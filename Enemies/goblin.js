@@ -108,6 +108,8 @@ class Goblin extends Enemy {
   
         if (this.controlTime <= 0) {
           this.controlled = false;
+          this.state = 0;
+
         }
       }
 
@@ -136,7 +138,7 @@ class Goblin extends Enemy {
       }
 
       if (this.target)
-        if (this.target.removeFromWorld)
+        if (this.target.removeFromWorld || !collide(this, this.target))
           this.state = 0;
 
           

@@ -148,15 +148,10 @@ class Dragon extends Enemy {
         }
       }
 
-      if (this.target)
-        if (this.target.removeFromWorld)
-          this.state = 0;
-
       // only move when flying
-      // skeleton direction
       this.determineDirection(this.movement);
 
-      // skeleton movement
+      // dragon movement
       let position = this.getMovement(this.movement, this.x, this.y);
       this.x = position.x;
       this.y = position.y;
