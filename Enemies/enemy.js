@@ -26,8 +26,12 @@ class Enemy {
     // does not exist until spawned
     this.exist = false;
 	
-	// speed multiplier
-	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+    // speed multiplier
+    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+
+    // Spazer control of enemy
+    this.controlled = false;
+    this.controlTime = 0;
   }
 
   // show bounds based on given radius

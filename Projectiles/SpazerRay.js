@@ -19,4 +19,34 @@ class SpazerRay extends Projectile {
         this.radius = 8.5;
         this.maxSpeed = 150; // pixels per second
     }
+
+    update() {
+        this.projectileSpeedMultiplier = this.gameEngine.speed;	
+        this.projectilePaused = this.gameEngine.paused;	
+        
+        // if projectile is paused, then don't update projectile
+        if (this.projectilePaused) {
+            // do nothing
+        } else {
+            var dist = distance(this, this.target);
+            this.velocity = {
+              x: ((this.target.x - this.x) / dist) * this.maxSpeed,
+              y: ((this.target.y - this.y) / dist) * this.maxSpeed,
+            };
+    
+            this.x += (this.velocity.x * this.gameEngine.clockTick) * this.projectileSpeedMultiplier;
+            this.y += (this.velocity.y * this.gameEngine.clockTick) * this.projectileSpeedMultiplier;
+    
+            if (collide(this, this.target)) {
+              this.target.takeHit(this.shootingEntity.damage);
+              this.removeFromWorld = true;
+              this.target.controlled = true;
+              this.target.controlTime = 3;
+            }
+    
+            if (this.target.removeFromWorld) {
+              this.removeFromWorld = true;
+            }		
+        }
+    }
 }

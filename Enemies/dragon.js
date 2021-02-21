@@ -101,45 +101,61 @@ class Dragon extends Enemy {
   }
 
   update() {
-	this.enemyPaused = this.level.levelPaused;
-	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-	this.movement.speed = 1.5 * this.enemySpeedMultipler;
+    this.enemyPaused = this.level.levelPaused;
+    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+    this.movement.speed = 1.5 * this.enemySpeedMultipler;
+
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
 			
-		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-		// spawn enemy if elapsed game time is greater than time to spawn
-		// else do not do anything
-		if (this.gameTime >= this.spawnTime) {
-		  this.exist = true;
-		} else {
-		  return;
-		}
+      // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
+      } else {
+        return;
+      }
 
-		for (var i = 0; i < this.gameEngine.entities.length; i++) {
-		  var ent = this.gameEngine.entities[i];
-		  if (ent instanceof Tower) {
-			if (canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-			  this.cooldownTime = 0;
-			  this.attack(ent);
-			}
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+        }
+      }
 
-			if (ent.removeFromWorld) this.state = 0;
-		  }
-		}
+      for (var i = 0; i < this.gameEngine.entities.length; i++) {
+        var ent = this.gameEngine.entities[i];
+        if (this.controlled) {
+          if (ent instanceof Enemy && ent.exist && canShoot(this, ent) 
+            && this.cooldownTime > this.fireRate && ent !== this) {
+            this.cooldownTime = 0;
+            this.target = ent;
+            this.attack(this.target);
+          }
+        } else {
+          if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
+            this.cooldownTime = 0;
+            this.target = ent;
+            this.attack(this.target);
+          }
+        }
+      }
 
-		// only move when flying
-		// skeleton direction
-		this.determineDirection(this.movement);
+      // only move when flying
+      this.determineDirection(this.movement);
 
-		// skeleton movement
-		let position = this.getMovement(this.movement, this.x, this.y);
-		this.x = position.x;
-		this.y = position.y;
-		this.movement.updatePosition(this.x, this.y);		
+      // dragon movement
+      let position = this.getMovement(this.movement, this.x, this.y);
+      this.x = position.x;
+      this.y = position.y;
+      this.movement.updatePosition(this.x, this.y);		
 		}
 
   };
