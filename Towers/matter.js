@@ -92,4 +92,20 @@ class Matter extends Tower {
       )
     );
   }
+
+  upgrade() {
+    if (this.towerLevel < 3) {
+      this.towerLevel++;
+      if (this.towerLevel == 2) {
+        this.user.decreaseBalance(65);
+        this.fireRate += 0.75;
+        this.HP += 30;
+      } else {
+        this.user.decreaseBalance(90);
+        this.shootingRadius += 5 * PARAMS.SCALE;
+        this.damage += 10;
+        this.HP += 60;
+      }
+    }
+  };
 }

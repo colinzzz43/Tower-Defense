@@ -37,7 +37,7 @@ class Mushroom extends Enemy {
       0.3,
       0,
       false,
-      true
+      false
     );
     this.runAnim = new Animator(
       this.runImg,
@@ -51,18 +51,7 @@ class Mushroom extends Enemy {
       false,
       true
     );
-    this.takehitAnim = new Animator(
-      this.takehitImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.1,
-      0,
-      false,
-      true
-    );
+
     this.loadAnimation();
 
     // state
@@ -73,8 +62,8 @@ class Mushroom extends Enemy {
     this.scale = 2;
     this.HP = 100;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 5; //30;
-    this.reward = 50;
+    this.damage = 5;
+    this.reward = 120;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
@@ -82,7 +71,7 @@ class Mushroom extends Enemy {
     this.attackRate = 1.2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.3, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
   }
 
   loadAnimation() {
@@ -97,9 +86,10 @@ class Mushroom extends Enemy {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.3 * this.enemySpeedMultipler;
-      if (this.enemyPaused) {
-        // pause animation at certain frame
-      } else {
+
+    if (this.enemyPaused) {
+      // pause animation at certain frame
+    } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
@@ -111,20 +101,43 @@ class Mushroom extends Enemy {
         return;
       }
 
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+          this.state = 0;
+
+        }
+      }
+      
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
-        if (ent instanceof Tower) {
-          if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.target = ent;
-            this.attack(this.target);
+        if (this.controlled) {
+          if (ent instanceof Enemy && ent.exist && ent !== this) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
+          }
+        } else {
+          if (ent instanceof Tower) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+              this.state = 1;
+              this.cooldownTime = 0;
+              this.target = ent;
+              this.attack(this.target);
+            }
           }
         }
       }
 
       if (this.target)
-        if (this.target.removeFromWorld)
+        if (this.target.removeFromWorld || !collide(this, this.target))
           this.state = 0;
 
       // only move when running
@@ -192,8 +205,8 @@ class Mushroom extends Enemy {
   takeHit(damage) {
     // this.state = 2;
     this.HP = Math.max(0, this.HP - damage);
-    if (this.HP === 0) {
-      this.isDead();
+    if (this.HP === 0 && this.state != 3) {
+      this.state = 3;
     }
   }
 
@@ -202,10 +215,8 @@ class Mushroom extends Enemy {
   };
 
   isDead() {
-    this.state = 3;
     this.user.increaseBalance(this.reward);
     console.log("Mushroom+$", this.reward);
-
     this.user.increaseScores(this.score);
   }
 }

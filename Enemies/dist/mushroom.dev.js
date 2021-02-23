@@ -36,9 +36,8 @@ function (_Enemy) {
     _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Take Hit.png"); // animations
 
     _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.15, 0, false, true);
-    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, true);
+    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, false);
     _this.runAnim = new Animator(_this.runImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
-    _this.takehitAnim = new Animator(_this.takehitImg, 0, 0, 150, 150, 4, 0.1, 0, false, true);
 
     _this.loadAnimation(); // state
 
@@ -51,9 +50,8 @@ function (_Enemy) {
     _this.HP = 100;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5; //30;
-
-    _this.reward = 50;
+    _this.damage = 25;
+    _this.reward = 120;
     _this.radius = 16 * _this.scale; // entity radius
 
     _this.visualRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
@@ -62,7 +60,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.attackRate = 1.2; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.3, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -118,7 +116,11 @@ function (_Enemy) {
 
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 1.2) this.removeFromWorld = true;
+
+        if (this.deathAnimationTime > 1.2) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
       }
     }
   }, {
@@ -149,8 +151,8 @@ function (_Enemy) {
       // this.state = 2;
       this.HP = Math.max(0, this.HP - damage);
 
-      if (this.HP === 0) {
-        this.isDead();
+      if (this.HP === 0 && this.state != 3) {
+        this.state = 3;
       }
     }
   }, {
@@ -161,7 +163,6 @@ function (_Enemy) {
   }, {
     key: "isDead",
     value: function isDead() {
-      this.state = 3;
       this.user.increaseBalance(this.reward);
       console.log("Mushroom+$", this.reward);
       this.user.increaseScores(this.score);

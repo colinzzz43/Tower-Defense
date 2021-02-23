@@ -3,6 +3,9 @@ class SceneManager {
     this.game = game;
     this.game.camera = this;
 
+    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
+    this.BGM = new Audio("./soundeffects/BGM.mp3");
+
     this.coinAnimation = new Animator(
       ASSET_MANAGER.getAsset("./sprites/other/coin2.png"),
       0,
@@ -45,9 +48,9 @@ class SceneManager {
 	this.speed = 1;
 	this.game.speed = this.speed;
     
-  // Play Background Music  
-  this.playBGM();
-    
+  this.muted = false;
+
+
   }
   
   startTimer() {
@@ -61,14 +64,10 @@ class SceneManager {
     }, 1000);
   }
 
-  playBGM() {
-    ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
-    var BGM = new Audio("./soundeffects/BGM.mp3");
-    BGM.volume = 0.1;
-    BGM.play();
-  }
+
 
   update() {
+  this.muted = this.game.muted;
 	this.speed = this.game.speed;
 	this.paused = this.game.paused;
     this.HP = this.game.base.HP;
@@ -88,6 +87,14 @@ class SceneManager {
       3
     );
 	if (this.paused) this.drawPauseScreen(ctx);
+  if (this.muted || this.paused) 
+    this.muteBGM()
+  else {
+
+    this.BGM.volume = 0.1;
+    this.BGM.muted = false;
+    this.BGM.play(); 
+  };
   }
   gameStatsDisplay(ctx) {
     ctx.font = "30px Langar, cursive, serif, sans-serif";
@@ -116,6 +123,12 @@ class SceneManager {
   // stats: score, currency, HP, waves
   // Store
   //
+
+  muteBGM () {
+      this.BGM.volume = 0;
+      this.BGM.play();
+     
+  }
   
   drawPauseScreen(ctx) {
 	ctx.beginPath();
@@ -139,5 +152,5 @@ class SceneManager {
 	ctx.fillText(pauseSubtitle, centerX, 700 / 2);	
 	ctx.closePath();
   }
-  
+ 
 }
