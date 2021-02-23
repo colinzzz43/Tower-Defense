@@ -13,7 +13,9 @@ class Projectile {
     Object.assign(this, { gameEngine, x, y, target, shootingEntity });
 
     this.cache = []; // to store rotated image
-    
+    this.startX = x;
+    this.startY = y;
+
     var dist = distance(this, this.target);
     this.velocity = {
       x: ((this.target.x - this.x) / dist) * this.maxSpeed,

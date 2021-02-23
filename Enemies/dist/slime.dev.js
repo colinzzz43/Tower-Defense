@@ -36,10 +36,10 @@ function (_Enemy) {
     _this.frameWidth = 16; // stats
 
     _this.scale = 3;
-    _this.HP = 15;
+    _this.HP = 100;
     _this.damage = 5;
     _this.maxHP = _this.HP;
-    _this.reward = 1;
+    _this.reward = 5;
     _this.score = 10;
     _this.radius = (_this.frameWidth / 2 + 1) * _this.scale; // entity radius
 
@@ -49,69 +49,93 @@ function (_Enemy) {
     _this.yOffset = _this.frameHeight / 2 * _this.scale + 1;
     _this.fireRate = 1; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(0.5, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
   _createClass(Slime, [{
     key: "update",
     value: function update() {
-      if (this.paused) {// pause animation at certain frame
-      }
+      this.enemyPaused = this.level.levelPaused;
+      this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+      this.movement.speed = 1 * this.enemySpeedMultipler;
 
-      this.cooldownTime += this.gameEngine.clockTick;
-      this.gameTime += this.gameEngine.clockTick; // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
+      if (this.enemyPaused) {// pause animation at certain frame
       } else {
-        return;
-      }
+        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+        // else do not do anything
 
-      var that = this;
-      this.gameEngine.entities.forEach(function (entity) {
-        // tower detection
-        if (entity instanceof Tower) {
-          // tower shoots enemy in shooting bounds
-          if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-            that.cooldownTime = 0;
-            that.attack(entity); // that.printTowerHP(entity.HP);
+        if (this.gameTime >= this.spawnTime) {
+          this.exist = true;
+        } else {
+          return;
+        } // enemy controlled by spazer
+
+
+        if (this.controlled) {
+          this.movement.speed = 0.2;
+          this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
+
+          if (this.controlTime <= 0) {
+            this.controlled = false;
           }
-        } // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
-        // This section might need to be re-worked to deal with this collision issue
-        // slime detection
+        }
 
-        /*
-          if (entity instanceof Slime) {
-            if (entity !== that && collide(that, entity)) {
-              // slimes collide with each other
-              var dist = distance(that, entity);
-              var delta = that.radius + entity.radius - dist;
-              var difX = (that.x - entity.x) / dist;
-              var difY = (that.y - entity.y) / dist;
-                 that.x += (difX * delta) / 2;
-              that.y += (difY * delta) / 2;
-              entity.x -= (difX * delta) / 2;
-              entity.y -= (difY * delta) / 2;
+        var that = this;
+        this.gameEngine.entities.forEach(function (entity) {
+          // shoot other enemies if controlled
+          if (that.controlled) {
+            if (entity instanceof Enemy && entity.exist && entity !== that) {
+              // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity); // that.printTowerHP(entity.HP);
+              }
             }
+          } else {
+            if (entity instanceof Tower) {
+              // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity); // that.printTowerHP(entity.HP);
+              }
+            }
+          } // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
+          // This section might need to be re-worked to deal with this collision issue
+          // slime detection
+
+          /*
+          if (entity instanceof Slime) {
+           if (entity !== that && collide(that, entity)) {
+          // slimes collide with each other
+          var dist = distance(that, entity);
+          var delta = that.radius + entity.radius - dist;
+          var difX = (that.x - entity.x) / dist;
+          var difY = (that.y - entity.y) / dist;
+          				that.x += (difX * delta) / 2;
+          that.y += (difY * delta) / 2;
+          entity.x -= (difX * delta) / 2;
+          entity.y -= (difY * delta) / 2;
+           }
           }
           */
 
-      }); // slime direction
+        }); // slime direction
 
-      this.determineDirection(this.movement); // slime movement
+        this.determineDirection(this.movement); // slime movement
 
-      var position = this.getMovement(this.movement, this.x, this.y);
-      this.x = position.x;
-      this.y = position.y;
-      this.movement.updatePosition(this.x, this.y);
-    } // printTowerHP(HP) {
-    //   document.getElementById("printTowerHP").innerHTML = HP;
-    // }
-
+        var position = this.getMovement(this.movement, this.x, this.y);
+        this.x = position.x;
+        this.y = position.y;
+        this.movement.updatePosition(this.x, this.y);
+      }
+    }
   }, {
     key: "draw",
+    // printTowerHP(HP) {
+    //   document.getElementById("printTowerHP").innerHTML = HP;
+    // }
     value: function draw(context) {
       // spawn enemy if elapsed game time is greater than time to spawn
       // else do not do anything
@@ -125,14 +149,20 @@ function (_Enemy) {
         x: this.x,
         y: this.y
       }; // draw bounds
-
-      this.showBounds(context, position, this.radius, false); // entity radius
-
-      this.showBounds(context, position, this.shootingRadius, true); // shooting bound
+      //    this.showBounds(context, position, this.radius, false); // entity radius
+      //    this.showBounds(context, position, this.shootingRadius, true); // shooting bound
       // health bar
 
-      this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, this.maxHP, this.movement, position);
-      this.animation.drawFrame(this.gameEngine.clockTick, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, this.maxHP, this.movement, position); // the animation speed multiplier
+
+      var speedMultiplier = this.enemySpeedMultipler; // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+
+      if (this.enemyPaused) {
+        speedMultiplier = 0;
+      }
+
+      ;
+      this.animation.drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",

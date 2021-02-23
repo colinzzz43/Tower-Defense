@@ -36,9 +36,8 @@ function (_Enemy) {
     _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Take Hit.png"); // animations
 
     _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.15, 0, false, true);
-    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, true);
+    _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, false);
     _this.runAnim = new Animator(_this.runImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
-    _this.takehitAnim = new Animator(_this.takehitImg, 0, 0, 150, 150, 4, 0.1, 0, false, true);
 
     _this.loadAnimation(); // state
 
@@ -51,9 +50,8 @@ function (_Enemy) {
     _this.HP = 100;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5; //30;
-
-    _this.reward = 50;
+    _this.damage = 5;
+    _this.reward = 120;
     _this.radius = 16 * _this.scale; // entity radius
 
     _this.visualRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
@@ -62,7 +60,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.attackRate = 1.2; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.3, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -78,47 +76,78 @@ function (_Enemy) {
   }, {
     key: "update",
     value: function update() {
-      if (this.paused) {// pause animation at certain frame
-      }
+      this.enemyPaused = this.level.levelPaused;
+      this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+      this.movement.speed = 1.3 * this.enemySpeedMultipler;
 
-      this.cooldownTime += this.gameEngine.clockTick;
-      this.gameTime += this.gameEngine.clockTick; // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
+      if (this.enemyPaused) {// pause animation at certain frame
       } else {
-        return;
-      }
+        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+        // else do not do anything
 
-      for (var i = 0; i < this.gameEngine.entities.length; i++) {
-        var ent = this.gameEngine.entities[i];
+        if (this.gameTime >= this.spawnTime) {
+          this.exist = true;
+        } else {
+          return;
+        } // enemy controlled by spazer
 
-        if (ent instanceof Tower) {
-          if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
-            this.state = 1;
-            this.cooldownTime = 0;
-            this.target = ent;
-            this.attack(this.target);
+
+        if (this.controlled) {
+          this.movement.speed = 0.2;
+          this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
+
+          if (this.controlTime <= 0) {
+            this.controlled = false;
+            this.state = 0;
           }
         }
-      }
 
-      if (this.target) if (this.target.removeFromWorld) this.state = 0; // only move when running
+        for (var i = 0; i < this.gameEngine.entities.length; i++) {
+          var ent = this.gameEngine.entities[i];
 
-      if (this.state == 0) {
-        // goblin direction
-        this.determineDirection(this.movement); // goblin movement
+          if (this.controlled) {
+            if (ent instanceof Enemy && ent.exist && ent !== this) {
+              if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+                this.state = 1;
+                this.cooldownTime = 0;
+                this.target = ent;
+                this.attack(this.target);
+              }
+            }
+          } else {
+            if (ent instanceof Tower) {
+              if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+                this.state = 1;
+                this.cooldownTime = 0;
+                this.target = ent;
+                this.attack(this.target);
+              }
+            }
+          }
+        }
 
-        var position = this.getMovement(this.movement, this.x, this.y);
-        this.x = position.x;
-        this.y = position.y;
-        this.movement.updatePosition(this.x, this.y);
-      }
+        if (this.target) if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3) this.state = 0; // only move when running
 
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 1.2) this.removeFromWorld = true;
+        if (this.state == 0) {
+          // goblin direction
+          this.determineDirection(this.movement); // goblin movement
+
+          var position = this.getMovement(this.movement, this.x, this.y);
+          this.x = position.x;
+          this.y = position.y;
+          this.movement.updatePosition(this.x, this.y);
+        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+
+
+        if (this.state == 3) {
+          this.deathAnimationTime += this.gameEngine.clockTick;
+
+          if (this.deathAnimationTime > 1.2) {
+            this.removeFromWorld = true;
+            this.isDead();
+          }
+        }
       }
     }
   }, {
@@ -140,8 +169,16 @@ function (_Enemy) {
       // this.showBounds(context, position, this.visualRadius, true); // visual bound
       // health bar
 
-      this.drawHealth(context, this.x, this.y - this.yOffset / 2, this.HP, this.maxHP, this.movement, position);
-      this.animations[this.state].drawFrame(this.gameEngine.clockTick, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.drawHealth(context, this.x, this.y - this.yOffset / 2, this.HP, this.maxHP, this.movement, position); // the animation speed multiplier
+
+      var speedMultiplier = this.enemySpeedMultipler; // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+
+      if (this.enemyPaused) {
+        speedMultiplier = 0;
+      }
+
+      ;
+      this.animations[this.state].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",
@@ -149,8 +186,8 @@ function (_Enemy) {
       // this.state = 2;
       this.HP = Math.max(0, this.HP - damage);
 
-      if (this.HP === 0) {
-        this.isDead();
+      if (this.HP === 0 && this.state != 3) {
+        this.state = 3;
       }
     }
   }, {
@@ -161,7 +198,6 @@ function (_Enemy) {
   }, {
     key: "isDead",
     value: function isDead() {
-      this.state = 3;
       this.user.increaseBalance(this.reward);
       console.log("Mushroom+$", this.reward);
       this.user.increaseScores(this.score);

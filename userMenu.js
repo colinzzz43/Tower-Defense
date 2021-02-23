@@ -507,9 +507,11 @@ class MuteIcon extends UserMenuIcon {
 		// the labels for the 'Mute' icon
 		this.labels = [ "Mute", "Unmute" ];
 		
+		this.game = gameEngine;
+
 		// the current label displayed on 'Mute' icon
 		this.labelStatus = this.labels[0];
-	
+		this.muteEnabled = false;
 	};
 	
 	/*
@@ -626,7 +628,13 @@ class MuteIcon extends UserMenuIcon {
 		execute the primary function of the 'Mute' icon when clicked
 	*/
 	userIconFunction() {
+		if (this.muteEnabled) {
+			this.muteEnabled = false;
+		} else {
+			this.muteEnabled = true;
+		}
 		
+		this.game.muted = this.muteEnabled;
 	};	
 }
 

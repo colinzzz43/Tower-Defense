@@ -91,5 +91,20 @@ class Laser extends Tower {
         this
       )
     );
-  }
+  };
+
+  upgrade() {
+    if (this.towerLevel < 3) {
+      this.towerLevel++;
+      if (this.towerLevel == 2) {
+        this.user.decreaseBalance(90);
+        this.shootingRadius += 10 * PARAMS.SCALE;
+        this.HP += 10;
+      } else {
+        this.user.decreaseBalance(120);
+        this.damage += 20;
+        this.HP += 30;
+      }
+    }
+  };
 }

@@ -12,9 +12,7 @@ class FlyingEye extends Enemy {
     this.flyImg = ASSET_MANAGER.getAsset(
       "./sprites/monster/flyingeye/Flight.png"
     );
-    this.takehitImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/flyingeye/Take Hit.png"
-    );
+
 
     // animations
     this.attackAnim = new Animator(
@@ -39,7 +37,7 @@ class FlyingEye extends Enemy {
       0.2,
       0,
       false,
-      true
+      false
     );
     this.flyAnim = new Animator(
       this.flyImg,
@@ -53,30 +51,19 @@ class FlyingEye extends Enemy {
       false,
       true
     );
-    this.takehitAnim = new Animator(
-      this.takehitImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.15,
-      0,
-      false,
-      true
-    );
+
     this.loadAnimation();
 
     // state
     this.state = 0; // 0: fly, 1: attack, 2: takehit, 3: dead
 
     // stats
-    this.score = 20;
+    this.score = 40;
     this.scale = 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 5;
-    this.reward = 20;
+    this.reward = 60;
     this.radius = 20 * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 5) * this.scale;
@@ -84,7 +71,7 @@ class FlyingEye extends Enemy {
     this.fireRate = 0.8;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
   };
 
   loadAnimation() {
@@ -96,55 +83,87 @@ class FlyingEye extends Enemy {
   };
 
   update() {
-	this.enemyPaused = this.level.levelPaused;
-	this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-	this.movement.speed = 1.5 * this.enemySpeedMultipler;
+    this.enemyPaused = this.level.levelPaused;
+    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
+    this.movement.speed = 1.5 * this.enemySpeedMultipler;
+
     if (this.enemyPaused) {
       // pause animation at certain frame
     } else {
-		this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-		this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-		// spawn enemy if elapsed game time is greater than time to spawn
-		// else do not do anything
-		if (this.gameTime >= this.spawnTime) {
-		  this.exist = true;
-		} else {
-		  return;
-		}
-
-    for (var i = 0; i < this.gameEngine.entities.length; i++) {
-      var ent = this.gameEngine.entities[i];
-      if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate) {
-        this.cooldownTime = 0;
-        this.state = 1;
-        this.target = ent;
-        this.attack(this.target);
+      // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
+      } else {
+        return;
       }
-    }
 
-    if (this.target)
-      if (this.target.removeFromWorld)
-        this.state = 0;
+      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+      console.log(this.state == 3);
+      if (this.state == 3) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+        if (this.deathAnimationTime > 0.6) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
+      }	
 
-		// only move when flying
-		if (this.state == 0) {
-		  // direction
-		  this.determineDirection(this.movement);
+      // enemy controlled by spazer
+      if (this.controlled) {
+        this.movement.speed = 0.2;
+        this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
+  
+        if (this.controlTime <= 0) {
+          this.controlled = false;
+          this.state = 0;
 
-		  // movement
-		  let position = this.getMovement(this.movement, this.x, this.y);
-		  this.x = position.x;
-		  this.y = position.y;
-		  this.movement.updatePosition(this.x, this.y);
-		}
+        }
+      }
 
-		if (this.state == 3) {
-		  this.deathAnimationTime += this.gameEngine.clockTick;
-		  if (this.deathAnimationTime > 0.8) this.removeFromWorld = true;
-		}		
-	}
+      for (var i = 0; i < this.gameEngine.entities.length; i++) {
+        var ent = this.gameEngine.entities[i];
 
+        if (this.controlled) {
+          if (ent instanceof Enemy && ent.exist && canShoot(this, ent) 
+            && this.cooldownTime > this.fireRate && ent !== this  && this.state != 3) {
+            this.cooldownTime = 0;
+            this.state = 1;
+            this.target = ent;
+            this.attack(this.target);
+          }
+        } else {
+          if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && this.state != 3) {
+            this.cooldownTime = 0;
+            this.state = 1;
+            this.target = ent;
+            this.attack(this.target);
+          }
+        }
+      }
+
+      if (this.target)
+        if ((this.target.removeFromWorld || !canShoot(this, this.target)) && this.state != 3)
+          this.state = 0;
+
+      // only move when flying
+      if (this.state == 0) {
+        // direction
+        this.determineDirection(this.movement);
+
+        // movement
+        let position = this.getMovement(this.movement, this.x, this.y);
+        this.x = position.x;
+        this.y = position.y;
+        this.movement.updatePosition(this.x, this.y);
+      }
+
+      
+	  }
+
+    
   };
 
   draw(context) {
@@ -194,17 +213,16 @@ class FlyingEye extends Enemy {
     this.HP = Math.max(0, this.HP - damage);
 
     if (this.HP === 0) {
-      this.isDead();
+      this.state = 3;
     }
   };
 
   attack(tower) {
     tower.takeHit(this.damage);
-    this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x, this.y, tower, this));
+    this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x + 5 * this.scale, this.y - this.yOffset/4, tower, this));
   };
 
   isDead() {
-    this.state = 3;
     this.user.increaseBalance(this.reward);
     console.log("Flyingeye+$", this.reward);
 
