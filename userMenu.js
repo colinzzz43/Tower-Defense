@@ -31,6 +31,10 @@ class UserMenu {
 			level
 		});
 		
+		// Interact with the User entity that is written 
+		// as a field in the SceneManager entity
+		this.user = this.gameEngine.camera.user;
+		
 		this.menuBoxWidth = 140;
 		this.menuBoxHeight = 590;
 		this.userIcons = [];
@@ -334,6 +338,9 @@ class UndoIcon extends UserMenuIcon {
 	
 		// The label for the 'undo' icon
 		this.label = "Undo"
+		
+		// The state of whether or not this button is enabled
+		this.buttonEnabled = false;
 	
 	};
 	
@@ -341,7 +348,12 @@ class UndoIcon extends UserMenuIcon {
 		update the state of the icon
 	*/
 	update() {
-		// do nothing for now
+		if ( this.level.newestTower !== null 
+			 && !this.level.levelPaused) {
+			this.buttonEnabled = true;
+		} else {
+			this.buttonEnabled = false;
+		}
 	};	
 	
 	/*
@@ -350,16 +362,37 @@ class UndoIcon extends UserMenuIcon {
 	draw(ctx) {
 		ctx.beginPath();
 		super.drawIcon(ctx);
-		super.drawLabel(ctx, this.label, false);
+		if (!this.buttonEnabled) ctx.globalAlpha = 0.2;
+		super.drawLabel(ctx, this.label, true);
+		this.drawSubLabel(ctx);
+		if (!this.buttonEnabled) ctx.globalAlpha = 1;
 		super.drawIconHighlight(ctx);
 		ctx.closePath();
 	};
+	
+	drawSubLabel(ctx) {
+		ctx.lineWidth = 1;
+		ctx.font = "22px Arial";
+		ctx.fillStyle = "black";
+		
+		var textWidth = ctx.measureText("Last Tower").width;
+		var horizontalCenter = this.xCanvas + (this.iconBoxWidth / 2) - (textWidth/2);
+		var verticalAlign = this.yCanvas + (this.iconBoxHeight * 0.85);
+		ctx.fillText("Last Tower", horizontalCenter, verticalAlign);
+	}
 	
 	/*
 		execute the primary function of the 'undo' icon when clicked
 	*/
 	userIconFunction() {
-		
+		console.log(`Undo Icon enabled: ${this.buttonEnabled}`);
+		if (this.buttonEnabled) {
+			// removed newest tower placed on map
+			var towerAt = this.level.newestTower.getTilePosition();
+			console.log(`Most recent tower at {${towerAt.row}, ${towerAt.column}}`);
+			this.level.removeTower(towerAt.row, towerAt.column);
+			this.buttonEnabled = false;
+		} 
 	};
 }
 
@@ -428,16 +461,26 @@ class SpeedIcon extends UserMenuIcon {
 		
 		var subLabel = "";
 		for (var i = 0; i < this.speedMultipliers.length; i++) {
+			
+			// align the multiplier label text
 			var multiplier = this.speedMultipliers[i];
 			var xOffset = this.xCanvas + ( (this.iconBoxWidth / 3.5) * i) + (this.iconBoxWidth / 9);
 			var verticalAlign = this.yCanvas + (this.iconBoxHeight * 0.85);
+			
+			// draw the multiplier label text
+			if (multiplier !== this.sublabelStatus) ctx.globalAlpha = 0.2;
 			ctx.fillText(multiplier, xOffset, verticalAlign);
+			if (multiplier !== this.sublabelStatus) ctx.globalAlpha = 1;
+
+			// draw highlight over multiple label that the game is currently set to
 			if (multiplier === this.sublabelStatus) {
-				ctx.strokeStyle = "cyan";
+				ctx.strokeStyle = "darkblue";
+				ctx.lineWidth = 1;
 				ctx.strokeText(multiplier, xOffset, verticalAlign);
 				ctx.beginPath();
 				ctx.moveTo(xOffset, verticalAlign + 3)
 				ctx.lineTo(xOffset + ctx.measureText(multiplier).width, verticalAlign + 3);
+				ctx.lineWidth = 1;
 				ctx.stroke();
 				ctx.closePath();
 				ctx.strokeStyle = "black";
@@ -454,7 +497,6 @@ class SpeedIcon extends UserMenuIcon {
 		
 		if (index < 2) {
 			index++;
-			console.log(this.speedMultipliers[index]);
 			this.sublabelStatus = this.speedMultipliers[index];		
 		} else {
 			this.sublabelStatus = this.speedMultipliers[0];
@@ -465,7 +507,8 @@ class SpeedIcon extends UserMenuIcon {
 		execute the primary function of the 'Speed' icon when clicked
 	*/	
 	userIconFunction() {
-		this.gameEngine.speed = parseFloat(this.sublabelStatus);
+		this.gameEngine.camera.speed = parseFloat(this.sublabelStatus);
+		this.gameEngine.camera.speedChanged = true;
 	};
 	
 	/*
@@ -634,7 +677,7 @@ class MuteIcon extends UserMenuIcon {
 			this.muteEnabled = true;
 		}
 		
-		this.game.muted = this.muteEnabled;
+		this.game.camera.muted = this.muteEnabled;
 	};	
 }
 
@@ -753,7 +796,7 @@ class PauseIcon extends UserMenuIcon {
 			this.pauseEnabled = true;
 		}
 		
-		this.gameEngine.paused = this.pauseEnabled;
+		this.gameEngine.camera.paused = this.pauseEnabled;
 	};
 }
 
@@ -812,5 +855,35 @@ class RestartIcon extends UserMenuIcon {
 	*/	
 	userIconFunction() {
 		
+		// First, set the most recent tower that has been built to null,
+		// so that the 'Undo' Icon is disabled for having no tower to remove.
+		this.level.newestTower = null;
+		this.level.placedTowers = [];
+		
+		// Second, remove all Projectile, Enemy, and Tower entities present on the map level
+		// by removing such entities from the game engine
+		for (var i = this.gameEngine.entities.length - 1; i >= 0; --i) {
+			var entity = this.gameEngine.entities[i];
+			if ( entity instanceof Projectile || 
+				 entity instanceof Enemy ||
+				 entity instanceof Tower) {
+				if (entity instanceof Tower) {
+					entity.dead();
+				} else {
+					this.gameEngine.entities.splice(i, 1);
+				}
+			}
+		}
+		
+		// Third, respawn the level's pre-defined waves from the beginning
+		this.level.levelEnemyWaves.spawnEnemies();
+		
+		// Fourth, reset the displayed game stats
+		this.gameEngine.camera.user.balance = 100;
+		this.gameEngine.camera.user.scores = 0;		
+		this.gameEngine.camera.base.HP = 5;
+		this.gameEngine.camera.timeLeft = this.gameEngine.camera.TIME_LIMIT;
+		this.gameEngine.camera.timePassed = 0;	
+		this.gameEngine.camera.timerRestarted = true;
 	};
 }

@@ -23,10 +23,10 @@ class Projectile {
     };
 	
 	// the animation and movement speed multiplier for projectile
-	this.projectileSpeedMultiplier = this.gameEngine.speed;
+	this.projectileSpeedMultiplier = this.gameEngine.camera.speed;
 	
 	// the pause state for projectile
-	this.projectilePaused = this.gameEngine.paused;
+	this.projectilePaused = this.gameEngine.camera.paused;
 
   }
 
@@ -54,8 +54,8 @@ class Projectile {
   }
 
   update() {
-	this.projectileSpeedMultiplier = this.gameEngine.speed;	
-	this.projectilePaused = this.gameEngine.paused;	
+	this.projectileSpeedMultiplier = this.gameEngine.camera.speed;	
+	this.projectilePaused = this.gameEngine.camera.paused;	
 	
 	// if projectile is paused, then don't update projectile
 	if (this.projectilePaused) {
