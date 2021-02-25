@@ -241,6 +241,20 @@ class Level {
 						};
 					}
 				}
+				that.gameEngine.entities.forEach(function (entity) {
+					if (entity instanceof Tower) {
+						let towerX = entity.x;
+						let towerY = entity.y;
+						if ( (x >= towerX - tileSideLength / 2 && x <= towerX + tileSideLength / 2) 
+							&& (y >= towerY - tileSideLength / 2 && y <= towerY + tileSideLength / 2)) {
+							if (entity.selected == false) {
+								entity.selected = true;
+							} else {
+								entity.selected = false;
+							}
+						}
+					}
+				});	
 			},
 			false
 		);
@@ -281,7 +295,7 @@ class Level {
 						color: "white",
 						mouse: "offMap",
 					};
-				}
+				}	
 			},
 			false
 		);

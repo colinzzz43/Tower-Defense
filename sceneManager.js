@@ -101,7 +101,7 @@ class SceneManager {
 	
 	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
 	// put into level to ensure enemies are drawn on top of map image
-	level.levelEnemyWaves = new LevelWave(level);
+	// level.levelEnemyWaves = new LevelWave(level);
 	
 	// tower store menu
 	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
