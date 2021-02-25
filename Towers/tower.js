@@ -3,8 +3,10 @@ class Tower {
   constructor(gameEngine, x, y, level) {
     Object.assign(this, { gameEngine, x, y, level });
 
+	// the user interacting with the tower
+    this.user = this.gameEngine.camera.user; 
+
     this.facing = 6; // facing left default
-    this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
     this.towerLevel = 1;
 	
@@ -88,10 +90,22 @@ class Tower {
 
   dead() {
     this.removeFromWorld = true;
+	var index = this.level.placedTowers.indexOf(this);
+	this.level.placedTowers.splice(index, 1);
 
     // After tower is removed from world, set the terrain tile it was on to open tower terrain
     var tilePosition = this.getTilePosition();
     this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+	
+	// If the tower removed is the newest tower placed, set the level's 'newestTower' variable
+	// to null so that the 'Undo' icon linked to 'newestTower' can be disabled.
+	if ( this.level.newestTower !== null) {
+		var tileOfNewestTower = this.level.newestTower.getTilePosition();
+		if ( tilePosition.row === tileOfNewestTower.row 
+			&& tilePosition.column === tileOfNewestTower.column )
+				this.level.newestTower = null;
+	}
+	
   }
 
   getShootingRange() {

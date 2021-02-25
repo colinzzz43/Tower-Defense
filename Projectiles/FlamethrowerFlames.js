@@ -29,8 +29,8 @@ class FlamethrowerFlames extends Projectile {
     }
 
     update() {
-      this.projectileSpeedMultiplier = this.gameEngine.speed;	
-      this.projectilePaused = this.gameEngine.paused;	
+      this.projectileSpeedMultiplier = this.gameEngine.camera.speed;	
+      this.projectilePaused = this.gameEngine.camera.paused;	
 
       if (this.projectilePaused) {
         // do nothing
