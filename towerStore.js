@@ -273,18 +273,18 @@ class TowerStoreMenu {
 					towerIcon.mouseover = false;
 				}
 			}
-			that.gameEngine.entities.forEach(function (entity) {
-				if (entity instanceof Tower) {
-			  		// tower shoots enemy in shooting bounds
-					let towerX = entity.x;
-					let towerY = entity.y;
-					let tileLength = that.level.getTilePixelImageSize();
-					if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2) 
-						&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
-						console.log("here");
-					}
-				}
-			  });		
+			// that.gameEngine.entities.forEach(function (entity) {
+			// 	if (entity instanceof Tower) {
+			//   		// tower shoots enemy in shooting bounds
+			// 		let towerX = entity.x;
+			// 		let towerY = entity.y;
+			// 		let tileLength = that.level.getTilePixelImageSize();
+			// 		if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2) 
+			// 			&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
+			// 			console.log("here");
+			// 		}
+			// 	}
+			//   });		
 		}, false);
 		
 	};	
