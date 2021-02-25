@@ -7,17 +7,20 @@ class TowerStoreMenu {
 		@gameEngine				the game engine that will use this object
 		@topLeftCornerX			the x-coordinate in canvas where top left corner of the store menu will be
 		@topLeftCornerY			the y-coordinate in canvas where top left corner of the store menu will be
-		@towerImagesArray		the array containing images of each tower type
 		@ctx					the canvas that this tower store menu will be applied to
 		@level					the level that will use this store menu		
 	*/
-	constructor(gameEngine, topLeftCornerX, topLeftCornerY, towerImagesArray, ctx, level) {
-		Object.assign(this, {gameEngine, topLeftCornerX, topLeftCornerY, towerImagesArray, ctx, level});
+	constructor(gameEngine, topLeftCornerX, topLeftCornerY, ctx, level) {
+		Object.assign(this, {gameEngine, topLeftCornerX, topLeftCornerY, ctx, level});
+		
+		// interact with the user entity that is fielded in sceneManager entity
+		this.user = this.gameEngine.camera.user;
 		
 		this.menuBoxWidth = 140;
 		this.menuBoxHeight = 590;
 		this.selectedIcon = "none";
 		this.towerIcons = [];
+		this.towerImagesArray = this.retrieveTowerIconImages();
 		
 		this.initializeIcons();
 		this.mouseInteraction();
@@ -75,6 +78,32 @@ class TowerStoreMenu {
 		this.ctx.strokeText("Tower Store", this.topLeftCornerX + 10, this.topLeftCornerY + 29);
 		
 		this.ctx.closePath();
+	}
+	
+	/*
+		Retrieve all the tower sprite images to be used for the icons in the tower store.
+	*/
+	retrieveTowerIconImages() {
+		var towerIconImages = [];
+		var pistolImage = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_left.png");
+		towerIconImages.push(pistolImage);
+		var mgImage = ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_left.png");
+		towerIconImages.push(mgImage);
+		var shotgunImage = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_left.png");
+		towerIconImages.push(shotgunImage);
+		var cannonImage = ASSET_MANAGER.getAsset("./sprites/towers/cannon/Level1/1_left.png");
+		towerIconImages.push(cannonImage);
+		var flamethrowerImage = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_left.png");
+		towerIconImages.push(flamethrowerImage);
+		var laserImage = ASSET_MANAGER.getAsset("./sprites/towers/laser/Level1/1_left.png");
+		towerIconImages.push(laserImage);
+		var matterImage = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_left.png");
+		towerIconImages.push(matterImage);
+		var rocketImage = ASSET_MANAGER.getAsset("./sprites/towers/rocket/Level1/1_left.png");
+		towerIconImages.push(rocketImage);
+		var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
+		towerIconImages.push(spazerImage);
+		return towerIconImages;
 	}
 	
 	/*

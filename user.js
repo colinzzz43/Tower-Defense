@@ -1,13 +1,16 @@
 class User {
   constructor(gameEngine) {
     Object.assign(this, { gameEngine });
-    this.gameEngine.user = this;
+	
+	// Write this User entity as a field in the 
+	// SceneManager (camera) entity that's a field in GameEngine entity
+    this.gameEngine.camera.user = this;
     this.removeFromWorld = false;
     this.scores = 0;
 
     // initialization for the user
     this.balance = 100;
-    this.hp = 100;
+//    this.hp = 100;
   }
 
   // it is to be used for selling/ after killing enemies

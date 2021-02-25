@@ -3,7 +3,7 @@ class Base {
     // x and y are center coordinates of base
     Object.assign(this, { gameEngine, x, y });
 
-    this.gameEngine.base = this;
+    this.gameEngine.camera.base = this;
 
     // spritesheet
     this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/base.png");
