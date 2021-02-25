@@ -247,11 +247,11 @@ class Level {
 						let towerY = entity.y;
 						if ( (x >= towerX - tileSideLength / 2 && x <= towerX + tileSideLength / 2) 
 							&& (y >= towerY - tileSideLength / 2 && y <= towerY + tileSideLength / 2)) {
-							entity.selected = true;
-							console.log(entity.selected);
-						} else {
-							entity.selected = false;
-							console.log(entity.selected);
+							if (entity.selected == false) {
+								entity.selected = true;
+							} else {
+								entity.selected = false;
+							}
 						}
 					}
 				});	

@@ -148,12 +148,13 @@ class TowerStoreMenu {
 		this.storeIcons.push(rocketIcon);
 		y += verticalSpace;		
 		
-		// Fifth Row: Spazer
+		// Fifth Row: Spazer, upgrade, and sell
 		var spazerIcon = new TowerIcon(this.gameEngine, "Spazer", 75, this.towerImagesArray[8], leftX, y, 22, 30, this.ctx, this.level);
 		this.storeIcons.push(spazerIcon);
 		var upgradeButton = new StoreButton(this.gameEngine, "upgrade", rightX, y, this.ctx, this.level);
 		this.storeIcons.push(upgradeButton);
-
+		var sellButton = new StoreButton(this.gameEngine, "sell", rightX, y + 40, this.ctx, this.level);
+		this.storeIcons.push(sellButton);
 
 		// Add tower icons to game engine
 		this.gameEngine.addEntity(pistolIcon);
@@ -234,7 +235,7 @@ class TowerStoreMenu {
 						} 
 					} else if (icon instanceof StoreButton) {
 						that.gameEngine.entities.forEach(function (entity) {
-							if (entity instanceof Tower) {
+							if (entity instanceof Tower && entity.selected) {
 								switch(icon.buttonName) {
 									case "upgrade":
 										entity.upgrade();
@@ -455,7 +456,7 @@ class StoreButton {
 		this.transparent = false;
 
 		this.iconBoxWidth = 50;
-		this.iconBoxHeight = 35;
+		this.iconBoxHeight = 30;
 	}
 
 	draw(ctx) {
