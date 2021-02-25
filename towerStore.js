@@ -262,17 +262,29 @@ class TowerStoreMenu {
 			var x = canvasCoordinates.x;
 			var y = canvasCoordinates.y;			
 			for (var i = 0; i < that.towerIcons.length; i++) {	
-				var tower = that.towerIcons[i];
-				var topLeftX = tower.xCanvas * that.widthScale;
-				var topLeftY = tower.yCanvas * that.widthScale;
-				var iconWidth = tower.iconBoxWidth * that.widthScale;
-				var iconHeight = tower.iconBoxHeight * that.widthScale;				
+				var towerIcon = that.towerIcons[i];
+				var topLeftX = towerIcon.xCanvas * that.widthScale;
+				var topLeftY = towerIcon.yCanvas * that.widthScale;
+				var iconWidth = towerIcon.iconBoxWidth * that.widthScale;
+				var iconHeight = towerIcon.iconBoxHeight * that.widthScale;				
 				if ( (x >= topLeftX && x <= topLeftX + iconWidth) && (y >= topLeftY && y <= topLeftY + iconHeight) ) {
-					tower.mouseover = true;
+					towerIcon.mouseover = true;
 				} else {
-					tower.mouseover = false;
+					towerIcon.mouseover = false;
 				}
 			}
+			that.gameEngine.entities.forEach(function (entity) {
+				if (entity instanceof Tower) {
+			  		// tower shoots enemy in shooting bounds
+					let towerX = entity.x;
+					let towerY = entity.y;
+					let tileLength = that.level.getTilePixelImageSize();
+					if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2) 
+						&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
+						console.log("here");
+					}
+				}
+			  });		
 		}, false);
 		
 	};	

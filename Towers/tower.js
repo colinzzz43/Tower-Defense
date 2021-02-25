@@ -61,6 +61,14 @@ class Tower {
     context.stroke();
   }
 
+  showLocation(context) {
+    context.setLineDash([]);
+    context.beginPath();
+    let tileLength = this.level.getTilePixelImageSize();
+    context.rect(this.x - tileLength / 2, this.y - tileLength / 2, tileLength, tileLength);
+    context.stroke();
+  }
+
   buy(cost) {
     // check if the user has the sufficient fund
     if (this.user.balance >= cost) {
@@ -133,6 +141,7 @@ class Tower {
 
   draw(context) {
     this.showBoundingCircle(context);
+    this.showLocation(context);
     this.drawHealth(
       context,
       this.x,

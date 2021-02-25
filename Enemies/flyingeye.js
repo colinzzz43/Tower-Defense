@@ -102,7 +102,7 @@ class FlyingEye extends Enemy {
       }
 
       // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      console.log(this.state == 3);
+      // console.log(this.state == 3);
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
         if (this.deathAnimationTime > 0.6) {
