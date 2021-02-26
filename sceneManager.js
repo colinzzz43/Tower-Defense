@@ -25,7 +25,7 @@ class SceneManager {
 
 //	this.base = this.game.base;
 	
-    this.waves = 1;
+    this.currentWave = 0;
     this.scores = 0;
 
     this.height = 480;
@@ -54,18 +54,16 @@ class SceneManager {
 	// Game Mute
 	this.muted = false;
 	
-	    // Timer
-    this.TIME_LIMIT = 5;
-    this.timePassed = 0;
-	  this.timerRestarted = false;
-	  this.speedChanged = false;
-    this.timeLeft = this.TIME_LIMIT;
+	// Timer
+	this.waveTimer = 5;
+	this.timerRestarted = false;
+	this.speedChanged = false;
     this.timerInterval = null;
     this.startTimer();
 	
 	
-	  // Load the prototype level, along with user and tower store menus, to the game engine
-	  this.loadGamePrototype();
+	// Load the prototype level, along with user and tower store menus, to the game engine
+	this.loadGamePrototype();
   }
   
   startTimer() {
@@ -77,8 +75,8 @@ class SceneManager {
     this.timerInterval = setInterval(() => {
 	  if (!this.paused) {
 		// The amount of time passed increments by one
-		this.timePassed += 0.1;
-		this.timeLeft = this.TIME_LIMIT - this.timePassed;
+		this.waveTimer -= 0.1;
+		this.timeLeft = this.waveTimer;
 		if (this.timeLeft < 0) {
 			this.timeLeft = 0;
 		}
@@ -101,7 +99,10 @@ class SceneManager {
 	
 	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
 	// put into level to ensure enemies are drawn on top of map image
-	level.levelEnemyWaves = new LevelWave(level);
+	var levelEnemyWaves = new LevelWave(level);
+	level.levelEnemyWaves = levelEnemyWaves;
+	this.waveTimes = levelEnemyWaves.waveTimes; // new field for array of wave times
+	this.waveTimer = this.waveTimes[this.currentWave];
 	
 	// tower store menu
 	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
@@ -122,9 +123,16 @@ class SceneManager {
     this.HP = this.base.HP;
     this.coins = this.user.balance;
     this.scores = this.game.camera.user.scores;
-	  if (this.timerRestarted || this.speedChanged) {
-		  this.startTimer();
-	  }
+	if (this.timerRestarted || this.speedChanged) {
+		this.startTimer();
+	}
+
+	// Wave countdown. When 0, increment current wave
+	// and reset waveTimer to that wave's time
+	if (this.waveTimer <= 0) {
+		this.currentWave++;
+		this.waveTimer = this.waveTimes[this.currentWave];
+	}
   };
 
   addCoin() {};
@@ -181,14 +189,13 @@ class SceneManager {
 		);
 
 		// HP and Waves
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.6);
+		horizontalAlign = this.levelMap.xCanvas + (this.levelMap.width * 0.6);
 		if (this.HP > 0) { // show hp when above 0, else show defeat
 		  ctx.fillText("Base: " + this.HP + " " + "HP", horizontalAlign, verticalAlign);
 		} else  {
 		  ctx.fillText("DEFEAT" , horizontalAlign, verticalAlign);
 		}
-		ctx.fillText(this.waves + " / 10 waves", horizontalAlign, verticalAlign * 1.1);
+		ctx.fillText(this.currentWave + " / 5 waves", horizontalAlign, verticalAlign * 1.1);
 		
 		// Time
 		horizontalAlign = this.levelMap.xCanvas + 
@@ -196,7 +203,7 @@ class SceneManager {
 		ctx.fillText("TIME", horizontalAlign, verticalAlign);
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.885);
-		ctx.fillText(Math.floor(this.timeLeft), horizontalAlign, verticalAlign * 1.1);
+		ctx.fillText(Math.floor(this.timeLeft + 1), horizontalAlign, verticalAlign * 1.1);
 	};
 
   /*

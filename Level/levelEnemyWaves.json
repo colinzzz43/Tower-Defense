@@ -4,7 +4,7 @@ levelOneWaves = {
 	"y": 330,
 	"waves": [
 	
-		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 4},
+		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 10},
 		 {"enemyType": "Flying Eye", "initialSpawnTime": 10, "interval": 2, "number": 2},
 		 {"enemyType": "Mushroom", "initialSpawnTime": 15, "interval": 2, "number": 3},
 		 {"enemyType": "Skeleton", "initialSpawnTime": 20, "interval": 2, "number": 3},
