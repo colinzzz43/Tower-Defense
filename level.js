@@ -87,8 +87,6 @@ class Level {
 
 		this.user = this.gameEngine.camera.user; // the user interacting with the tower
 		
-		// Spawn the enemy waves on this level
-//		this.levelEnemyWaves = new LevelWave(this);
 	};
 
 	/*

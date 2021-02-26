@@ -4,13 +4,21 @@ levelOneWaves = {
 	"y": 330,
 	"waves": [
 	
-		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 5},
+		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 5}, // wave 1, 15
 
-		 {"enemyType": "Slime", "initialSpawnTime": 20, "interval": 1, "number": 10}]
+		 {"enemyType": "Slime", "initialSpawnTime": 35, "interval": 2, "number": 10}, // wave 2, 55
+		
+		 {"enemyType": "Goblin", "initialSpawnTime": 70, "interval": 2, "number": 3}, // wave 3, 
+		 {"enemyType": "Slime", "initialSpawnTime": 70, "interval": 2, "number": 10}
+
+
+
+		]
 		
 	],
 
-	// Time to next wave for waves 0-9
-	"waveTimes": [5, 15]
+	// Time to next wave for waves 0-4.
+	// To find time to next wave, next wave intialSpawnTime - current wave initialSpawnTime.
+	"waveTimes": [5, 30, 35]
 	
 }

@@ -86,7 +86,6 @@ class SceneManager {
 			} else {
 				this.waveTimer = -1;
 			}
-			console.log("wave: " + this.currentWave);
 		}
 
 	  }
