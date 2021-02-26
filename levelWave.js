@@ -16,11 +16,7 @@ class LevelWave {
 	initializeWaves() {
 		if (this.level.mapLevel === 1) {
 			this.levelWaves = levelOneWaves;  // from 'levelEnemyWaves.json'
-			this.waveTimes[0] = 5;
-			this.waveTimes[1] = 10;
-			this.waveTimes[2] = 20;
-			this.waveTimes[3] = 30;
-			this.waveTimes[4] = 50;
+			this.waveTimes = levelOneWaves.waveTimes;
 		}
 		
 		this.spawnEnemies();	

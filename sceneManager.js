@@ -76,10 +76,19 @@ class SceneManager {
 	  if (!this.paused) {
 		// The amount of time passed increments by one
 		this.waveTimer -= 0.1;
-		this.timeLeft = this.waveTimer;
-		if (this.timeLeft < 0) {
-			this.timeLeft = 0;
+
+		// Countdown to next wave. When 0, increment current wave
+		// and reset waveTimer to that wave's time
+		if (this.waveTimer <= 0) {
+			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
+				this.currentWave++;
+				this.waveTimer = this.waveTimes[this.currentWave];
+			} else {
+				this.waveTimer = -1;
+			}
+			console.log("wave: " + this.currentWave);
 		}
+
 	  }
     }, (100 / this.speed) );
   };
@@ -125,13 +134,6 @@ class SceneManager {
     this.scores = this.game.camera.user.scores;
 	if (this.timerRestarted || this.speedChanged) {
 		this.startTimer();
-	}
-
-	// Wave countdown. When 0, increment current wave
-	// and reset waveTimer to that wave's time
-	if (this.waveTimer <= 0) {
-		this.currentWave++;
-		this.waveTimer = this.waveTimes[this.currentWave];
 	}
   };
 
@@ -203,7 +205,7 @@ class SceneManager {
 		ctx.fillText("TIME", horizontalAlign, verticalAlign);
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.885);
-		ctx.fillText(Math.floor(this.timeLeft + 1), horizontalAlign, verticalAlign * 1.1);
+		ctx.fillText(Math.floor(this.waveTimer + 1), horizontalAlign, verticalAlign * 1.1);
 	};
 
   /*
