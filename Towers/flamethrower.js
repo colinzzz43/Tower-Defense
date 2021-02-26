@@ -36,6 +36,7 @@ class Flamethrower extends Tower {
     this.shootingRadius = 30 * PARAMS.SCALE; // Range: Short
     this.damage = 0.05; // Damage: Weak (scaled for multiple lingering flames)
     this.cost = 40; // Cost: 40 coins
+    this.upgradeCost = 60;
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

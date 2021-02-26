@@ -36,6 +36,7 @@ class Matter extends Tower {
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 1; // Damage: Strong (shockwave damage scaled down because it lingers)
     this.cost = 75; // Cost: 75 coins
+    this.upgradeCost = 100;
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 

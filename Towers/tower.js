@@ -23,7 +23,8 @@ class Tower {
   update() {
 	this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
 	this.towerPaused = this.level.levelPaused;
-	if (this.towerPaused) {
+
+  if (this.towerPaused) {
 		// do nothing
 	} else {
 		this.elapsedTime += (this.gameEngine.clockTick * this.towerSpeedMultipler);
@@ -97,7 +98,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost && this.level < 3) {
+    if (this.user.balance >= cost && this.level < 3 && this.user.balance > 0) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }
@@ -187,7 +188,7 @@ class Tower {
   drawHealth(ctx, x, y, HP, width, thickness) {
     var percentage = width * (HP / this.maxHP);
     ctx.beginPath();
-    ctx.rect(x - width / 2, y, percentage, thickness);
+    ctx.rect(x - width /2 , y, percentage, thickness);
     if (percentage > 63) {
       ctx.fillStyle = "green";
     } else if (percentage > 37) {

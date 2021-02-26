@@ -143,7 +143,6 @@ class SceneManager {
 	  if (this.muted || this.paused) 
 		this.muteBGM()
 	  else {
-
 		this.BGM.volume = 0.1;
 		this.BGM.muted = false;
 		this.BGM.play(); 
