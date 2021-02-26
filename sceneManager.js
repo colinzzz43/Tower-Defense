@@ -83,6 +83,7 @@ class SceneManager {
 			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
 				this.currentWave++;
 				this.waveTimer = this.waveTimes[this.currentWave];
+				
 			} else {
 				this.waveTimer = -1;
 			}
@@ -196,7 +197,7 @@ class SceneManager {
 		} else  {
 		  ctx.fillText("DEFEAT" , horizontalAlign, verticalAlign);
 		}
-		ctx.fillText(this.currentWave + " / 5 waves", horizontalAlign, verticalAlign * 1.1);
+		ctx.fillText(this.currentWave + " / " + this.waveTimes.length + " waves", horizontalAlign, verticalAlign * 1.1);
 		
 		// Time
 		horizontalAlign = this.levelMap.xCanvas + 
