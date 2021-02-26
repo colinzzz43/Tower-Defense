@@ -45,7 +45,7 @@ class Slime extends Enemy {
 
     if (this.enemyPaused) {
       // pause animation at certain frame
-    } else {
+    } else {		
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 

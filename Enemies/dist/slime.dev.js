@@ -36,7 +36,7 @@ function (_Enemy) {
     _this.frameWidth = 16; // stats
 
     _this.scale = 3;
-    _this.HP = 15;
+    _this.HP = 100;
     _this.damage = 5;
     _this.maxHP = _this.HP;
     _this.reward = 5;
@@ -70,16 +70,36 @@ function (_Enemy) {
           this.exist = true;
         } else {
           return;
+        } // enemy controlled by spazer
+
+
+        if (this.controlled) {
+          this.movement.speed = 0.2;
+          this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
+
+          if (this.controlTime <= 0) {
+            this.controlled = false;
+          }
         }
 
         var that = this;
         this.gameEngine.entities.forEach(function (entity) {
-          // tower detection
-          if (entity instanceof Tower) {
-            // tower shoots enemy in shooting bounds
-            if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
-              that.cooldownTime = 0;
-              that.attack(entity); // that.printTowerHP(entity.HP);
+          // shoot other enemies if controlled
+          if (that.controlled) {
+            if (entity instanceof Enemy && entity.exist && entity !== that) {
+              // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity); // that.printTowerHP(entity.HP);
+              }
+            }
+          } else {
+            if (entity instanceof Tower) {
+              // enemy shoots target in shooting bounds
+              if (canShoot(that, entity) && that.cooldownTime > that.fireRate) {
+                that.cooldownTime = 0;
+                that.attack(entity); // that.printTowerHP(entity.HP);
+              }
             }
           } // Brandon disabled collison between slimes because sometimes this would cause slimes to go off-path.
           // This section might need to be re-worked to deal with this collision issue

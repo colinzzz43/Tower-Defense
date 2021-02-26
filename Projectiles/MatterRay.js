@@ -28,10 +28,18 @@ class MatterRay extends Projectile {
     }
 
     update() {
-        this.x += this.velocity.x * this.gameEngine.clockTick;
-        this.y += this.velocity.y * this.gameEngine.clockTick;
+		this.projectileSpeedMultiplier = this.gameEngine.camera.speed;	
+		this.projectilePaused = this.gameEngine.camera.paused;	
+		
+		var speedMultiplier = this.projectileSpeedMultiplier;
+		if (this.projectilePaused) {
+			speedMultiplier = 0;		
+		}
+		
+        this.x += this.velocity.x * this.gameEngine.clockTick * speedMultiplier;
+        this.y += this.velocity.y * this.gameEngine.clockTick * speedMultiplier;
 
-        this.radius += .4;
+        this.radius += ( .4 * speedMultiplier) ;
     
         for (var i = 0; i < this.gameEngine.entities.length; i++) {
             var ent = this.gameEngine.entities[i];
@@ -70,7 +78,12 @@ class MatterRay extends Projectile {
           this.drawAngle(ctx, degrees);
     
         } else {
-          this.animation.drawFrame(this.gameEngine.clockTick, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+			var speedMultiplier = this.projectileSpeedMultiplier;
+			if (this.projectilePaused) {
+				speedMultiplier = 0;		
+			}
+			
+          this.animation.drawFrame(this.gameEngine.clockTick * speedMultiplier, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
         }
     }
 }
