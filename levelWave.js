@@ -4,6 +4,7 @@ class LevelWave {
 			
 		Object.assign( this, {level} );
 		this.levelWaves = null;
+		this.waveTimes = [];
 		this.initializeWaves();
 		
 	};
@@ -15,6 +16,7 @@ class LevelWave {
 	initializeWaves() {
 		if (this.level.mapLevel === 1) {
 			this.levelWaves = levelOneWaves;  // from 'levelEnemyWaves.json'
+			this.waveTimes = levelOneWaves.waveTimes;
 		}
 		
 		this.spawnEnemies();	
