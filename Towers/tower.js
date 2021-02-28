@@ -3,22 +3,28 @@ class Tower {
   constructor(gameEngine, x, y, level) {
     Object.assign(this, { gameEngine, x, y, level });
 
+	  // the user interacting with the tower
+    this.user = this.gameEngine.camera.user; 
+
     this.facing = 6; // facing left default
-    this.user = this.gameEngine.user; // the user interacting with the tower
     this.elapsedTime = 0;
     this.towerLevel = 1;
 	
-	// speed multiplier
-	this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
-	
-	// pause state
-	this.towerPaused = this.level.levelPaused;
+    // speed multiplier
+    this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
+    
+    // pause state
+    this.towerPaused = this.level.levelPaused;
+
+    // mouse click selection
+    this.selected = false;
   }
 
   update() {
 	this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
 	this.towerPaused = this.level.levelPaused;
-	if (this.towerPaused) {
+
+  if (this.towerPaused) {
 		// do nothing
 	} else {
 		this.elapsedTime += (this.gameEngine.clockTick * this.towerSpeedMultipler);
@@ -53,10 +59,33 @@ class Tower {
     context.stroke();
 
     // shooting bound
+
     context.setLineDash([8, 15]);
     context.beginPath();
     context.arc(this.x, this.y, this.shootingRadius, 0, 2 * Math.PI);
     context.stroke();
+  }
+
+  drawTileHighlight(context) {
+		if (this.selected) {
+      let tileLength = this.level.getTilePixelImageSize();
+			// set stroke settings to prepare to draw this tower icon highlight
+      context.beginPath();
+      context.setLineDash([]);
+      context.fillStyle = "dodgerblue";
+			context.strokeStyle = "dodgerblue";
+			context.lineWidth = 3;
+      context.rect(this.x - tileLength / 2, this.y - tileLength / 2, 
+        tileLength, tileLength);
+			context.stroke();
+			context.globalAlpha = 0.1;
+			context.fill();
+			
+			context.globalAlpha = 1;
+			context.lineWidth = 1;
+			context.fillStyle = "black";
+			context.strokeStyle = "black";
+		}	
   }
 
   buy(cost) {
@@ -69,7 +98,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost && this.level < 3) {
+    if (this.user.balance >= cost && this.level < 3 && this.user.balance > 0) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }
@@ -88,10 +117,22 @@ class Tower {
 
   dead() {
     this.removeFromWorld = true;
+	var index = this.level.placedTowers.indexOf(this);
+	this.level.placedTowers.splice(index, 1);
 
     // After tower is removed from world, set the terrain tile it was on to open tower terrain
     var tilePosition = this.getTilePosition();
     this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+	
+	// If the tower removed is the newest tower placed, set the level's 'newestTower' variable
+	// to null so that the 'Undo' icon linked to 'newestTower' can be disabled.
+	if ( this.level.newestTower !== null) {
+		var tileOfNewestTower = this.level.newestTower.getTilePosition();
+		if ( tilePosition.row === tileOfNewestTower.row 
+			&& tilePosition.column === tileOfNewestTower.column )
+				this.level.newestTower = null;
+	}
+	
   }
 
   getShootingRange() {
@@ -118,6 +159,7 @@ class Tower {
   }
 
   draw(context) {
+    this.drawTileHighlight(context);
     this.showBoundingCircle(context);
     this.drawHealth(
       context,
@@ -146,7 +188,7 @@ class Tower {
   drawHealth(ctx, x, y, HP, width, thickness) {
     var percentage = width * (HP / this.maxHP);
     ctx.beginPath();
-    ctx.rect(x - width / 2, y, percentage, thickness);
+    ctx.rect(x - width /2 , y, percentage, thickness);
     if (percentage > 63) {
       ctx.fillStyle = "green";
     } else if (percentage > 37) {

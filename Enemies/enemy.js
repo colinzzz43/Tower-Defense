@@ -3,7 +3,7 @@ class Enemy {
     Object.assign(this, { gameEngine, x, y, level, spawnTime });
 
     // user
-    this.user = this.gameEngine.user;
+    this.user = this.gameEngine.camera.user;
 
     // frame height + width
     this.frameHeight = 150;

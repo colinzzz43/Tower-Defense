@@ -35,6 +35,7 @@ class Cannon extends Tower {
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 15; // Damage: Strong
     this.cost = 40; // Cost: 40 coins
+    this.upgradeCost = 60;
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 
