@@ -38,7 +38,7 @@ var levelOneWaves = {
 	// To find time to next wave, next wave intialSpawnTime - current wave initialSpawnTime.
 	waveTimes: [5, 30, 35, 25, 30]
 	
-}
+};
 
 // snow map
 //TODO: change x and y so that it matches the coordinates for the start of each path
@@ -130,8 +130,10 @@ var levelTwoWaves = {
 		]
 	],
 
-	waveTimes = []
-}
+	waveTimes: [
+		
+	]
+};
 
 // desert map
 var levelThreeWaves = {
@@ -312,10 +314,13 @@ var levelThreeWaves = {
 			{enemyType: "Mushroom", initialSpawnTime: 212, interval: 1, number: 5, x: 0, y: 0},
 
 		]
-	]
+	],
+
+	waveTimes: []
 }
 
 // grass map: skeleton, flying eye, mushroom, dragon
 var levelFourWaves = {
-
+	waves: [],
+	waveTimes: []
 }
