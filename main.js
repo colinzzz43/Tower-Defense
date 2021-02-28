@@ -4,6 +4,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 
 //queue download
+ASSET_MANAGER.queueDownload("./sprites/title.png");
 
 // map
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
@@ -75,9 +76,13 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
   
-  var moveX = 150;
+  var width = document.getElementById("gameWorld").width;
   
   gameEngine.init(ctx);
+  var Scene = new SceneManager(gameEngine, ctx);
+  gameEngine.addEntity(Scene);
+  
+/*
   var user = new User(gameEngine);
   var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
   var level = new Level(gameEngine, map, 150, 0, 0, 0, 600, 400, 1.5, 1, ctx);
@@ -107,17 +112,17 @@ ASSET_MANAGER.downloadAll(function () {
   var userMenu = new UserMenu(gameEngine, 5, 5, ctx, level);
 
   var base = new Base(gameEngine, 960, 270);
-  var Scene = new SceneManager(gameEngine);
+
 
   gameEngine.addEntity(user);
   gameEngine.addEntity(level);
+  level.levelEnemyWaves = new LevelWave(level);
   gameEngine.addEntity(base);
   gameEngine.addEntity(towerStoreMenu);
   gameEngine.addEntity(userMenu);
 
-  gameEngine.addEntity(Scene);
-  
   // enemy spawner
+
   let x = 200;
   let y = 330;
   let initalSpawnTime = 5;
@@ -159,5 +164,7 @@ ASSET_MANAGER.downloadAll(function () {
    interval = 2;
    n = 1;
   addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
+*/
+  
   gameEngine.start();
 });

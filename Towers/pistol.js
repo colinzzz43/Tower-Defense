@@ -35,6 +35,7 @@ class Pistol extends Tower {
     this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
     this.damage = 10; // Damage: Moderate
     this.cost = 10; // Cost: 10 coins
+    this.upgradeCost = 15;
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 
@@ -92,4 +93,21 @@ class Pistol extends Tower {
       )
     );
   }
+
+  // Upgrades the tower by one level, increasing stats and changing tower animation
+  upgrade() {
+    if (this.towerLevel < 3) {
+      this.towerLevel++;
+      if (this.towerLevel == 2) {
+        this.user.decreaseBalance(20);
+        this.HP += 20;
+        this.fireRate -= .3;
+      } else {
+        this.user.decreaseBalance(30);
+        this.HP += 40;
+        this.damage += 15;
+        this.shootingRadius +=  20 * PARAMS.SCALE;
+      }
+    }
+  };
 }

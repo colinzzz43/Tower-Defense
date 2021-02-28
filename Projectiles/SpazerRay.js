@@ -21,8 +21,8 @@ class SpazerRay extends Projectile {
     }
 
     update() {
-        this.projectileSpeedMultiplier = this.gameEngine.speed;	
-        this.projectilePaused = this.gameEngine.paused;	
+        this.projectileSpeedMultiplier = this.gameEngine.camera.speed;	
+        this.projectilePaused = this.gameEngine.camera.paused;	
         
         // if projectile is paused, then don't update projectile
         if (this.projectilePaused) {

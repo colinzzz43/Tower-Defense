@@ -105,6 +105,7 @@ function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTi
   }
 }
 
+
 function collide(a, b) {
   return distance(a, b) < a.radius + b.radius;
 }
@@ -138,5 +139,7 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 var PARAMS = {
-  SCALE: 3
+  SCALE: 3,
+  WIDTH: 1200,
+  HEIGHT: 600
 };

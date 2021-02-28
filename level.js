@@ -1,5 +1,5 @@
 class Level {
-  /*
+	/*
 		Constructor for the Level class.
 		
 		Parameters: 
@@ -15,274 +15,306 @@ class Level {
 			@mapLevel 			the numerical level of the image map
 			@ctx 				the canvas that this level map image will be applied to
 	*/
-  constructor(
-    gameEngine,
-    mapImage,
-    xCanvas,
-    yCanvas,
-    topLeftCornerX,
-    topLeftCornerY,
-    mapWidth,
-    mapHeight,
-    drawScale,
-    mapLevel,
-    ctx
-  ) {
-    Object.assign(this, {
-      gameEngine,
-      mapImage,
-      xCanvas,
-      yCanvas,
-      topLeftCornerX,
-      topLeftCornerY,
-      mapWidth,
-      mapHeight,
-      drawScale,
-      mapLevel,
-      ctx,
-    });
+	constructor(
+		gameEngine,
+		mapImage,
+		xCanvas,
+		yCanvas,
+		topLeftCornerX,
+		topLeftCornerY,
+		mapWidth,
+		mapHeight,
+		drawScale,
+		mapLevel,
+		ctx
+	) {
+		Object.assign(this, {
+			gameEngine,
+			mapImage,
+			xCanvas,
+			yCanvas,
+			topLeftCornerX,
+			topLeftCornerY,
+			mapWidth,
+			mapHeight,
+			drawScale,
+			mapLevel,
+			ctx,
+		});
 
-    // Apply game engine
-    this.gameEngine.level = this;
-	this.levelSpeedMultiplier = this.gameEngine.speed;
-	this.levelPaused = this.gameEngine.paused;
+		// Apply game engine
+		this.gameEngine.level = this;
+		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
+		this.levelPaused = this.gameEngine.camera.paused;
 
-    // Initialize terrain map grid for this level
-    this.terrainGridTiles = new LevelTerrainMap(this);
+		// Initialize terrain map grid for this level
+		this.terrainGridTiles = new LevelTerrainMap(this);
 
-    // Switch to turn on (true) and off (false) the visual grid map
-    this.showGridMap = false;
+		// Switch to turn on (true) and off (false) the visual grid map
+		this.showGridMap = false;
 
-    // Numbers labeling a specific terrain for a tile.
-    this.path = 0;
-    this.towerTerrainOpen = 1;
-    this.towerTerrainOccupied = -1;
-    this.obstacle = 2;
+		// Numbers labeling a specific terrain for a tile.
+		this.path = 0;
+		this.towerTerrainOpen = 1;
+		this.towerTerrainOccupied = -1;
+		this.obstacle = 2;
 
-    // Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
-    this.placeTowerType = "";
+		// Type of tower to be placed. Modified by mouseInteraction method in TowerIcon class
+		this.placeTowerType = "";
+		
+		// The most recently placed tower on the map
+		this.newestTower = null;
+		this.placedTowers = [];
+		
+		// The base where the enemies move towards
+		var baseTile = this.terrainGridTiles.getDestination();
+		var baseXcoords = Math.floor( (baseTile.column * this.getTilePixelImageSize()) + 
+							(this.xCanvas - (this.getTilePixelImageSize() / 2)) );
+		var baseYcoords = Math.floor( (baseTile.row * this.getTilePixelImageSize()) +
+							(this.getTilePixelImageSize() / 2) );
+		this.base = new Base(this.gameEngine, baseXcoords, baseYcoords);
+		this.gameEngine.addEntity(this.base);
 
-    // Apply mouse click interaction of tiles to this level
-    this.mouseInteraction();
-    this.mouseHighlightedTile = {
-      row: -1,
-      column: -1,
-      color: "lightyellow",
-      mouse: "offMap",
-    };
-    this.interactionScale = widthScaling();
+		// Apply mouse click interaction of tiles to this level
+		this.mouseInteraction();
+		this.mouseHighlightedTile = {
+		  row: -1,
+		  column: -1,
+		  color: "lightyellow",
+		  mouse: "offMap",
+		};
+		this.interactionScale = widthScaling();
 
-    this.user = this.gameEngine.user; // the user interacting with the tower
-  };
+		this.user = this.gameEngine.camera.user; // the user interacting with the tower
+		
+		// Spawn the enemy waves on this level
+//		this.levelEnemyWaves = new LevelWave(this);
+	};
 
-  /*
+	/*
 		Update does nothing to level
 	*/
-  update() {
-	  this.levelSpeedMultiplier = this.gameEngine.speed;
-	  this.levelPaused = this.gameEngine.paused;
-  };
+	update() {
+		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
+		this.levelPaused = this.gameEngine.camera.paused;
+	};
 
-  /*
+	/*
 	    Used by the game engine to officially draw the level map on canvas.
 	*/
-  draw(ctx) {
-    // draw map image itself
-    this.drawMap(ctx, this.drawScale);
+	draw(ctx) {
+		// draw map image itself
+		this.drawMap(ctx, this.drawScale);
 
-    // draw grid tiles on map if 'this.showGridMap' is set to true
-    this.terrainGridTiles.showTileGrid(this.showGridMap, ctx, this.drawScale);
+		// draw grid tiles on map if 'this.showGridMap' is set to true
+		this.terrainGridTiles.showTileGrid(this.showGridMap, ctx, this.drawScale);
 
-    // draw highlight on tile that the mouse cursor is currently over
-    this.terrainGridTiles.drawTileHighlight(
-      this.mouseHighlightedTile.row,
-      this.mouseHighlightedTile.column,
-      this.mouseHighlightedTile.color,
-      this.mouseHighlightedTile.mouse
-    );
-  };
+		// draw highlight on tile that the mouse cursor is currently over
+		this.terrainGridTiles.drawTileHighlight(
+			this.mouseHighlightedTile.row,
+			this.mouseHighlightedTile.column,
+			this.mouseHighlightedTile.color,
+			this.mouseHighlightedTile.mouse
+		);
+		
+		this.base.draw(ctx);
+	};
 
-  /*
+	/*
 		Draw the graphical image of the level map.
 		
 		Parameters: 
 		@ctx		the ID of the canvas that the map will be drawn on
 		@scale		the scaling of the width and height of the image drawn on canvas
 	*/
-  drawMap(ctx, scale) {
-    ctx.drawImage(
-      this.mapImage,
-      this.topLeftCornerX,
-      this.topLeftCornerY,
-      this.mapWidth,
-      this.mapHeight,
-      this.xCanvas,
-      this.yCanvas,
-      this.mapWidth * scale,
-      this.mapHeight * scale
-    );
-  };
+	drawMap(ctx, scale) {
+		ctx.drawImage(
+			this.mapImage,
+			this.topLeftCornerX,
+			this.topLeftCornerY,
+			this.mapWidth,
+			this.mapHeight,
+			this.xCanvas,
+			this.yCanvas,
+			this.mapWidth * scale,
+			this.mapHeight * scale
+		);
+	};
 
-  /* 
+	/* 
 		Get the terrain type that is assigned to a specified grid tile.
 		
 		Parameters:
 		@row		the row number for the desired tile 
 		@column		the column number for the desired tile
 	*/
-  getTerrainType(row, column) {
-    var tile = this.terrainGridTiles.getTile(row, column);
-    if (tile === this.towerTerrainOpen) {
-      return "towerTerrainOpen";
-    } else if (tile === this.towerTerrainOccupied) {
-      return "towerTerrainOccupied";
-    } else if (tile === this.path) {
-      return "path";
-    } else if (tile === this.obstacle) {
-      return "obstacle";
-    } else {
-      return "not_a_tile_on_grid";
-    }
-  };
+	getTerrainType(row, column) {
+		var tile = this.terrainGridTiles.getTile(row, column);
+		if (tile === this.towerTerrainOpen) {
+			return "towerTerrainOpen";
+		} else if (tile === this.towerTerrainOccupied) {
+			return "towerTerrainOccupied";
+		} else if (tile === this.path) {
+			return "path";
+		} else if (tile === this.obstacle) {
+			return "obstacle";
+		} else {
+			return "not_a_tile_on_grid";
+		}
+	};
 
-  /*
+	/*
 		Set a specific tile, if it is tower terrain, to either occupied (-1) or unoccupied (1)
 		
 		Parameters:   
 		@row		the row of the tile whose occupancy state is to be set.
 		@column		the column of the tile whose occupancy state is to be set.
 	*/
-  changeStateOfTowerTerrain(row, column) {
-    var tile = this.terrainGridTiles.getTile(row, column);
-    if (tile !== this.towerTerrainOpen) {
-      if (tile === this.towerTerrainOccupied) {
-        this.terrainGridTiles.setTile(row, column, this.towerTerrainOpen);
-      }
-    } else {
-      this.terrainGridTiles.setTile(row, column, this.towerTerrainOccupied);
-    }
-    // console.log(this.terrainGridTiles.getMapArray());
-  };
+	changeStateOfTowerTerrain(row, column) {
+		var tile = this.terrainGridTiles.getTile(row, column);
+		if (tile !== this.towerTerrainOpen) {
+			if (tile === this.towerTerrainOccupied) {
+				this.terrainGridTiles.setTile(row, column, this.towerTerrainOpen);
+			}
+		} else {
+		  this.terrainGridTiles.setTile(row, column, this.towerTerrainOccupied);
+		}
+		// console.log(this.terrainGridTiles.getMapArray());
+	};
 
-  /*
+	/*
 		Apply a mouse click interaction to the level map image
 	*/
-  mouseInteraction() {
-    var that = this;
+	mouseInteraction() {
+		var that = this;
 
-    // Get x,y coordinates of canvas where mouse pointer is
-    var getXandY = function (e) {
-      var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
-      var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+		// Get x,y coordinates of canvas where mouse pointer is
+		var getXandY = function (e) {
+			var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+			var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
 
-      return { x: x, y: y };
-    };
+			return { x: x, y: y };
+		};
 
-    // Add mouse click event listener that enables mouse user to place towers via clicking tiles on this level map, and highlight the clicked tiles a specific color: green if tower is successuful placed, red if otherwise
-    that.ctx.canvas.addEventListener(
-      "click",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var tileSideLength = that.getTilePixelImageSize();
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
-        var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
-//		console.log(`Clicked on tile {${row}, ${column}}`);
-        var topLeftX = that.xCanvas * that.interactionScale;
-        var topLeftY = that.yCanvas * that.interactionScale;
-        var canvasWidth =
-          that.drawScale * that.mapWidth * that.interactionScale;
-        var canvasHeight =
-          that.drawScale * that.mapHeight * that.interactionScale;
-        if (
-          x >= topLeftX &&
-          x < topLeftX + canvasWidth &&
-          y >= topLeftY &&
-          y < topLeftY + canvasHeight &&
-          that.showGridMap
-        ) {
-          if (
-            that.terrainGridTiles.getTile(row, column) ===
-              that.towerTerrainOpen &&
-            that.showGridMap
-          ) {
-            that.placeTower(row, column);
-            that.mouseHighlightedTile = {
-              row: row,
-              column: column,
-              color: "lawngreen",
-              mouse: "onMap",
-            };
-          } else {
-            that.mouseHighlightedTile = {
-              row: row,
-              column: column,
-              color: "red",
-              mouse: "onMap",
-            };
-          }
-        }
-      },
-      false
-    );
+		// Add mouse click event listener that enables mouse user to place towers via clicking tiles on this level map, and highlight the clicked tiles a specific color: green if tower is successuful placed, red if otherwise
+		that.ctx.canvas.addEventListener(
+			"click",
+			function (e) {
+				var canvasCoordinates = getXandY(e);
+				var tileSideLength = that.getTilePixelImageSize();
+				var x = canvasCoordinates.x;
+				var y = canvasCoordinates.y;
+				var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+				var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+				var topLeftX = that.xCanvas * that.interactionScale;
+				var topLeftY = that.yCanvas * that.interactionScale;
+				var canvasWidth =
+					that.drawScale * that.mapWidth * that.interactionScale;
+				var canvasHeight =
+					that.drawScale * that.mapHeight * that.interactionScale;
+				if 	(
+					x >= topLeftX &&
+					x < topLeftX + canvasWidth &&
+					y >= topLeftY &&
+					y < topLeftY + canvasHeight &&
+					that.showGridMap
+				) {
+					if (
+						that.terrainGridTiles.getTile(row, column) ===
+						that.towerTerrainOpen &&
+						that.showGridMap
+					) {
+						that.placeTower(row, column);
+						console.log('click green tile');
+						that.mouseHighlightedTile = {
+							row: row,
+							column: column,
+							color: "lawngreen",
+							mouse: "onMap",
+						};
+					} else {
+						that.mouseHighlightedTile = {
+							row: row,
+							column: column,
+							color: "red",
+							mouse: "onMap",
+						};
+					}
+				}
+				that.gameEngine.entities.forEach(function (entity) {
+					if (entity instanceof Tower) {
+						let towerX = entity.x;
+						let towerY = entity.y;
+						if ( (x >= towerX - tileSideLength / 2 && x <= towerX + tileSideLength / 2) 
+							&& (y >= towerY - tileSideLength / 2 && y <= towerY + tileSideLength / 2)) {
+							if (entity.selected == false) {
+								entity.selected = true;
+							} else {
+								entity.selected = false;
+							}
+						}
+					}
+				});	
+			},
+			false
+		);
 
-    // Add mouse move event listener that enables mouse user to highlight a terrain tile via moving over it on this level map
-    that.ctx.canvas.addEventListener(
-      "mousemove",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var tileSideLength = that.getTilePixelImageSize();
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
-        var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
-        var topLeftX = (that.xCanvas * that.interactionScale);
-        var topLeftY = (that.yCanvas * that.interactionScale);
-        var canvasWidth =
-          that.drawScale * that.mapWidth * that.interactionScale;
-        var canvasHeight =
-          that.drawScale * that.mapHeight * that.interactionScale;
-        if (
-          x >= topLeftX &&
-          x < topLeftX + canvasWidth &&
-          y >= topLeftY &&
-          y < topLeftY + canvasHeight &&
-          that.showGridMap
-        ) {
-          that.mouseHighlightedTile = {
-            row: row,
-            column: column,
-            color: "white",
-            mouse: "onMap",
-          };
-        } else {
-          that.mouseHighlightedTile = {
-            row: row,
-            column: column,
-            color: "white",
-            mouse: "offMap",
-          };
-        }
-      },
-      false
-    );
+		// Add mouse move event listener that enables mouse user to highlight a terrain tile via moving over it on this level map
+		that.ctx.canvas.addEventListener(
+			"mousemove",
+			function (e) {
+				var canvasCoordinates = getXandY(e);
+				var tileSideLength = that.getTilePixelImageSize();
+				var x = canvasCoordinates.x;
+				var y = canvasCoordinates.y;
+				var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+				var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+				var topLeftX = (that.xCanvas * that.interactionScale);
+				var topLeftY = (that.yCanvas * that.interactionScale);
+				var canvasWidth =
+					that.drawScale * that.mapWidth * that.interactionScale;
+				var canvasHeight =
+					that.drawScale * that.mapHeight * that.interactionScale;
+				if (
+					x >= topLeftX &&
+					x < topLeftX + canvasWidth &&
+					y >= topLeftY &&
+					y < topLeftY + canvasHeight &&
+					that.showGridMap
+				) {
+					that.mouseHighlightedTile = {
+						row: row,
+						column: column,
+						color: "white",
+						mouse: "onMap",
+					};
+				} else {
+					that.mouseHighlightedTile = {
+						row: row,
+						column: column,
+						color: "white",
+						mouse: "offMap",
+					};
+				}	
+			},
+			false
+		);
 
-    // Add mouse out event listener that enables level to un-highlight any tile the mouse cursor last moved over when the cursor moved outside the level boundaries
-    that.ctx.canvas.addEventListener(
-      "mouseout",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        that.mouseHighlightedTile = {
-          row: 0,
-          column: 0,
-          color: "white",
-          mouse: "offMap",
-        };
-      },
-      false
-    );
-  };
+		// Add mouse out event listener that enables level to un-highlight any tile the mouse cursor last moved over when the cursor moved outside the level boundaries
+		that.ctx.canvas.addEventListener(
+			"mouseout",
+			function (e) {
+				var canvasCoordinates = getXandY(e);
+				that.mouseHighlightedTile = {
+					row: 0,
+					column: 0,
+					color: "white",
+					mouse: "offMap",
+				};
+			},
+			false
+		);
+	};
 
   /*
 		Add a new tower entity to the level map grid and the game engine itself
@@ -391,37 +423,68 @@ class Level {
     if (newTower) {
       this.gameEngine.addEntity(newTower);
       this.changeStateOfTowerTerrain(row, column);
+	  this.placedTowers.push(newTower);
+	  this.newestTower = newTower;
     }
   };
+  
+	/*
+		Remove a tower that is already placed on the map 
+		(happens only when 'Undo' user icon is successfully clicked on)
+		
+		Parameters:
+		@row		the row where the desired tower to be removed is at
+		@column		the column where the desired tower to be removed is at
+	*/
+	removeTower(row, column) {
+		var gridTile = this.terrainGridTiles.getTile(row, column);
+		if ( gridTile === this.towerTerrainOccupied ) {
+			var i = 0;
+			var numberOfTowers = this.placedTowers.length;
+			var tileOfNewestTower = this.newestTower.getTilePosition();
+			while ( i < numberOfTowers && this.newestTower !== null ) {
+				var towerTile = this.placedTowers[i].getTilePosition();
+				if ( towerTile.row === tileOfNewestTower.row
+					 && towerTile.column === tileOfNewestTower.column ) {
+					this.placedTowers[i].removeFromWorld = true;
+					this.placedTowers.splice(i, 1);
+					this.newestTower = null;
+					this.changeStateOfTowerTerrain(row, column);
+				};
+				i++;
+			};
+		}
 
-  /*
-    Check balance before placing the towers
-  */
-  enoughPurchasePower(cost) {
-    console.log("Balance is: ", this.user.balance, " and it costs: ", cost);
-    if (this.user.balance >= cost) return true;
-    else return false;
-  };
+	};
 
-  /*
+	/*
+		Check balance before placing the towers
+	*/
+	enoughPurchasePower(cost) {
+		console.log("Balance is: ", this.user.balance, " and it costs: ", cost);
+		if (this.user.balance >= cost) return true;
+		else return false;
+	};
+
+	/*
 		Return the tile grid that this level uses
 	*/
-  getGrid() {
-    return this.terrainGridTiles;
-  };
+	getGrid() {
+		return this.terrainGridTiles;
+	};
 
-  /*
+	/*
 		Return the pixel length of a square tile as drawn to scale on the canvas
 	*/
-  getTilePixelImageSize() {
-    return (
-      this.terrainGridTiles.getSquareTileSidePixelLength() * this.drawScale
-    );
-  };
+	getTilePixelImageSize() {
+		return (
+		this.terrainGridTiles.getSquareTileSidePixelLength() * this.drawScale
+		);
+	};
 }
 
 class LevelTerrainMap {
-  /*
+    /*
 		Constructor for the LevelTerrainMap
 		
 		Parameter:
@@ -461,44 +524,36 @@ class LevelTerrainMap {
     this.obstacle = 2;
   };
 
-  /*
-		Create a pre-defined 2D array representing the terrain makeup of a level map.
+
+    /*
+		Initialize the grid map for the specified level.
 	*/
   initializeGridMap() {
     if (this.level.mapLevel === 1) {
-      this.levelOneMap();
+      this.setLevelMapGridProperities(levelOneGrid);   // 'levelOneGrid' from 'levelMapProperties.json'
     }
   };
 
-  /*
-		Creates a 2D-array pre-defined for the first level
-	*/
-  levelOneMap() {
-    this.numOfTileRows = 10;
-    this.numOfTileColumns = 15;
-    this.squareTileSidePixelLength = 40;
-    this.squareTileBorderPixelWeight = 1;
 
-    this.mapArray = [
-      [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 0, 1, 1, 0, 1, 1, 1, 2, 1, 1, 2, 2, 2],
-      [1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 2, 2, 2],
-      [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-      [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1],
-    ];
+	/*
+		Take the pre-defined propertries of the map grid
+		for the specified level from a JSON file
+		
+		@levelFile		the pre-defined data stored in a JSON file
+	*/
+  setLevelMapGridProperities(levelFile) {
+    this.numOfTileRows = levelFile.tileRows;
+    this.numOfTileColumns = levelFile.tileColumns;
+    this.squareTileSidePixelLength = levelFile.tilePixelLength;
+    this.squareTileBorderPixelWeight = levelFile.tileBorderPixelWeight;
+
+    this.mapArray = levelFile.mapArray;
 	
-	this.startTile = {row: 5, column: 0};
-	this.startDirection = "right";
-    this.destinationTile = { row: 4, column: 14 };
+	this.startTile = levelFile.startTile;
+	this.startDirection = levelFile.startDirection;
+    this.destinationTile = levelFile.destinationTile;
 	
-	// first turn at tile [5,2], last turn at tile [4,9]
-	var tileTurns = [ [5,2], [2,2], [2,5], [6,5], [6,9], [4,9] ];
-	console.log(tileTurns);
+	var tileTurns = levelFile.tileTurns;
 	this.initializePathTurns(tileTurns);	
   };
 
@@ -527,8 +582,6 @@ class LevelTerrainMap {
 			  centerY: (tileSideLength * turnRow) + tileCenterOffset + this.yCanvas
 			}
 		);
-//		console.log(`New Path Turn: ${this.pathTurns[i].row}, ${this.pathTurns[i].column},
-//			${this.pathTurns[i].centerX}, ${this.pathTurns[i].centerY}`);
 	}
   };
 

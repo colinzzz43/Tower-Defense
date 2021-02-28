@@ -119,7 +119,7 @@ class Skeleton extends Enemy {
         var ent = this.gameEngine.entities[i];
         if (this.controlled) {
           if (ent instanceof Enemy && ent.exist && ent !== this) {
-            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -128,7 +128,7 @@ class Skeleton extends Enemy {
           }
         } else {
           if (ent instanceof Tower) {
-            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate) {
+            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -140,7 +140,7 @@ class Skeleton extends Enemy {
 
 
       if (this.target)
-        if (this.target.removeFromWorld || !collide(this, this.target))
+        if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3)
           this.state = 0;
 
       // only move when running
@@ -155,6 +155,7 @@ class Skeleton extends Enemy {
         this.movement.updatePosition(this.x, this.y);
       }
 
+      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
         if (this.deathAnimationTime > 0.8) {
