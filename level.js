@@ -87,8 +87,6 @@ class Level {
 
 		this.user = this.gameEngine.camera.user; // the user interacting with the tower
 		
-		// Spawn the enemy waves on this level
-//		this.levelEnemyWaves = new LevelWave(this);
 	};
 
 	/*
@@ -241,17 +239,31 @@ class Level {
 						};
 					}
 				}
+				// tower selection for upgrade and selling
 				that.gameEngine.entities.forEach(function (entity) {
 					if (entity instanceof Tower) {
+						// centered x and y of tower grid position
 						let towerX = entity.x;
 						let towerY = entity.y;
+
+						// upgrade and sell button positions
+						let upgradeX = that.towerStoreMenu.upgradeButton.xCanvas;
+						let upgradeY = that.towerStoreMenu.upgradeButton.yCanvas;
+						let buttonWidth = that.towerStoreMenu.upgradeButton.iconBoxWidth;
+						let buttonHeight = that.towerStoreMenu.upgradeButton.iconBoxHeight;
+
+						let sellY = that.towerStoreMenu.sellButton.yCanvas;
+
+						// if tower grid position is clicked, tower selected is true
 						if ( (x >= towerX - tileSideLength / 2 && x <= towerX + tileSideLength / 2) 
 							&& (y >= towerY - tileSideLength / 2 && y <= towerY + tileSideLength / 2)) {
-							if (entity.selected == false) {
-								entity.selected = true;
-							} else {
-								entity.selected = false;
-							}
+							entity.selected = true;
+
+						// else if neither sell or upgrade button is clicked, tower selected is false
+						} else if (!(x >= upgradeX && x <= upgradeX + buttonWidth && 
+							(y >= upgradeY && y <= upgradeY + buttonHeight) || 
+							(y >= sellY && y <= sellY + buttonHeight))) {
+							entity.selected = false;
 						}
 					}
 				});	

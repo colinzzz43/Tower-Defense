@@ -4,13 +4,24 @@ levelOneWaves = {
 	"y": 330,
 	"waves": [
 	
-		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 4},
-		 {"enemyType": "Flying Eye", "initialSpawnTime": 10, "interval": 2, "number": 2},
-		 {"enemyType": "Mushroom", "initialSpawnTime": 15, "interval": 2, "number": 3},
-		 {"enemyType": "Skeleton", "initialSpawnTime": 20, "interval": 2, "number": 3},
-		 {"enemyType": "Goblin", "initialSpawnTime": 25, "interval": 2, "number": 3},
-		 {"enemyType": "Dragon", "initialSpawnTime": 30, "interval": 2, "number": 1} 	]
+		[{"enemyType": "Slime", "initialSpawnTime": 5, "interval": 2, "number": 5}, // wave 1, total time 15
+
+		 {"enemyType": "Slime", "initialSpawnTime": 35, "interval": 2, "number": 10}, // wave 2, total time 55
 		
-	]
+		 {"enemyType": "Slime", "initialSpawnTime": 70, "interval": 2, "number": 5}, // wave 3, total time 80
+		 {"enemyType": "Goblin", "initialSpawnTime": 71, "interval": 2, "number": 4},
+
+		 {"enemyType": "Goblin", "initialSpawnTime": 95, "interval": 2, "number": 5}, // wave 4, total time 110
+		 {"enemyType": "Slime", "initialSpawnTime": 96, "interval": 2, "number": 7},
+
+		 {"enemyType": "Goblin", "initialSpawnTime": 125, "interval": 1, "number": 10}, // wave 5, total time 110
+		 {"enemyType": "Skeleton", "initialSpawnTime": 125, "interval": 2, "number": 5}
+		]
+		
+	],
+
+	// Time to next wave for waves 0-4.
+	// To find time to next wave, next wave intialSpawnTime - current wave initialSpawnTime.
+	"waveTimes": [5, 30, 35, 25, 30]
 	
 }
