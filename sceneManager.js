@@ -25,12 +25,7 @@ class SceneManager {
 
 //	this.base = this.game.base;
 	
-    this.waves = 1;
-    this.scores = 0;
 
-    this.height = 480;
-	
-	// Level Map Screen
 	this.levelMap = {
 		xCanvas: 150,
 		yCanvas: 0,
@@ -54,37 +49,14 @@ class SceneManager {
 	// Game Mute
 	this.muted = false;
 	
-	    // Timer
-    this.TIME_LIMIT = 5;
-    this.timePassed = 0;
-	  this.timerRestarted = false;
-	  this.speedChanged = false;
-    this.timeLeft = this.TIME_LIMIT;
-    this.timerInterval = null;
-    this.startTimer();
+
 	
 	
 	  // Load the prototype level, along with user and tower store menus, to the game engine
 	  this.loadGamePrototype();
   }
   
-  startTimer() {
-	if (this.timerRestarted || this.speedChanged) {
-		clearInterval(this.timerInterval);
-		this.timerRestarted = false;
-		this.speedChanged = false;
-	}
-    this.timerInterval = setInterval(() => {
-	  if (!this.paused) {
-		// The amount of time passed increments by one
-		this.timePassed += 0.1;
-		this.timeLeft = this.TIME_LIMIT - this.timePassed;
-		if (this.timeLeft < 0) {
-			this.timeLeft = 0;
-		}
-	  }
-    }, (100 / this.speed) );
-  };
+  
 
 
   loadGamePrototype() {
@@ -104,25 +76,28 @@ class SceneManager {
 	// level.levelEnemyWaves = new LevelWave(level);
 	
 	// tower store menu
-	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
+	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 55, this.ctx, level);
 	this.game.addEntity(towerStoreMenu);
 	  
 	// user menu
-	var userMenu = new UserMenu(gameEngine, 5, 5, this.ctx, level);
+	var userMenu = new UserMenu(gameEngine, 5, 55, this.ctx, level);
 	this.game.addEntity(userMenu);
 	
+	// description box
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 605, this.ctx, level);
+	this.game.addEntity(descriptionMenu);
+
+	// hud
+	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
+	this.game.addEntity(hud);
   };
 
   update() {
 //	this.muted = this.game.muted;
 //	this.speed = this.game.speed;
 //	this.paused = this.game.paused;
-    this.HP = this.base.HP;
-    this.coins = this.user.balance;
-    this.scores = this.game.camera.user.scores;
-	  if (this.timerRestarted || this.speedChanged) {
-		  this.startTimer();
-	  }
+
+
   };
 
   addCoin() {};
@@ -131,14 +106,7 @@ class SceneManager {
 	Display the game stats
   */
   draw(ctx) {
-	  this.gameStatsDisplay(ctx);
-	  this.coinAnimation.drawFrame(
-		  this.game.clockTick,
-		  ctx,
-		  this.levelMap.xCanvas + (this.levelMap.width * 0.335),
-		  this.levelMap.yCanvas + (this.levelMap.height * 0.82),
-		  3
-	  );
+
 	  if (this.paused) this.drawPauseScreen(ctx);
 	  if (this.muted || this.paused) 
 		this.muteBGM()
@@ -149,52 +117,7 @@ class SceneManager {
 	  }
   };
 
-	/*
-		Display the game stats, excluding the coin animation
-	*/
-	gameStatsDisplay(ctx) {
-		var horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.05);
-		var verticalAlign = this.levelMap.yCanvas +
-			(this.levelMap.height * 0.8);
-		  
-		// Tower Defense Game Name and Scores
-		ctx.font = "30px Langar, cursive, serif, sans-serif";
-		ctx.fillStyle = "White";
-		ctx.fillText("Tower Defense", horizontalAlign, verticalAlign);
-		ctx.fillText(
-			("Scores: " + this.scores).padStart(8, "0"),
-			horizontalAlign,
-			verticalAlign * 1.1
-		);
-		
-		// Coin Currency
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.38);
-		ctx.fillText(
-			"x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
-			horizontalAlign,
-			verticalAlign * 1.1
-		);
 
-		// HP and Waves
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.6);
-		if (this.HP > 0) { // show hp when above 0, else show defeat
-		  ctx.fillText("Base: " + this.HP + " " + "HP", horizontalAlign, verticalAlign);
-		} else  {
-		  ctx.fillText("DEFEAT" , horizontalAlign, verticalAlign);
-		}
-		ctx.fillText(this.waves + " / 10 waves", horizontalAlign, verticalAlign * 1.1);
-		
-		// Time
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.85);
-		ctx.fillText("TIME", horizontalAlign, verticalAlign);
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.885);
-		ctx.fillText(Math.floor(this.timeLeft), horizontalAlign, verticalAlign * 1.1);
-	};
 
   /*
     Mute the background music

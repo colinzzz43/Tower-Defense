@@ -4,6 +4,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 
 //queue download
+ASSET_MANAGER.queueDownload("./sprites/title.png");
 
 // map
 ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
