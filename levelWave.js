@@ -4,6 +4,7 @@ class LevelWave {
 			
 		Object.assign( this, {level} );
 		this.levelWaves = null;
+		this.waveTimes = [];
 		this.initializeWaves();
 		
 	};
@@ -15,6 +16,7 @@ class LevelWave {
 	initializeWaves() {
 		if (this.level.mapLevel === 1) {
 			this.levelWaves = levelOneWaves;  // from 'levelEnemyWaves.json'
+			this.waveTimes = levelOneWaves.waveTimes;
 		}
 		
 		this.spawnEnemies();	
@@ -28,8 +30,8 @@ class LevelWave {
 			for (var j = 0; j < this.levelWaves.waves[i].length; j++) {
 				addEnemySpawn(
 					this.level.gameEngine, 
-					this.levelWaves.x, 
-					this.levelWaves.y,
+					this.levelWaves.waves[i][j].x, 
+					this.levelWaves.waves[i][j].y,
 					this.level,
 					this.levelWaves.waves[i][j].initialSpawnTime,
 					this.levelWaves.waves[i][j].interval,

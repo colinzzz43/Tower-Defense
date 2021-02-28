@@ -14,6 +14,8 @@ class SceneManager {
 
 //	this.base = this.game.base;
 	
+    this.currentWave = 0;
+    this.scores = 0;
 
 	this.levelMap = {
 		xCanvas: 150,
@@ -38,14 +40,44 @@ class SceneManager {
 	// Game Mute
 	this.muted = false;
 	
-
+	// Timer
+	this.waveTimer = 5;
+	this.timerRestarted = false;
+	this.speedChanged = false;
+    this.timerInterval = null;
+    this.startTimer();
 	
 	
-	  // Load the prototype level, along with user and tower store menus, to the game engine
-	  this.loadGamePrototype();
+	// Load the prototype level, along with user and tower store menus, to the game engine
+	this.loadGamePrototype();
   }
   
-  
+  startTimer() {
+	if (this.timerRestarted || this.speedChanged) {
+		clearInterval(this.timerInterval);
+		this.timerRestarted = false;
+		this.speedChanged = false;
+	}
+    this.timerInterval = setInterval(() => {
+	  if (!this.paused) {
+		// The amount of time passed increments by one
+		this.waveTimer -= 0.1;
+
+		// Countdown to next wave. When 0, increment current wave
+		// and reset waveTimer to that wave's time
+		if (this.waveTimer <= 0) {
+			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
+				this.currentWave++;
+				this.waveTimer = this.waveTimes[this.currentWave];
+				
+			} else {
+				this.waveTimer = -1;
+			}
+		}
+
+	  }
+    }, (100 / this.speed) );
+  };
 
 
   loadGamePrototype() {
@@ -55,17 +87,22 @@ class SceneManager {
 	this.game.addEntity(this.user);  
 	
 	// level entity
-	var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
+	var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 	var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 
 						  0, 0, 600, 400, 1.5, 1, this.ctx);
 	this.game.addEntity(level);
 	
 	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
 	// put into level to ensure enemies are drawn on top of map image
-	// level.levelEnemyWaves = new LevelWave(level);
+	var levelEnemyWaves = new LevelWave(level);
+	level.levelEnemyWaves = levelEnemyWaves;
+	this.waveTimes = levelEnemyWaves.waveTimes; // new field for array of wave times
+	this.waveTimer = this.waveTimes[this.currentWave];
 	
 	// tower store menu
-	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 55, this.ctx, level);
+	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
+	// new field towerStoreMenu added to level for tower selection interaction
+	level.towerStoreMenu = towerStoreMenu;
 	this.game.addEntity(towerStoreMenu);
 	  
 	// user menu
@@ -85,8 +122,12 @@ class SceneManager {
 //	this.muted = this.game.muted;
 //	this.speed = this.game.speed;
 //	this.paused = this.game.paused;
-
-
+    this.HP = this.base.HP;
+    this.coins = this.user.balance;
+    this.scores = this.game.camera.user.scores;
+	if (this.timerRestarted || this.speedChanged) {
+		this.startTimer();
+	}
   };
 
   addCoin() {};
@@ -106,7 +147,51 @@ class SceneManager {
 	  }
   };
 
+	/*
+		Display the game stats, excluding the coin animation
+	*/
+	gameStatsDisplay(ctx) {
+		var horizontalAlign = this.levelMap.xCanvas + 
+			(this.levelMap.width * 0.05);
+		var verticalAlign = this.levelMap.yCanvas +
+			(this.levelMap.height * 0.8);
+		  
+		// Tower Defense Game Name and Scores
+		ctx.font = "30px Langar, cursive, serif, sans-serif";
+		ctx.fillStyle = "White";
+		ctx.fillText("Tower Defense", horizontalAlign, verticalAlign);
+		ctx.fillText(
+			("Scores: " + this.scores).padStart(8, "0"),
+			horizontalAlign,
+			verticalAlign * 1.1
+		);
+		
+		// Coin Currency
+		horizontalAlign = this.levelMap.xCanvas + 
+			(this.levelMap.width * 0.38);
+		ctx.fillText(
+			"x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
+			horizontalAlign,
+			verticalAlign * 1.1
+		);
 
+		// HP and Waves
+		horizontalAlign = this.levelMap.xCanvas + (this.levelMap.width * 0.6);
+		if (this.HP > 0) { // show hp when above 0, else show defeat
+		  ctx.fillText("Base: " + this.HP + " " + "HP", horizontalAlign, verticalAlign);
+		} else  {
+		  ctx.fillText("DEFEAT" , horizontalAlign, verticalAlign);
+		}
+		ctx.fillText(this.currentWave + " / " + this.waveTimes.length + " waves", horizontalAlign, verticalAlign * 1.1);
+		
+		// Time
+		horizontalAlign = this.levelMap.xCanvas + 
+			(this.levelMap.width * 0.85);
+		ctx.fillText("TIME", horizontalAlign, verticalAlign);
+		horizontalAlign = this.levelMap.xCanvas + 
+			(this.levelMap.width * 0.885);
+		ctx.fillText(Math.floor(this.waveTimer + 1), horizontalAlign, verticalAlign * 1.1);
+	};
 
   /*
     Mute the background music
