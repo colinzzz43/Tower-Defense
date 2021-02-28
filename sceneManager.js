@@ -8,18 +8,7 @@ class SceneManager {
     ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
     this.BGM = new Audio("./soundeffects/BGM.mp3");
 
-    this.coinAnimation = new Animator(
-      ASSET_MANAGER.getAsset("./sprites/other/coin2.png"),
-      0,
-      0,
-      16,
-      16,
-      8,
-      0.2,
-      0,
-      false,
-      true
-    );
+
     
 //  this.user = this.game.user;
 
