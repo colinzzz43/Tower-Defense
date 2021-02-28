@@ -882,9 +882,8 @@ class RestartIcon extends UserMenuIcon {
 		this.gameEngine.camera.user.balance = 100;
 		this.gameEngine.camera.user.scores = 0;		
 		this.gameEngine.camera.base.HP = 5;
-		this.gameEngine.camera.waveTimer = this.gameEngine.camera.waveTimes[0];
+		this.gameEngine.camera.timeLeft = this.gameEngine.camera.TIME_LIMIT;
+		this.gameEngine.camera.timePassed = 0;	
 		this.gameEngine.camera.timerRestarted = true;
-		this.gameEngine.camera.currentWave = 0;
-
 	};
 }
