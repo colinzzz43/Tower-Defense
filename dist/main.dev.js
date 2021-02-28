@@ -5,7 +5,7 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png"); //queue download
 // map
 
-ASSET_MANAGER.queueDownload("./Level/map_prototype.png"); // enemies
+ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png"); // enemies
 
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slime
 
@@ -78,77 +78,93 @@ ASSET_MANAGER.downloadAll(function () {
   var canvas = document.getElementById("gameWorld");
   var ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
-  var moveX = 150;
+  var width = document.getElementById("gameWorld").width;
   gameEngine.init(ctx);
-  var user = new User(gameEngine);
-  var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
-  var level = new Level(gameEngine, map, 150, 0, 0, 0, 600, 400, 1.5, 1, ctx); // tower icon buttons
+  var Scene = new SceneManager(gameEngine, ctx);
+  gameEngine.addEntity(Scene);
+  /*
+    var user = new User(gameEngine);
+    var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
+    var level = new Level(gameEngine, map, 150, 0, 0, 0, 600, 400, 1.5, 1, ctx);
+  
+    // tower icon buttons
+    var towerIconImages = [];
+    var pistolImage = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_left.png");
+    towerIconImages.push(pistolImage);
+    var mgImage = ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_left.png");
+    towerIconImages.push(mgImage);
+    var shotgunImage = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_left.png");
+    towerIconImages.push(shotgunImage);
+    var cannonImage = ASSET_MANAGER.getAsset("./sprites/towers/cannon/Level1/1_left.png");
+    towerIconImages.push(cannonImage);
+    var flamethrowerImage = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_left.png");
+    towerIconImages.push(flamethrowerImage);
+    var laserImage = ASSET_MANAGER.getAsset("./sprites/towers/laser/Level1/1_left.png");
+    towerIconImages.push(laserImage);
+    var matterImage = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_left.png");
+    towerIconImages.push(matterImage);
+    var rocketImage = ASSET_MANAGER.getAsset("./sprites/towers/rocket/Level1/1_left.png");
+    towerIconImages.push(rocketImage);
+    var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
+    towerIconImages.push(spazerImage);
+    var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, towerIconImages, ctx, level);
+    
+    var userMenu = new UserMenu(gameEngine, 5, 5, ctx, level);
+  
+    var base = new Base(gameEngine, 960, 270);
+  
+  
+    gameEngine.addEntity(user);
+    gameEngine.addEntity(level);
+    level.levelEnemyWaves = new LevelWave(level);
+    gameEngine.addEntity(base);
+    gameEngine.addEntity(towerStoreMenu);
+    gameEngine.addEntity(userMenu);
+  
+    // enemy spawner
+  
+    let x = 200;
+    let y = 330;
+    let initalSpawnTime = 5;
+    let interval = 2;
+    let n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
+  
+     x = 200;
+     y = 330;
+     initalSpawnTime = 10;
+     interval = 12;
+     n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
+  
+     x = 200;
+     y = 330;
+     initalSpawnTime = 15;
+     interval = 2;
+     n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
+  
+     x = 200;
+     y = 330;
+     initalSpawnTime = 20;
+     interval = 2;
+     n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
+  
+     x = 200;
+     y = 330;
+     initalSpawnTime = 25;
+     interval = 2;
+     n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
+  
+     x = 200;
+     y = 330;
+     initalSpawnTime = 30;
+     interval = 2;
+     n = 1;
+    addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
+  */
 
-  var towerIconImages = [];
-  var pistolImage = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_left.png");
-  towerIconImages.push(pistolImage);
-  var mgImage = ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_left.png");
-  towerIconImages.push(mgImage);
-  var shotgunImage = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_left.png");
-  towerIconImages.push(shotgunImage);
-  var cannonImage = ASSET_MANAGER.getAsset("./sprites/towers/cannon/Level1/1_left.png");
-  towerIconImages.push(cannonImage);
-  var flamethrowerImage = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_left.png");
-  towerIconImages.push(flamethrowerImage);
-  var laserImage = ASSET_MANAGER.getAsset("./sprites/towers/laser/Level1/1_left.png");
-  towerIconImages.push(laserImage);
-  var matterImage = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_left.png");
-  towerIconImages.push(matterImage);
-  var rocketImage = ASSET_MANAGER.getAsset("./sprites/towers/rocket/Level1/1_left.png");
-  towerIconImages.push(rocketImage);
-  var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
-  towerIconImages.push(spazerImage);
-  var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, towerIconImages, ctx, level);
-  var userMenu = new UserMenu(gameEngine, 5, 5, ctx, level);
-  var base = new Base(gameEngine, 960, 270);
-  var Scene = new SceneManager(gameEngine);
-  gameEngine.addEntity(user);
-  gameEngine.addEntity(level);
-  gameEngine.addEntity(base);
-  gameEngine.addEntity(towerStoreMenu);
-  gameEngine.addEntity(userMenu);
-  gameEngine.addEntity(Scene); // enemy spawner
-
-  var x = 200;
-  var y = 330;
-  var initalSpawnTime = 5;
-  var interval = 2;
-  var n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
-  x = 200;
-  y = 330;
-  initalSpawnTime = 10;
-  interval = 12;
-  n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
-  x = 200;
-  y = 330;
-  initalSpawnTime = 15;
-  interval = 2;
-  n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
-  x = 200;
-  y = 330;
-  initalSpawnTime = 20;
-  interval = 2;
-  n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
-  x = 200;
-  y = 330;
-  initalSpawnTime = 25;
-  interval = 2;
-  n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
-  x = 200;
-  y = 330;
-  initalSpawnTime = 30;
-  interval = 2;
-  n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
   gameEngine.start();
 });

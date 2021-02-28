@@ -6,7 +6,7 @@ ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 //queue download
 
 // map
-ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
+ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
 
 // enemies
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slime

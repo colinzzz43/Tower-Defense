@@ -30,8 +30,8 @@ class LevelWave {
 			for (var j = 0; j < this.levelWaves.waves[i].length; j++) {
 				addEnemySpawn(
 					this.level.gameEngine, 
-					this.levelWaves.x, 
-					this.levelWaves.y,
+					this.levelWaves.waves[i][j].x, 
+					this.levelWaves.waves[i][j].y,
 					this.level,
 					this.levelWaves.waves[i][j].initialSpawnTime,
 					this.levelWaves.waves[i][j].interval,
