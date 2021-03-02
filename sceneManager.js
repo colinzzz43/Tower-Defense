@@ -19,7 +19,7 @@ class SceneManager {
 
 	this.levelMap = {
 		xCanvas: 150,
-		yCanvas: 0,
+		yCanvas: 60,
 		width: 900,
 		height: 600
 	};
@@ -45,7 +45,7 @@ class SceneManager {
 	this.timerRestarted = false;
 	this.speedChanged = false;
     this.timerInterval = null;
-    this.startTimer();
+//    this.startTimer();
 	
 	
 	  // Load the prototype level, along with user and tower store menus, to the game engine
@@ -94,20 +94,22 @@ class SceneManager {
 	
 	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
 	// put into level to ensure enemies are drawn on top of map image
-	// level.levelEnemyWaves = new LevelWave(level);
+	level.levelEnemyWaves = new LevelWave(level);
+	this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
+	this.waveTimer = this.waveTimes[this.currentWave];
 	
 	// tower store menu
-	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
+	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level);
 	// new field towerStoreMenu added to level for tower selection interaction
 	level.towerStoreMenu = towerStoreMenu;
 	this.game.addEntity(towerStoreMenu);
 	  
 	// user menu
-	var userMenu = new UserMenu(gameEngine, 5, 55, this.ctx, level);
+	var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
 	this.game.addEntity(userMenu);
 	
 	// description box
-	var descriptionMenu = new DescriptionBox(gameEngine, 5, 605, this.ctx, level);
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
 	this.game.addEntity(descriptionMenu);
 
 	// hud

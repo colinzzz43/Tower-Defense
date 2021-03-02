@@ -6,30 +6,30 @@ var levelOneWaves = {
 
 		// wave 1, total time 15
 		[
-			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 5, x: 200, y: 330}
+			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 5, x: 200, y: 390}
 		], 
 
 		// wave 2, total time 55
 		[
-			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 10, x: 200, y: 330}
+			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 10, x: 200, y: 390}
 		], 
 		
 		// wave 3, total time 80
 		[
-			{enemyType: "Slime", initialSpawnTime: 70, interval: 2, number: 5, x: 200, y: 330}, 
-			{enemyType: "Goblin", initialSpawnTime: 71, interval: 2, number: 4, x: 200, y: 330}
+			{enemyType: "Slime", initialSpawnTime: 70, interval: 2, number: 5, x: 200, y: 390}, 
+			{enemyType: "Goblin", initialSpawnTime: 71, interval: 2, number: 4, x: 200, y: 390}
 		],
 
 		// wave 4, total time 110
 		[
-			{enemyType: "Goblin", initialSpawnTime: 95, interval: 2, number: 5, x: 200, y: 330}, 
-			{enemyType: "Slime", initialSpawnTime: 96, interval: 2, number: 7, x: 200, y: 330}
+			{enemyType: "Goblin", initialSpawnTime: 95, interval: 2, number: 5, x: 200, y: 390}, 
+			{enemyType: "Slime", initialSpawnTime: 96, interval: 2, number: 7, x: 200, y: 390}
 		],
 
 		// wave 5, total time 110
 		[
-			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 330}, 
-			{enemyType: "Skeleton", initialSpawnTime: 125, interval: 3, number: 5, x: 200, y: 330}
+			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 390}, 
+			{enemyType: "Skeleton", initialSpawnTime: 125, interval: 3, number: 5, x: 200, y: 390}
 		]
 	
 	],

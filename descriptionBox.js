@@ -5,10 +5,10 @@ class DescriptionBox {
 		
 		Parameters:
 		@gameEngine				the game engine that will use this object
-		@topLeftCornerX			the x-coordinate in canvas where top left corner of the user menu will be
-		@topLeftCornerY			the y-coordinate in canvas where top left corner of the user menu will be	
-		@ctx					the canvas that this user menu will be applied to
-		@level					the level that will use this user menu					
+		@topLeftCornerX			the x-coordinate in canvas where top left corner of the description box will be
+		@topLeftCornerY			the y-coordinate in canvas where top left corner of the description box will be will be	
+		@ctx					the canvas that this description box will be will be applied to
+		@level					the level that will use this description box will be					
 	*/
 	constructor(
 		gameEngine,
