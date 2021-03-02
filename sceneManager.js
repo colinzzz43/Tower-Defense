@@ -28,9 +28,6 @@ class SceneManager {
     this.currentWave = 0;
     this.scores = 0;
 
-    this.height = 480;
-	
-	// Level Map Screen
 	this.levelMap = {
 		xCanvas: 150,
 		yCanvas: 0,
@@ -120,9 +117,16 @@ class SceneManager {
 	this.game.addEntity(towerStoreMenu);
 	  
 	// user menu
-	var userMenu = new UserMenu(gameEngine, 5, 5, this.ctx, level);
+	var userMenu = new UserMenu(gameEngine, 5, 55, this.ctx, level);
 	this.game.addEntity(userMenu);
 	
+	// description box
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 605, this.ctx, level);
+	this.game.addEntity(descriptionMenu);
+
+	// hud
+	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
+	this.game.addEntity(hud);
   };
 
   update() {
@@ -143,14 +147,7 @@ class SceneManager {
 	Display the game stats
   */
   draw(ctx) {
-	  this.gameStatsDisplay(ctx);
-	  this.coinAnimation.drawFrame(
-		  this.game.clockTick,
-		  ctx,
-		  this.levelMap.xCanvas + (this.levelMap.width * 0.335),
-		  this.levelMap.yCanvas + (this.levelMap.height * 0.82),
-		  3
-	  );
+
 	  if (this.paused) this.drawPauseScreen(ctx);
 	  if (this.muted || this.paused) 
 		this.muteBGM()
