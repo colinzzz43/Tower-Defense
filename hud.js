@@ -124,7 +124,7 @@ class HUD {
 		this.ctx.beginPath();
 
 		
-		// Draw the rectangle for menu box
+		// Draw the rectangle for HUD
 		this.ctx.strokeStyle = "black";
 		this.ctx.lineWidth = 10;
 		this.ctx.rect(this.topLeftCornerX, this.topLeftCornerY, this.menuBoxWidth, this.menuBoxHeight);
@@ -133,14 +133,18 @@ class HUD {
 		this.ctx.lineWidth = 2;
 		this.ctx.strokeRect(this.topLeftCornerX - 2, this.topLeftCornerY - 2, this.menuBoxWidth + 4, this.menuBoxHeight + 4);	
 		
-		// Fill the background color of menu box with gradient
-		var grd = this.ctx.createRadialGradient(0,350,0,0,350,500);
-		grd.addColorStop(0,"LightSteelBlue");
+		// Fill the background color of HUD with gradient
+		var grd = this.ctx.createRadialGradient(0,500,0,0,350,500);
+		grd.addColorStop(0,"black");
 		grd.addColorStop(1,"White");
+
+
+
+
 		this.ctx.fillStyle = grd;
 		this.ctx.fill();
 		
-		// Draw the Tower Store Sign on Menu
+		// Draw the Tower Store Sign on HUD
 		this.ctx.strokeStyle = "navy";
 		this.ctx.lineWidth = 3;
 		// this.ctx.strokeRect(this.topLeftCornerX + 5, this.topLeftCornerY + 10, this.menuBoxWidth - 10, 25);		
