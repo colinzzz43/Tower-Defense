@@ -22,11 +22,6 @@ class TowerStoreMenu {
 		this.storeIcons = [];
 		this.towerImagesArray = this.retrieveTowerIconImages();
 		
-		// used by level for tower selection interaction
-		this.upgradeButton;
-		this.sellButton;
-
-		
 		this.initializeIcons();
 		this.mouseInteraction();
 		this.widthScale = widthScaling();
@@ -160,10 +155,6 @@ class TowerStoreMenu {
 		this.storeIcons.push(upgradeButton);
 		var sellButton = new StoreButton(this.gameEngine, "sell", rightX, y + 40, this.ctx, this.level);
 		this.storeIcons.push(sellButton);
-
-		// used by level for tower selection interaction
-		this.upgradeButton = upgradeButton;
-		this.sellButton = sellButton;
 
 		// Add tower icons to game engine
 		this.gameEngine.addEntity(pistolIcon);

@@ -8,18 +8,7 @@ class SceneManager {
     ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
     this.BGM = new Audio("./soundeffects/BGM.mp3");
 
-    this.coinAnimation = new Animator(
-      ASSET_MANAGER.getAsset("./sprites/other/coin2.png"),
-      0,
-      0,
-      16,
-      16,
-      8,
-      0.2,
-      0,
-      false,
-      true
-    );
+
     
 //  this.user = this.game.user;
 
@@ -59,8 +48,8 @@ class SceneManager {
     this.startTimer();
 	
 	
-	// Load the prototype level, along with user and tower store menus, to the game engine
-	this.loadGamePrototype();
+	  // Load the prototype level, along with user and tower store menus, to the game engine
+	  this.loadGamePrototype();
   }
   
   startTimer() {
@@ -98,17 +87,14 @@ class SceneManager {
 	this.game.addEntity(this.user);  
 	
 	// level entity
-	var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
+	var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 	var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 
 						  0, 0, 600, 400, 1.5, 1, this.ctx);
 	this.game.addEntity(level);
 	
 	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
 	// put into level to ensure enemies are drawn on top of map image
-	var levelEnemyWaves = new LevelWave(level);
-	level.levelEnemyWaves = levelEnemyWaves;
-	this.waveTimes = levelEnemyWaves.waveTimes; // new field for array of wave times
-	this.waveTimer = this.waveTimes[this.currentWave];
+	// level.levelEnemyWaves = new LevelWave(level);
 	
 	// tower store menu
 	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level);
