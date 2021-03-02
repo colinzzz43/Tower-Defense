@@ -55,7 +55,7 @@ class SceneManager {
 	this.game.addEntity(this.user);  
 	
 	// level entity
-	var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
+	var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 	var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 
 						  0, 0, 600, 400, 1.5, 1, this.ctx);
 	this.game.addEntity(level);
