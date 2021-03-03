@@ -316,7 +316,9 @@ var levelThreeWaves = {
 		]
 	],
 
-	waveTimes: []
+	waveTimes: [
+		
+	]
 }
 
 // grass map: skeleton, flying eye, mushroom, dragon

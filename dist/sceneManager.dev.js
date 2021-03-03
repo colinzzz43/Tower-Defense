@@ -46,41 +46,37 @@ function () {
     this.waveTimer = 5;
     this.timerRestarted = false;
     this.speedChanged = false;
-    this.timerInterval = null;
-    this.startTimer(); // Load the prototype level, along with user and tower store menus, to the game engine
+    this.timerInterval = null; // this.startTimer();
+    // Load the prototype level, along with user and tower store menus, to the game engine
 
     this.loadGamePrototype();
-  }
+  } // commented out as this.waveTimes is not defined
+  //   startTimer() {
+  // 	if (this.timerRestarted || this.speedChanged) {
+  // 		clearInterval(this.timerInterval);
+  // 		this.timerRestarted = false;
+  // 		this.speedChanged = false;
+  // 	}
+  //     this.timerInterval = setInterval(() => {
+  // 	  if (!this.paused) {
+  // 		// The amount of time passed increments by one
+  // 		this.waveTimer -= 0.1;
+  // 		// Countdown to next wave. When 0, increment current wave
+  // 		// and reset waveTimer to that wave's time
+  // 		if (this.waveTimer <= 0) {
+  // 			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
+  // 				this.currentWave++;
+  // 				this.waveTimer = this.waveTimes[this.currentWave];
+  // 			} else {
+  // 				this.waveTimer = -1;
+  // 			}
+  // 		}
+  // 	  }
+  //     }, (100 / this.speed) );
+  //   };
+
 
   _createClass(SceneManager, [{
-    key: "startTimer",
-    value: function startTimer() {
-      var _this = this;
-
-      if (this.timerRestarted || this.speedChanged) {
-        clearInterval(this.timerInterval);
-        this.timerRestarted = false;
-        this.speedChanged = false;
-      }
-
-      this.timerInterval = setInterval(function () {
-        if (!_this.paused) {
-          // The amount of time passed increments by one
-          _this.waveTimer -= 0.1; // Countdown to next wave. When 0, increment current wave
-          // and reset waveTimer to that wave's time
-
-          if (_this.waveTimer <= 0) {
-            if (_this.currentWave == 0 || _this.currentWave < _this.waveTimes.length - 1) {
-              _this.currentWave++;
-              _this.waveTimer = _this.waveTimes[_this.currentWave];
-            } else {
-              _this.waveTimer = -1;
-            }
-          }
-        }
-      }, 100 / this.speed);
-    }
-  }, {
     key: "loadGamePrototype",
     value: function loadGamePrototype() {
       // user entity created first 

@@ -45,39 +45,40 @@ class SceneManager {
 	this.timerRestarted = false;
 	this.speedChanged = false;
     this.timerInterval = null;
-    this.startTimer();
+    // this.startTimer();
 	
 	
 	  // Load the prototype level, along with user and tower store menus, to the game engine
 	  this.loadGamePrototype();
   }
   
-  startTimer() {
-	if (this.timerRestarted || this.speedChanged) {
-		clearInterval(this.timerInterval);
-		this.timerRestarted = false;
-		this.speedChanged = false;
-	}
-    this.timerInterval = setInterval(() => {
-	  if (!this.paused) {
-		// The amount of time passed increments by one
-		this.waveTimer -= 0.1;
+  // commented out as this.waveTimes is not defined
+//   startTimer() {
+// 	if (this.timerRestarted || this.speedChanged) {
+// 		clearInterval(this.timerInterval);
+// 		this.timerRestarted = false;
+// 		this.speedChanged = false;
+// 	}
+//     this.timerInterval = setInterval(() => {
+// 	  if (!this.paused) {
+// 		// The amount of time passed increments by one
+// 		this.waveTimer -= 0.1;
 
-		// Countdown to next wave. When 0, increment current wave
-		// and reset waveTimer to that wave's time
-		if (this.waveTimer <= 0) {
-			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
-				this.currentWave++;
-				this.waveTimer = this.waveTimes[this.currentWave];
+// 		// Countdown to next wave. When 0, increment current wave
+// 		// and reset waveTimer to that wave's time
+// 		if (this.waveTimer <= 0) {
+// 			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
+// 				this.currentWave++;
+// 				this.waveTimer = this.waveTimes[this.currentWave];
 				
-			} else {
-				this.waveTimer = -1;
-			}
-		}
+// 			} else {
+// 				this.waveTimer = -1;
+// 			}
+// 		}
 
-	  }
-    }, (100 / this.speed) );
-  };
+// 	  }
+//     }, (100 / this.speed) );
+//   };
 
 
   loadGamePrototype() {
