@@ -95,6 +95,7 @@ class Pistol extends Tower {
   }
 
   // Upgrades the tower by one level, increasing stats and changing tower animation
+
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
@@ -110,4 +111,5 @@ class Pistol extends Tower {
       }
     }
   };
+
 }

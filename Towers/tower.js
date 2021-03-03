@@ -17,7 +17,7 @@ class Tower {
     this.towerPaused = this.level.levelPaused;
 
     // mouse click selection
-    this.selected = false;
+    this.selected = true;
   }
 
   update() {
@@ -98,7 +98,7 @@ class Tower {
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
   upgrade(cost) {
     // check if the user has the sufficient fund
-    if (this.user.balance >= cost && this.level < 3 && this.user.balance > 0) {
+    if (this.user.balance - cost >= 0 && this.level < 3 && this.user.balance > 0) {
       this.user.decreaseBalance(cost);
       this.towerLevel++;
     }
@@ -112,33 +112,37 @@ class Tower {
     // Add the money back to the user balance
     this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated);
     // Remove itself from the map (remove entity from the gameengine)
-    this.gameEngine.removeEntity(this);
+//    this.gameEngine.removeEntity(this);
 	
 	// Change the spot where this tower was back to open tower terrain
 	var xOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
     var yOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
 	var towerRow = Math.floor( (this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize() );
 	var towerColumn = Math.floor( (this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize() );
+	console.log(`Tower removed at Row: ${towerRow}, Column: ${towerColumn}`)
 	this.level.removeTower(towerRow, towerColumn);
   }
 
   dead() {
     this.removeFromWorld = true;
-	var index = this.level.placedTowers.indexOf(this);
-	this.level.placedTowers.splice(index, 1);
+//	var index = this.level.placedTowers.indexOf(this);
+//	this.level.placedTowers.splice(index, 1);
 
     // After tower is removed from world, set the terrain tile it was on to open tower terrain
     var tilePosition = this.getTilePosition();
-    this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+	this.level.removeTower(tilePosition.row, tilePosition.column);
+ //   this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
 	
 	// If the tower removed is the newest tower placed, set the level's 'newestTower' variable
 	// to null so that the 'Undo' icon linked to 'newestTower' can be disabled.
+	/*
 	if ( this.level.newestTower !== null) {
 		var tileOfNewestTower = this.level.newestTower.getTilePosition();
 		if ( tilePosition.row === tileOfNewestTower.row 
 			&& tilePosition.column === tileOfNewestTower.column )
 				this.level.newestTower = null;
 	}
+	*/
 	
   }
 
@@ -167,7 +171,7 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-    this.showBoundingCircle(context);
+//    this.showBoundingCircle(context);
     this.drawHealth(
       context,
       this.x,

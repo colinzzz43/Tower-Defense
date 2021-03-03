@@ -19,11 +19,7 @@ function () {
     this.game = game;
     this.game.camera = this;
     ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
-    this.BGM = new Audio("./soundeffects/BGM.mp3"); //  this.user = this.game.user;
-    //	this.base = this.game.base;
-
-    this.currentWave = 0;
-    this.scores = 0;
+    this.BGM = new Audio("./soundeffects/BGM.mp3");
     this.levelMap = {
       xCanvas: 150,
       yCanvas: 60,

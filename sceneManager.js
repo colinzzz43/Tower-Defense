@@ -10,47 +10,41 @@ class SceneManager {
 
 
 
-		//  this.user = this.game.user;
-
-		//	this.base = this.game.base;
-
-		this.currentWave = 0;
-		this.scores = 0;
-
-		this.levelMap = {
-			xCanvas: 150,
-			yCanvas: 60,
-			width: 900,
-			height: 600
-		};
-
-		this.canvasMap = {
-			width: PARAMS.WIDTH,
-			height: PARAMS.HEIGHT
-		};
-
-		// Pause Screen
-		this.paused = false;
-		//	this.game.paused = this.paused;
-
-		// Game Speed
-		this.speed = 1;
-		//	this.game.speed = this.speed;
-
-		// Game Mute
-		this.muted = false;
-
-		// Timer
-		this.waveTimer = 5;
-		this.timerRestarted = false;
-		this.speedChanged = false;
-		this.timerInterval = null;
-		this.startTimer();
-
-
-		// Load the prototype level, along with user and tower store menus, to the game engine
-		this.loadGamePrototype();
-	}
+	this.levelMap = {
+		xCanvas: 150,
+		yCanvas: 60,
+		width: 900,
+		height: 600
+	};
+	
+	this.canvasMap = {
+		width: PARAMS.WIDTH,
+		height: PARAMS.HEIGHT
+	};
+	
+	// Pause Screen
+	this.paused = false;
+//	this.game.paused = this.paused;
+	
+	// Game Speed
+	this.speed = 1;
+//	this.game.speed = this.speed;
+    
+	// Game Mute
+	this.muted = false;
+	
+	// Timer
+	this.waveTimer = 5;
+	this.timerRestarted = false;
+	this.speedChanged = false;
+    this.timerInterval = null;
+    this.startTimer();
+	
+	
+	  // Load the prototype level, along with user and tower store menus, to the game engine
+	  this.loadGamePrototype();
+  }
+  
 
 	startTimer() {
 		if (this.timerRestarted || this.speedChanged) {
