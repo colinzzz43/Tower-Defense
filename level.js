@@ -64,7 +64,16 @@ class Level {
 		
 		// The most recently placed tower on the map
 		this.newestTower = null;
-		this.placedTowers = [];
+//		this.placedTowers = [];
+		
+		// A 2D-Array that is relative to towers placed on tiles on the map
+		this.mapOfTowers = [this.terrainGridTiles.numOfTileRows];
+		for (var i = 0; i < this.terrainGridTiles.numOfTileRows; i++) {
+			this.mapOfTowers[i] = new Array(this.terrainGridTiles.numOfTileColumns);
+			for (var j = 0; j < this.terrainGridTiles.numOfTileColumns; j++) {
+				this.mapOfTowers[i][j] = null;
+			}			
+		}
 		
 		// The base where the enemies move towards
 		var baseTile = this.terrainGridTiles.getDestination();
@@ -97,6 +106,14 @@ class Level {
 	update() {
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
+		
+		// update towers
+		for (var i = 0; i < this.mapOfTowers.length; i++) {
+			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+				if (this.mapOfTowers[i][j] != null)
+					this.mapOfTowers[i][j].update();
+			}			
+		}
 	};
 
 	/*
@@ -118,6 +135,14 @@ class Level {
 		);
 		
 		this.base.draw(ctx);
+		
+		// draw towers
+		for (var i = 0; i < this.mapOfTowers.length; i++) {
+			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+				if (this.mapOfTowers[i][j] != null)
+					this.mapOfTowers[i][j].draw(ctx);
+			}			
+		}
 	};
 
 	/*
@@ -243,16 +268,17 @@ class Level {
 				}
 				that.gameEngine.entities.forEach(function (entity) {
 					if (entity instanceof Tower) {
-						let towerX = entity.x;
-						let towerY = entity.y;
-						if ( (x >= towerX - tileSideLength / 2 && x <= towerX + tileSideLength / 2) 
-							&& (y >= towerY - tileSideLength / 2 && y <= towerY + tileSideLength / 2)) {
+						let towerX = Math.floor(entity.x * that.interactionScale);
+						let towerY = Math.floor(entity.y * that.interactionScale);
+						let boundBoxOffset = (tileSideLength*that.interactionScale) / 2
+						if ( ( x >= towerX - boundBoxOffset && x <= towerX + boundBoxOffset ) 
+							&& ( y >= towerY - boundBoxOffset && y <= towerY + boundBoxOffset ) ) {
 							if (entity.selected == false) {
 								entity.selected = true;
 							} else {
 								entity.selected = false;
 							}
-						}
+						} 
 					}
 				});	
 			},
@@ -423,8 +449,9 @@ class Level {
     if (newTower) {
       this.gameEngine.addEntity(newTower);
       this.changeStateOfTowerTerrain(row, column);
-	  this.placedTowers.push(newTower);
-	  this.newestTower = newTower;
+//	  this.placedTowers.push(newTower);
+	  this.mapOfTowers[row][column] = newTower;
+	  this.newestTower = this.mapOfTowers[row][column];
     }
   };
   
@@ -439,6 +466,19 @@ class Level {
 	removeTower(row, column) {
 		var gridTile = this.terrainGridTiles.getTile(row, column);
 		if ( gridTile === this.towerTerrainOccupied ) {
+			var towerTile = this.mapOfTowers[row][column].getTilePosition();
+			if (this.newestTower !== null) {
+				var tileOfNewestTower = this.newestTower.getTilePosition();
+				if ( towerTile.row === tileOfNewestTower.row
+					 && towerTile.column === tileOfNewestTower.column ) {
+					this.newestTower = null;
+				}
+			}
+			this.mapOfTowers[row][column].removeFromWorld = true;
+			this.mapOfTowers[row][column] = null;
+			this.changeStateOfTowerTerrain(row, column);
+			
+			/*
 			var i = 0;
 			var numberOfTowers = this.placedTowers.length;
 			var tileOfNewestTower = this.newestTower.getTilePosition();
@@ -453,8 +493,9 @@ class Level {
 				};
 				i++;
 			};
+			*/
+			
 		}
-
 	};
 
 	/*

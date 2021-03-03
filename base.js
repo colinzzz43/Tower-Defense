@@ -65,7 +65,7 @@ class Base {
 
   draw(context) {
     // show bounds for collision testing
-    this.showBoundingCircle(context);
+//    this.showBoundingCircle(context);
 
     // x an y are center coordinates, subtract radius for drawing offset
     this.animation.drawFrame(
