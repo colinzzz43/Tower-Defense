@@ -26,7 +26,7 @@ function () {
     this.scores = 0;
     this.levelMap = {
       xCanvas: 150,
-      yCanvas: 0,
+      yCanvas: 60,
       width: 900,
       height: 600
     };
@@ -46,37 +46,41 @@ function () {
     this.waveTimer = 5;
     this.timerRestarted = false;
     this.speedChanged = false;
-    this.timerInterval = null; // this.startTimer();
-    // Load the prototype level, along with user and tower store menus, to the game engine
+    this.timerInterval = null;
+    this.startTimer(); // Load the prototype level, along with user and tower store menus, to the game engine
 
     this.loadGamePrototype();
-  } // commented out as this.waveTimes is not defined
-  //   startTimer() {
-  // 	if (this.timerRestarted || this.speedChanged) {
-  // 		clearInterval(this.timerInterval);
-  // 		this.timerRestarted = false;
-  // 		this.speedChanged = false;
-  // 	}
-  //     this.timerInterval = setInterval(() => {
-  // 	  if (!this.paused) {
-  // 		// The amount of time passed increments by one
-  // 		this.waveTimer -= 0.1;
-  // 		// Countdown to next wave. When 0, increment current wave
-  // 		// and reset waveTimer to that wave's time
-  // 		if (this.waveTimer <= 0) {
-  // 			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
-  // 				this.currentWave++;
-  // 				this.waveTimer = this.waveTimes[this.currentWave];
-  // 			} else {
-  // 				this.waveTimer = -1;
-  // 			}
-  // 		}
-  // 	  }
-  //     }, (100 / this.speed) );
-  //   };
-
+  }
 
   _createClass(SceneManager, [{
+    key: "startTimer",
+    value: function startTimer() {
+      var _this = this;
+
+      if (this.timerRestarted || this.speedChanged) {
+        clearInterval(this.timerInterval);
+        this.timerRestarted = false;
+        this.speedChanged = false;
+      }
+
+      this.timerInterval = setInterval(function () {
+        if (!_this.paused) {
+          // The amount of time passed increments by one
+          _this.waveTimer -= 0.1; // Countdown to next wave. When 0, increment current wave
+          // and reset waveTimer to that wave's time
+
+          if (_this.waveTimer <= 0) {
+            if (_this.currentWave == 0 || _this.currentWave < _this.waveTimes.length - 1) {
+              _this.currentWave++;
+              _this.waveTimer = _this.waveTimes[_this.currentWave];
+            } else {
+              _this.waveTimer = -1;
+            }
+          }
+        }
+      }, 100 / this.speed);
+    }
+  }, {
     key: "loadGamePrototype",
     value: function loadGamePrototype() {
       // user entity created first 
@@ -87,18 +91,21 @@ function () {
       var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 0, 0, 600, 400, 1.5, 1, this.ctx);
       this.game.addEntity(level); // After level entity is added to game engine, new field 'levelEnemyWaves' is 
       // put into level to ensure enemies are drawn on top of map image
-      // level.levelEnemyWaves = new LevelWave(level);
-      // tower store menu
 
-      var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, this.ctx, level); // new field towerStoreMenu added to level for tower selection interaction
+      level.levelEnemyWaves = new LevelWave(level);
+      this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
+
+      this.waveTimer = this.waveTimes[this.currentWave]; // tower store menu
+
+      var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level); // new field towerStoreMenu added to level for tower selection interaction
 
       level.towerStoreMenu = towerStoreMenu;
       this.game.addEntity(towerStoreMenu); // user menu
 
-      var userMenu = new UserMenu(gameEngine, 5, 55, this.ctx, level);
+      var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
       this.game.addEntity(userMenu); // description box
 
-      var descriptionMenu = new DescriptionBox(gameEngine, 5, 605, this.ctx, level);
+      var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
       this.game.addEntity(descriptionMenu); // hud
 
       var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
@@ -125,7 +132,7 @@ function () {
     key: "draw",
 
     /*
-    Display the game stats
+      Display the game stats
     */
     value: function draw(ctx) {
       if (this.paused) this.drawPauseScreen(ctx);
@@ -183,7 +190,7 @@ function () {
     key: "drawPauseScreen",
 
     /*
-     draw the transparent pause screen on the level map
+    	draw the transparent pause screen on the level map
     */
     value: function drawPauseScreen(ctx) {
       ctx.beginPath();

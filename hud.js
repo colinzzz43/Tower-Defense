@@ -5,10 +5,10 @@ class HUD {
 		
 		Parameters:
 		@gameEngine				the game engine that will use this object
-		@topLeftCornerX			the x-coordinate in canvas where top left corner of the user menu will be
-		@topLeftCornerY			the y-coordinate in canvas where top left corner of the user menu will be	
-		@ctx					the canvas that this user menu will be applied to
-		@level					the level that will use this user menu					
+		@topLeftCornerX			the x-coordinate in canvas where top left corner of the HUD will be
+		@topLeftCornerY			the y-coordinate in canvas where top left corner of the HUD will be	
+		@ctx					the canvas that this HUD will be applied to
+		@level					the level that will use this HUD					
 	*/
 	constructor(
 		gameEngine,
@@ -41,7 +41,7 @@ class HUD {
             0,
             false,
             true
-          );
+        );
 
 		this.menuBoxWidth = 1190;
 		this.menuBoxHeight = 50;
@@ -66,14 +66,14 @@ class HUD {
         
         this.titleGif = ASSET_MANAGER.getAsset("./sprites/title.png");
         
-        	    // Timer
-    this.TIME_LIMIT = 20;
-    this.timePassed = 0;
-	  this.timerRestarted = false;
-	  this.speedChanged = false;
-    this.timeLeft = this.TIME_LIMIT;
-    this.timerInterval = null;
-    this.startTimer();
+		// Timer
+		this.TIME_LIMIT = 5;
+		this.timePassed = 0;
+		this.timerRestarted = false;
+		this.speedChanged = false;
+		this.timeLeft = this.TIME_LIMIT;
+		this.timerInterval = null;
+		this.startTimer();
 	};
 
     startTimer() {
@@ -85,7 +85,7 @@ class HUD {
         this.timerInterval = setInterval(() => {
           if (!this.paused) {
             // The amount of time passed increments by one
-            this.timePassed += 0.1;
+            this.timePassed += 0.01;
             this.timeLeft = this.TIME_LIMIT - this.timePassed;
             if (this.timeLeft < 0) {
                 this.timeLeft = 0;
@@ -152,7 +152,7 @@ class HUD {
 		this.ctx.lineWidth = 2;
 		this.ctx.font = "20px monospace";
 		// this.ctx.strokeText("User Menu", this.topLeftCornerX + 20, this.topLeftCornerY + 29);
-        this.ctx.drawImage(this.titleGif, 325, 5, 500, 50);
+        this.ctx.drawImage(this.titleGif, 340, 5, 500, 50);
 
         this.gameStatsDisplay(this.ctx);
 

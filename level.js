@@ -71,7 +71,7 @@ class Level {
 		var baseXcoords = Math.floor( (baseTile.column * this.getTilePixelImageSize()) + 
 							(this.xCanvas - (this.getTilePixelImageSize() / 2)) );
 		var baseYcoords = Math.floor( (baseTile.row * this.getTilePixelImageSize()) +
-							(this.getTilePixelImageSize() / 2) );
+							(this.getTilePixelImageSize() / 2) + this.yCanvas);
 		this.base = new Base(this.gameEngine, baseXcoords, baseYcoords);
 		this.gameEngine.addEntity(this.base);
 

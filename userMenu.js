@@ -747,7 +747,7 @@ class PauseIcon extends UserMenuIcon {
 			
 			// draw the pause symbol
 			var horizontalCenter = this.xCanvas + (this.iconBoxWidth / 2);
-			var verticalAlign = this.yCanvas + (this.yCanvas/10);
+			var verticalAlign = this.yCanvas + (this.yCanvas/12);
 			var pauseWidth = this.iconBoxWidth / 25;
 			var pauseHeight = this.iconBoxHeight / 3;
 			var leftBarX = horizontalCenter - (pauseWidth * 1.5);

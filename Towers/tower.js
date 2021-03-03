@@ -113,6 +113,13 @@ class Tower {
     this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated);
     // Remove itself from the map (remove entity from the gameengine)
     this.gameEngine.removeEntity(this);
+	
+	// Change the spot where this tower was back to open tower terrain
+	var xOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
+    var yOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
+	var towerRow = Math.floor( (this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize() );
+	var towerColumn = Math.floor( (this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize() );
+	this.level.removeTower(towerRow, towerColumn);
   }
 
   dead() {
