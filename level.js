@@ -477,24 +477,6 @@ class Level {
 			this.mapOfTowers[row][column].removeFromWorld = true;
 			this.mapOfTowers[row][column] = null;
 			this.changeStateOfTowerTerrain(row, column);
-			
-			/*
-			var i = 0;
-			var numberOfTowers = this.placedTowers.length;
-			var tileOfNewestTower = this.newestTower.getTilePosition();
-			while ( i < numberOfTowers && this.newestTower !== null ) {
-				var towerTile = this.placedTowers[i].getTilePosition();
-				if ( towerTile.row === tileOfNewestTower.row
-					 && towerTile.column === tileOfNewestTower.column ) {
-					this.placedTowers[i].removeFromWorld = true;
-					this.placedTowers.splice(i, 1);
-					this.newestTower = null;
-					this.changeStateOfTowerTerrain(row, column);
-				};
-				i++;
-			};
-			*/
-			
 		}
 	};
 
@@ -594,15 +576,7 @@ class LevelTerrainMap {
 		this.squareTileSidePixelLength = levelFile.tilePixelLength;
 		this.squareTileBorderPixelWeight = levelFile.tileBorderPixelWeight;
 
-		this.mapArray = levelFile.mapArray;
-		
-		/*
-			Commented out 3/2/21
-		this.startTile = levelFile.startTile;
-		this.startDirection = levelFile.startDirection;
-		this.destinationTile = levelFile.destinationTile;
-		*/
-		
+		this.mapArray = levelFile.mapArray;		
 		this.startTiles = levelFile.startTiles;
 		this.destinationTiles = levelFile.destinationTiles;
 		
@@ -626,12 +600,6 @@ class LevelTerrainMap {
 		var tileCenterOffset = tileSideLength / 2;	  	  
 	  
 		for (var i = 0; i < tileTurns.length; i++) {
-			/*
-				Commented out 3/2/21
-			var turnRow = tileTurns[i][0];
-			var turnColumn = tileTurns[i][1];
-			
-			*/
 			var turnRow = tileTurns[i].row;
 			var turnColumn = tileTurns[i].column;
 			this.pathTurns.push(
