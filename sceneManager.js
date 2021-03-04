@@ -47,6 +47,8 @@ class SceneManager {
     this.timerInterval = null;
     this.startTimer();
 	
+	this.currentLevel = 1;
+	this.currentWave = 0;
 	
 	  // Load the prototype level, along with user and tower store menus, to the game engine
 //	  this.loadGamePrototype();

@@ -197,9 +197,10 @@ class Tower {
   }
 
   drawHealth(ctx, x, y, HP, width, thickness) {
+    // var percentage = width * (HP / this.maxHP);
     var percentage = width * (HP / this.maxHP);
     ctx.beginPath();
-    ctx.rect(x - width /2 , y, percentage, thickness);
+    ctx.rect(x - width /2 , y*1.05, percentage, thickness);
     if (percentage > 63) {
       ctx.fillStyle = "green";
     } else if (percentage > 37) {

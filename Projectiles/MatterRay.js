@@ -63,7 +63,15 @@ class MatterRay extends Projectile {
         ctx.setLineDash([]);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "#FD0";
+        var randomColor = Math.floor(Math.random() * 3);  
+        if(randomColor === 0) {
+            // ctx.fillStyle = "#FD0";
+            ctx.fillStyle = "DarkMagenta";
+        } else if (randomColor === 1){
+            ctx.fillStyle = "MediumPurple";
+        } else {
+            ctx.fillStyle = "Indigo";
+        }
         ctx.fill();
         ctx.stroke();
       }

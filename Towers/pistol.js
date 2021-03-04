@@ -101,11 +101,13 @@ class Pistol extends Tower {
       this.towerLevel++;
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(20);
-        this.HP += 20;
+        this.maxHP += 20;
+        this.HP = this.maxHP;
         this.fireRate -= .3;
       } else {
         this.user.decreaseBalance(30);
-        this.HP += 40;
+        this.maxHP += 40;
+        this.HP = this.maxHP;
         this.damage += 15;
         this.shootingRadius +=  20 * PARAMS.SCALE;
       }
