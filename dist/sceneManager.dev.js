@@ -29,7 +29,12 @@ function () {
     this.canvasMap = {
       width: PARAMS.WIDTH,
       height: PARAMS.HEIGHT
-    }; // Pause Screen
+    };
+    this.map = [];
+    this.map.push(ASSET_MANAGER.getAsset("./Level/images/map_prototype.png"));
+    this.map.push(ASSET_MANAGER.getAsset("./Level/images/SnowMap.png"));
+    this.map.push(ASSET_MANAGER.getAsset("./Level/images/DesertMap.png"));
+    this.map.push(ASSET_MANAGER.getAsset("./Level/images/GrassMap.png")); // Pause Screen
 
     this.paused = false; //	this.game.paused = this.paused;
     // Game Speed
@@ -82,8 +87,8 @@ function () {
       // user entity created first 
       this.user = new User(this.game);
       this.game.addEntity(this.user); // level entity
+      // var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 
-      var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
       var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 0, 0, 600, 400, 1.5, 1, this.ctx);
       this.game.addEntity(level); // After level entity is added to game engine, new field 'levelEnemyWaves' is 
       // put into level to ensure enemies are drawn on top of map image
@@ -137,40 +142,6 @@ function () {
         this.BGM.muted = false;
         this.BGM.play();
       }
-    }
-  }, {
-    key: "gameStatsDisplay",
-
-    /*
-    	Display the game stats, excluding the coin animation
-    */
-    value: function gameStatsDisplay(ctx) {
-      var horizontalAlign = this.levelMap.xCanvas + this.levelMap.width * 0.05;
-      var verticalAlign = this.levelMap.yCanvas + this.levelMap.height * 0.8; // Tower Defense Game Name and Scores
-
-      ctx.font = "30px Langar, cursive, serif, sans-serif";
-      ctx.fillStyle = "White";
-      ctx.fillText("Tower Defense", horizontalAlign, verticalAlign);
-      ctx.fillText(("Scores: " + this.scores).padStart(8, "0"), horizontalAlign, verticalAlign * 1.1); // Coin Currency
-
-      horizontalAlign = this.levelMap.xCanvas + this.levelMap.width * 0.38;
-      ctx.fillText("x" + (this.coins < 10 ? "0" : "") + this.coins + " coins", horizontalAlign, verticalAlign * 1.1); // HP and Waves
-
-      horizontalAlign = this.levelMap.xCanvas + this.levelMap.width * 0.6;
-
-      if (this.HP > 0) {
-        // show hp when above 0, else show defeat
-        ctx.fillText("Base: " + this.HP + " " + "HP", horizontalAlign, verticalAlign);
-      } else {
-        ctx.fillText("DEFEAT", horizontalAlign, verticalAlign);
-      }
-
-      ctx.fillText(this.currentWave + " / " + this.waveTimes.length + " waves", horizontalAlign, verticalAlign * 1.1); // Time
-
-      horizontalAlign = this.levelMap.xCanvas + this.levelMap.width * 0.85;
-      ctx.fillText("TIME", horizontalAlign, verticalAlign);
-      horizontalAlign = this.levelMap.xCanvas + this.levelMap.width * 0.885;
-      ctx.fillText(Math.floor(this.waveTimer + 1), horizontalAlign, verticalAlign * 1.1);
     }
   }, {
     key: "muteBGM",
