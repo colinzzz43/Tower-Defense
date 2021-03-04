@@ -57,46 +57,46 @@ function getFacing(enemy, tower) {
  * @enemyType String of type of enemy
  * @n Total # of enemies to be spawned
  **/
-function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
+function addEnemySpawn(gameEngine, x, y, direction, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
   switch (enemyType) {
     case "Slime":
       while (n > 0) {
-        gameEngine.addEntity(new Slime(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Slime(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Goblin":
       while (n > 0) {
-        gameEngine.addEntity(new Goblin(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Goblin(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Skeleton":
       while (n > 0) {
-        gameEngine.addEntity(new Skeleton(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Skeleton(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Flying Eye":
       while (n > 0) {
-        gameEngine.addEntity(new FlyingEye(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new FlyingEye(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Mushroom":
       while (n > 0) {
-        gameEngine.addEntity(new Mushroom(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Mushroom(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Dragon":
       while (n > 0) {
-        gameEngine.addEntity(new Dragon(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Dragon(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }

@@ -1,6 +1,6 @@
 class FlyingEye extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
@@ -71,7 +71,7 @@ class FlyingEye extends Enemy {
     this.fireRate = 0.8;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
   };
 
   loadAnimation() {
