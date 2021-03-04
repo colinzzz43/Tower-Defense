@@ -23,7 +23,6 @@ class DescriptionBox {
     this.user = this.gameEngine.camera.user;
     this.gameEngine.dB = this;
 
-
     this.menuBoxWidth = 1190;
     this.menuBoxHeight = 100;
     this.userIcons = [];
@@ -33,8 +32,6 @@ class DescriptionBox {
     this.initializeIcons();
     this.mouseInteraction();
     this.widthScale = widthScaling();
-
-
   }
 
   /*
@@ -49,14 +46,12 @@ class DescriptionBox {
 	*/
   update() {
     // do nothing for now
-
   }
 
   /*
 		Draw the shapes to make the user menu
 	*/
   drawDescriptionBox() {
-
     this.ctx.beginPath();
 
     // Draw the rectangle for menu box
@@ -98,7 +93,7 @@ class DescriptionBox {
     this.ctx.lineWidth = 2;
     this.ctx.font = "20px monospace";
 
-	
+
     switch (this.messageCode) {
       case 0:
         this.ctx.strokeText(
@@ -129,6 +124,160 @@ class DescriptionBox {
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 29
         );
+        // Level 1
+        this.ctx.font = "15px monospace";
+
+        this.ctx.strokeText(
+          "Level 1 ",
+          this.topLeftCornerX + 150,
+          this.topLeftCornerY + 50
+        );
+
+        this.ctx.strokeText(
+          "HP : 30",
+          this.topLeftCornerX + 100,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 40",
+          this.topLeftCornerX + 100,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Medium",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Strong",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Slow",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 95
+        );
+        // Level 2
+
+        this.ctx.strokeText(
+          "Level 2",
+          this.topLeftCornerX + 550,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 65
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 80
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 95
+        );
+
+        this.ctx.strokeText(
+          "HP : 60^",
+          this.topLeftCornerX + 500,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 65",
+          this.topLeftCornerX + 500,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Medium",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Strong",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Slow",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 95
+        );
+
+        // Level 3
+
+        this.ctx.strokeText(
+          "Level 3",
+          this.topLeftCornerX + 950,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 65
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 80
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 95
+        );
+
+        this.ctx.strokeText(
+          "HP : 120^",
+          this.topLeftCornerX + 900,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 100",
+          this.topLeftCornerX + 900,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Medium",
+          this.topLeftCornerX + 1000,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Strong",
+          this.topLeftCornerX + 1000,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Slow",
+          this.topLeftCornerX + 1000,
+          this.topLeftCornerY + 95
+        );
+
         break;
       case 2:
         this.ctx.strokeText(
@@ -136,6 +285,163 @@ class DescriptionBox {
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 29
         );
+
+        // Level 1
+        this.ctx.font = "15px monospace";
+
+        this.ctx.strokeText(
+          "Level 1 ",
+          this.topLeftCornerX + 150,
+          this.topLeftCornerY + 50
+        );
+
+        this.ctx.strokeText(
+          "HP : 50",
+          this.topLeftCornerX + 100,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 40",
+          this.topLeftCornerX + 100,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Small",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Weak",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Very fast",
+          this.topLeftCornerX + 200,
+          this.topLeftCornerY + 95
+        );
+        // Level 2
+
+        this.ctx.strokeText(
+          "Level 2",
+          this.topLeftCornerX + 550,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 65
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 80
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 400,
+          this.topLeftCornerY + 95
+        );
+
+        this.ctx.strokeText(
+          "HP : 70^",
+          this.topLeftCornerX + 500,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 65",
+          this.topLeftCornerX + 500,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Small",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Weak",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Very fast",
+          this.topLeftCornerX + 600,
+          this.topLeftCornerY + 95
+        );
+
+        // Level 3
+
+        this.ctx.strokeText(
+          "Level 3",
+          this.topLeftCornerX + 950,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 50
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 65
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 80
+        );
+        this.ctx.strokeText(
+          "|",
+          this.topLeftCornerX + 800,
+          this.topLeftCornerY + 95
+        );
+
+        this.ctx.strokeText(
+          "HP : 110^",
+          this.topLeftCornerX + 900,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Cost: 100",
+          this.topLeftCornerX + 900,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Range : Small",
+          this.topLeftCornerX + 995,
+          this.topLeftCornerY + 65
+        );
+
+        this.ctx.strokeText(
+          "Damage: Weak",
+          this.topLeftCornerX + 995,
+          this.topLeftCornerY + 80
+        );
+
+        this.ctx.strokeText(
+          "Fire Rate : Very fast",
+          this.topLeftCornerX + 995,
+          this.topLeftCornerY + 95
+        );
+
+        break;
+
         break;
       case 3:
         this.ctx.strokeText(

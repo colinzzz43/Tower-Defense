@@ -3,6 +3,9 @@ class Cannon extends Tower {
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
+    this.gameEngine.cannon = this;
+
+
     // spritesheet and animation
     this.spritesheet = ASSET_MANAGER.getAsset(
       "./sprites/towers/cannon/Level1/1_sheet.png"
