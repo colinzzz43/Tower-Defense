@@ -1,35 +1,42 @@
 // NOTE: had to change to js file as browser could not identify more than one objects in json
 var levelOneWaves = {
-
+	
+	/*		
+			// Start coordinates for path
+				x: 200
+				y: 390
+				direction: "right"
+		
+	*/	
 	
 	waves: [
 
 		// wave 1, total time 15
 		[
-			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 5, x: 200, y: 390}
+			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 1, x: 200, y: 390, direction: "right"}
 		], 
 
 		// wave 2, total time 55
 		[
-			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 10, x: 200, y: 390}
+			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 10, x: 200, y: 390, direction: "right"}
 		], 
 		
 		// wave 3, total time 80
 		[
-			{enemyType: "Slime", initialSpawnTime: 70, interval: 2, number: 5, x: 200, y: 390}, 
-			{enemyType: "Goblin", initialSpawnTime: 71, interval: 2, number: 4, x: 200, y: 390}
+			{enemyType: "Slime", initialSpawnTime: 70, interval: 2, number: 5, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Goblin", initialSpawnTime: 71, interval: 2, number: 4, x: 200, y: 390, direction: "right"}
 		],
 
 		// wave 4, total time 110
 		[
-			{enemyType: "Goblin", initialSpawnTime: 95, interval: 2, number: 5, x: 200, y: 390}, 
-			{enemyType: "Slime", initialSpawnTime: 96, interval: 2, number: 7, x: 200, y: 390}
+			{enemyType: "Goblin", initialSpawnTime: 95, interval: 2, number: 5, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Slime", initialSpawnTime: 96, interval: 2, number: 7, x: 200, y: 390, direction: "right"}
 		],
 
 		// wave 5, total time 110
 		[
-			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 390}, 
-			{enemyType: "Skeleton", initialSpawnTime: 125, interval: 3, number: 5, x: 200, y: 390}
+			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Skeleton", initialSpawnTime: 125, interval: 3, number: 5, x: 200, y: 390, direction: "right"}
 		]
 	
 	],
@@ -43,96 +50,124 @@ var levelOneWaves = {
 // snow map
 //TODO: change x and y so that it matches the coordinates for the start of each path
 var levelTwoWaves = {
-	waves: [
+	
+	/*		
+			// Start coordinates for path 1 (Diagonally Left-Up Path)
+				x: 255
+				y: 20
+				direction: "down"
+
+			// Start coordinates for path 2 (Up Path)
+				x: 735
+				y: 20
+				direction: "down"
+			
+			// Start coordinates for path 3 (Right Path)
+				x: 1100
+				y: 345
+				direction: "left"
+
+			// Start coordinates for path 4 (Diagonally Right-Down Path)
+				x: 120
+				y: 435
+				direction: "right"
 		
+			// Start coordinates for path 5 (Left Path)
+				x: 795
+				y: 690
+				direction: "up"}		
+	*/	
+	
+	waves: [
+
 		// paths: clockwise 1-5
 		// wave 1: easy; paths 4 & 5	Time: 5-20
-		[
+		[	
 			// path 4
-			{enemyType: "Goblin", initialSpawnTime: 5, interval: 4, number: 5, x: 0, y: 0},
+			{enemyType: "Goblin", initialSpawnTime: 5, interval: 4, number: 5, x: 120, y: 435, direction: "right"},
 
 			// path 5
-			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 8, x: 0, y: 0}
+			{enemyType: "Slime", initialSpawnTime: 5, interval: 2, number: 8, x: 795, y: 690, direction: "up"}
 
 		],
+
 
 		// wave 2: moderate; paths 1, 3, 5	Time: 35-53	
 		[
 			// path 1
-			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 8, x: 0, y: 0},
-			{enemyType: "Goblin", initialSpawnTime: 35, interval: 3, number: 5, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 35, interval: 2, number: 8, x: 255, y: 20, direction: "down"},
+			{enemyType: "Goblin", initialSpawnTime: 35, interval: 3, number: 5, x: 255, y: 20, direction: "down"},
 			
 			
 			// path 3
-			{enemyType: "Slime", initialSpawnTime: 37, interval: 2, number: 8, x: 0, y: 0},
-			{enemyType: "Skeleton", initialSpawnTime: 37, interval: 3, number: 2, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 37, interval: 2, number: 8, x: 1100, y: 345, direction: "left"},
+			{enemyType: "Skeleton", initialSpawnTime: 37, interval: 3, number: 2, x: 1100, y: 345, direction: "left"},
 			
 			// path 5
-			{enemyType: "Goblin", initialSpawnTime: 39, interval: 3, number: 3, x: 0, y: 0},
-			{enemyType: "Skeleton", initialSpawnTime: 39, interval: 3, number: 3, x: 0, y: 0}
+			{enemyType: "Goblin", initialSpawnTime: 39, interval: 3, number: 3, x: 795, y: 690, direction: "up"},
+			{enemyType: "Skeleton", initialSpawnTime: 39, interval: 3, number: 3, x: 795, y: 690, direction: "up"}
 
 		],
 
 		// wave 3: easy; paths 2, 3		Time: 70-88
 		[
 			// path 2
-			{enemyType: "Slime", initialSpawnTime: 70, interval: 1.5, number: 10, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 70, interval: 1.5, number: 10, x: 735, y: 20, direction: "down"},
 			
 			// path 3
-			{enemyType: "Slime", initialSpawnTime: 73, interval: 1.5, number: 10, x: 0, y: 0}
+			{enemyType: "Slime", initialSpawnTime: 73, interval: 1.5, number: 10, x: 1100, y: 345, direction: "left"}
 		],
 
 		// wave 4: moderate; 2 & 4 first, 3 & 5 second	Time: 110-142
 		[
 			// path 2
-			{enemyType: "Flying Eye", initialSpawnTime: 110, interval: 3, number: 6, x: 0, y: 0},
-			{enemyType: "Slime", initialSpawnTime: 113, interval: 5, number: 3, x: 0, y: 0},
+			{enemyType: "Flying Eye", initialSpawnTime: 110, interval: 3, number: 6, x: 735, y: 20, direction: "down"},
+			{enemyType: "Slime", initialSpawnTime: 113, interval: 5, number: 3, x: 735, y: 20, direction: "down"},
 
 			// path 4
-			{enemyType: "Flying Eye", initialSpawnTime: 110, interval: 3, number: 6, x: 0, y: 0},
-			{enemyType: "Slime", initialSpawnTime: 115, interval: 7, number: 2, x: 0, y: 0},
+			{enemyType: "Flying Eye", initialSpawnTime: 110, interval: 3, number: 6, x: 120, y: 435, direction: "right"},
+			{enemyType: "Slime", initialSpawnTime: 115, interval: 7, number: 2, x: 120, y: 435, direction: "right"},
 
 			// path 3
-			{enemyType: "Skeleton", initialSpawnTime: 128, interval: 3, number: 4, x: 0, y: 0},
-			{enemyType: "Slime", initialSpawnTime: 130, interval: 4, number: 3, x: 0, y: 0},
+			{enemyType: "Skeleton", initialSpawnTime: 128, interval: 3, number: 4, x: 1100, y: 345, direction: "left"},
+			{enemyType: "Slime", initialSpawnTime: 130, interval: 4, number: 3, x: 1100, y: 345, direction: "left"},
 
 			// path 5
-			{enemyType: "Goblin", initialSpawnTime: 128, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Slime", initialSpawnTime: 129, interval: 1, number: 6, x: 0, y: 0},
+			{enemyType: "Goblin", initialSpawnTime: 128, interval: 2, number: 4, x: 795, y: 690, direction: "up"},
+			{enemyType: "Slime", initialSpawnTime: 129, interval: 1, number: 6, x: 795, y: 690, direction: "up"}
 		],
 
 		// wave 5: difficult; all paths		Time: 170-196
 		[
 			// path 1
-			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 0, y: 0},
-			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 255, y: 20, direction: "down"},
+			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 255, y: 20, direction: "down"},
+			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 255, y: 20, direction: "down"},
 
 			// path 2
-			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 0, y: 0},
-			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 735, y: 20, direction: "down"},
+			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 735, y: 20, direction: "down"},
+			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 735, y: 20, direction: "down"},
 
 			// path 3 
-			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 0, y: 0},
-			{enemyType: "Goblin", initialSpawnTime: 176, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 1100, y: 345, direction: "left"},
+			{enemyType: "Goblin", initialSpawnTime: 176, interval: 2, number: 4, x: 1100, y: 345, direction: "left"},
+			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 1100, y: 345, direction: "left"},
 
 			// path 4
-			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 0, y: 0},
-			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 0, y: 0},
+			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 120, y: 435, direction: "right"},
+			{enemyType: "Skeleton", initialSpawnTime: 176, interval: 2, number: 4, x: 120, y: 435, direction: "right"},
+			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 120, y: 435, direction: "right"},
 			
 			// path 5
-			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 0, y: 0},
-			{enemyType: "Goblin", initialSpawnTime: 176, interval: 2, number: 4, x: 0, y: 0},
-			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 0, y: 0}
+			{enemyType: "Slime", initialSpawnTime: 170, interval: 1, number: 6, x: 795, y: 690, direction: "up"},
+			{enemyType: "Goblin", initialSpawnTime: 176, interval: 2, number: 4, x: 795, y: 690, direction: "up"},
+			{enemyType: "Flying Eye", initialSpawnTime: 184, interval: 2, number: 6, x: 795, y: 690, direction: "up"}
 		]
 	],
 
-	waveTimes: [
+	waveTimes: [5, 30, 35, 40, 60]
 		
-	]
 };
 
 // desert map
@@ -316,9 +351,7 @@ var levelThreeWaves = {
 		]
 	],
 
-	waveTimes: [
-		
-	]
+	waveTimes: []
 }
 
 // grass map: skeleton, flying eye, mushroom, dragon
