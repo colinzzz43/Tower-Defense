@@ -4,9 +4,13 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
 
 //queue download
+ASSET_MANAGER.queueDownload("./sprites/title.png");
 
 // map
-ASSET_MANAGER.queueDownload("./Level/map_prototype.png");
+ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
+ASSET_MANAGER.queueDownload("./Level/images/DesertMap.png");
+ASSET_MANAGER.queueDownload("./Level/images/GrassMap.png");
+ASSET_MANAGER.queueDownload("./Level/images/SnowMap.png");
 
 // enemies
 ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slime

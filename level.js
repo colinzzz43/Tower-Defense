@@ -64,14 +64,23 @@ class Level {
 		
 		// The most recently placed tower on the map
 		this.newestTower = null;
-		this.placedTowers = [];
+//		this.placedTowers = [];
+		
+		// A 2D-Array that is relative to towers placed on tiles on the map
+		this.mapOfTowers = [this.terrainGridTiles.numOfTileRows];
+		for (var i = 0; i < this.terrainGridTiles.numOfTileRows; i++) {
+			this.mapOfTowers[i] = new Array(this.terrainGridTiles.numOfTileColumns);
+			for (var j = 0; j < this.terrainGridTiles.numOfTileColumns; j++) {
+				this.mapOfTowers[i][j] = null;
+			}			
+		}
 		
 		// The base where the enemies move towards
 		var baseTile = this.terrainGridTiles.getDestination();
 		var baseXcoords = Math.floor( (baseTile.column * this.getTilePixelImageSize()) + 
 							(this.xCanvas - (this.getTilePixelImageSize() / 2)) );
 		var baseYcoords = Math.floor( (baseTile.row * this.getTilePixelImageSize()) +
-							(this.getTilePixelImageSize() / 2) );
+							(this.getTilePixelImageSize() / 2) + this.yCanvas);
 		this.base = new Base(this.gameEngine, baseXcoords, baseYcoords);
 		this.gameEngine.addEntity(this.base);
 
@@ -97,6 +106,14 @@ class Level {
 	update() {
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
+		
+		// update towers
+		for (var i = 0; i < this.mapOfTowers.length; i++) {
+			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+				if (this.mapOfTowers[i][j] != null)
+					this.mapOfTowers[i][j].update();
+			}			
+		}
 	};
 
 	/*
@@ -118,6 +135,14 @@ class Level {
 		);
 		
 		this.base.draw(ctx);
+		
+		// draw towers
+		for (var i = 0; i < this.mapOfTowers.length; i++) {
+			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+				if (this.mapOfTowers[i][j] != null)
+					this.mapOfTowers[i][j].draw(ctx);
+			}			
+		}
 	};
 
 	/*
@@ -241,6 +266,21 @@ class Level {
 						};
 					}
 				}
+				that.gameEngine.entities.forEach(function (entity) {
+					if (entity instanceof Tower) {
+						let towerX = Math.floor(entity.x * that.interactionScale);
+						let towerY = Math.floor(entity.y * that.interactionScale);
+						let boundBoxOffset = (tileSideLength*that.interactionScale) / 2
+						if ( ( x >= towerX - boundBoxOffset && x <= towerX + boundBoxOffset ) 
+							&& ( y >= towerY - boundBoxOffset && y <= towerY + boundBoxOffset ) ) {
+							if (entity.selected == false) {
+								entity.selected = true;
+							} else {
+								entity.selected = false;
+							}
+						} 
+					}
+				});	
 			},
 			false
 		);
@@ -281,7 +321,7 @@ class Level {
 						color: "white",
 						mouse: "offMap",
 					};
-				}
+				}	
 			},
 			false
 		);
@@ -409,8 +449,9 @@ class Level {
     if (newTower) {
       this.gameEngine.addEntity(newTower);
       this.changeStateOfTowerTerrain(row, column);
-	  this.placedTowers.push(newTower);
-	  this.newestTower = newTower;
+//	  this.placedTowers.push(newTower);
+	  this.mapOfTowers[row][column] = newTower;
+	  this.newestTower = this.mapOfTowers[row][column];
     }
   };
   
@@ -425,6 +466,19 @@ class Level {
 	removeTower(row, column) {
 		var gridTile = this.terrainGridTiles.getTile(row, column);
 		if ( gridTile === this.towerTerrainOccupied ) {
+			var towerTile = this.mapOfTowers[row][column].getTilePosition();
+			if (this.newestTower !== null) {
+				var tileOfNewestTower = this.newestTower.getTilePosition();
+				if ( towerTile.row === tileOfNewestTower.row
+					 && towerTile.column === tileOfNewestTower.column ) {
+					this.newestTower = null;
+				}
+			}
+			this.mapOfTowers[row][column].removeFromWorld = true;
+			this.mapOfTowers[row][column] = null;
+			this.changeStateOfTowerTerrain(row, column);
+			
+			/*
 			var i = 0;
 			var numberOfTowers = this.placedTowers.length;
 			var tileOfNewestTower = this.newestTower.getTilePosition();
@@ -439,8 +493,9 @@ class Level {
 				};
 				i++;
 			};
+			*/
+			
 		}
-
 	};
 
 	/*
@@ -476,49 +531,55 @@ class LevelTerrainMap {
 		Parameter:
 		@level		the level itself that this new terrain tile map will be put on
 	*/
-  constructor(level) {
-    Object.assign(this, { level });
-	
-	// The grid map array itself
-    this.mapArray = null;
-	this.xCanvas = this.level.xCanvas;
-	this.yCanvas = this.level.yCanvas;
-	
-	// Number of tile rows and columns, the pixel length of each tile, and thickness of tile border
-    this.numOfTileRows = null;
-    this.numOfTileColumns = null;
-    this.squareTileSidePixelLength = null;
-    this.squareTileBorderPixelWeight = null;
-	
-	// tile where fixed path begins
-	this.startTile = null;
-	this.startDirection = null;
-	
-	// tile where fixed path ends
-    this.destinationTile = null;
-	
-	// array of tiles that each mark a turn of direction on the fixed path
-	// they are listed in the order relative from the path's beginning to the end
-	this.pathTurns = [];
-	
-	// initiailize the grip map for the specific level
-    this.initializeGridMap();
+	constructor(level) {
+		Object.assign(this, { level });
+		
+		// The grid map array itself
+		this.mapArray = null;
+		this.xCanvas = this.level.xCanvas;
+		this.yCanvas = this.level.yCanvas;
+		
+		// Number of tile rows and columns, the pixel length of each tile, and thickness of tile border
+		this.numOfTileRows = null;
+		this.numOfTileColumns = null;
+		this.squareTileSidePixelLength = null;
+		this.squareTileBorderPixelWeight = null;
+		
+		// tile where fixed path begins
+		this.startTile = null;
+	//	this.startDirection = null;
+		
+		// tile where fixed path ends
+		this.destinationTile = null;
+		
+		// array of tiles that each mark a turn of direction on the fixed path
+		// they are listed in the order relative from the path's beginning to the end
+		this.pathTurns = [];
+		
+		// initiailize the grip map for the specific level
+		this.initializeGridMap();
 
-    this.path = 0;
-    this.towerTerrainOpen = 1;
-    this.towerTerrainOccupied = -1;
-    this.obstacle = 2;
-  };
+		this.path = 0;
+		this.towerTerrainOpen = 1;
+		this.towerTerrainOccupied = -1;
+		this.obstacle = 2;
+	};
 
 
     /*
 		Initialize the grid map for the specified level.
 	*/
-  initializeGridMap() {
-    if (this.level.mapLevel === 1) {
-      this.setLevelMapGridProperities(levelOneGrid);   // 'levelOneGrid' from 'levelMapProperties.json'
-    }
-  };
+	initializeGridMap() {
+		if (this.level.mapLevel === 1) {
+			this.setLevelMapGridProperities(levelOneGrid);   // 'levelOneGrid' from 'levelMapProperties.js'
+		} else if (this.level.mapLevel === 2) {
+			this.setLevelMapGridProperities(levelTwoGrid);	 // 'levelTwoGrid' from 'levelMapProperties.js'	
+		} else if (this.level.mapLevel === 3) {
+			this.setLevelMapGridProperities(levelThreeGrid); // 'levelThreeGrid' from 'levelMapProperties.js'
+		} else {
+			this.setLevelMapGridProperities(levelFourGrid);	 // 'levelFourGrid' from 'levelMapProperties.js'
+		}
+	};
 
 
 	/*
@@ -527,23 +588,29 @@ class LevelTerrainMap {
 		
 		@levelFile		the pre-defined data stored in a JSON file
 	*/
-  setLevelMapGridProperities(levelFile) {
-    this.numOfTileRows = levelFile.tileRows;
-    this.numOfTileColumns = levelFile.tileColumns;
-    this.squareTileSidePixelLength = levelFile.tilePixelLength;
-    this.squareTileBorderPixelWeight = levelFile.tileBorderPixelWeight;
+	setLevelMapGridProperities(levelFile) {
+		this.numOfTileRows = levelFile.tileRows;
+		this.numOfTileColumns = levelFile.tileColumns;
+		this.squareTileSidePixelLength = levelFile.tilePixelLength;
+		this.squareTileBorderPixelWeight = levelFile.tileBorderPixelWeight;
 
-    this.mapArray = levelFile.mapArray;
-	
-	this.startTile = levelFile.startTile;
-	this.startDirection = levelFile.startDirection;
-    this.destinationTile = levelFile.destinationTile;
-	
-	var tileTurns = levelFile.tileTurns;
-	this.initializePathTurns(tileTurns);	
-  };
+		this.mapArray = levelFile.mapArray;
+		
+		/*
+			Commented out 3/2/21
+		this.startTile = levelFile.startTile;
+		this.startDirection = levelFile.startDirection;
+		this.destinationTile = levelFile.destinationTile;
+		*/
+		
+		this.startTiles = levelFile.startTiles;
+		this.destinationTiles = levelFile.destinationTiles;
+		
+		var tileTurns = levelFile.tileTurns;
+		this.initializePathTurns(tileTurns);	
+	};
 
-  /*
+	/*
 		Initialize the array that contains all the tiles in which the path changes direction 
 		on the tile grid, and that each tile contains the xy coordinates marking their tile center
 		in which the enemy changes direction on
@@ -552,67 +619,80 @@ class LevelTerrainMap {
 		
 		@tileTurns	the array containing all the tile locations where the path changes direction
     */
-  initializePathTurns(tileTurns) {
+	initializePathTurns(tileTurns) {
 	  
-	// values used to calculate a square tile's center coordinates
-	var tileSideLength = this.level.drawScale * this.squareTileSidePixelLength;
-	var tileCenterOffset = tileSideLength / 2;	  	  
+		// values used to calculate a square tile's center coordinates
+		var tileSideLength = this.level.drawScale * this.squareTileSidePixelLength;
+		var tileCenterOffset = tileSideLength / 2;	  	  
 	  
-	for (var i = 0; i < tileTurns.length; i++) {
-		var turnRow = tileTurns[i][0];
-		var turnColumn = tileTurns[i][1];
-		this.pathTurns.push(
-			{ row: turnRow, 
-			  column: turnColumn, 
-			  centerX: (tileSideLength * turnColumn) + tileCenterOffset + this.xCanvas,
-			  centerY: (tileSideLength * turnRow) + tileCenterOffset + this.yCanvas
-			}
-		);
-	}
-  };
+		for (var i = 0; i < tileTurns.length; i++) {
+			/*
+				Commented out 3/2/21
+			var turnRow = tileTurns[i][0];
+			var turnColumn = tileTurns[i][1];
+			
+			*/
+			var turnRow = tileTurns[i].row;
+			var turnColumn = tileTurns[i].column;
+			this.pathTurns.push(
+				{ row: turnRow, 
+				  column: turnColumn, 
+				  centerX: (tileSideLength * turnColumn) + tileCenterOffset + this.xCanvas,
+				  centerY: (tileSideLength * turnRow) + tileCenterOffset + this.yCanvas,
+				  directions: tileTurns[i].directions
+				}
+			);
+		}
+	};
 
-  /*
+	/*
 		Return the 2D terrain map array
 	*/
-  getMapArray() {
-    return this.mapArray;
-  };
+	getMapArray() {
+		return this.mapArray;
+	};
+  
+	/*
+		Get the array of all tiles where enemies turn on
+	*/
+	getPathTurns() {
+		return this.pathTurns;
+	}
 
-  /*
+	/*
 		Get the number of rows of the 2D terrain array
 	*/
-  getNumOfRows() {
-    return this.numOfTileRows;
-  };
+	getNumOfRows() {
+		return this.numOfTileRows;
+	};
 
-  /*
+	/*
 		Get the number of columns of the 2D terrain array
 	*/
-  getNumOfColumns() {
-    return this.numOfTileColumns;
-  };
+	getNumOfColumns() {
+		return this.numOfTileColumns;
+	};
 
-  /*
+	/*
 		Return the value of a specific tile of the 2D terrain map array
 		
 		Parameters: 
 		@row		the row number of the tile
 		@column		the column number of the tile
 	*/
-  getTile(row, column) {
-    if (
-      row >= 0 &&
-      row < this.getNumOfRows() &&
-      column >= 0 &&
-      column < this.getNumOfColumns()
-    ) {
-      return this.mapArray[row][column];
-    } else {
-      return "off_grid";
-    }
-  };
+	getTile(row, column) {
+		if ( row >= 0 
+			 && row < this.getNumOfRows() 
+			 && column >= 0 
+			 && column < this.getNumOfColumns()
+		) {
+			return this.mapArray[row][column];
+		} else {
+			return "off_grid";
+		}
+	};
 
-  /*
+	/*
 		Set the value of a specific tile of the 2D terrain map array
 		
 		Parameters: 
@@ -635,14 +715,16 @@ class LevelTerrainMap {
 		Return the tile that is marked the start tile on this tile grid
     */
   getStart() {
-	return this.startTile;
+// Commented out 3/2/21		return this.startTile;
+	return this.startTiles;
   }
 
   /*
 		Return the tile that is marked the destination tile on this tile grid
 	*/
   getDestination() {
-    return this.destinationTile;
+// Commented out 3/2/21   	return this.destinationTile;
+	return this.destinationTiles;
   };
 
   /*

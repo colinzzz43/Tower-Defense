@@ -326,14 +326,14 @@ class UndoIcon extends UserMenuIcon {
 		xCanvas,
 		yCanvas,
 		ctx,
-		level
+		level	
 	) {
 		super(		
 			gameEngine,
 			xCanvas,
 			yCanvas,
 			ctx,
-			level 
+			level	
 		);
 	
 		// The label for the 'undo' icon
@@ -341,6 +341,9 @@ class UndoIcon extends UserMenuIcon {
 		
 		// The state of whether or not this button is enabled
 		this.buttonEnabled = false;
+		
+		// The user entity that the 'Undo' will access in order to change coin balance
+		this.user = this.gameEngine.camera.user;
 	
 	};
 	
@@ -385,11 +388,10 @@ class UndoIcon extends UserMenuIcon {
 		execute the primary function of the 'undo' icon when clicked
 	*/
 	userIconFunction() {
-		console.log(`Undo Icon enabled: ${this.buttonEnabled}`);
 		if (this.buttonEnabled) {
 			// removed newest tower placed on map
 			var towerAt = this.level.newestTower.getTilePosition();
-			console.log(`Most recent tower at {${towerAt.row}, ${towerAt.column}}`);
+			this.user.increaseBalance(this.level.newestTower.cost);
 			this.level.removeTower(towerAt.row, towerAt.column);
 			this.buttonEnabled = false;
 		} 
@@ -413,14 +415,14 @@ class SpeedIcon extends UserMenuIcon {
 		xCanvas,
 		yCanvas,
 		ctx,
-		level
+		level	
 	) {
 		super(		
 			gameEngine,
 			xCanvas,
 			yCanvas,
 			ctx,
-			level 
+			level	
 		);
 		
 		// the label for the 'Speed' icon
@@ -537,14 +539,14 @@ class MuteIcon extends UserMenuIcon {
 		xCanvas,
 		yCanvas,
 		ctx,
-		level
+		level	
 	) {
 		super(		
 			gameEngine,
 			xCanvas,
 			yCanvas,
 			ctx,
-			level 
+			level	
 		);
 		
 		// the labels for the 'Mute' icon
@@ -698,14 +700,14 @@ class PauseIcon extends UserMenuIcon {
 		xCanvas,
 		yCanvas,
 		ctx,
-		level
+		level	
 	) {
 		super(		
 			gameEngine,
 			xCanvas,
 			yCanvas,
 			ctx,
-			level 
+			level	
 		);
 		
 		// the labels for the 'Pause' icon
@@ -747,7 +749,7 @@ class PauseIcon extends UserMenuIcon {
 			
 			// draw the pause symbol
 			var horizontalCenter = this.xCanvas + (this.iconBoxWidth / 2);
-			var verticalAlign = this.yCanvas + (this.yCanvas/10);
+			var verticalAlign = this.yCanvas + (this.yCanvas/12);
 			var pauseWidth = this.iconBoxWidth / 25;
 			var pauseHeight = this.iconBoxHeight / 3;
 			var leftBarX = horizontalCenter - (pauseWidth * 1.5);
@@ -817,14 +819,14 @@ class RestartIcon extends UserMenuIcon {
 		xCanvas,
 		yCanvas,
 		ctx,
-		level
+		level	
 	) {
 		super(		
 			gameEngine,
 			xCanvas,
 			yCanvas,
 			ctx,
-			level 
+			level	
 		);
 	
 		// the label for the 'Restart' icon	

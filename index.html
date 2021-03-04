@@ -3,10 +3,11 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Game Project Title Goes Here</title>
+  <title>Realm Defense Force</title>
   <link rel="stylesheet" href="style.css" />
   <script type="text/javascript" src="./animator.js"></script>
 
+  <!-- Enemy Files -->
   <script type="text/javascript" src="./Enemies/enemy.js"></script>
   <script type="text/javascript" src="./Enemies/slime.js"></script>
   <script type="text/javascript" src="./Enemies/goblin.js"></script>
@@ -14,23 +15,9 @@
   <script type="text/javascript" src="./Enemies/flyingeye.js"></script>
   <script type="text/javascript" src="./Enemies/mushroom.js"></script>
   <script type="text/javascript" src="./Enemies/dragon.js"></script>
-
-  <script type="text/javascript" src="./coin.js"></script>
-  <script type="text/javascript" src="./base.js"></script>
-  <script type="text/javascript" src="./assetmanager.js"></script>
-  <script type="text/javascript" src="./timer.js"></script>
-  <script type="text/javascript" src="./gameengine.js"></script>
-  <script type="text/javascript" src="./util.js"></script>
-  <script type="text/javascript" src="./level.js"></script>
-  <script type="text/javascript" src="./main.js"></script>
-  <script type="text/javascript" src="./hud.js"></script>
-  <script type="text/javascript" src="./towerStore.js"></script> 
-  <script type="text/javascript" src="./userMenu.js"></script>
-  <script type="text/javascript" src="./levelWave.js"></script>
+  <script type="text/Javascript" src="./movement.js"></script>
   
-  <script type="text/javascript" src="./Level/levelEnemyWaves.json"></script>
-  <script type="text/javascript" src="./Level/levelMapProperties.json"></script>
-
+  <!-- Tower Files -->
   <script type="text/Javascript" src="./Towers/tower.js"></script>
   <script type="text/javascript" src="./Towers/cannon.js"></script>
   <script type="text/javascript" src="./Towers/flamethrower.js"></script>
@@ -42,6 +29,29 @@
   <script type="text/javascript" src="./Towers/shotgun.js"></script>
   <script type="text/javascript" src="./Towers/spazer.js"></script>
   
+  <!-- GUI Menu and HUD Files -->
+  <script type="text/javascript" src="./hud.js"></script> 
+  <script type="text/javascript" src="./userMenu.js"></script>  
+  <script type="text/javascript" src="./towerStore.js"></script>  
+  <script type="text/javascript" src="./descriptionBox.js"></script>
+  <script type="text/javascript" src="./coin.js"></script>
+  
+  <!-- Game Engine Functionality Files -->
+  <script type="text/javascript" src="./gameengine.js"></script>
+  <script type="text/javascript" src="./util.js"></script>
+  <script type="text/javascript" src="./timer.js"></script>
+  <script type="text/javascript" src="./sceneManager.js"></script>
+  <script type="text/javascript" src="./user.js"></script>  
+  <script type="text/javascript" src="./assetmanager.js"></script>
+
+  <!-- Level Functionality Files -->
+  <script type="text/javascript" src="./level.js"></script>
+  <script type="text/javascript" src="./levelWave.js"></script>
+  <script type="text/javascript" src="./Level/levelEnemyWaves.js"></script>
+  <script type="text/javascript" src="./Level/levelMapProperties.js"></script> 
+  <script type="text/javascript" src="./base.js"></script>  
+  
+  <!-- Projectile Files -->
   <script type="text/javascript" src="./Projectiles/projectile.js"></script>
   <script type="text/javascript" src="./Projectiles/PistolBullet.js"></script>
   <script type="text/javascript" src="./Projectiles/MachineGunBullet.js"></script>
@@ -49,27 +59,24 @@
   <script type="text/javascript" src="./Projectiles/FlamethrowerFlames.js"></script>
   <script type="text/javascript" src="./Projectiles/MatterRay.js"></script>
   <script type="text/javascript" src="./Projectiles/SpazerRay.js"></script>
-
   <script type="text/javascript" src="./Projectiles/LaserBullet.js"></script>
   <script type="text/javascript" src="./Projectiles/RocketMissile.js"></script>
   <script type="text/javascript" src="./Projectiles/Cannonball.js"></script>
   <script type="text/javascript" src="./Projectiles/TomatoBullet.js"></script>
 
-  <script type="text/Javascript" src="./movement.js"></script>
-  <script type="text/javascript" src="./user.js"></script>
-  <script type="text/javascript" src="./sceneManager.js"></script>
+  <!-- Main file (Must be the last script element; otherwise game will not work) --> 
+  <script type="text/javascript" src="./main.js"></script>
 
 </head>
 
 <body>
-  <canvas id="gameWorld" width="1200" height="600" style="border: 1px solid black"></canvas>
+  <canvas id="gameWorld" width="1200" height="770" style="border: 1px solid black"></canvas>
   <br />
 
 </body>
 
 <h2 style="text-align: center">
-  To place a tower on the map, first click a tower icon in the Tower Store menu on the right then click a
-  grid tile on the map. Click the selected icon again to de-select it and turn off grid.
+
 </h2>
 
 <!-- <div id="debug" style="text-align: center">

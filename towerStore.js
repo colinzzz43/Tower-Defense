@@ -19,7 +19,7 @@ class TowerStoreMenu {
 		this.menuBoxWidth = 140;
 		this.menuBoxHeight = 590;
 		this.selectedIcon = "none";
-		this.towerIcons = [];
+		this.storeIcons = [];
 		this.towerImagesArray = this.retrieveTowerIconImages();
 		
 		this.initializeIcons();
@@ -32,8 +32,8 @@ class TowerStoreMenu {
 	*/
 	draw(ctx) {
 		this.drawMenuBox();
-		for (var i = 0; i < this.towerIcons.length; i++) {
-			this.towerIcons[i].draw(ctx);
+		for (var i = 0; i < this.storeIcons.length; i++) {
+			this.storeIcons[i].draw(ctx);
 		}
 	}
 	
@@ -122,35 +122,39 @@ class TowerStoreMenu {
 		
 		// First Row: Pistol and MG
 		var pistolIcon = new TowerIcon(this.gameEngine, "Pistol", 10, this.towerImagesArray[0], leftX, y, 16, 37, this.ctx, this.level);
-		this.towerIcons.push(pistolIcon);
+		this.storeIcons.push(pistolIcon);
 		var mgIcon = new TowerIcon(this.gameEngine, "MG", 25,  this.towerImagesArray[1], rightX, y, 24, 40, this.ctx, this.level);
-		this.towerIcons.push(mgIcon);
+		this.storeIcons.push(mgIcon);
 		y += verticalSpace;
 		
 		// Second Row: Shotgun and Cannon
 		var shotgunIcon = new TowerIcon(this.gameEngine, "Shotgun", 25, this.towerImagesArray[2], leftX, y , 22, 34, this.ctx, this.level);
-		this.towerIcons.push(shotgunIcon);
+		this.storeIcons.push(shotgunIcon);
 		var cannonIcon = new TowerIcon(this.gameEngine, "Cannon", 40, this.towerImagesArray[3], rightX, y, 23, 33, this.ctx, this.level);
-		this.towerIcons.push(cannonIcon);
+		this.storeIcons.push(cannonIcon);
 		y += verticalSpace;		
 		
 		// Third Row: Flamethrower and Laser
 		var flamethrowerIcon = new TowerIcon(this.gameEngine, "Flame", 40, this.towerImagesArray[4], leftX, y, 33, 36, this.ctx, this.level);
-		this.towerIcons.push(flamethrowerIcon);		
+		this.storeIcons.push(flamethrowerIcon);		
 		var laserIcon = new TowerIcon(this.gameEngine, "Laser", 60, this.towerImagesArray[5], rightX, y, 22, 35, this.ctx, this.level);
-		this.towerIcons.push(laserIcon);	
+		this.storeIcons.push(laserIcon);	
 		y += verticalSpace;	
 		
 		// Fourth Row: Matter and Rocket
 		var matterIcon = new TowerIcon(this.gameEngine, "Matter", 75, this.towerImagesArray[6], leftX, y, 24, 37, this.ctx, this.level);	
-		this.towerIcons.push(matterIcon);
+		this.storeIcons.push(matterIcon);
 		var rocketIcon = new TowerIcon(this.gameEngine, "Rocket", 75, this.towerImagesArray[7], rightX, y, 23, 37, this.ctx, this.level);
-		this.towerIcons.push(rocketIcon);
+		this.storeIcons.push(rocketIcon);
 		y += verticalSpace;		
 		
-		// Fifth Row: Spazer
-		var spazerIcon = new TowerIcon(this.gameEngine, "Spazer", 75, this.towerImagesArray[8], leftX + 30, y, 22, 30, this.ctx, this.level);
-		this.towerIcons.push(spazerIcon);		
+		// Fifth Row: Spazer, upgrade, and sell
+		var spazerIcon = new TowerIcon(this.gameEngine, "Spazer", 75, this.towerImagesArray[8], leftX, y, 22, 30, this.ctx, this.level);
+		this.storeIcons.push(spazerIcon);
+		var upgradeButton = new StoreButton(this.gameEngine, "upgrade", rightX, y, this.ctx, this.level);
+		this.storeIcons.push(upgradeButton);
+		var sellButton = new StoreButton(this.gameEngine, "sell", rightX, y + 40, this.ctx, this.level);
+		this.storeIcons.push(sellButton);
 
 		// Add tower icons to game engine
 		this.gameEngine.addEntity(pistolIcon);
@@ -162,6 +166,7 @@ class TowerStoreMenu {
 		this.gameEngine.addEntity(matterIcon);
 		this.gameEngine.addEntity(rocketIcon);
 		this.gameEngine.addEntity(spazerIcon);
+		this.gameEngine.addEntity(upgradeButton);
 	}
 	
 
@@ -200,37 +205,53 @@ class TowerStoreMenu {
 			return { x: x, y: y };
 		}
 		
-		// add mouse click event listener which selects and de-selects the tower icon when clicked on directly
+		// add mouse click event listener which selects and de-selects the store icon when clicked on directly
 		that.ctx.canvas.addEventListener("click", function (e) {
 			var canvasCoordinates = getXandY(e);
 			var x = canvasCoordinates.x;
 			var y = canvasCoordinates.y;
 			var iconClickedOn = false;
 			
-			// go through tower icon array to see if mouse cursor clicked on the box of a tower icon
-			for (var i = 0; i < that.towerIcons.length; i++) {
-				var tower = that.towerIcons[i];
-				var topLeftX = tower.xCanvas * that.widthScale;
-				var topLeftY = tower.yCanvas * that.widthScale;
-				var iconWidth = tower.iconBoxWidth * that.widthScale;
-				var iconHeight = tower.iconBoxHeight * that.widthScale;
+			// go through store icon array to see if mouse cursor clicked on the box of a store icon
+			for (var i = 0; i < that.storeIcons.length; i++) {
+				var icon = that.storeIcons[i];
+				var topLeftX = icon.xCanvas * that.widthScale;
+				var topLeftY = icon.yCanvas * that.widthScale;
+				var iconWidth = icon.iconBoxWidth * that.widthScale;
+				var iconHeight = icon.iconBoxHeight * that.widthScale;
 				if ( (x >= topLeftX && x <= topLeftX + iconWidth) && (y >= topLeftY && y <= topLeftY + iconHeight) ) {
 					iconClickedOn = true;
-					if (!tower.transparent) {
-						if (!tower.selected) {							
-							that.turnOnIcon(tower);
-							that.selectedIcon = tower.getTowerType();							
-							that.level.placeTowerType = tower.towerType;
-							
-						} else {
-							that.turnOffIcon(tower);
-							that.selectedIcon = "none";
-						}
-					} 
+					if (icon instanceof TowerIcon) {
+						if (!icon.transparent) {
+							if (!icon.selected) {							
+								that.turnOnIcon(icon);
+								that.selectedIcon = icon.getTowerType();							
+								that.level.placeTowerType = icon.towerType;
+								
+							} else {
+								that.turnOffIcon(icon);
+								that.selectedIcon = "none";
+							}
+						} 
+					} else if (icon instanceof StoreButton) {
+						that.gameEngine.entities.forEach(function (entity) {
+							if (entity instanceof Tower && entity.selected) {
+								switch(icon.buttonName) {
+									case "upgrade":
+										console.log("cost to upgrade: ", entity.upgradeCost);
+										entity.upgrade(entity.upgradeCost);
+										break;
+									case "sell":
+										entity.sell();
+										break;
+								}
+							}
+						});
+					}
 				}						
 			}
 			
-			// if mouse cursor clicked outside the boundaries of the map and not on a tower icon, deselect the currently selected icon		
+			// if mouse cursor clicked outside the boundaries of the map and not on a store icon, deselect the currently selected icon		
 			var levelMapTopLeftX = that.level.xCanvas * that.widthScale;
 			var levelMapTopLeftY = that.level.yCanvas * that.widthScale;
 			var levelMapWidth = that.level.mapWidth * that.widthScale * that.level.drawScale;
@@ -241,11 +262,11 @@ class TowerStoreMenu {
 				that.selectedIcon = "none";
 			}
 			
-			// if mouse cursor selects a tower icon while another icon is selected, then de-select the previous icon
-			for (var i = 0; i < that.towerIcons.length; i++) {
-				var tower = that.towerIcons[i];
-				if (tower.isSelected() && tower.getTowerType() !== that.selectedIcon) 
-					that.turnOffIcon(tower);
+			// if mouse cursor selects a store icon while another icon is selected, then de-select the previous icon
+			for (var i = 0; i < that.storeIcons.length; i++) {
+				var icon = that.storeIcons[i];
+				if (icon.isSelected() && icon.getTowerType() !== that.selectedIcon) 
+					that.turnOffIcon(icon);
 			}
 			
 			// if an icon is currently selected then turn on terrain grid map; otherwise turn the map off
@@ -261,18 +282,30 @@ class TowerStoreMenu {
 			var canvasCoordinates = getXandY(e);
 			var x = canvasCoordinates.x;
 			var y = canvasCoordinates.y;			
-			for (var i = 0; i < that.towerIcons.length; i++) {	
-				var tower = that.towerIcons[i];
-				var topLeftX = tower.xCanvas * that.widthScale;
-				var topLeftY = tower.yCanvas * that.widthScale;
-				var iconWidth = tower.iconBoxWidth * that.widthScale;
-				var iconHeight = tower.iconBoxHeight * that.widthScale;				
+			for (var i = 0; i < that.storeIcons.length; i++) {	
+				var towerIcon = that.storeIcons[i];
+				var topLeftX = towerIcon.xCanvas * that.widthScale;
+				var topLeftY = towerIcon.yCanvas * that.widthScale;
+				var iconWidth = towerIcon.iconBoxWidth * that.widthScale;
+				var iconHeight = towerIcon.iconBoxHeight * that.widthScale;				
 				if ( (x >= topLeftX && x <= topLeftX + iconWidth) && (y >= topLeftY && y <= topLeftY + iconHeight) ) {
-					tower.mouseover = true;
+					towerIcon.mouseover = true;
 				} else {
-					tower.mouseover = false;
+					towerIcon.mouseover = false;
 				}
 			}
+			// that.gameEngine.entities.forEach(function (entity) {
+			// 	if (entity instanceof Tower) {
+			//   		// tower shoots enemy in shooting bounds
+			// 		let towerX = entity.x;
+			// 		let towerY = entity.y;
+			// 		let tileLength = that.level.getTilePixelImageSize();
+			// 		if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2) 
+			// 			&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
+			// 			console.log("here");
+			// 		}
+			// 	}
+			//   });		
 		}, false);
 		
 	};	
@@ -407,6 +440,82 @@ class TowerIcon {
 	
 	/*
 		Return the selection state of this icon
+	*/
+	isSelected() {
+		return this.selected;
+	}
+
+	
+}
+
+class StoreButton {
+	constructor(gameEngine, buttonName, xCanvas, yCanvas, ctx, level) {
+		Object.assign(this, {gameEngine, buttonName, xCanvas, yCanvas, ctx, level});
+		
+		this.selected = false;
+		this.mouseover = false;
+		this.transparent = false;
+
+		this.iconBoxWidth = 50;
+		this.iconBoxHeight = 30;
+	}
+
+	draw(ctx) {
+		ctx.beginPath();
+		this.drawIcon(ctx);
+		this.drawText(ctx);
+		this.drawIconHighlight(ctx);	
+		ctx.closePath();
+	};
+
+	drawIcon(ctx) {
+		// draw the box that will contain the tower icon image		
+		ctx.setLineDash([]);
+		ctx.strokeStyle = "navy";
+		ctx.lineWidth = 2;
+		if (this.mouseover) {
+			ctx.fillStyle = "lightgrey";			
+		} else {
+			ctx.fillStyle = "white";
+		}
+		ctx.rect(this.xCanvas, this.yCanvas, this.iconBoxWidth, this.iconBoxHeight);
+		ctx.fill();
+		ctx.stroke();		
+	};
+	
+	/*
+		draw the text that labels the button icon
+	*/
+	drawText(ctx) {
+		ctx.lineWidth = 1;
+		ctx.font = "12px Arial";
+		ctx.strokeStyle = "black";
+		
+		var textWidth = ctx.measureText(this.buttonName).width;
+		var center = this.xCanvas + 50 / 2;
+		ctx.strokeText(this.buttonName, center - (textWidth/2), this.yCanvas + 20);
+		
+	};
+
+	/*
+		draw a highlight over the button icon if selected
+	*/
+	drawIconHighlight(ctx) {
+	};
+	
+	/*
+		update the state of the button
+	*/
+	update() {
+		if (this.level.levelPaused) {
+			this.transparent = true;
+		} else {
+			this.transparent = false;
+		}
+	};
+	
+	/*
+		Return the selection state of this button
 	*/
 	isSelected() {
 		return this.selected;

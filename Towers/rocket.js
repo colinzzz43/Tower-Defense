@@ -35,6 +35,7 @@ class Rocket extends Tower {
     this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
     this.damage = 15; // Damage: Strong
     this.cost = 75; // Cost: 75 coins
+    this.upgradeCost = 120;
     this.depreciated = 0.8;
     this.radius = 10 * PARAMS.SCALE;
 
@@ -92,4 +93,20 @@ class Rocket extends Tower {
       )
     );
   }
+
+  upgrade() {
+    if (this.towerLevel < 3) {
+      this.towerLevel++;
+      if (this.towerLevel == 2) {
+        this.user.decreaseBalance(65);
+        this.fireRate += 0.75;
+        this.HP += 30;
+      } else {
+        this.user.decreaseBalance(90);
+        this.shootingRadius += 5 * PARAMS.SCALE;
+        this.damage += 10;
+        this.HP += 60;
+      }
+    }
+  };
 }

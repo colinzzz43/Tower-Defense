@@ -1,6 +1,6 @@
 class Dragon extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     this.color = randomInt(4); // 0: gold, 1: red, 2: twin headed blue, 3: twin headed red
 
@@ -97,7 +97,7 @@ class Dragon extends Enemy {
     this.fireRate = 2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
   }
 
   update() {
