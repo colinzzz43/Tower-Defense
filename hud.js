@@ -43,6 +43,8 @@ class HUD {
             true
         );
 
+		
+
 		this.menuBoxWidth = 1190;
 		this.menuBoxHeight = 50;
 		this.userIcons = [];
@@ -64,9 +66,14 @@ class HUD {
             height: 50
         };
         
+
+
+		this.heartImage = ASSET_MANAGER.getAsset("./sprites/other/heart.png");
+
         this.titleGif = ASSET_MANAGER.getAsset("./sprites/title.png");
         
 		// Timer
+		this.gameStarted = false;
 		this.TIME_LIMIT = 5;
 		this.timePassed = 0;
 		this.timerRestarted = false;
@@ -89,9 +96,12 @@ class HUD {
             this.timeLeft = this.TIME_LIMIT - this.timePassed;
             if (this.timeLeft < 0) {
                 this.timeLeft = 0;
+				this.gameStarted = true;
+
             }
           }
         }, (100 / this.speed) );
+
       };
 	
 	/*
@@ -164,7 +174,7 @@ class HUD {
         this.coinAnimation.drawFrame(
             this.game.clockTick,
             this.ctx,
-			horizontalAlign + 735,
+			horizontalAlign + 800,
 			verticalAlign * 0.7,
             1.8
         );
@@ -288,7 +298,7 @@ class HUD {
 		ctx.font = "25px monospace";
 		ctx.fillStyle = "Black";
 		ctx.fillText(
-			("Scores: " + this.scores).padStart(8, "0"),
+			("SCORES: " + this.scores).padStart(8, "0"),
 			horizontalAlign,
 			verticalAlign 
 		);
@@ -297,8 +307,8 @@ class HUD {
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.6);
 		ctx.fillText(
-			"x" + (this.coins < 10 ? "0" : "") + this.coins + " coins",
-			horizontalAlign + 720,
+			" x" + (this.coins < 10 ? "0" : "") + this.coins,
+			horizontalAlign + 785,
 			verticalAlign * 1.3
 		);
 
@@ -306,18 +316,29 @@ class HUD {
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.6);
 		if (this.HP > 0) { // show hp when above 0, else show defeat
-		  ctx.fillText("Base:" + this.HP + " HP", horizontalAlign, verticalAlign);
+		  ctx.drawImage(this.heartImage, horizontalAlign + 25, verticalAlign - 25, 35, 35);
+		  ctx.fillText(" x" + this.HP , horizontalAlign + 65, verticalAlign+5);
 		} else  {
-		  ctx.fillText("DEFEAT" , horizontalAlign, verticalAlign);
+		  ctx.fillStyle = "RED";
+		  ctx.fillText("GAME OVER" , horizontalAlign + 5, verticalAlign);
+		  ctx.fillStyle = "Black";
 		}
-		ctx.fillText(this.waves + "/10 WAVES", horizontalAlign + 700, verticalAlign * 0.7);
 		
-		// Time
+		// this.gameStarted = false;
+
+		// Time and level display
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.85);
-		ctx.fillText("TIME:", horizontalAlign + 830, verticalAlign);
-		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.885);
-		ctx.fillText(Math.floor(this.timeLeft), horizontalAlign + 900, verticalAlign * 1.03);
+			ctx.fillText("LEVEL " + this.game.camera.currentLevel, horizontalAlign + 630, verticalAlign * 0.7);
+		if (this.gameStarted) {
+			ctx.fillText("WAVES " + this.game.camera.currentWave + "/5", horizontalAlign + 780, verticalAlign * 0.7);
+
+		} else {
+			ctx.fillText("TIME:", horizontalAlign + 780, verticalAlign * 0.7);
+			horizontalAlign = this.levelMap.xCanvas + 
+				(this.levelMap.width * 0.885);
+			ctx.fillText(Math.floor(this.timeLeft), horizontalAlign + 855, verticalAlign * 0.7);
+		}
+
 	};
 }

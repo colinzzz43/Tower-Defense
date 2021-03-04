@@ -100,11 +100,13 @@ class Laser extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(90);
         this.shootingRadius += 10 * PARAMS.SCALE;
-        this.HP += 10;
+        this.maxHP += 10;
+        this.HP = this.maxHP;
       } else {
         this.user.decreaseBalance(120);
         this.damage += 20;
-        this.HP += 30;
+        this.maxHP += 30;
+        this.HP = this.maxHP;
       }
     }
   };

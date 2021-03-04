@@ -100,12 +100,14 @@ class Rocket extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
         this.fireRate += 0.75;
-        this.HP += 30;
+        this.maxHP += 30;
+        this.HP = this.maxHP;
       } else {
         this.user.decreaseBalance(90);
         this.shootingRadius += 5 * PARAMS.SCALE;
         this.damage += 10;
-        this.HP += 60;
+        this.maxHP += 60;
+        this.HP = this.maxHP;
       }
     }
   };

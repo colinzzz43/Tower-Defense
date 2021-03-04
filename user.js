@@ -9,7 +9,7 @@ class User {
     this.scores = 0;
 
     // initialization for the user
-    this.balance = 100;
+    this.balance = 10000;
 //    this.hp = 100;
   }
 

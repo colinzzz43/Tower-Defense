@@ -168,11 +168,13 @@ class Flamethrower extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
         this.shootingRadius += 5 * PARAMS.SCALE;
-        this.HP += 20;
+        this.maxHP += 20;
+        this.HP = this.maxHP;
       } else {
         this.user.decreaseBalance(90);
         this.damage += 15;
-        this.HP += 40;
+        this.maxHP += 40;
+        this.HP = this.maxHP;
       }
     }
   };
