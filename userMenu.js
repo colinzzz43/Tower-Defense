@@ -256,7 +256,9 @@ class UserMenuIcon {
 		ctx.strokeStyle = "navy";
 		ctx.lineWidth = 2;
 		if (this.mouseover && !this.selected) {
-			ctx.fillStyle = "lightgrey";			
+			ctx.fillStyle = "lightgrey";
+
+			  	
 		} else {
 			ctx.fillStyle = "white";
 		}

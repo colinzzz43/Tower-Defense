@@ -102,6 +102,10 @@ class SceneManager {
 	this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
 	this.waveTimer = this.waveTimes[this.currentWave];
 	
+	// description box
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
+	this.game.addEntity(descriptionMenu);
+	
 	// tower store menu
 	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level);
 	// new field towerStoreMenu added to level for tower selection interaction
@@ -112,9 +116,6 @@ class SceneManager {
 	var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
 	this.game.addEntity(userMenu);
 	
-	// description box
-	var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
-	this.game.addEntity(descriptionMenu);
 
 	// hud
 	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
