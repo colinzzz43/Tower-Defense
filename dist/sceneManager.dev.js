@@ -30,11 +30,7 @@ function () {
       width: PARAMS.WIDTH,
       height: PARAMS.HEIGHT
     };
-    this.map = [];
-    this.map.push(ASSET_MANAGER.getAsset("./Level/images/map_prototype.png"));
-    this.map.push(ASSET_MANAGER.getAsset("./Level/images/SnowMap.png"));
-    this.map.push(ASSET_MANAGER.getAsset("./Level/images/DesertMap.png"));
-    this.map.push(ASSET_MANAGER.getAsset("./Level/images/GrassMap.png")); // Pause Screen
+    this.map = []; // Pause Screen
 
     this.paused = false; //	this.game.paused = this.paused;
     // Game Speed
@@ -87,8 +83,8 @@ function () {
       // user entity created first 
       this.user = new User(this.game);
       this.game.addEntity(this.user); // level entity
-      // var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 
+      var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
       var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 0, 0, 600, 400, 1.5, 1, this.ctx);
       this.game.addEntity(level); // After level entity is added to game engine, new field 'levelEnemyWaves' is 
       // put into level to ensure enemies are drawn on top of map image
@@ -118,8 +114,8 @@ function () {
       //	this.muted = this.game.muted;
       //	this.speed = this.game.speed;
       //	this.paused = this.game.paused;
-      this.HP = this.base.HP;
-      this.coins = this.user.balance;
+      // this.HP = this.base.HP;
+      // this.coins = this.user.balance;
       this.scores = this.game.camera.user.scores;
 
       if (this.timerRestarted || this.speedChanged) {
