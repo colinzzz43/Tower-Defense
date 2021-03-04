@@ -880,8 +880,11 @@ class RestartIcon extends UserMenuIcon {
 		// Third, respawn the level's pre-defined waves from the beginning
 		this.level.levelEnemyWaves.spawnEnemies();
 		
+		this.sceneManager = new SceneManager(this.gameEngine, this.ctx);
+		this.user = new User(this.gameEngine);
+
 		// Fourth, reset the displayed game stats
-		this.gameEngine.camera.user.balance = 100;
+		this.gameEngine.camera.user.balance = this.user.balance;
 		this.gameEngine.camera.user.scores = 0;		
 		this.gameEngine.camera.base.HP = 5;
 		this.gameEngine.camera.timeLeft = this.gameEngine.camera.TIME_LIMIT;
