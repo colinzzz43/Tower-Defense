@@ -25,13 +25,6 @@ class EnemyMovement {
 		this.neutral = "neutral";
 		
 		this.nextTurnAtTile = null;
-		
-/*		
-		Commented out 3/2/21
-		// Number of turns the enemy has already made, and the tile locationwhere it'll make it's next turn
-		this.turns = 0;
-		this.nextTurnAtTile = this.levelGrid.pathTurns[this.turns];
-*/
 	};
 	
 	
@@ -184,8 +177,7 @@ class EnemyMovement {
 				}
 				
 				// Loop
-				for (var i = 0; i < pathTurns.length; i++) {
-//					console.log(pathTurns[i]);
+				for (var i = 0; i < pathTurns.length; i++) {;
 					
 					// Step 2
 					if (pathTurns[i].column !== this.currentTileColumn
@@ -270,7 +262,6 @@ class EnemyMovement {
 				
 				// Loop
 				for (var i = 0; i < pathTurns.length; i++) {
-//					console.log(pathTurns[i]);
 					
 					// Step 2
 					if (pathTurns[i].column !== this.currentTileColumn
@@ -376,17 +367,6 @@ class EnemyMovement {
 	
 	// Return if the enemy has reached the tile of where the destination is on the grid map
 	hasReachedDestination() {
-	/*
-		Commented out 3/2/21
-		var destinationTile = this.levelGrid.getDestination();
-		if (this.currentTileRow === destinationTile.row && this.currentTileColumn === destinationTile.column) {
-			this.speed = 0;
-			return true;
-		} else {
-			return false;
-		}
-	*/
-	
 		var destinationTiles = this.levelGrid.getDestination();
 		for (var i = 0; i < destinationTiles.length; i++) {
 			var destinationRow = destinationTiles[i].row;
