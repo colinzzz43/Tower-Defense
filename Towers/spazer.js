@@ -101,7 +101,8 @@ class Spazer extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
         this.fireRate += 0.75;
-        this.HP += 30;
+        this.maxHP += 30;
+        this.HP = this.maxHP;
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
@@ -109,7 +110,8 @@ class Spazer extends Tower {
         this.user.decreaseBalance(90);
         this.shootingRadius += 5 * this.scale;
         this.damage += 10;
-        this.HP += 60;
+        this.maxHP += 60;
+        this.HP = this.maxHP;
 
         this.frameHeight = 42;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;

@@ -1,6 +1,6 @@
 class Mushroom extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
@@ -71,7 +71,7 @@ class Mushroom extends Enemy {
     this.attackRate = 1.2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1, this.direction, this.x, this.y, this.grid);
   }
 
   loadAnimation() {

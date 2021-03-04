@@ -147,14 +147,16 @@ class Shotgun extends Tower {
       this.towerLevel++;
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(40);
-        this.HP += 20;
+        this.maxHP += 20;
+        this.HP = this.maxHP;
         this.fireRate -= .3;
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
         this.user.decreaseBalance(60);
-        this.HP += 40;
+        this.maxHP += 40;
+        this.HP = this.maxHP;
         this.damage += 15;
         this.shootingRadius +=  20 * this.scale;
 

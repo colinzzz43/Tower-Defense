@@ -10,7 +10,7 @@ class Tower {
     this.elapsedTime = 0;
     this.towerLevel = 1;
 
-    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 3;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.8 : 3;
 
     // speed multiplier
     this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
@@ -174,12 +174,14 @@ class Tower {
   draw(context) {
     this.drawTileHighlight(context);
     //    this.showBoundingCircle(context);
+
+    var width = this.scale > 2 ? 100 : 50;
     this.drawHealth(
       context,
       this.x,
       this.y - this.yOffset - 30,
       this.HP,
-      100,
+      width,
       10
     );
 
@@ -193,20 +195,22 @@ class Tower {
       context,
       this.x - this.xOffset,
       this.y - this.yOffset,
-      PARAMS.SCALE
+      this.scale
     );
     // context.drawImage(this.spritesheet, this.x, this.y);
   }
 
   drawHealth(ctx, x, y, HP, width, thickness) {
+    // var percentage = width * (HP / this.maxHP);
     var percentage = width * (HP / this.maxHP);
+    var healthPercent = HP/this.maxHP * 100;
     ctx.beginPath();
-    ctx.rect(x - width / 2, y, percentage, thickness);
-    if (percentage > 63) {
+    ctx.rect(x - width /2 , y*1.05, percentage, thickness);
+    if (healthPercent > 63) {
       ctx.fillStyle = "green";
-    } else if (percentage > 37) {
+    } else if (healthPercent > 37) {
       ctx.fillStyle = "gold";
-    } else if (percentage > 13) {
+    } else if (healthPercent > 13) {
       ctx.fillStyle = "orange";
     } else {
       ctx.fillStyle = "red";

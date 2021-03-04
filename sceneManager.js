@@ -8,7 +8,12 @@ class SceneManager {
 		ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
 		this.BGM = new Audio("./soundeffects/BGM.mp3");
 
+		//  this.user = this.game.user;
 
+		//	this.base = this.game.base;
+
+		this.currentWave = 0;
+		this.scores = 0;
 
 		this.levelMap = {
 			xCanvas: 150,
@@ -28,7 +33,7 @@ class SceneManager {
 		this.map.push(ASSET_MANAGER.getAsset("./Level/images/DesertMap.png"));
 		this.map.push(ASSET_MANAGER.getAsset("./Level/images/GrassMap.png"));
 
-		this.currentLevel = 1;
+
 
 		// Pause Screen
 		this.paused = false;
@@ -48,11 +53,15 @@ class SceneManager {
 		this.timerInterval = null;
 		this.startTimer();
 
+		this.currentLevel = 2;
+		this.currentWave = 0;
 
 		// Load the prototype level, along with user and tower store menus, to the game engine
-		this.loadGameLevel();
-	}
+		// this.loadGamePrototype();
 
+		// Load the snow level (level 2)
+		this.loadGameLevel2();
+	}
 
 	startTimer() {
 		if (this.timerRestarted || this.speedChanged) {
@@ -81,14 +90,15 @@ class SceneManager {
 		}, (100 / this.speed));
 	};
 
-	loadGameLevel() {
+	loadGamePrototype() {
 
 		// user entity created first 
 		this.user = new User(this.game);
 		this.game.addEntity(this.user);
 
 		// level entity
-		var level = new Level(gameEngine, this.map[this.currentLevel - 1], this.levelMap.xCanvas, this.levelMap.yCanvas,
+		var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
+		var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas,
 			0, 0, 600, 400, 1.5, 1, this.ctx);
 		this.game.addEntity(level);
 
@@ -117,17 +127,75 @@ class SceneManager {
 		this.game.addEntity(hud);
 	};
 
+	loadGameLevel2() {
+
+		// user entity created first 
+		this.user = new User(this.game);
+		this.game.addEntity(this.user);
+
+		// level entity
+		var map = ASSET_MANAGER.getAsset("./Level/images/SnowMap.png");
+		var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas,
+			0, 0, 960, 640, 0.9375, 2, this.ctx);
+		this.game.addEntity(level);
+
+
+		// After level entity is added to game engine, new field 'levelEnemyWaves' is 
+		// put into level to ensure enemies are drawn on top of map image
+		level.levelEnemyWaves = new LevelWave(level);
+		this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
+		this.waveTimer = this.waveTimes[this.currentWave];
+
+
+		// tower store menu
+		var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level);
+		// new field towerStoreMenu added to level for tower selection interaction
+		level.towerStoreMenu = towerStoreMenu;
+		this.game.addEntity(towerStoreMenu);
+
+		// user menu
+		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		this.game.addEntity(userMenu);
+
+		// description box
+		var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
+		this.game.addEntity(descriptionMenu);
+
+		// hud
+		var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
+		this.game.addEntity(hud);
+	};
+
+
 	update() {
 		//	this.muted = this.game.muted;
 		//	this.speed = this.game.speed;
 		//	this.paused = this.game.paused;
-
+		this.HP = this.base.HP;
+		this.coins = this.user.balance;
+		this.scores = this.game.camera.user.scores;
 		if (this.timerRestarted || this.speedChanged) {
 			this.startTimer();
 		}
 	};
 
 	addCoin() { };
+
+	/*
+	  Display the game stats
+	*/
+	draw(ctx) {
+
+		if (this.paused) this.drawPauseScreen(ctx);
+		if (this.muted || this.paused)
+			this.muteBGM()
+		else {
+			this.BGM.volume = 0.1;
+			this.BGM.muted = false;
+			this.BGM.play();
+		}
+	};
+
 
 	/*
 	  Display the game stats

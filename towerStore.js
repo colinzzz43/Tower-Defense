@@ -74,7 +74,7 @@ class TowerStoreMenu {
 		this.ctx.strokeRect(this.topLeftCornerX + 5, this.topLeftCornerY + 10, this.menuBoxWidth - 10, 25);		
 		this.ctx.strokeStyle = "black";
 		this.ctx.lineWidth = 2;
-		this.ctx.font = "20px monospace";
+		this.ctx.font = "18px monospace";
 		this.ctx.strokeText("Tower Store", this.topLeftCornerX + 10, this.topLeftCornerY + 29);
 		
 		this.ctx.closePath();

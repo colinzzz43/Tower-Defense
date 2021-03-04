@@ -23,12 +23,12 @@ var Goblin =
 function (_Enemy) {
   _inherits(Goblin, _Enemy);
 
-  function Goblin(gameEngine, x, y, level, spawnTime) {
+  function Goblin(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, Goblin);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Goblin).call(this, gameEngine, x, y, level, spawnTime)); // sprites
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Goblin).call(this, gameEngine, x, y, direction, level, spawnTime)); // sprites
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death.png");
@@ -46,7 +46,7 @@ function (_Enemy) {
     // stats
 
     _this.score = 20;
-    _this.scale = 2;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     _this.HP = 30;
     _this.maxHP = _this.HP; // used in calculating health bar
 
@@ -61,7 +61,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.attackRate = 0.7; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 

@@ -25,7 +25,7 @@ function () {
 
     this.elapsedTime = 0;
     this.towerLevel = 1;
-    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 3; // speed multiplier
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.8 : 3; // speed multiplier
 
     this.towerSpeedMultipler = this.level.levelSpeedMultiplier; // pause state
 
@@ -189,27 +189,30 @@ function () {
     value: function draw(context) {
       this.drawTileHighlight(context); //    this.showBoundingCircle(context);
 
-      this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, 100, 10);
+      var width = this.scale > 2 ? 100 : 50;
+      this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, width, 10);
       var speedMultiplier = this.towerSpeedMultipler;
 
       if (this.towerPaused) {
         speedMultiplier = 0;
       }
 
-      this.animations[this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, PARAMS.SCALE); // context.drawImage(this.spritesheet, this.x, this.y);
+      this.animations[this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale); // context.drawImage(this.spritesheet, this.x, this.y);
     }
   }, {
     key: "drawHealth",
     value: function drawHealth(ctx, x, y, HP, width, thickness) {
+      // var percentage = width * (HP / this.maxHP);
       var percentage = width * (HP / this.maxHP);
+      var healthPercent = HP / this.maxHP * 100;
       ctx.beginPath();
-      ctx.rect(x - width / 2, y, percentage, thickness);
+      ctx.rect(x - width / 2, y * 1.05, percentage, thickness);
 
-      if (percentage > 63) {
+      if (healthPercent > 63) {
         ctx.fillStyle = "green";
-      } else if (percentage > 37) {
+      } else if (healthPercent > 37) {
         ctx.fillStyle = "gold";
-      } else if (percentage > 13) {
+      } else if (healthPercent > 13) {
         ctx.fillStyle = "orange";
       } else {
         ctx.fillStyle = "red";

@@ -43,7 +43,7 @@ class Matter extends Tower {
     this.radius = 10 * this.scale;
 
     // other
-    this.xOffset = (this.frameWidth * this.scale) / 2 + 2;
+    this.xOffset = (this.frameWidth * this.scale) / 2;
     this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
     this.buy(Matter.cost);
@@ -102,7 +102,8 @@ class Matter extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
         this.fireRate += 0.75;
-        this.HP += 30;
+        this.maxHP += 30;
+        this.HP = this.maxHP;
 
         this.frameHeight = 45;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale; 
@@ -111,7 +112,8 @@ class Matter extends Tower {
         this.user.decreaseBalance(90);
         this.shootingRadius += 5 * this.scale;
         this.damage += 10;
-        this.HP += 60;
+        this.maxHP += 60;
+        this.HP = this.maxHP;
 
         this.frameHeight = 48;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;

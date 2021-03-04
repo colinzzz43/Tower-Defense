@@ -1,6 +1,6 @@
 class Goblin extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
@@ -59,7 +59,7 @@ class Goblin extends Enemy {
 
     // stats
     this.score = 20;
-    this.scale = 2;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     this.HP = 30;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 10; //8;
@@ -71,7 +71,7 @@ class Goblin extends Enemy {
     this.attackRate = 0.7;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1, this.direction, this.x, this.y, this.grid);
   }
 
   loadAnimation() {

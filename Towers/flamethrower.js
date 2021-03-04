@@ -44,7 +44,7 @@ class Flamethrower extends Tower {
     this.radius = 10 * this.scale;
 
     // other
-    this.xOffset = (this.frameWidth * this.scale) / 2 + 2;
+    this.xOffset = (this.frameWidth * this.scale) / 2;
     this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
     this.buy(Flamethrower.cost);
@@ -171,7 +171,8 @@ class Flamethrower extends Tower {
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
         this.shootingRadius += 5 * this.scale;
-        this.HP += 20;
+        this.maxHP += 20;
+        this.HP = this.maxHP;
 
         this.frameHeight = 48;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
@@ -179,7 +180,8 @@ class Flamethrower extends Tower {
       } else {
         this.user.decreaseBalance(90);
         this.damage += 15;
-        this.HP += 40;
+        this.maxHP += 40;
+        this.HP = this.maxHP;
       }
 
       this.animations = [];

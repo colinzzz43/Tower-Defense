@@ -22,7 +22,7 @@ class Base {
 
     // stats
     this.HP = 5;
-    this.SCALE = 3.75; // SCALE = 3.75, to take up 3x3 of grid on map
+    this.SCALE = 2; // SCALE = 3.75, to take up 3x3 of grid on map, SCALE = 2 for snow level
     this.diameter = 48 * this.SCALE;
     this.radius = this.diameter / 2;
   }
@@ -65,8 +65,7 @@ class Base {
 
   draw(context) {
     // show bounds for collision testing
-//    this.showBoundingCircle(context);
-
+ // this.showBoundingCircle(context);
     // x an y are center coordinates, subtract radius for drawing offset
     this.animation.drawFrame(
       this.gameEngine.clockTick,

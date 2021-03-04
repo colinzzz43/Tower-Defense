@@ -1,6 +1,6 @@
 class Skeleton extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
@@ -61,7 +61,7 @@ class Skeleton extends Enemy {
 
     // stats
     this.score = 30;
-    this.scale = 2;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
     this.HP = 40;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 15;
@@ -73,7 +73,7 @@ class Skeleton extends Enemy {
     this.attackRate = 4.5;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.5, this.direction, this.x, this.y, this.grid);
   }
 
   loadAnimation() {

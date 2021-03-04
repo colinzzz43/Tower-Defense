@@ -1,6 +1,6 @@
 class Slime extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
@@ -22,7 +22,7 @@ class Slime extends Enemy {
     this.frameWidth = 16;
 
     // stats
-    this.scale = 3;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 2 : 3;
     this.HP = 20;
     this.damage = 5;
     this.maxHP = this.HP;
@@ -35,7 +35,7 @@ class Slime extends Enemy {
     this.fireRate = 1;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(0.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(0.5, this.direction, this.x, this.y, this.grid);
   }
 
   update() {
@@ -118,6 +118,7 @@ class Slime extends Enemy {
       let position = this.getMovement(this.movement, this.x, this.y);
       this.x = position.x;
       this.y = position.y;
+//	  console.log(`Enemy: {${this.x}, ${this.y}} going ${this.movement.getDirection()}`);
       this.movement.updatePosition(this.x, this.y);		
 	  }
 

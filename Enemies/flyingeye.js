@@ -1,6 +1,6 @@
 class FlyingEye extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
@@ -59,7 +59,7 @@ class FlyingEye extends Enemy {
 
     // stats
     this.score = 40;
-    this.scale = 2;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 5;
@@ -71,7 +71,7 @@ class FlyingEye extends Enemy {
     this.fireRate = 0.8;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.25, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
   };
 
   loadAnimation() {
