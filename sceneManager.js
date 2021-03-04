@@ -21,12 +21,6 @@ class SceneManager {
 		width: PARAMS.WIDTH,
 		height: PARAMS.HEIGHT
 	};
-
-	this.map = [];
-	this.map.push(ASSET_MANAGER.getAsset("./Level/images/map_prototype.png"));
-	this.map.push(ASSET_MANAGER.getAsset("./Level/images/SnowMap.png"));
-	this.map.push(ASSET_MANAGER.getAsset("./Level/images/DesertMap.png"));
-	this.map.push(ASSET_MANAGER.getAsset("./Level/images/GrassMap.png"));
 	
 	// Pause Screen
 	this.paused = false;
@@ -86,7 +80,7 @@ class SceneManager {
 		this.game.addEntity(this.user);
 
 		// level entity
-		// var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
+		var map = ASSET_MANAGER.getAsset("./Level/images/map_prototype.png");
 		var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas,
 			0, 0, 600, 400, 1.5, 1, this.ctx);
 		this.game.addEntity(level);
