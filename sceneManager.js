@@ -21,7 +21,7 @@ class SceneManager {
 		width: PARAMS.WIDTH,
 		height: PARAMS.HEIGHT
 	};
-	
+
 	// Pause Screen
 	this.paused = false;
 //	this.game.paused = this.paused;
@@ -72,7 +72,6 @@ class SceneManager {
 			}
 		}, (100 / this.speed));
 	};
-
 
 	loadGamePrototype() {
 
