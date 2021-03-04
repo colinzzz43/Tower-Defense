@@ -98,7 +98,7 @@ var levelTwoGrid = {
 		{ "row": 4, "column": 2, "directions":["right"] },
 		{ "row": 4, "column": 5, "directions":["down"] },
 		{ "row": 6, "column": 5, "directions":["left"] },
-        	{ "row": 6, "column": 4, "directions":["down"] },
+    { "row": 6, "column": 4, "directions":["down"] },
 		{ "row": 8, "column": 4, "directions":["right"] },
 		{ "row": 8, "column": 7, "directions":["up"] },		
 		{ "row": 5, "column": 7, "directions":["right"] },
@@ -138,11 +138,12 @@ var levelTwoGrid = {
 		{ "row": 14, "column": 6, "directions":["right"] },	
 		{ "row": 14, "column": 9, "directions":["up"] },
 		{ "row": 11, "column": 9, "directions":["right"] }			
-									]		
+													                        ]	
+	
 };
 
 // desert map
-levelThreeGrid = {
+var levelThreeGrid = {
 	"tileRows": 20,
 	"tileColumns": 30,
 	"tilePixelLength": 30,
