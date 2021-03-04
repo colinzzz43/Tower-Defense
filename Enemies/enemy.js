@@ -78,7 +78,6 @@ class Enemy {
 			}
 			
 			var nextTurnAt = movement.getNextTurnTile();
-//			console.log(`Next Turn: Coords {${nextTurnAt.centerX}, ${nextTurnAt.centerY}}; Tile {${nextTurnAt.row}, ${nextTurnAt.column}}`);
 			
 			// Depending on the enemy's current direction, if enemy happens to be just on or just moved over
 			// a turn tile's center coordinates, then make the enemy's current x- or y-position match that
@@ -121,84 +120,11 @@ class Enemy {
 				// Randomly choose any legal direction for the path turn tile the enemy is on
 				var directionChoice = Math.floor( Math.random() * nextTurnAt.directions.length );
 				movement.direction = nextTurnAt.directions[directionChoice];
-//				console.log(`Enemy changed direction`);
 				
 				// After changing directions, scan in front of enemy's new facing direction for next turn tile
 				movement.nextTurnAtTile = null;
 				movement.scanForNextTurnInCurrentDirection();
-			}
-		
-		
-		
-		/*
-			// retrieve a list of level path turns and determine if enemy is on a path turn tile
-			var levelPathTurns = this.level.getGrid().getPathTurns();
-			for (var i = 0; i < this.levelPathTurns.length; i++) {
-				var turnRow = this.levelPathTurns[i].row;
-				var turnColumn = this.levelPathTurns[i].column;
-				
-				// if an enemy's tile coordinates matches a path turn tile's row/column coordinates
-				// and is at or just beyond the tile's center coordinates, 
-				// then make enemy turn in any of that tile's legal directions
-				if (coordinates.row === turnRow && coordinates.column === turnColumn) {
-					
-				}
-			}
-		*/
-			
-		  /*	Commented out 3/2/21
-			
-		  var direction = movement.getDirection();
-		  var nextTurnAt = movement.getTileToMakeTurnAt();
-		  
-		  // Depending on the enemy's current direction, if enemy happens to be just on or just moved over
-		  // a turn tile's center coordinates, then make the enemy's current x- or y-position match that
-		  // of the tile's center x- or y-coordinate in which the enemy will change directions on
-		  switch (direction) {
-			  case "up":
-				if (coordinates.x === nextTurnAt.centerX && coordinates.y <= nextTurnAt.centerY) {
-					coordinates.y = nextTurnAt.centerY;
-					coordinates.tileRow = Math.floor( (coordinates.y - this.level.yCanvas) / movement.tileSideScale);
-					this.y = nextTurnAt.centerY;
-				}
-				break;
-			  case "right":		
-				if (coordinates.x >= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
-					coordinates.x = nextTurnAt.centerX;	
-					coordinates.tileColumn = Math.floor( (coordinates.x - this.level.xCanvas) / movement.tileSideScale);				
-					this.x = nextTurnAt.centerX;				
-				}				
-				break;
-			  case "down":
-				if (coordinates.x === nextTurnAt.centerX && coordinates.y >= nextTurnAt.centerY) {
-					coordinates.y = nextTurnAt.centerY;	
-					coordinates.tileRow = Math.floor( (coordinates.y - this.level.yCanvas) / movement.tileSideScale);				
-					this.y = nextTurnAt.centerY;				
-				}				
-				break;  
-			  case "left":
-				if (coordinates.x <= nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
-					coordinates.x = nextTurnAt.centerX;		
-					coordinates.tileColumn = Math.floor( (coordinates.x - this.level.xCanvas) / movement.tileSideScale);				
-					this.x = nextTurnAt.centerX;					
-				}				
-				break;
-		  }
-		  
-		  // Has it reached the center of the tile it's located in? If it has then enemy takes note of the next tile in its current direction	 
-		  if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
-			var currentTileInCurrentDirection = this.grid.getTile(
-			  coordinates.tileRow,
-			  coordinates.tileColumn
-			);
-			var nextTileInCurrentDirection = movement.getNextTerrainTileInCurrentDirection();	
-			
-			// if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
-			if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
-			  movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
-			}
-		  }
-		  */
+			}			
 		}
 	};
 
