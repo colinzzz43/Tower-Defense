@@ -190,7 +190,7 @@ function () {
       this.drawTileHighlight(context); //    this.showBoundingCircle(context);
 
       var width = this.scale > 2 ? 100 : 50;
-      this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, width, 10);
+      this.drawHealth(context, this.x, this.y - this.yOffset - 7 * this.scale, this.HP, width, 10);
       var speedMultiplier = this.towerSpeedMultipler;
 
       if (this.towerPaused) {
@@ -206,7 +206,7 @@ function () {
       var percentage = width * (HP / this.maxHP);
       var healthPercent = HP / this.maxHP * 100;
       ctx.beginPath();
-      ctx.rect(x - width / 2, y * 1.05, percentage, thickness);
+      ctx.rect(x - width / 2, y, percentage, thickness);
 
       if (healthPercent > 63) {
         ctx.fillStyle = "green";
