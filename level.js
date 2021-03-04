@@ -477,6 +477,7 @@ class Level {
 			this.mapOfTowers[row][column].removeFromWorld = true;
 			this.mapOfTowers[row][column] = null;
 			this.changeStateOfTowerTerrain(row, column);
+
 		}
 	};
 
