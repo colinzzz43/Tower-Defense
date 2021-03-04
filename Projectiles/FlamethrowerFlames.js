@@ -42,6 +42,7 @@ class FlamethrowerFlames extends Projectile {
           let ent = this.gameEngine.entities[i];
           if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
             ent.takeHit(this.shootingEntity.damage);
+            console.log(ent.HP);
             this.removeFromWorld = true;
           }
 

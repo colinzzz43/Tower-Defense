@@ -57,22 +57,30 @@ function (_Projectile) {
   _createClass(FlamethrowerFlames, [{
     key: "update",
     value: function update() {
-      this.x += this.velocity.x * this.gameEngine.clockTick;
-      this.y += this.velocity.y * this.gameEngine.clockTick;
+      this.projectileSpeedMultiplier = this.gameEngine.camera.speed;
+      this.projectilePaused = this.gameEngine.camera.paused;
 
-      for (var i = 0; i < this.gameEngine.entities.length; i++) {
-        var ent = this.gameEngine.entities[i];
+      if (this.projectilePaused) {// do nothing
+      } else {
+        this.x += this.velocity.x * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+        this.y += this.velocity.y * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
 
-        if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
-          ent.takeHit(this.shootingEntity.damage);
-        }
+        for (var i = 0; i < this.gameEngine.entities.length; i++) {
+          var ent = this.gameEngine.entities[i];
 
-        var dx = this.x - this.xStart;
-        var dy = this.y - this.yStart;
-        var distTraveled = Math.sqrt(dx * dx + dy * dy);
+          if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
+            ent.takeHit(this.shootingEntity.damage);
+            console.log(ent.HP);
+            this.removeFromWorld = true;
+          }
 
-        if (distTraveled > this.shootingEntity.shootingRadius) {
-          this.removeFromWorld = true;
+          var dx = this.x - this.xStart;
+          var dy = this.y - this.yStart;
+          var distTraveled = Math.sqrt(dx * dx + dy * dy);
+
+          if (distTraveled > this.shootingEntity.shootingRadius) {
+            this.removeFromWorld = true;
+          }
         }
       }
     }

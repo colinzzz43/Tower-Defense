@@ -4,9 +4,11 @@ class MG extends Tower {
     super(gameEngine, x, y, level);
 
     // spritesheet and animation
-    this.spritesheet = ASSET_MANAGER.getAsset(
-      "./sprites/towers/mg/Level1/1_sheet.png"
-    );
+    this.spritesheet = [];
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_sheet.png"));
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/mg/Level2/2_sheet.png"));
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/mg/Level3/3_sheet.png"));
+
     this.animations = [];
     this.frameWidth = 24;
     this.frameHeight = 40;
@@ -14,7 +16,7 @@ class MG extends Tower {
     for (i = 0; i < 8; i++) {
       this.animations.push(
         new Animator(
-          this.spritesheet,
+          this.spritesheet[this.towerLevel - 1],
           this.frameWidth * i,
           0,
           this.frameWidth,
@@ -32,16 +34,16 @@ class MG extends Tower {
     this.HP = 30;
     this.maxHP = this.HP;
     this.fireRate = 0.5; // Fire rate: Fast
-    this.shootingRadius = 50 * PARAMS.SCALE; // Range: Medium
+    this.shootingRadius = 50 * this.scale; // Range: Medium
     this.damage = 10; // Damage: Moderate
     this.cost = 25; // Cost: 25 coins
     this.upgradeCost = 25;
     this.depreciated = 0.8;
-    this.radius = 10 * PARAMS.SCALE;
+    this.radius = 10 * this.scale;
 
     // other
-    this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 - 3;
-    this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
+    this.xOffset = (this.frameWidth * this.scale) / 2 - 3;
+    this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
     this.buy(MG.cost);
   }
@@ -54,32 +56,32 @@ class MG extends Tower {
     var bulletY = this.y - this.yOffset;
     switch(this.facing) {
       case 1:
-        bulletX = this.x + 9*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 5*PARAMS.SCALE;
+        bulletX = this.x + 9*this.scale;
+        bulletY = this.y - this.yOffset + 5*this.scale;
         break;
       case 2:
-        bulletX = this.x + 12*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 10*PARAMS.SCALE;
+        bulletX = this.x + 12*this.scale;
+        bulletY = this.y - this.yOffset + 10*this.scale;
         break;
       case 3:
-        bulletX = this.x + 12*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 16*PARAMS.SCALE;
+        bulletX = this.x + 12*this.scale;
+        bulletY = this.y - this.yOffset + 16*this.scale;
         break;
       case 4:
         bulletX = this.x;
-        bulletY = this.y - this.yOffset + 20*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 20*this.scale;
         break;
       case 5:
-        bulletX = this.x - 12*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 16*PARAMS.SCALE;
+        bulletX = this.x - 12*this.scale;
+        bulletY = this.y - this.yOffset + 16*this.scale;
         break;
       case 6:
-        bulletX = this.x - 12*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 10*PARAMS.SCALE;
+        bulletX = this.x - 12*this.scale;
+        bulletY = this.y - this.yOffset + 10*this.scale;
         break;
       case 7:
-        bulletX = this.x - 12*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 5*PARAMS.SCALE;
+        bulletX = this.x - 12*this.scale;
+        bulletY = this.y - this.yOffset + 5*this.scale;
         break;
     }
 
@@ -102,11 +104,34 @@ class MG extends Tower {
         this.user.decreaseBalance(40);
         this.HP += 20;
         this.fireRate -= .3;
+
+        this.frameHeight = 46;
+        this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
+
       } else {
         this.user.decreaseBalance(60);
         this.HP += 40;
         this.damage += 15;
-        this.shootingRadius +=  20 * PARAMS.SCALE;
+        this.shootingRadius +=  20 * this.scale;
+      }
+
+      this.animations = [];
+      var i;
+      for (i = 0; i < 8; i++) {
+        this.animations.push(
+          new Animator(
+            this.spritesheet[this.towerLevel - 1],
+            this.frameWidth * i,
+            0,
+            this.frameWidth,
+            this.frameHeight,
+            1,
+            1,
+            0,
+            false,
+            true
+          )
+        );
       }
     }
   };

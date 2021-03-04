@@ -23,7 +23,7 @@ class Slime extends Enemy {
 
     // stats
     this.scale = 3;
-    this.HP = 100;
+    this.HP = 20;
     this.damage = 5;
     this.maxHP = this.HP;
     this.reward = 5;

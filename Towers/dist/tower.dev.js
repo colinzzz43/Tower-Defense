@@ -18,32 +18,47 @@ function () {
       x: x,
       y: y,
       level: level
-    });
+    }); // the user interacting with the tower
+
+    this.user = this.gameEngine.camera.user;
     this.facing = 6; // facing left default
 
-    this.user = this.gameEngine.user; // the user interacting with the tower
-
     this.elapsedTime = 0;
+    this.towerLevel = 1;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 3; // speed multiplier
+
+    this.towerSpeedMultipler = this.level.levelSpeedMultiplier; // pause state
+
+    this.towerPaused = this.level.levelPaused; // mouse click selection
+
+    this.selected = true;
   }
 
   _createClass(Tower, [{
     key: "update",
     value: function update() {
-      this.elapsedTime += this.gameEngine.clockTick;
-      var that = this; // tower detection
+      this.towerSpeedMultipler = this.level.levelSpeedMultiplier;
+      this.towerPaused = this.level.levelPaused;
 
-      this.gameEngine.entities.forEach(function (entity) {
-        // tower detection
-        if (entity instanceof Enemy) {
-          // tower shoots enemy in shooting bounds
-          if (canShoot(that, entity) && that.elapsedTime > that.fireRate && entity.exist) {
-            that.elapsedTime = 0;
-            that.facing = getFacing(entity, that);
-            that.shoot(entity); // console.log("Slime HP: ", entity.HP);
-            // that.printMonsterHP(entity.HP);
+      if (this.towerPaused) {// do nothing
+      } else {
+        this.elapsedTime += this.gameEngine.clockTick * this.towerSpeedMultipler;
+        var that = this; // tower detection
+
+        this.gameEngine.entities.forEach(function (entity) {
+          // tower detection
+          // Spazer tower does not shoot controlled enemies
+          if (entity instanceof Enemy && !(that instanceof Spazer && entity.controlled)) {
+            // tower shoots enemy in shooting bounds
+            if (canShoot(that, entity) && that.elapsedTime > that.fireRate && entity.exist) {
+              that.elapsedTime = 0;
+              that.facing = getFacing(entity, that);
+              that.shoot(entity); // console.log("Slime HP: ", entity.HP);
+              // that.printMonsterHP(entity.HP);
+            }
           }
-        }
-      });
+        });
+      }
     }
   }, {
     key: "showBoundingCircle",
@@ -62,13 +77,42 @@ function () {
       context.stroke();
     }
   }, {
+    key: "drawTileHighlight",
+    value: function drawTileHighlight(context) {
+      if (this.selected) {
+        var tileLength = this.level.getTilePixelImageSize(); // set stroke settings to prepare to draw this tower icon highlight
+
+        context.beginPath();
+        context.setLineDash([]);
+        context.fillStyle = "dodgerblue";
+        context.strokeStyle = "dodgerblue";
+        context.lineWidth = 3;
+        context.rect(this.x - tileLength / 2, this.y - tileLength / 2, tileLength, tileLength);
+        context.stroke();
+        context.globalAlpha = 0.1;
+        context.fill();
+        context.globalAlpha = 1;
+        context.lineWidth = 1;
+        context.fillStyle = "black";
+        context.strokeStyle = "black";
+      }
+    }
+  }, {
     key: "buy",
     value: function buy(cost) {
       // check if the user has the sufficient fund
       if (this.user.balance >= cost) {
-        // draw the tower onto the map
         this.user.decreaseBalance(cost);
-        console.log("decreased.");
+      }
+    } // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
+
+  }, {
+    key: "upgrade",
+    value: function upgrade(cost) {
+      // check if the user has the sufficient fund
+      if (this.user.balance - cost >= 0 && this.level < 3 && this.user.balance > 0) {
+        this.user.decreaseBalance(cost);
+        this.towerLevel++;
       }
     } // printMonsterHP(HP) {
     //   document.getElementById("printMonsterHP").innerHTML = HP;
@@ -78,17 +122,37 @@ function () {
     key: "sell",
     value: function sell() {
       // Add the money back to the user balance
-      this.user.increaseBalance(this.cost * this.depreciated); // Remove itself from the map (remove entity from the gameengine)
+      this.user.increaseBalance(this.towerLevel * this.cost * this.depreciated); // Remove itself from the map (remove entity from the gameengine)
+      //    this.gameEngine.removeEntity(this);
+      // Change the spot where this tower was back to open tower terrain
 
-      this.gameEngine.removeEntity(this);
+      var xOffset = this.level.terrainGridTiles.squareTileSidePixelLength / 2 * this.level.drawScale;
+      var yOffset = this.level.terrainGridTiles.squareTileSidePixelLength / 2 * this.level.drawScale;
+      var towerRow = Math.floor((this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize());
+      var towerColumn = Math.floor((this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize());
+      console.log("Tower removed at Row: ".concat(towerRow, ", Column: ").concat(towerColumn));
+      this.level.removeTower(towerRow, towerColumn);
     }
   }, {
     key: "dead",
     value: function dead() {
-      this.removeFromWorld = true; // After tower is removed from world, set the terrain tile it was on to open tower terrain
+      this.removeFromWorld = true; //	var index = this.level.placedTowers.indexOf(this);
+      //	this.level.placedTowers.splice(index, 1);
+      // After tower is removed from world, set the terrain tile it was on to open tower terrain
 
       var tilePosition = this.getTilePosition();
-      this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+      this.level.removeTower(tilePosition.row, tilePosition.column); //   this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
+      // If the tower removed is the newest tower placed, set the level's 'newestTower' variable
+      // to null so that the 'Undo' icon linked to 'newestTower' can be disabled.
+
+      /*
+      if ( this.level.newestTower !== null) {
+        var tileOfNewestTower = this.level.newestTower.getTilePosition();
+        if ( tilePosition.row === tileOfNewestTower.row 
+          && tilePosition.column === tileOfNewestTower.column )
+            this.level.newestTower = null;
+      }
+      */
     }
   }, {
     key: "getShootingRange",
@@ -96,16 +160,11 @@ function () {
       return this.shootingRadius;
     }
   }, {
-    key: "getPosition",
-    value: function getPosition() {
-      return [this.x, this.y];
-    }
-  }, {
     key: "getTilePosition",
     value: function getTilePosition() {
       var tileSideLength = this.level.getTilePixelImageSize();
-      var row = Math.floor(this.y / tileSideLength);
-      var column = Math.floor(this.x / tileSideLength);
+      var row = Math.floor((this.y - this.level.yCanvas) / tileSideLength);
+      var column = Math.floor((this.x - this.level.xCanvas) / tileSideLength);
       return {
         row: row,
         column: column
@@ -128,9 +187,16 @@ function () {
   }, {
     key: "draw",
     value: function draw(context) {
-      this.showBoundingCircle(context);
+      this.drawTileHighlight(context); //    this.showBoundingCircle(context);
+
       this.drawHealth(context, this.x, this.y - this.yOffset - 30, this.HP, 100, 10);
-      this.animations[this.facing].drawFrame(this.gameEngine.clockTick, context, this.x - this.xOffset, this.y - this.yOffset, PARAMS.SCALE); // context.drawImage(this.spritesheet, this.x, this.y);
+      var speedMultiplier = this.towerSpeedMultipler;
+
+      if (this.towerPaused) {
+        speedMultiplier = 0;
+      }
+
+      this.animations[this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, PARAMS.SCALE); // context.drawImage(this.spritesheet, this.x, this.y);
     }
   }, {
     key: "drawHealth",

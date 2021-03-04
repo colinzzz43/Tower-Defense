@@ -36,7 +36,7 @@ function (_Enemy) {
     _this.frameWidth = 16; // stats
 
     _this.scale = 3;
-    _this.HP = 100;
+    _this.HP = 20;
     _this.damage = 5;
     _this.maxHP = _this.HP;
     _this.reward = 5;
