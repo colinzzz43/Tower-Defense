@@ -3,7 +3,7 @@ class Cannon extends Tower {
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
-    this.gameEngine.cannon = this;
+    this.gameEngine.camera.cannon = this;
 
 
     // spritesheet and animation

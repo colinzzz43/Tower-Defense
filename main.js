@@ -6,6 +6,11 @@ ASSET_MANAGER.queueDownload("./sprites/other/heart.png");
 
 //queue download
 ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/arrow.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Sell.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Upgrade.png");
+
+
 
 // map
 ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
