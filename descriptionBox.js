@@ -129,7 +129,7 @@ class DescriptionBox {
           this.topLeftCornerY + 95
         );
         break;
-      //
+      // Cannon Tower
       case 1:
         this.ctx.strokeText(
           "Cannon Tower",
@@ -291,6 +291,9 @@ class DescriptionBox {
         );
 
         break;
+      
+
+        // Flame thrower
       case 2:
         this.ctx.strokeText(
           "Flame Thrower",
@@ -453,6 +456,8 @@ class DescriptionBox {
         );
         break;
 
+
+      // Laser Tower
       case 3:
         this.ctx.strokeText(
           "Laser Tower",
@@ -615,6 +620,8 @@ class DescriptionBox {
         );
 
         break;
+
+      // Matter tower
       case 4:
         this.ctx.strokeText(
           "Matter Tower",
@@ -776,6 +783,8 @@ class DescriptionBox {
         );
 
         break;
+
+      // Machine gun tower
       case 5:
         this.ctx.strokeText(
           "Machine Gun Tower",
@@ -938,6 +947,8 @@ class DescriptionBox {
         );
 
         break;
+
+      // Pistol Tower
       case 6:
         this.ctx.strokeText(
           "Pistol Tower",
@@ -1100,6 +1111,8 @@ class DescriptionBox {
         );
 
         break;
+
+      // Rocket Tower
       case 7:
         this.ctx.strokeText(
           "Rocket Tower",
@@ -1262,6 +1275,8 @@ class DescriptionBox {
         );
 
         break;
+      
+        // Shotgun tower
       case 8:
         this.ctx.strokeText(
           "Shotgun Tower",
@@ -1423,6 +1438,9 @@ class DescriptionBox {
         );
 
         break;
+      
+
+        // Spazer tower
       case 9:
         this.ctx.strokeText(
           "Spazer Tower",
