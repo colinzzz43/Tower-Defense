@@ -16,9 +16,9 @@ class LevelWave {
 	initializeWaves() {
 		if (this.level.mapLevel === 1) {
 			this.levelWaves = levelOneWaves;  // from 'levelEnemyWaves.js'
-		} else if (this.level.mapLevel = 2) {
+		} else if (this.level.mapLevel === 2) {
 			this.levelWaves = levelTwoWaves;  // from 'levelEnemyWaves.js'		
-		} else if (this.level.mapLevel = 3) {
+		} else if (this.level.mapLevel === 3) {
 			this.levelWaves = levelThreeWaves;  // from 'levelEnemyWaves.js'		
 		} else {
 			this.levelWaves = levelFourWaves;  // from 'levelEnemyWaves.js'			

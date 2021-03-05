@@ -40,8 +40,6 @@ class Tower {
           that.elapsedTime = 0;
           that.facing = getFacing(entity, that);
           that.shoot(entity);
-          // console.log("Slime HP: ", entity.HP);
-          // that.printMonsterHP(entity.HP);
         }
 		  }
 		});		
@@ -119,7 +117,6 @@ class Tower {
     var yOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
 	var towerRow = Math.floor( (this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize() );
 	var towerColumn = Math.floor( (this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize() );
-	console.log(`Tower removed at Row: ${towerRow}, Column: ${towerColumn}`)
 	this.level.removeTower(towerRow, towerColumn);
   }
 
@@ -171,7 +168,7 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-//    this.showBoundingCircle(context);
+    this.showBoundingCircle(context);
     this.drawHealth(
       context,
       this.x,

@@ -54,7 +54,14 @@ class SceneManager {
 //	  this.loadGamePrototype();
 	  
 	  // Load the snow level (level 2)
-	  this.loadGameLevel2();
+//	  this.loadGameLevel2();
+
+
+	  // Load the desert level (level 3)
+	  this.loadGameLevel3();
+	  
+	  // Load the grass level (level 4)
+//	  this.loadGameLevel4();	  
   }
   
   startTimer() {
@@ -73,6 +80,7 @@ class SceneManager {
 		if (this.waveTimer <= 0) {
 			if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
 				this.currentWave++;
+//				console.log(this.currentWave);
 				this.waveTimer = this.waveTimes[this.currentWave];
 				
 			} else {
@@ -159,6 +167,83 @@ class SceneManager {
 	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
 	this.game.addEntity(hud);
   };  
+  
+  loadGameLevel3() {
+	  
+	// user entity created first 
+	this.user = new User(this.game);
+	this.game.addEntity(this.user);  
+	
+	// level entity
+	var map = ASSET_MANAGER.getAsset("./Level/images/DesertMap.png");
+	var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 
+						  0, 0, 960, 640, 0.9375, 3, this.ctx);
+	this.game.addEntity(level);
+	
+	
+	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
+	// put into level to ensure enemies are drawn on top of map image
+	level.levelEnemyWaves = new LevelWave(level);
+	this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
+	this.waveTimer = this.waveTimes[this.currentWave];
+	
+	// tower store menu
+	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level);
+	// new field towerStoreMenu added to level for tower selection interaction
+	level.towerStoreMenu = towerStoreMenu;
+	this.game.addEntity(towerStoreMenu);
+	  
+	// user menu
+	var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+	this.game.addEntity(userMenu);
+	
+	// description box
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
+	this.game.addEntity(descriptionMenu);
+
+	// hud
+	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
+	this.game.addEntity(hud);
+  };   
+
+  loadGameLevel4() {
+	  
+	// user entity created first 
+	this.user = new User(this.game);
+	this.game.addEntity(this.user);  
+	
+	// level entity
+	var map = ASSET_MANAGER.getAsset("./Level/images/GrassMap.png");
+	var level = new Level(gameEngine, map, this.levelMap.xCanvas, this.levelMap.yCanvas, 
+						  0, 0, 960, 640, 0.9375, 4, this.ctx);
+	this.game.addEntity(level);
+	
+	
+	// After level entity is added to game engine, new field 'levelEnemyWaves' is 
+	// put into level to ensure enemies are drawn on top of map image
+	level.levelEnemyWaves = new LevelWave(level);
+	this.waveTimes = level.levelEnemyWaves.waveTimes; // new field for array of wave times
+	this.waveTimer = this.waveTimes[this.currentWave];
+
+	
+	// tower store menu
+	var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 65, this.ctx, level);
+	// new field towerStoreMenu added to level for tower selection interaction
+	level.towerStoreMenu = towerStoreMenu;
+	this.game.addEntity(towerStoreMenu);
+	  
+	// user menu
+	var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+	this.game.addEntity(userMenu);
+	
+	// description box
+	var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
+	this.game.addEntity(descriptionMenu);
+
+	// hud
+	var hud = new HUD(gameEngine, 5, 5, this.ctx, level);
+	this.game.addEntity(hud);
+  };    
   
 
   update() {

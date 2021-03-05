@@ -239,7 +239,7 @@ class TowerStoreMenu {
 								switch(icon.buttonName) {
 									case "upgrade":
 										console.log("cost to upgrade: ", entity.upgradeCost);
-										entity.upgrade(entity.upgradeCost);
+										entity.upgrade();
 										break;
 									case "sell":
 										entity.sell();

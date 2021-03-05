@@ -857,10 +857,18 @@ class RestartIcon extends UserMenuIcon {
 	*/	
 	userIconFunction() {
 		
-		// First, set the most recent tower that has been built to null,
-		// so that the 'Undo' Icon is disabled for having no tower to remove.
-		this.level.newestTower = null;
-		this.level.placedTowers = [];
+		// First, set the most recent tower that has been built to null
+		// to disable 'Undo', and clear the level's array map of towers.
+		this.level.newestTower = null;	
+		var tileHeight = this.level.mapOfTowers.length
+		var tileWidth = this.level.mapOfTowers[0].length
+		this.mapOfTowers = [tileHeight];
+		for (var i = 0; i < this.mapOfTowers.length; i++) {
+			this.mapOfTowers[i] = new Array(tileWidth);
+			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+				this.mapOfTowers[i][j] = null;
+			}			
+		}		
 		
 		// Second, remove all Projectile, Enemy, and Tower entities present on the map level
 		// by removing such entities from the game engine
@@ -880,8 +888,8 @@ class RestartIcon extends UserMenuIcon {
 		// Third, respawn the level's pre-defined waves from the beginning
 		this.level.levelEnemyWaves.spawnEnemies();
 		
-		this.sceneManager = new SceneManager(this.gameEngine, this.ctx);
-		this.user = new User(this.gameEngine);
+//		this.sceneManager = new SceneManager(this.gameEngine, this.ctx);
+//		this.user = new User(this.gameEngine);
 
 		// Fourth, reset the displayed game stats
 		this.gameEngine.camera.user.balance = this.user.balance;
