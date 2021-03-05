@@ -56,6 +56,8 @@ class MatterRay extends Projectile {
                 this.removeFromWorld = true;
             }
         }
+
+        if (this.x < 105 || this.x > 1010 || this.y < 60 || this.y > 620) this.removeFromWorld = true;
     };
 
     showBoundingCircle(ctx) {

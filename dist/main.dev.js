@@ -37,14 +37,32 @@ ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon
 
 ASSET_MANAGER.queueDownload("./sprites/other/base.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level3/3_sheet.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_sheet.png");
-ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_sheet.png"); // tower icons
+ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level3/3_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level3/3_sheet.png"); // tower icons
 
 ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level1/1_left.png");
 ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level1/1_left.png");
