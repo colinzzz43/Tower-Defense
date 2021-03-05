@@ -91,7 +91,6 @@ class SceneManager {
 	};
 
 	loadGamePrototype() {
-
 		// user entity created first 
 		this.user = new User(this.game);
 		this.game.addEntity(this.user);
@@ -128,7 +127,6 @@ class SceneManager {
 	};
 
 	loadGameLevel2() {
-
 		// user entity created first 
 		this.user = new User(this.game);
 		this.game.addEntity(this.user);
@@ -168,9 +166,6 @@ class SceneManager {
 
 
 	update() {
-		//	this.muted = this.game.muted;
-		//	this.speed = this.game.speed;
-		//	this.paused = this.game.paused;
 		this.HP = this.base.HP;
 		this.coins = this.user.balance;
 		this.scores = this.game.camera.user.scores;
@@ -180,22 +175,6 @@ class SceneManager {
 	};
 
 	addCoin() { };
-
-	/*
-	  Display the game stats
-	*/
-	draw(ctx) {
-
-		if (this.paused) this.drawPauseScreen(ctx);
-		if (this.muted || this.paused)
-			this.muteBGM()
-		else {
-			this.BGM.volume = 0.1;
-			this.BGM.muted = false;
-			this.BGM.play();
-		}
-	};
-
 
 	/*
 	  Display the game stats
