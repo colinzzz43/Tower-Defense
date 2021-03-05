@@ -36,7 +36,11 @@ function () {
     this.velocity = {
       x: (this.target.x - this.x) / dist * this.maxSpeed,
       y: (this.target.y - this.y) / dist * this.maxSpeed
-    };
+    }; // the animation and movement speed multiplier for projectile
+
+    this.projectileSpeedMultiplier = this.gameEngine.camera.speed; // the pause state for projectile
+
+    this.projectilePaused = this.gameEngine.camera.paused;
   }
 
   _createClass(Projectile, [{
@@ -66,27 +70,27 @@ function () {
   }, {
     key: "update",
     value: function update() {
-      var dist = distance(this, this.target);
-      this.velocity = {
-        x: (this.target.x - this.x) / dist * this.maxSpeed,
-        y: (this.target.y - this.y) / dist * this.maxSpeed
-      };
-      this.x += this.velocity.x * this.gameEngine.clockTick;
-      this.y += this.velocity.y * this.gameEngine.clockTick;
+      this.projectileSpeedMultiplier = this.gameEngine.camera.speed;
+      this.projectilePaused = this.gameEngine.camera.paused; // if projectile is paused, then don't update projectile
 
-      if (collide(this, this.target)) {
-        this.target.takeHit(this.shootingEntity.damage);
-        this.removeFromWorld = true;
-      }
+      if (this.projectilePaused) {// do nothing
+      } else {
+        var dist = distance(this, this.target);
+        this.velocity = {
+          x: (this.target.x - this.x) / dist * this.maxSpeed,
+          y: (this.target.y - this.y) / dist * this.maxSpeed
+        };
+        this.x += this.velocity.x * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
+        this.y += this.velocity.y * this.gameEngine.clockTick * this.projectileSpeedMultiplier;
 
-      if (distance({
-        x: this.x,
-        y: this.y
-      }, {
-        x: this.startX,
-        y: this.startY
-      }) > this.shootingEntity.shootingRadius) {
-        this.removeFromWorld = true;
+        if (collide(this, this.target)) {
+          this.target.takeHit(this.shootingEntity.damage);
+          this.removeFromWorld = true;
+        }
+
+        if (this.target.removeFromWorld) {
+          this.removeFromWorld = true;
+        }
       }
     }
   }, {
@@ -98,7 +102,13 @@ function () {
         var degrees = Math.floor(angle * 180 / Math.PI);
         this.drawAngle(ctx, degrees);
       } else {
-        this.animation.drawFrame(this.gameEngine.clockTick, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+        var speedMultiplier = this.projectileSpeedMultiplier;
+
+        if (this.projectilePaused) {
+          speedMultiplier = 0;
+        }
+
+        this.animation.drawFrame(this.gameEngine.clockTick * speedMultiplier, ctx, this.x - this.xOffset, this.y - this.yOffset, this.scale);
       }
     }
   }]);

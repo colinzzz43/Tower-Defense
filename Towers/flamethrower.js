@@ -86,83 +86,179 @@ class Flamethrower extends Tower {
         break;
     }
 
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        30
-      )
-    );
+    
+    
+    if (this.facing > 2 && this.facing < 6) {
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          30
+        )
+      );
+  
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          20
+        )
+      );
+  
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          10
+        )
+      );
+  
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          0
+        )
+      );
+  
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -10
+        )
+      );
+  
+  
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -20
+        )
+      );
+      this.gameEngine.addEntity(
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -30
+        )
+      );
+      
+    } else {
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          30
+        )
+      );
+  
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          20
+        )
+      );
+  
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          10
+        )
+      );
+  
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          0
+        )
+      );
+  
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -10
+        )
+      );
+  
+  
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -20
+        )
+      );
+      this.gameEngine.entities.splice(
+        this.index,
+        0,
+        new FlamethrowerFlames(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this,
+          -30
+        )
+      );
 
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        20
-      )
-    );
-
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        10
-      )
-    );
-
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        0
-      )
-    );
-
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        -10
-      )
-    );
-
-
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        -20
-      )
-    );
-
-    this.gameEngine.addEntity(
-      new FlamethrowerFlames(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this,
-        -30
-      )
-    );
+    }
   };
 
   upgrade() {

@@ -96,7 +96,7 @@ function (_Enemy) {
         if (this.state == 3) {
           this.deathAnimationTime += this.gameEngine.clockTick;
 
-          if (this.deathAnimationTime > 0.6) {
+          if (this.deathAnimationTime > 0.5) {
             this.removeFromWorld = true;
             this.isDead();
           }

@@ -47,12 +47,10 @@ class Cannon extends Tower {
     this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
     this.buy(Cannon.cost);
+
   }
 
   shoot(enemy) {
-    // shooting animation
-    // enemy.takeHit(this.damage);
-
     var bulletX = this.x;
     var bulletY = this.y - this.yOffset;
     switch (this.facing) {
@@ -85,16 +83,29 @@ class Cannon extends Tower {
         bulletY = this.y - this.yOffset + 2 * this.scale;
         break;
     }
-
-    this.gameEngine.addEntity(
-      new Cannonball(
-        this.gameEngine,
-        bulletX,
-        bulletY,
-        enemy,
-        this
-      )
-    );
+    if (this.facing > 2 && this.facing < 6) {
+      this.gameEngine.addEntity(
+        new Cannonball(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this
+        )
+      );
+    } else {
+      this.gameEngine.entities.splice(
+        this.index, 
+        0, 
+        new Cannonball(
+          this.gameEngine,
+          bulletX,
+          bulletY,
+          enemy,
+          this
+        )
+      );
+    }
   };
 
   upgrade() {

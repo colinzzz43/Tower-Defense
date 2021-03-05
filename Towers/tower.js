@@ -20,6 +20,9 @@ class Tower {
 
     // mouse click selection
     this.selected = true;
+
+    this.index = this.gameEngine.entities.length; // index of tower in gameEngine.entities[]
+    //tower is added to gameEngine.entities[] when constructor is done 
   }
 
   update() {
@@ -98,13 +101,13 @@ class Tower {
   }
 
   // waitiing for Tower upgrade functionality to be added to the game (week 7) - Colin
-  upgrade(cost) {
-    // check if the user has the sufficient fund
-    if (this.user.balance - cost >= 0 && this.level < 3 && this.user.balance > 0) {
-      this.user.decreaseBalance(cost);
-      this.towerLevel++;
-    }
-  }
+  // upgrade(cost) {
+  //   // check if the user has the sufficient fund
+  //   if (this.user.balance - cost >= 0 && this.level < 3 && this.user.balance > 0) {
+  //     this.user.decreaseBalance(cost);
+  //     this.towerLevel++;
+  //   }
+  // }
 
   // printMonsterHP(HP) {
   //   document.getElementById("printMonsterHP").innerHTML = HP;
