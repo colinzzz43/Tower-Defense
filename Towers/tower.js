@@ -168,7 +168,7 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-    this.showBoundingCircle(context);
+//    this.showBoundingCircle(context);
     this.drawHealth(
       context,
       this.x,
