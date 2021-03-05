@@ -23,12 +23,12 @@ var Skeleton =
 function (_Enemy) {
   _inherits(Skeleton, _Enemy);
 
-  function Skeleton(gameEngine, x, y, level, spawnTime) {
+  function Skeleton(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, Skeleton);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Skeleton).call(this, gameEngine, x, y, level, spawnTime)); // sprites
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Skeleton).call(this, gameEngine, x, y, direction, level, spawnTime)); // sprites
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Death.png");
@@ -46,7 +46,7 @@ function (_Enemy) {
     // stats
 
     _this.score = 30;
-    _this.scale = 2;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
     _this.HP = 40;
     _this.maxHP = _this.HP; // used in calculating health bar
 
@@ -60,7 +60,7 @@ function (_Enemy) {
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
     _this.attackRate = 4.5; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.5, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.5, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 

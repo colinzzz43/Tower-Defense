@@ -22,8 +22,8 @@ class Slime extends Enemy {
     this.frameWidth = 16;
 
     // stats
-    this.scale = 3;
-    this.HP = 100;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 2 : 3;
+    this.HP = 20;
     this.damage = 5;
     this.maxHP = this.HP;
     this.reward = 5;

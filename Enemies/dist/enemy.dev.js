@@ -9,18 +9,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Enemy =
 /*#__PURE__*/
 function () {
-  function Enemy(gameEngine, x, y, level, spawnTime) {
+  function Enemy(gameEngine, x, y, direction, level, spawnTime) {
     _classCallCheck(this, Enemy);
 
     Object.assign(this, {
       gameEngine: gameEngine,
       x: x,
       y: y,
+      direction: direction,
       level: level,
       spawnTime: spawnTime
     }); // user
 
-    this.user = this.gameEngine.user; // frame height + width
+    this.user = this.gameEngine.camera.user; // frame height + width
 
     this.frameHeight = 150;
     this.frameWidth = 150; // states
@@ -38,12 +39,15 @@ function () {
 
     this.exist = false; // speed multiplier
 
-    this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-  } // show bounds based on given radius
+    this.enemySpeedMultipler = this.level.levelSpeedMultiplier; // Spazer control of enemy
 
+    this.controlled = false;
+    this.controlTime = 0;
+  }
 
   _createClass(Enemy, [{
     key: "showBounds",
+    // show bounds based on given radius
     value: function showBounds(context, position, radius, setDashed) {
       // attack bound
       if (setDashed) {
@@ -63,17 +67,31 @@ function () {
     }
   }, {
     key: "determineDirection",
+
+    /*
+    	Determine which direction the enemy should take depending if
+    	it is on a pathturn tile or not
+    	
+    	Parameter:
+    	@movement		the enemy's movement
+    */
     value: function determineDirection(movement) {
-      // slime determines which direction it must go on
-      var coordinates = movement.getCoordinates(); // Is the enemy on the terrain tile grid? If so then it has to be fixed on the path terrain until it reaches destination
+      // retrieve coordinates that enemy is currently at
+      // and the coordinates for the next tile the enemy will turn at
+      var coordinates = movement.getCoordinates(); // Is the enemy on the terrain tile grid and not at the destination?
 
       if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {
-        var direction = movement.getDirection();
-        var nextTurnAt = movement.getTileToMakeTurnAt(); // Depending on the enemy's current direction, if enemy happens to be just on or just moved over
+        if (movement.getNextTurnTile() === null) {
+          console.log(movement.getNextTurnTile());
+          movement.scanForNextTurnInCurrentDirection();
+          console.log(movement.getNextTurnTile());
+        }
+
+        var nextTurnAt = movement.getNextTurnTile(); // Depending on the enemy's current direction, if enemy happens to be just on or just moved over
         // a turn tile's center coordinates, then make the enemy's current x- or y-position match that
         // of the tile's center x- or y-coordinate in which the enemy will change directions on
 
-        switch (direction) {
+        switch (movement.getDirection()) {
           case "up":
             if (coordinates.x === nextTurnAt.centerX && coordinates.y <= nextTurnAt.centerY) {
               coordinates.y = nextTurnAt.centerY;
@@ -109,23 +127,32 @@ function () {
             }
 
             break;
-        } // Has it reached the center of the tile it's located in? If it has then enemy takes note of the next tile in its current direction	 
+        } // if enemy has reached the center coordinates of the next turn tile, 
+        // then change enemy's direction to one that is legal on that turn tile
 
 
         if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
-          var currentTileInCurrentDirection = this.grid.getTile(coordinates.tileRow, coordinates.tileColumn);
-          var nextTileInCurrentDirection = movement.getNextTerrainTileInCurrentDirection(); // if the next adjacent tile in enemy's direction is not a path tile, then it changes direction to that where there is a path tile
+          // Randomly choose any legal direction for the path turn tile the enemy is on
+          var directionChoice = Math.floor(Math.random() * nextTurnAt.directions.length);
+          movement.direction = nextTurnAt.directions[directionChoice]; // After changing directions, scan in front of enemy's new facing direction for next turn tile
 
-          if (currentTileInCurrentDirection !== nextTileInCurrentDirection) {
-            movement.changeDirection(coordinates.tileRow, coordinates.tileColumn);
-          }
+          movement.nextTurnAtTile = null;
+          movement.scanForNextTurnInCurrentDirection();
         }
       }
     }
   }, {
     key: "getMovement",
+
+    /*
+    	Update the enemy's position and then return its new position resulting from the updateCommands
+    	
+    	@movement		the enemy's movement
+    	@x				the enemy's x-coordinate
+    	@y				the enemy's y-coordinate
+    */
     value: function getMovement(movement, x, y) {
-      // slime movement
+      // enemy movement
       if (!this.enemyPaused) {
         var speed = movement.getSpeed();
       } else {
@@ -152,18 +179,32 @@ function () {
     }
   }, {
     key: "drawHealth",
+
+    /*
+    	Draw the visual health bar over the enemy sprite
+    	
+    	Parameters:
+    	@ctx					the canvas that the health bar will be drawn on
+    	@x						the x-coordinate on canvas where the top left corner of bar will be drawn
+    	@y						the y-coordinate on canvas where the top left corner of bar will be drawn
+    	@HP						the enemy's current health points
+    	@maxHP					the enemy's maximum health points
+    	@movement				the enemy's movement
+    	@entityPosition			the enemy's current xy-coordinates on canvas
+    */
     value: function drawHealth(ctx, x, y, HP, maxHP, movement, entityPosition) {
-      var width = 100;
+      var width = this.gameEngine.camera.currentLevel > 1 ? 50 : 100;
       var thickness = 10;
       var percentage = width * (HP / maxHP);
+      var healthPercent = HP / maxHP * 100;
       ctx.beginPath();
       ctx.rect(x - width / 2, y, percentage, thickness);
 
-      if (percentage > 63) {
+      if (healthPercent > 63) {
         ctx.fillStyle = "green";
-      } else if (percentage > 37) {
+      } else if (healthPercent > 37) {
         ctx.fillStyle = "gold";
-      } else if (percentage > 13) {
+      } else if (healthPercent > 13) {
         ctx.fillStyle = "orange";
       } else {
         ctx.fillStyle = "red";

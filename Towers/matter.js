@@ -5,9 +5,11 @@ class Matter extends Tower {
     super(gameEngine, x, y, level);
 
     // spritesheet and animation
-    this.spritesheet = ASSET_MANAGER.getAsset(
-      "./sprites/towers/matter/Level1/1_sheet.png"
-    );
+    this.spritesheet = [];
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_sheet.png"));
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/matter/Level2/2_sheet.png"));
+    this.spritesheet.push(ASSET_MANAGER.getAsset("./sprites/towers/matter/Level3/3_sheet.png"));
+
     this.animations = [];
     this.frameWidth = 24;
     this.frameHeight = 37;
@@ -15,7 +17,7 @@ class Matter extends Tower {
     for (i = 0; i < 8; i++) {
       this.animations.push(
         new Animator(
-          this.spritesheet,
+          this.spritesheet[this.towerLevel - 1],
           this.frameWidth * i,
           0,
           this.frameWidth,
@@ -33,16 +35,16 @@ class Matter extends Tower {
     this.HP = 10;
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
-    this.shootingRadius = 70 * PARAMS.SCALE; // Range: Long
+    this.shootingRadius = 70 * this.scale; // Range: Long
     this.damage = 1; // Damage: Strong (shockwave damage scaled down because it lingers)
     this.cost = 75; // Cost: 75 coins
     this.upgradeCost = 100;
     this.depreciated = 0.8;
-    this.radius = 10 * PARAMS.SCALE;
+    this.radius = 10 * this.scale;
 
     // other
-    this.xOffset = (this.frameWidth * PARAMS.SCALE) / 2 + 2;
-    this.yOffset = this.frameHeight * PARAMS.SCALE - 15;
+    this.xOffset = (this.frameWidth * this.scale) / 2;
+    this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
     this.buy(Matter.cost);
   }
@@ -54,32 +56,32 @@ class Matter extends Tower {
     var bulletY = this.y - this.yOffset;
     switch(this.facing) { // TODO make bullets start from turret barrel
       case 1:
-        bulletX = this.x + 6*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        bulletX = this.x + 6*this.scale;
+        bulletY = this.y - this.yOffset + 3*this.scale;
         break;
       case 2:
-        bulletX = this.x + 5*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        bulletX = this.x + 5*this.scale;
+        bulletY = this.y - this.yOffset + 7*this.scale;
         break;
       case 3:
-        bulletX = this.x + 5*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        bulletX = this.x + 5*this.scale;
+        bulletY = this.y - this.yOffset + 9*this.scale;
         break;
       case 4:
         bulletX = this.x;
-        bulletY = this.y - this.yOffset + 11*PARAMS.SCALE;
+        bulletY = this.y - this.yOffset + 11*this.scale;
         break;
       case 5:
-        bulletX = this.x - 5*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 9*PARAMS.SCALE;
+        bulletX = this.x - 5*this.scale;
+        bulletY = this.y - this.yOffset + 9*this.scale;
         break;
       case 6:
-        bulletX = this.x - 5*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 7*PARAMS.SCALE;
+        bulletX = this.x - 5*this.scale;
+        bulletY = this.y - this.yOffset + 7*this.scale;
         break;
       case 7:
-        bulletX = this.x - 6*PARAMS.SCALE;
-        bulletY = this.y - this.yOffset + 3*PARAMS.SCALE;
+        bulletX = this.x - 6*this.scale;
+        bulletY = this.y - this.yOffset + 3*this.scale;
         break;
     }
 
@@ -92,7 +94,7 @@ class Matter extends Tower {
         this,
       )
     );
-  }
+  };
 
   upgrade() {
     if (this.towerLevel < 3) {
@@ -102,12 +104,38 @@ class Matter extends Tower {
         this.fireRate += 0.75;
         this.maxHP += 30;
         this.HP = this.maxHP;
+
+        this.frameHeight = 45;
+        this.yOffset = this.frameHeight * this.scale - 5 * this.scale; 
+               
       } else {
         this.user.decreaseBalance(90);
-        this.shootingRadius += 5 * PARAMS.SCALE;
+        this.shootingRadius += 5 * this.scale;
         this.damage += 10;
         this.maxHP += 60;
         this.HP = this.maxHP;
+
+        this.frameHeight = 48;
+        this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
+      }
+
+      this.animations = [];
+      var i;
+      for (i = 0; i < 8; i++) {
+        this.animations.push(
+          new Animator(
+            this.spritesheet[this.towerLevel - 1],
+            this.frameWidth * i,
+            0,
+            this.frameWidth,
+            this.frameHeight,
+            1,
+            1,
+            0,
+            false,
+            true
+          )
+        );
       }
     }
   };

@@ -43,6 +43,8 @@ class ShotgunBullet extends Projectile {
 					this.removeFromWorld = true;
 				}
 			}
+
+            if (this.x < 150 || this.x > 1045 || this.y < 70 || this.y > 658) this.removeFromWorld = true;
 		}
     };
     

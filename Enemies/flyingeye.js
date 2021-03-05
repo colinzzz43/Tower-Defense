@@ -59,7 +59,7 @@ class FlyingEye extends Enemy {
 
     // stats
     this.score = 40;
-    this.scale = 2;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     this.HP = 70;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 5;
@@ -105,7 +105,7 @@ class FlyingEye extends Enemy {
       // console.log(this.state == 3);
       if (this.state == 3) {
         this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 0.6) {
+        if (this.deathAnimationTime > 0.5) {
           this.removeFromWorld = true;
           this.isDead();
         }
