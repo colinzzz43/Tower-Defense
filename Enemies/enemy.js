@@ -72,9 +72,7 @@ class Enemy {
 		// Is the enemy on the terrain tile grid and not at the destination?
 		if (movement.enemyIsOnGrid() && !movement.hasReachedDestination()) {  
 			if (movement.getNextTurnTile() === null) {
-				console.log(movement.getNextTurnTile());
 				movement.scanForNextTurnInCurrentDirection();
-				console.log(movement.getNextTurnTile());
 			}
 			
 			var nextTurnAt = movement.getNextTurnTile();
@@ -115,7 +113,7 @@ class Enemy {
 			
 			// if enemy has reached the center coordinates of the next turn tile, 
 			// then change enemy's direction to one that is legal on that turn tile
-			if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {
+			if (coordinates.x === nextTurnAt.centerX && coordinates.y === nextTurnAt.centerY) {				
 				
 				// Randomly choose any legal direction for the path turn tile the enemy is on
 				var directionChoice = Math.floor( Math.random() * nextTurnAt.directions.length );

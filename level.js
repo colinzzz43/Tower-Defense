@@ -64,7 +64,6 @@ class Level {
 		
 		// The most recently placed tower on the map
 		this.newestTower = null;
-//		this.placedTowers = [];
 		
 		// A 2D-Array that is relative to towers placed on tiles on the map
 		this.mapOfTowers = [this.terrainGridTiles.numOfTileRows];
@@ -204,7 +203,6 @@ class Level {
 		} else {
 		  this.terrainGridTiles.setTile(row, column, this.towerTerrainOccupied);
 		}
-		// console.log(this.terrainGridTiles.getMapArray());
 	};
 
 	/*
@@ -250,7 +248,6 @@ class Level {
 						that.showGridMap
 					) {
 						that.placeTower(row, column);
-						console.log('click green tile');
 						that.mouseHighlightedTile = {
 							row: row,
 							column: column,

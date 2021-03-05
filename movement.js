@@ -116,8 +116,6 @@ class EnemyMovement {
 		// Make the pixel length offset used to help calculate the turn tile's center coordinates
 		var centerOffset = this.tileSideScale / 2;
 		
-		console.log(this.direction);
-		
 		// Using enemy's current direction to scan path turns array for closest turn tile in front of enemy.
 		// Each direction case has the same steps, but slightly different calculations for each case.
 		// The steps are explained thoroughly in the "up" case of the 'switch' code section
@@ -282,8 +280,6 @@ class EnemyMovement {
 								centerY: y,
 								directions: pathTurns[i].directions
 							};
-							console.log(`Grid Coords: ${this.levelGrid.xCanvas}, ${this.levelGrid.yCanvas}`);
-							console.log(`Closest Row: ${closestTurnTile.row}; Closest Column: ${closestTurnTile.column}; At Coords: ${closestTurnTile.centerX},${closestTurnTile.centerY}`);
 						}
 					}
 				}
@@ -300,9 +296,7 @@ class EnemyMovement {
 				break;
 				
 		}
-		console.log(`Next Tile: Coords {${closestTurnTile.centerX}, ${closestTurnTile.centerY}}; Tile {${closestTurnTile.row}, ${closestTurnTile.column}}`);
 		this.nextTurnAtTile = closestTurnTile;
-//		return closestTurnTile;
 	};
 	
 	/*

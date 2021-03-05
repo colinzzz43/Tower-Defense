@@ -122,10 +122,9 @@ class Tower {
     // Change the spot where this tower was back to open tower terrain
     var xOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
     var yOffset = (this.level.terrainGridTiles.squareTileSidePixelLength / 2) * this.level.drawScale;
-    var towerRow = Math.floor((this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize());
-    var towerColumn = Math.floor((this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize());
-    console.log(`Tower removed at Row: ${towerRow}, Column: ${towerColumn}`)
-    this.level.removeTower(towerRow, towerColumn);
+	  var towerRow = Math.floor( (this.y - this.level.yCanvas - yOffset) / this.level.getTilePixelImageSize() );
+	  var towerColumn = Math.floor( (this.x - this.level.xCanvas - xOffset) / this.level.getTilePixelImageSize() );
+	  this.level.removeTower(towerRow, towerColumn);
   }
 
   dead() {

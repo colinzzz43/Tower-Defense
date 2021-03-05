@@ -346,143 +346,123 @@ class TowerStoreMenu {
   /*
 		apply the mouse interaction for the tower store menu and its icons
 	*/
-  mouseInteraction() {
-    var that = this;
-
-    // Get x,y coordinates of canvas where mouse pointer is
-    var getXandY = function (e) {
-      var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
-      var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
-
-      return { x: x, y: y };
-    };
-
-    // add mouse click event listener which selects and de-selects the store icon when clicked on directly
-    that.ctx.canvas.addEventListener(
-      "click",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        var iconClickedOn = false;
-
-        // go through store icon array to see if mouse cursor clicked on the box of a store icon
-        for (var i = 0; i < that.storeIcons.length; i++) {
-          var icon = that.storeIcons[i];
-          var topLeftX = icon.xCanvas * that.widthScale;
-          var topLeftY = icon.yCanvas * that.widthScale;
-          var iconWidth = icon.iconBoxWidth * that.widthScale;
-          var iconHeight = icon.iconBoxHeight * that.widthScale;
-          if (
-            x >= topLeftX &&
-            x <= topLeftX + iconWidth &&
-            y >= topLeftY &&
-            y <= topLeftY + iconHeight
-          ) {
-            iconClickedOn = true;
-            if (icon instanceof TowerIcon) {
-              if (!icon.transparent) {
-                if (!icon.selected) {
-                  that.turnOnIcon(icon);
-                  that.selectedIcon = icon.getTowerType();
-                  that.level.placeTowerType = icon.towerType;
-                } else {
-                  that.turnOffIcon(icon);
-                  that.selectedIcon = "none";
-                }
-              }
-            } else if (icon instanceof StoreButton) {
-              that.gameEngine.entities.forEach(function (entity) {
-                if (entity instanceof Tower && entity.selected) {
-                  switch (icon.buttonName) {
-                    case "upgrade":
-                      console.log("cost to upgrade: ", entity.upgradeCost);
-                      entity.upgrade(entity.upgradeCost);
-                      break;
-                    case "sell":
-                      entity.sell();
-                      break;
-                  }
-                }
-              });
-            }
-          }
-        }
-
-        // if mouse cursor clicked outside the boundaries of the map and not on a store icon, deselect the currently selected icon
-        var levelMapTopLeftX = that.level.xCanvas * that.widthScale;
-        var levelMapTopLeftY = that.level.yCanvas * that.widthScale;
-        var levelMapWidth =
-          that.level.mapWidth * that.widthScale * that.level.drawScale;
-        var levelMapHeight =
-          that.level.mapHeight * that.widthScale * that.level.drawScale;
-        if (
-          (!iconClickedOn &&
-            (x < levelMapTopLeftX || x > levelMapTopLeftX + levelMapWidth)) ||
-          y < levelMapTopLeftY ||
-          y > levelMapTopLeftY + levelMapHeight
-        ) {
-          that.selectedIcon = "none";
-        }
-
-        // if mouse cursor selects a store icon while another icon is selected, then de-select the previous icon
-        for (var i = 0; i < that.storeIcons.length; i++) {
-          var icon = that.storeIcons[i];
-          if (icon.isSelected() && icon.getTowerType() !== that.selectedIcon)
-            that.turnOffIcon(icon);
-        }
-
-        // if an icon is currently selected then turn on terrain grid map; otherwise turn the map off
-        if (that.selectedIcon !== "none") {
-          that.level.showGridMap = true;
-        } else {
-          that.level.showGridMap = false;
-        }
-      },
-      false
-    );
-
-    // add mouse move event listener which detects whether mouse cursor is over an icon or not
-    that.ctx.canvas.addEventListener(
-      "mousemove",
-      function (e) {
-        var canvasCoordinates = getXandY(e);
-        var x = canvasCoordinates.x;
-        var y = canvasCoordinates.y;
-        for (var i = 0; i < that.storeIcons.length; i++) {
-          var towerIcon = that.storeIcons[i];
-          var topLeftX = towerIcon.xCanvas * that.widthScale;
-          var topLeftY = towerIcon.yCanvas * that.widthScale;
-          var iconWidth = towerIcon.iconBoxWidth * that.widthScale;
-          var iconHeight = towerIcon.iconBoxHeight * that.widthScale;
-          if (
-            x >= topLeftX &&
-            x <= topLeftX + iconWidth &&
-            y >= topLeftY &&
-            y <= topLeftY + iconHeight
-          ) {
-            towerIcon.mouseover = true;
-          } else {
-            towerIcon.mouseover = false;
-          }
-        }
-        // that.gameEngine.entities.forEach(function (entity) {
-        // 	if (entity instanceof Tower) {
-        //   		// tower shoots enemy in shooting bounds
-        // 		let towerX = entity.x;
-        // 		let towerY = entity.y;
-        // 		let tileLength = that.level.getTilePixelImageSize();
-        // 		if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2)
-        // 			&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
-        // 			console.log("here");
-        // 		}
-        // 	}
-        //   });
-      },
-      false
-    );
-  }
+	mouseInteraction() {
+		var that = this;
+		
+		// Get x,y coordinates of canvas where mouse pointer is
+		var getXandY = function (e) {
+			var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+			var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+			
+			return { x: x, y: y };
+		}
+		
+		// add mouse click event listener which selects and de-selects the store icon when clicked on directly
+		that.ctx.canvas.addEventListener("click", function (e) {
+			var canvasCoordinates = getXandY(e);
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+			var iconClickedOn = false;
+			
+			// go through store icon array to see if mouse cursor clicked on the box of a store icon
+			for (var i = 0; i < that.storeIcons.length; i++) {
+				var icon = that.storeIcons[i];
+				var topLeftX = icon.xCanvas * that.widthScale;
+				var topLeftY = icon.yCanvas * that.widthScale;
+				var iconWidth = icon.iconBoxWidth * that.widthScale;
+				var iconHeight = icon.iconBoxHeight * that.widthScale;
+				if ( (x >= topLeftX && x <= topLeftX + iconWidth) && (y >= topLeftY && y <= topLeftY + iconHeight) ) {
+					iconClickedOn = true;
+					if (icon instanceof TowerIcon) {
+						if (!icon.transparent) {
+							if (!icon.selected) {							
+								that.turnOnIcon(icon);
+								that.selectedIcon = icon.getTowerType();							
+								that.level.placeTowerType = icon.towerType;
+								
+							} else {
+								that.turnOffIcon(icon);
+								that.selectedIcon = "none";
+							}
+						} 
+					} else if (icon instanceof StoreButton) {
+						that.gameEngine.entities.forEach(function (entity) {
+							if (entity instanceof Tower && entity.selected) {
+								switch(icon.buttonName) {
+									case "upgrade":
+										console.log("cost to upgrade: ", entity.upgradeCost);
+										entity.upgrade();
+										break;
+									case "sell":
+										entity.sell();
+										break;
+								}
+							}
+						});
+					}
+				}						
+			}
+			
+			// if mouse cursor clicked outside the boundaries of the map and not on a store icon, deselect the currently selected icon		
+			var levelMapTopLeftX = that.level.xCanvas * that.widthScale;
+			var levelMapTopLeftY = that.level.yCanvas * that.widthScale;
+			var levelMapWidth = that.level.mapWidth * that.widthScale * that.level.drawScale;
+			var levelMapHeight = that.level.mapHeight * that.widthScale * that.level.drawScale;
+			if ( !iconClickedOn && 
+				(x < levelMapTopLeftX || x > levelMapTopLeftX + levelMapWidth) 
+				|| (y < levelMapTopLeftY || y > levelMapTopLeftY + levelMapHeight) ) {
+				that.selectedIcon = "none";
+			}
+			
+			// if mouse cursor selects a store icon while another icon is selected, then de-select the previous icon
+			for (var i = 0; i < that.storeIcons.length; i++) {
+				var icon = that.storeIcons[i];
+				if (icon.isSelected() && icon.getTowerType() !== that.selectedIcon) 
+					that.turnOffIcon(icon);
+			}
+			
+			// if an icon is currently selected then turn on terrain grid map; otherwise turn the map off
+			if (that.selectedIcon !== "none") {
+				that.level.showGridMap = true;
+			} else {
+				that.level.showGridMap = false;
+			}
+		}, false);
+		
+		// add mouse move event listener which detects whether mouse cursor is over an icon or not
+		that.ctx.canvas.addEventListener("mousemove", function (e) {
+			var canvasCoordinates = getXandY(e);
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;			
+			for (var i = 0; i < that.storeIcons.length; i++) {	
+				var towerIcon = that.storeIcons[i];
+				var topLeftX = towerIcon.xCanvas * that.widthScale;
+				var topLeftY = towerIcon.yCanvas * that.widthScale;
+				var iconWidth = towerIcon.iconBoxWidth * that.widthScale;
+				var iconHeight = towerIcon.iconBoxHeight * that.widthScale;				
+				if ( (x >= topLeftX && x <= topLeftX + iconWidth) && (y >= topLeftY && y <= topLeftY + iconHeight) ) {
+					towerIcon.mouseover = true;
+				} else {
+					towerIcon.mouseover = false;
+				}
+			}
+			// that.gameEngine.entities.forEach(function (entity) {
+			// 	if (entity instanceof Tower) {
+			//   		// tower shoots enemy in shooting bounds
+			// 		let towerX = entity.x;
+			// 		let towerY = entity.y;
+			// 		let tileLength = that.level.getTilePixelImageSize();
+			// 		if ( (x >= towerX - tileLength / 2 && x <= towerX + tileLength / 2) 
+			// 			&& (y >= towerY - tileLength / 2 && y <= towerY + tileLength / 2)) {
+			// 			console.log("here");
+			// 		}
+			// 	}
+			//   });		
+		}, false);
+		
+	};	
 }
+
 
 class TowerIcon {
   /*
