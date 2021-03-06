@@ -139,7 +139,6 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 var PARAMS = {
-  SCALE: 3,
   WIDTH: 1200,
-  HEIGHT: 600
+  HEIGHT: 700
 };
