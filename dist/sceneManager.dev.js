@@ -61,6 +61,14 @@ function () {
   }
 
   _createClass(SceneManager, [{
+    key: "resetStats",
+    value: function resetStats() {
+      this.currentWave = 0;
+      this.speed = 1;
+      this.scores = 0;
+      this.paused = false;
+    }
+  }, {
     key: "startTimer",
     value: function startTimer() {
       var _this = this;
@@ -79,8 +87,6 @@ function () {
 
           if (_this.waveTimer <= 0) {
             // just to get wave to increase to 5th one.
-            if (_this.currentWave == 4) _this.currentWave++;
-
             if (_this.currentWave == 0 || _this.currentWave < _this.waveTimes.length - 1) {
               _this.currentWave++;
               _this.waveTimer = _this.waveTimes[_this.currentWave];
@@ -231,17 +237,21 @@ function () {
       } // in the middle of game
 
 
-      if (this.sceneType == "level") {
-        if (this.base.HP == 0) {
-          this.transition = true;
-          this.sceneType = "gameover";
-          this.clearEntities();
-          this.game.addEntity(new Transition(this.sceneType));
-        } else if (this.currentLevel == 5) {
-          this.transition = true;
-          this.sceneType = "gamewon";
-          this.clearEntities();
-          this.game.addEntity(new Transition(this.sceneType));
+      if (!this.transition) {
+        if (this.sceneType == "level") {
+          console.log(this.base.HP);
+
+          if (this.base.HP <= 0) {
+            this.transition = true;
+            this.sceneType = "gameover";
+            this.clearEntities();
+            this.game.addEntity(new Transition(this.sceneType));
+          } else if (this.currentLevel == 5) {
+            this.transition = true;
+            this.sceneType = "gamewon";
+            this.clearEntities();
+            this.game.addEntity(new Transition(this.sceneType));
+          }
         }
       } // switch b/w transition scenes
 
@@ -269,6 +279,7 @@ function () {
 
             if (mouseX > 105 && mouseX < 390 && mouseY > 470 && mouseY < 562) {
               this.transition = false;
+              this.timerRestarted = true;
               this.sceneType = "level";
               this.currentLevel = 1;
               this.clearEntities();
@@ -278,6 +289,7 @@ function () {
 
             if (mouseX > 710 && mouseX < 890 && mouseY > 480 && mouseY < 540) {
               this.transition = false;
+              this.timerRestarted = true;
               this.sceneType = "level";
               this.currentLevel = 2;
               this.clearEntities();
@@ -287,6 +299,7 @@ function () {
 
             if (mouseX > 710 && mouseX < 885 && mouseY > 100 && mouseY < 160) {
               this.transition = false;
+              this.timerRestarted = true;
               this.sceneType = "level";
               this.currentLevel = 3;
               this.clearEntities();
@@ -296,6 +309,7 @@ function () {
 
             if (mouseX > 160 && mouseX < 340 && mouseY > 105 && mouseY < 155) {
               this.transition = false;
+              this.timerRestarted = true;
               this.sceneType = "level";
               this.currentLevel = 4;
               this.clearEntities();
@@ -303,6 +317,59 @@ function () {
             }
           }
 
+          break;
+
+        case "gameover":
+          if (this.game.click) {
+            var mouseX = this.game.click.x;
+            var mouseY = this.game.click.y; // home: go back to level selection screen
+
+            var startX = 245;
+            var endX = 400;
+            var startY = 338;
+            var endY = 380;
+
+            if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+              this.transition = true;
+              this.sceneType = "levelselect";
+              this.clearEntities();
+              this.game.addEntity(new Transition(this.sceneType));
+            } // restart: restart level
+
+
+            startX = 555;
+            startY = 332;
+            endX = 820;
+            endY = 381;
+
+            if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+              this.transition = false;
+              this.timerRestarted = true;
+              this.sceneType = "level";
+              this.clearEntities();
+              this.resetStats();
+
+              switch (this.currentLevel) {
+                case 1:
+                  this.loadGamePrototype();
+                  break;
+
+                case 2:
+                  this.loadGameLevel2();
+                  break;
+
+                case 3:
+                  this.loadGameLevel3();
+                  break;
+
+                case 4:
+                  this.loadGameLevel4();
+                  break;
+              }
+            }
+          }
+
+          break;
       }
     }
   }, {

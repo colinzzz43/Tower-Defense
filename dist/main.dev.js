@@ -15,7 +15,10 @@ ASSET_MANAGER.queueDownload("./sprites/levelselect/LevelScreen.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Level1.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Level2.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Level3.png");
-ASSET_MANAGER.queueDownload("./sprites/levelselect/Level4.png"); // map
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level4.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Gameover.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Home.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Restart.png"); // map
 
 ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
 ASSET_MANAGER.queueDownload("./Level/images/DesertMap.png");
