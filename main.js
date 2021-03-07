@@ -7,6 +7,7 @@ ASSET_MANAGER.queueDownload("./sprites/other/heart.png");
 //queue download
 // transition scenes
 ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/background.jpg");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/arrow.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Sell.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Upgrade.png");

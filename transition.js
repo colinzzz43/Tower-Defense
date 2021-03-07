@@ -2,7 +2,9 @@ class Transition {
     // Four types: "title", "gameover", "gamewon", "levelselect"
     constructor(type) {
         Object.assign(this, { type });
+        this.background = ASSET_MANAGER.getAsset("./sprites/background.jpg");
     };
+
 
     draw(ctx) {
         var canvasWidth = ctx.canvas.width;
@@ -13,7 +15,9 @@ class Transition {
                 var title = new Animator(ASSET_MANAGER.getAsset("./sprites/title.png"), 0, 0, 1372, 139, 1, 1, 0, 0, 1);
                 var play = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Start.png"), 0, 0, 558, 137, 1, 1, 0, 0, 1);
 
-                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                // ctx.drawImage(this.background, canvasWidth, canvasHeight);
+                // ctx.fillStyle = '#4d6091';
+                // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
                 const titleScale = 0.75;
                 const playScale = 0.5;
@@ -105,7 +109,7 @@ class Transition {
 
                 break;
             case "gameover":
-                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
                 var gameover = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Gameover.png"), 0, 0, 715, 134, 1, 1, 0, 0, 1);
                 var home = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Home.png"), 0, 0, 454, 137, 1, 1, 0, 0, 1);
