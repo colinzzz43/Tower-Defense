@@ -16,7 +16,7 @@ class MatterRay extends Projectile {
 
         // stats
         this.canRotate = false;
-        this.radius = 10;
+        this.radius = 10; // projectiles hitbox radius
         this.maxSpeed = 150; // pixels per second
 
         var dist = distance(this, this.target);
@@ -38,7 +38,7 @@ class MatterRay extends Projectile {
         this.x += this.velocity.x * this.gameEngine.clockTick * speedMultiplier;
         this.y += this.velocity.y * this.gameEngine.clockTick * speedMultiplier;
 
-        this.radius += ( .4 * speedMultiplier) ;
+        this.radius += ( .4 * speedMultiplier) ; // expand hitbox radius
     
         for (var i = 0; i < this.gameEngine.entities.length; i++) {
             var ent = this.gameEngine.entities[i];
@@ -56,7 +56,7 @@ class MatterRay extends Projectile {
             }
         }
 
-        if (this.x < 105 || this.x > 1010 || this.y < 60 || this.y > 620) this.removeFromWorld = true;
+        if (this.x - this.radius < 150 || this.x + this.radius > 1045 || this.y - this.radius < 70 || this.y + this.radius > 658) this.removeFromWorld = true;
     };
 
     showBoundingCircle(ctx) {
