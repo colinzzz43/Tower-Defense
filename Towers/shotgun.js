@@ -1,5 +1,5 @@
 class Shotgun extends Tower {
-  static cost = 25;
+  static cost = 40;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,11 +31,11 @@ class Shotgun extends Tower {
     }
 
     //stats
-    this.HP = 50;
+    this.HP = 300;
     this.maxHP = this.HP;
     this.fireRate = 1; // Fire rate: Moderate
     this.shootingRadius = 30 * this.scale; // Range: Short
-    this.damage = 15; // Damage: Strong
+    this.damage = 20; // Damage: Strong
     this.cost = 25; // 25 coins
     this.upgradeCost = 40;
 

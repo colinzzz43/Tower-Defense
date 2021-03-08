@@ -1,5 +1,5 @@
 class Matter extends Tower {
-  static cost = 75;
+  static cost = 60;
 
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
@@ -32,12 +32,12 @@ class Matter extends Tower {
     }
 
     //stats
-    this.HP = 10;
+    this.HP = 100;
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
-    this.shootingRadius = 70 * this.scale; // Range: Long
-    this.damage = 1; // Damage: Strong (shockwave damage scaled down because it lingers)
-    this.cost = 75; // Cost: 75 coins
+    this.shootingRadius = 90 * this.scale; // Range: Long
+    this.damage = 2; // Damage: Strong (shockwave damage scaled down because it lingers)
+    this.cost = 60; // Cost: 60 coins
     this.upgradeCost = 100;
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;

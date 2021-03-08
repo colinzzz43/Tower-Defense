@@ -33,13 +33,13 @@ class Flamethrower extends Tower {
     }
 
     //stats
-    this.HP = 50;
+    this.HP = 300;
     this.maxHP = this.HP;
     this.fireRate = 0.2; // Fire rate: Very Fast
     this.shootingRadius = 30 * this.scale; // Range: Short
-    this.damage = 0.1; // Damage: Weak (scaled for multiple lingering flames)
+    this.damage = 0.05; // Damage: Weak (scaled for multiple lingering flames)
     this.cost = 40; // Cost: 40 coins
-    this.upgradeCost = 60;
+    this.upgradeCost = 40;
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -266,7 +266,7 @@ class Flamethrower extends Tower {
       this.towerLevel++;
       if (this.towerLevel == 2) {
         this.user.decreaseBalance(65);
-        this.shootingRadius += 5 * this.scale;
+        this.shootingRadius += 20 * this.scale;
         this.maxHP += 20;
         this.HP = this.maxHP;
 

@@ -1,5 +1,5 @@
 class Pistol extends Tower {
-  static cost = 10;
+  static cost = 20;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,12 +31,12 @@ class Pistol extends Tower {
     }
 
     // stats
-    this.HP = 100;
+    this.HP = 150;
     this.maxHP = this.HP;
     this.fireRate = 1; // Fire rate: Moderate
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 10; // Damage: Moderate
-    this.cost = 10; // Cost: 10 coins
+    this.shootingRadius = 70 * this.scale; // Range: Medium
+    this.damage = 20; // Damage: Moderate
+    this.cost = 20; // Cost: 20 coins
     this.upgradeCost = 15;
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;

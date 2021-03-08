@@ -1,5 +1,5 @@
 class Rocket extends Tower {
-  static cost = 75;
+  static cost = 60;
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,11 +31,11 @@ class Rocket extends Tower {
     }
 
     //stats
-    this.HP = 10;
+    this.HP = 100;
     this.maxHP = this.HP;
     this.fireRate = 1.15; // Fire rate: Moderately Slow
-    this.shootingRadius = 70 * this.scale; // Range: Long
-    this.damage = 15; // Damage: Strong
+    this.shootingRadius = 90 * this.scale; // Range: Long
+    this.damage = 50; // Damage: Strong
     this.cost = 75; // Cost: 75 coins
     this.upgradeCost = 120;
     this.depreciated = 0.8;

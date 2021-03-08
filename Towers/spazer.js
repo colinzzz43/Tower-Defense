@@ -33,12 +33,12 @@ class Spazer extends Tower {
     }
 
     //stats
-    this.HP = 100;
+    this.HP = 150;
     this.maxHP = this.HP;
     this.upgradeCost = 25;
     this.fireRate = 1.3; // Fire rate: Slow
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 5; // Damage: Weak
+    this.shootingRadius = 70 * this.scale; // Range: Medium
+    this.damage = 10; // Damage: Weak
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 

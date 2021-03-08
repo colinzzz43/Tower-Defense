@@ -1,5 +1,5 @@
 class MG extends Tower {
-  static cost = 25; // Cost: 25 coins
+  static cost = 40; // Cost: 40 coins
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,12 +31,12 @@ class MG extends Tower {
     }
 
     //stats
-    this.HP = 30;
+    this.HP = 200;
     this.maxHP = this.HP;
     this.fireRate = 0.5; // Fire rate: Fast
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 10; // Damage: Moderate
-    this.cost = 25; // Cost: 25 coins
+    this.shootingRadius = 70 * this.scale; // Range: Medium
+    this.damage = 20; // Damage: Moderate
+    this.cost = 40; // Cost: 40 coins
     this.upgradeCost = 25;
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;

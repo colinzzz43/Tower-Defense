@@ -35,11 +35,11 @@ class Cannon extends Tower {
 
     //stats
     console.log(this.scale);
-    this.HP = 30;
+    this.HP = 200;
     this.maxHP = this.HP;
     this.fireRate = 1.3; // Fire rate: Slow
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 15; // Damage: Strong
+    this.shootingRadius = 70 * this.scale; // Range: Medium
+    this.damage = 50; // Damage: Strong
     this.cost = 40; // Cost: 40 coins
     this.upgradeCost = 60;
     this.depreciated = 0.8;
