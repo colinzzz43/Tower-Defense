@@ -2,9 +2,23 @@
 
 var gameEngine = new GameEngine();
 var ASSET_MANAGER = new AssetManager();
-ASSET_MANAGER.queueDownload("./sprites/other/coin2.png"); //queue download
+ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
+ASSET_MANAGER.queueDownload("./sprites/other/heart.png"); //queue download
+// transition scenes
 
-ASSET_MANAGER.queueDownload("./sprites/title.png"); // map
+ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/arrow.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Sell.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Upgrade.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Start.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/LevelScreen.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level1.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level2.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level3.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level4.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Gameover.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Home.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Restart.png"); // map
 
 ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
 ASSET_MANAGER.queueDownload("./Level/images/DesertMap.png");

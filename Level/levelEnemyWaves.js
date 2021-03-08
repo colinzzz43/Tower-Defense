@@ -547,7 +547,6 @@ var levelFourWaves = {
 		]
 		
 	],
-			
-			
+						
 	waveTimes: [5, 30, 30, 40, 40]
 };

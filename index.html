@@ -35,6 +35,7 @@
   <script type="text/javascript" src="./towerStore.js"></script>  
   <script type="text/javascript" src="./descriptionBox.js"></script>
   <script type="text/javascript" src="./coin.js"></script>
+  <script type="text/javascript" src="./transition.js"></script>
   <script type="text/javascript" src="./gif.js"></script>
 
   
@@ -71,8 +72,20 @@
 
 </head>
 
+
 <body>
-  <canvas id="gameWorld" width="1200" height="770" style="border: 1px solid black"></canvas>
+ <style>
+  body {
+    /* background-image: url('./sprites/background2.png'); */
+    background-image: url('./sprites/background3.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
+ </style>
+
+
+  <canvas id="gameWorld" width="1200" height="770" ></canvas>
   <br />
 
 </body>

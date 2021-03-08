@@ -18,11 +18,13 @@ class DescriptionBox {
       level,
     });
 
-	this.spritesheet = ASSET_MANAGER.getAsset(
-		"./sprites/levelselect/arrow.png"
-	  );
-	  this.sellIcon = ASSET_MANAGER.getAsset("./sprites/levelselect/Sell.png");
-	  this.upgradeIcon = ASSET_MANAGER.getAsset("./sprites/levelselect/Upgrade.png");
+    this.spritesheet = ASSET_MANAGER.getAsset(
+      "./sprites/levelselect/arrow.png"
+    );
+    this.sellIcon = ASSET_MANAGER.getAsset("./sprites/levelselect/Sell.png");
+    this.upgradeIcon = ASSET_MANAGER.getAsset(
+      "./sprites/levelselect/Upgrade.png"
+    );
 
     // Interact with the User entity that is written
     // as a field in the SceneManager entity
@@ -99,12 +101,28 @@ class DescriptionBox {
     this.ctx.lineWidth = 2;
     this.ctx.font = "20px monospace";
 
-	// this.messageCode = 2;
+    // this.messageCode = 2;
 
-	if (this.messageCode != 0 && this.messageCode != 11 && this.messageCode != 10) {
-		this.ctx.drawImage(this.spritesheet, this.topLeftCornerX + 385, this.topLeftCornerY + 45, 50, 50);
-		this.ctx.drawImage(this.spritesheet, this.topLeftCornerX + 785, this.topLeftCornerY + 45, 50, 50);
-	}
+    if (
+      this.messageCode != 0 &&
+      this.messageCode != 11 &&
+      this.messageCode != 10
+    ) {
+      this.ctx.drawImage(
+        this.spritesheet,
+        this.topLeftCornerX + 385,
+        this.topLeftCornerY + 45,
+        50,
+        50
+      );
+      this.ctx.drawImage(
+        this.spritesheet,
+        this.topLeftCornerX + 785,
+        this.topLeftCornerY + 45,
+        50,
+        50
+      );
+    }
 
     switch (this.messageCode) {
       case 0:
@@ -291,9 +309,8 @@ class DescriptionBox {
         );
 
         break;
-      
 
-        // Flame thrower
+      // Flame thrower
       case 2:
         this.ctx.strokeText(
           "Flame Thrower",
@@ -455,7 +472,6 @@ class DescriptionBox {
           this.topLeftCornerY + 95
         );
         break;
-
 
       // Laser Tower
       case 3:
@@ -1275,8 +1291,8 @@ class DescriptionBox {
         );
 
         break;
-      
-        // Shotgun tower
+
+      // Shotgun tower
       case 8:
         this.ctx.strokeText(
           "Shotgun Tower",
@@ -1438,9 +1454,8 @@ class DescriptionBox {
         );
 
         break;
-      
 
-        // Spazer tower
+      // Spazer tower
       case 9:
         this.ctx.strokeText(
           "Spazer Tower",
@@ -1608,21 +1623,19 @@ class DescriptionBox {
           "Upgrade Tower",
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 29
-        
-	  );
-	//   this.ctx.drawImage(this.upgradeIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 200, 75);
+        );
+        //   this.ctx.drawImage(this.upgradeIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 200, 75);
 
-
-		this.ctx.strokeText(
-			"Upgrade your tower to a better one,",
-			this.topLeftCornerX + 380,
-			this.topLeftCornerY + 55
-		  );
-		  this.ctx.strokeText(
-			"You will need it for the upcoming waves!",
-			this.topLeftCornerX + 350,
-			this.topLeftCornerY + 75
-		  );
+        this.ctx.strokeText(
+          "Upgrade your tower to a better one,",
+          this.topLeftCornerX + 380,
+          this.topLeftCornerY + 55
+        );
+        this.ctx.strokeText(
+          "You will need it for the upcoming waves!",
+          this.topLeftCornerX + 350,
+          this.topLeftCornerY + 75
+        );
 
         break;
       case 11:
@@ -1632,18 +1645,18 @@ class DescriptionBox {
           this.topLeftCornerY + 29
         );
 
-		// this.ctx.drawImage(this.sellIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 150, 75);
+        // this.ctx.drawImage(this.sellIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 150, 75);
 
-		this.ctx.strokeText(
-			"Sell it when you don't need it,",
-			this.topLeftCornerX + 380,
-			this.topLeftCornerY + 55
-		  );
-		  this.ctx.strokeText(
-			"You will get 80% of your money back!",
-			this.topLeftCornerX + 350,
-			this.topLeftCornerY + 75
-		  );
+        this.ctx.strokeText(
+          "Sell it when you don't need it,",
+          this.topLeftCornerX + 380,
+          this.topLeftCornerY + 55
+        );
+        this.ctx.strokeText(
+          "You will get 80% of your money back!",
+          this.topLeftCornerX + 350,
+          this.topLeftCornerY + 75
+        );
         break;
     }
 
