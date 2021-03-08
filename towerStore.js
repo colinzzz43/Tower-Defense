@@ -165,7 +165,7 @@ class TowerStoreMenu {
     var pistolIcon = new TowerIcon(
       this.gameEngine,
       "Pistol",
-      10,
+      Pistol.cost,
       this.towerImagesArray[0],
       leftX,
       y,
@@ -178,7 +178,7 @@ class TowerStoreMenu {
     var mgIcon = new TowerIcon(
       this.gameEngine,
       "MG",
-      25,
+      MG.cost,
       this.towerImagesArray[1],
       rightX,
       y,
@@ -194,7 +194,7 @@ class TowerStoreMenu {
     var shotgunIcon = new TowerIcon(
       this.gameEngine,
       "Shotgun",
-      25,
+      Shotgun.cost,
       this.towerImagesArray[2],
       leftX,
       y,
@@ -207,7 +207,7 @@ class TowerStoreMenu {
     var cannonIcon = new TowerIcon(
       this.gameEngine,
       "Cannon",
-      40,
+      Cannon.cost,
       this.towerImagesArray[3],
       rightX,
       y,
@@ -223,7 +223,7 @@ class TowerStoreMenu {
     var flamethrowerIcon = new TowerIcon(
       this.gameEngine,
       "Flame",
-      40,
+      Flamethrower.cost,
       this.towerImagesArray[4],
       leftX,
       y,
@@ -236,7 +236,7 @@ class TowerStoreMenu {
     var laserIcon = new TowerIcon(
       this.gameEngine,
       "Laser",
-      60,
+      Laser.cost,
       this.towerImagesArray[5],
       rightX,
       y,
@@ -252,7 +252,7 @@ class TowerStoreMenu {
     var matterIcon = new TowerIcon(
       this.gameEngine,
       "Matter",
-      75,
+      Matter.cost,
       this.towerImagesArray[6],
       leftX,
       y,
@@ -265,7 +265,7 @@ class TowerStoreMenu {
     var rocketIcon = new TowerIcon(
       this.gameEngine,
       "Rocket",
-      75,
+      Rocket.cost,
       this.towerImagesArray[7],
       rightX,
       y,
@@ -281,7 +281,7 @@ class TowerStoreMenu {
     var spazerIcon = new TowerIcon(
       this.gameEngine,
       "Spazer",
-      75,
+      Spazer.cost,
       this.towerImagesArray[8],
       leftX,
       y,
