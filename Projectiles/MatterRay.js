@@ -1,8 +1,7 @@
 class MatterRay extends Projectile {
     constructor(gameEngine, x, y, target, shootingEntity) {
         super(gameEngine, x, y, target, shootingEntity);
-        this.xStart = x;
-        this.yStart = y;   
+
 
         // animations
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/shockwave.png");
@@ -47,8 +46,8 @@ class MatterRay extends Projectile {
                 ent.takeHit(this.shootingEntity.damage);
             }
 
-            let dx = this.x - this.xStart;
-            let dy = this.y - this.yStart;
+            let dx = this.x - this.shootingEntity.x;
+            let dy = this.y - this.shootingEntity.y;
             let distTraveled = Math.sqrt(dx * dx + dy * dy);
 
 
