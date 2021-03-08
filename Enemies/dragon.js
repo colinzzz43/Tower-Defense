@@ -86,9 +86,9 @@ class Dragon extends Enemy {
     // stats
     this.score = 100;
     this.scale = 1.5;
-    this.HP = 200;
+    this.HP = 1000;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 30;
+    this.damage = 250;
     this.reward = 250;
     this.radius = (this.frameWidth / 2 - 10) * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 50) * this.scale; // shooting radius
@@ -97,13 +97,13 @@ class Dragon extends Enemy {
     this.fireRate = 2;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(0.5, this.direction, this.x, this.y, this.grid);
   }
 
   update() {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-    this.movement.speed = 1.5 * this.enemySpeedMultipler;
+    this.movement.speed = 0.5 * this.enemySpeedMultipler;
 
     if (this.enemyPaused) {
       // pause animation at certain frame
