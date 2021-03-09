@@ -4,21 +4,21 @@ class Rocket extends Tower {
   static fireRate = 1.2; 
   static shootingRadius = 90; 
   static damage = 50; 
-  static cost = 70; 
+  static cost = 60; 
   
   // lvl 2
   static maxHP2 = 200;
   static fireRate2 = 1;
   static shootingRadius2 = 90;
   static damage2 = 50;
-  static cost2 = 90;
+  static cost2 = 80;
 
   // lvl 3
   static maxHP3 = 300;
   static fireRate3 = 1;
   static shootingRadius3 = 110;
   static damage3 = 80;
-  static cost3 = 110;
+  static cost3 = 100;
 
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);

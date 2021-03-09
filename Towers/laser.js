@@ -4,21 +4,21 @@ class Laser extends Tower {
   static fireRate = 0.2; 
   static shootingRadius = 90; 
   static damage = 10; 
-  static cost = 50; 
+  static cost = 60; 
   
   // lvl 2
   static maxHP2 = 300;
   static fireRate2 = 0.2; 
   static shootingRadius2 = 110;
   static damage2 = 10; 
-  static cost2 = 70;
+  static cost2 = 80;
 
   // lvl 3
   static maxHP3 = 400;
   static fireRate3 = 0.2; 
   static shootingRadius3 = 110;
   static damage3 = 15;
-  static cost3 = 90;
+  static cost3 = 100;
 
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);

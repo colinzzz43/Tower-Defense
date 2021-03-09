@@ -182,7 +182,7 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-    this.showBoundingCircle(context);
+    // this.showBoundingCircle(context);
 
     var width = this.scale > 2 ? 100 : 50;
     this.drawHealth(

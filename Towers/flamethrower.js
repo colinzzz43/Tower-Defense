@@ -4,21 +4,21 @@ class Flamethrower extends Tower {
   static fireRate = 0.3; 
   static shootingRadius = 30; 
   static damage = 0.1; 
-  static cost = 40; 
+  static cost = 60; 
   
   // lvl 2
   static maxHP2 = 400;
   static fireRate2 = 0.3; 
   static shootingRadius2 = 50;
   static damage2 = 0.1; 
-  static cost2 = 60;
+  static cost2 = 80;
 
   // lvl 3
   static maxHP3 = 500;
   static fireRate3 = 0.1; 
   static shootingRadius3 = 50;
   static damage3 = 0.2;
-  static cost3 = 80;
+  static cost3 = 100;
 
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
