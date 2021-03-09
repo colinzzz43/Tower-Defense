@@ -1,5 +1,25 @@
 class Spazer extends Tower {
-  static cost = 75;
+  // lvl 1
+  static maxHP = 100;
+  static fireRate = 1; 
+  static shootingRadius = 70; 
+  static controlTime = 5;
+  static cost = 80;
+  
+  // lvl 2
+  static maxHP2 = 200;
+  static fireRate2 = 1;
+  static shootingRadius2 = 70;
+  static controlTime2 = 7.5;
+  static cost2 = 100;
+
+  // lvl 3
+  static maxHP3 = 300;
+  static fireRate3 = 0.8;
+  static shootingRadius3 = 90;
+  static controlTime3 = 10;
+  static cost3 = 120;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -33,12 +53,14 @@ class Spazer extends Tower {
     }
 
     //stats
-    this.HP = 100;
-    this.maxHP = this.HP;
-    this.upgradeCost = 25;
-    this.fireRate = 1.3; // Fire rate: Slow
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 5; // Damage: Weak
+    this.HP = Spazer.maxHP;
+    this.fireRate = Spazer.fireRate;
+    this.shootingRadius = Spazer.shootingRadius * this.scale; 
+    this.damage = 0;
+    this.controlTime = Spazer.controlTime;
+    this.cost = Spazer.cost;
+    this.upgradeCost = Spazer.cost2;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -100,20 +122,23 @@ class Spazer extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(65);
-        this.fireRate += 0.75;
-        this.maxHP += 30;
-        this.HP = this.maxHP;
+        this.HP = Spazer.maxHP2;
+        this.fireRate = Spazer.fireRate2;
+        this.shootingRadius = Spazer.shootingRadius2 * this.scale; 
+        this.controlTime = Spazer.controlTime2;
+        this.upgradeCost = Spazer.cost3;
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(90);
-        this.shootingRadius += 5 * this.scale;
-        this.damage += 10;
-        this.maxHP += 60;
-        this.HP = this.maxHP;
+        this.HP = Spazer.maxHP3;
+        this.fireRate = Spazer.fireRate3;
+        this.shootingRadius = Spazer.shootingRadius3 * this.scale; 
+        this.controlTime = Spazer.controlTime3;
 
         this.frameHeight = 42;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;

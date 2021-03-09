@@ -159,181 +159,180 @@ class TowerStoreMenu {
 	/*
 		Create icons for each tower type and fill the store menu with them
 	*/
-	initializeIcons() {
-		// Centerize the rows of icons in the menu
-		var leftX = this.topLeftCornerX + this.menuBoxWidth / 10;
-		var rightX =
-		  this.topLeftCornerX + this.menuBoxWidth / 2 + this.menuBoxWidth / 20;
-		var centerX = this.topLeftCorner + this.menuBoxWidth / 4;
-		var y = this.topLeftCornerY + this.menuBoxHeight / 12;
+  initializeIcons() {
+    // Centerize the rows of icons in the menu
+    var leftX = this.topLeftCornerX + this.menuBoxWidth / 10;
+    var rightX =
+      this.topLeftCornerX + this.menuBoxWidth / 2 + this.menuBoxWidth / 20;
+    var centerX = this.topLeftCorner + this.menuBoxWidth / 4;
+    var y = this.topLeftCornerY + this.menuBoxHeight / 12;
 
-		// Vertical pixel space between the top left corners of the rows of icons in the menu
-		var verticalSpace = 110;
+    // Vertical pixel space between the top left corners of the rows of icons in the menu
+    var verticalSpace = 110;
 
-		// First Row: Pistol and MG
-		var pistolIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Pistol",
-		  10,
-		  this.towerImagesArray[0],
-		  leftX,
-		  y,
-		  16,
-		  37,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(pistolIcon);
-		var mgIcon = new TowerIcon(
-		  this.gameEngine,
-		  "MG",
-		  25,
-		  this.towerImagesArray[1],
-		  rightX,
-		  y,
-		  24,
-		  40,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(mgIcon);
-		y += verticalSpace;
+    // First Row: Pistol and MG
+    var pistolIcon = new TowerIcon(
+      this.gameEngine,
+      "Pistol",
+      Pistol.cost,
+      this.towerImagesArray[0],
+      leftX,
+      y,
+      16,
+      37,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(pistolIcon);
+    var mgIcon = new TowerIcon(
+      this.gameEngine,
+      "MG",
+      MG.cost,
+      this.towerImagesArray[1],
+      rightX,
+      y,
+      24,
+      40,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(mgIcon);
+    y += verticalSpace;
 
-		// Second Row: Shotgun and Cannon
-		var shotgunIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Shotgun",
-		  25,
-		  this.towerImagesArray[2],
-		  leftX,
-		  y,
-		  22,
-		  34,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(shotgunIcon);
-		var cannonIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Cannon",
-		  40,
-		  this.towerImagesArray[3],
-		  rightX,
-		  y,
-		  23,
-		  33,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(cannonIcon);
-		y += verticalSpace;
+    // Second Row: Shotgun and Cannon
+    var shotgunIcon = new TowerIcon(
+      this.gameEngine,
+      "Shotgun",
+      Shotgun.cost,
+      this.towerImagesArray[2],
+      leftX,
+      y,
+      22,
+      34,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(shotgunIcon);
+    var cannonIcon = new TowerIcon(
+      this.gameEngine,
+      "Cannon",
+      Cannon.cost,
+      this.towerImagesArray[3],
+      rightX,
+      y,
+      23,
+      33,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(cannonIcon);
+    y += verticalSpace;
 
-		// Third Row: Flamethrower and Laser
-		var flamethrowerIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Flame",
-		  40,
-		  this.towerImagesArray[4],
-		  leftX,
-		  y,
-		  33,
-		  36,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(flamethrowerIcon);
-		var laserIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Laser",
-		  60,
-		  this.towerImagesArray[5],
-		  rightX,
-		  y,
-		  22,
-		  35,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(laserIcon);
-		y += verticalSpace;
+    // Third Row: Flamethrower and Laser
+    var flamethrowerIcon = new TowerIcon(
+      this.gameEngine,
+      "Flame",
+      Flamethrower.cost,
+      this.towerImagesArray[4],
+      leftX,
+      y,
+      33,
+      36,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(flamethrowerIcon);
+    var laserIcon = new TowerIcon(
+      this.gameEngine,
+      "Laser",
+      Laser.cost,
+      this.towerImagesArray[5],
+      rightX,
+      y,
+      22,
+      35,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(laserIcon);
+    y += verticalSpace;
 
-		// Fourth Row: Matter and Rocket
-		var matterIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Matter",
-		  75,
-		  this.towerImagesArray[6],
-		  leftX,
-		  y,
-		  24,
-		  37,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(matterIcon);
-		var rocketIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Rocket",
-		  75,
-		  this.towerImagesArray[7],
-		  rightX,
-		  y,
-		  23,
-		  37,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(rocketIcon);
-		y += verticalSpace;
+    // Fourth Row: Matter and Rocket
+    var matterIcon = new TowerIcon(
+      this.gameEngine,
+      "Matter",
+      Matter.cost,
+      this.towerImagesArray[6],
+      leftX,
+      y,
+      24,
+      37,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(matterIcon);
+    var rocketIcon = new TowerIcon(
+      this.gameEngine,
+      "Rocket",
+      Rocket.cost,
+      this.towerImagesArray[7],
+      rightX,
+      y,
+      23,
+      37,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(rocketIcon);
+    y += verticalSpace;
 
-		// Fifth Row: Spazer, upgrade, and sell
-		var spazerIcon = new TowerIcon(
-		  this.gameEngine,
-		  "Spazer",
-		  75,
-		  this.towerImagesArray[8],
-		  leftX,
-		  y,
-		  22,
-		  30,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(spazerIcon);
-		var upgradeButton = new StoreButton(
-		  this.gameEngine,
-		  "upgrade",
-		  rightX,
-		  y,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(upgradeButton);
-		var sellButton = new StoreButton(
-		  this.gameEngine,
-		  "sell",
-		  rightX,
-		  y + 40,
-		  this.ctx,
-		  this.level
-		);
-		this.storeIcons.push(sellButton);
+    // Fifth Row: Spazer, upgrade, and sell
+    var spazerIcon = new TowerIcon(
+      this.gameEngine,
+      "Spazer",
+      Spazer.cost,
+      this.towerImagesArray[8],
+      leftX,
+      y,
+      22,
+      30,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(spazerIcon);
+    var upgradeButton = new StoreButton(
+      this.gameEngine,
+      "upgrade",
+      rightX,
+      y,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(upgradeButton);
+    var sellButton = new StoreButton(
+      this.gameEngine,
+      "sell",
+      rightX,
+      y + 40,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(sellButton);
 
-		// Add tower icons to game engine
-		this.gameEngine.addEntity(pistolIcon);
-		this.gameEngine.addEntity(mgIcon);
-		this.gameEngine.addEntity(shotgunIcon);
-		this.gameEngine.addEntity(cannonIcon);
-		this.gameEngine.addEntity(flamethrowerIcon);
-		this.gameEngine.addEntity(laserIcon);
-		this.gameEngine.addEntity(matterIcon);
-		this.gameEngine.addEntity(rocketIcon);
-		this.gameEngine.addEntity(spazerIcon);
-		this.gameEngine.addEntity(upgradeButton);
-		this.gameEngine.addEntity(sellButton);
-	};
+    // Add tower icons to game engine
+    this.gameEngine.addEntity(pistolIcon);
+    this.gameEngine.addEntity(mgIcon);
+    this.gameEngine.addEntity(shotgunIcon);
+    this.gameEngine.addEntity(cannonIcon);
+    this.gameEngine.addEntity(flamethrowerIcon);
+    this.gameEngine.addEntity(laserIcon);
+    this.gameEngine.addEntity(matterIcon);
+    this.gameEngine.addEntity(rocketIcon);
+    this.gameEngine.addEntity(spazerIcon);
+    this.gameEngine.addEntity(upgradeButton);
+  }
 
-	/*
+  /*
 		Set a tower icon's selection state to true
 		
 		Parameter:

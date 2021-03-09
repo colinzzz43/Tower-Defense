@@ -22,7 +22,7 @@ class Goblin extends Enemy {
       150,
       150,
       8,
-      0.1,
+      0.12,
       0,
       false,
       true
@@ -60,15 +60,15 @@ class Goblin extends Enemy {
     // stats
     this.score = 20;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
-    this.HP = 30;
+    this.HP = 100;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 10; //8;
+    this.damage = 25; 
     this.reward = 15;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
-    this.attackRate = 0.7;
+    this.attackRate = 1;
 
     // level grid and enemy movement
     this.movement = new EnemyMovement(1, this.direction, this.x, this.y, this.grid);

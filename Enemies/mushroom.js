@@ -22,7 +22,7 @@ class Mushroom extends Enemy {
       150,
       150,
       8,
-      0.15,
+      0.2,
       0,
       false,
       true
@@ -60,15 +60,15 @@ class Mushroom extends Enemy {
     // stats
     this.score = 50;
     this.scale = 2;
-    this.HP = 100;
+    this.HP = 200;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 5;
+    this.damage = 50;
     this.reward = 120;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
-    this.attackRate = 1.2;
+    this.attackRate = 1.8;
 
     // level grid and enemy movement
     this.movement = new EnemyMovement(1, this.direction, this.x, this.y, this.grid);
@@ -85,7 +85,7 @@ class Mushroom extends Enemy {
   update() {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-    this.movement.speed = 1.3 * this.enemySpeedMultipler;
+    this.movement.speed = this.enemySpeedMultipler;
 
     if (this.enemyPaused) {
       // pause animation at certain frame
