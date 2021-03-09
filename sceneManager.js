@@ -255,8 +255,9 @@ class SceneManager {
 
 	clearEntities() {
 		this.game.entities.forEach(entity => {
-			if (!(entity instanceof SceneManager))
+			if (!(entity instanceof SceneManager)) {
 				entity.removeFromWorld = true;
+			}
 		});
 		console.log(this.game.entities);
 	}
@@ -269,7 +270,7 @@ class SceneManager {
 		// in the middle of game
 		if (!this.transition) {
 			if (this.sceneType == "level") {
-				console.log(this.base.HP);
+//				console.log(this.base.HP);
 				if (this.base.HP <= 0) {
 					this.transition = true;
 					this.sceneType = "gameover";
@@ -310,6 +311,7 @@ class SceneManager {
 						this.sceneType = "level";
 						this.currentLevel = 1;
 						this.clearEntities();
+						console.log('Clicked Prototype Level');
 						this.loadGamePrototype();
 					}
 

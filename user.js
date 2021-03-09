@@ -7,9 +7,11 @@ class User {
     this.gameEngine.camera.user = this;
     this.removeFromWorld = false;
     this.scores = 0;
+	
+	this.DEFAULT_BALANCE = 10000;
 
     // initialization for the user
-    this.balance = 10000;
+    this.balance = this.DEFAULT_BALANCE;
 //    this.hp = 100;
   }
 

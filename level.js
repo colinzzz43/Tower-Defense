@@ -46,6 +46,8 @@ class Level {
 		this.gameEngine.level = this;
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
+		
+//		console.log(levelOneGrid.mapArray);
 
 		// Initialize terrain map grid for this level
 		this.terrainGridTiles = new LevelTerrainMap(this);
@@ -84,7 +86,12 @@ class Level {
 		this.gameEngine.addEntity(this.base);
 
 		// Apply mouse click interaction of tiles to this level
-		this.mouseInteraction();
+//		this.mouseInteraction();
+		this.levelMouseClick = this.createMouseClick(this);
+		this.levelMouseMove = this.createMouseMove(this);
+		this.levelMouseOut = this.createMouseOut(this);
+		this.implementMouseInteractions();		
+		
 		this.mouseHighlightedTile = {
 		  row: -1,
 		  column: -1,
@@ -94,25 +101,28 @@ class Level {
 		this.interactionScale = widthScaling();
 
 		this.user = this.gameEngine.camera.user; // the user interacting with the tower
-		
-		// Spawn the enemy waves on this level
-//		this.levelEnemyWaves = new LevelWave(this);
 	};
 
 	/*
 		Update does nothing to level
 	*/
 	update() {
+//		this.mouseFunction();	
+		if (this.removeFromWorld) {
+			this.removeMouseInteractions();
+		}
+		
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
-		
+			
 		// update towers
 		for (var i = 0; i < this.mapOfTowers.length; i++) {
 			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
-				if (this.mapOfTowers[i][j] != null)
+				if (this.mapOfTowers[i][j] != null) {
 					this.mapOfTowers[i][j].update();
+				}
 			}			
-		}
+		}			
 	};
 
 	/*
@@ -206,6 +216,156 @@ class Level {
 	};
 
 	/*
+		Add all mouse event listeners needed for interaction with 
+		this level to HTML canvas.
+	*/
+	implementMouseInteractions() {			
+		// mouse click interactions			
+		this.ctx.canvas.addEventListener("click", this.levelMouseClick, false);		
+		
+		// mouse move interactions
+		this.ctx.canvas.addEventListener("mousemove", this.levelMouseMove, false);
+		
+		// mouse out interactions
+		this.ctx.canvas.addEventListener("mouseout", this.levelMouseOut, false);
+	};
+	
+	/*
+		Remove all mouse event listeners associated with this Level object 
+		from the HTML canvas.
+	*/
+	removeMouseInteractions() {
+		this.ctx.canvas.removeEventListener("click", this.levelMouseClick, false);
+		
+		this.ctx.canvas.removeEventListener("mousemove", this.levelMouseMove, false);
+		
+		this.ctx.canvas.removeEventListener("mouseout", this.levelMouseOut, false);		
+	};
+	
+	
+	/*
+		Create the actions that will happen with the Level object when
+		the mouse is clicked within canvas.
+	*/
+	createMouseClick(that) {
+		return function (e) {
+			var canvasCoordinates = getXandY(that, e);
+			var tileSideLength = that.getTilePixelImageSize();
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+			var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+			var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale));
+			var topLeftX = that.xCanvas * that.interactionScale;
+			var topLeftY = that.yCanvas * that.interactionScale;
+			var canvasWidth =
+				that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight =
+				that.drawScale * that.mapHeight * that.interactionScale;
+			if 	(
+				x >= topLeftX &&
+				x < topLeftX + canvasWidth &&
+				y >= topLeftY &&
+				y < topLeftY + canvasHeight &&
+				that.showGridMap
+			) {
+				if (
+					that.terrainGridTiles.getTile(row, column) ===
+					that.towerTerrainOpen &&
+					that.showGridMap
+				) {
+					that.placeTower(row, column);
+					that.mouseHighlightedTile = {
+						row: row,
+						column: column,
+						color: "lawngreen",
+						mouse: "onMap",
+					};
+				} else {
+					that.mouseHighlightedTile = {
+						row: row,
+						column: column,
+						color: "red",
+						mouse: "onMap",
+					};
+				}
+			}
+			that.gameEngine.entities.forEach(function (entity) {
+				if (entity instanceof Tower) {
+					let towerX = Math.floor(entity.x * that.interactionScale);
+					let towerY = Math.floor(entity.y * that.interactionScale);
+					let boundBoxOffset = (tileSideLength*that.interactionScale) / 2
+					if ( ( x >= towerX - boundBoxOffset && x <= towerX + boundBoxOffset ) 
+						&& ( y >= towerY - boundBoxOffset && y <= towerY + boundBoxOffset ) ) {
+						if (entity.selected == false) {
+							entity.selected = true;
+						} else {
+							entity.selected = false;
+						}
+					} 
+				}
+			});				
+		};
+	};
+	
+	/*
+		Create the actions that will happen with the Level object when
+		the mouse is moved within canvas
+	*/	
+	createMouseMove(that) {
+		return function(e) {
+			var canvasCoordinates = getXandY(that, e);
+			var tileSideLength = that.getTilePixelImageSize();
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+			var row = Math.floor( (y-(that.yCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+			var column = Math.floor( (x-(that.xCanvas*that.interactionScale)) / (tileSideLength * that.interactionScale) );
+			var topLeftX = (that.xCanvas * that.interactionScale);
+			var topLeftY = (that.yCanvas * that.interactionScale);
+			var canvasWidth =
+				that.drawScale * that.mapWidth * that.interactionScale;
+			var canvasHeight =
+				that.drawScale * that.mapHeight * that.interactionScale;
+			if (
+				x >= topLeftX &&
+				x < topLeftX + canvasWidth &&
+				y >= topLeftY &&
+				y < topLeftY + canvasHeight &&
+				that.showGridMap
+			) {
+				that.mouseHighlightedTile = {
+					row: row,
+					column: column,
+					color: "white",
+					mouse: "onMap",
+				};
+			} else {
+				that.mouseHighlightedTile = {
+					row: row,
+					column: column,
+					color: "white",
+					mouse: "offMap",
+				};
+			}					
+		};	
+	};
+	
+	/*
+		Create the actions that will happen with the Level object when
+		the mouse is outside the canvas
+	*/		
+	createMouseOut(that) {
+		return function(e) {
+			that.mouseHighlightedTile = {
+				row: 0,
+				column: 0,
+				color: "white",
+				mouse: "offMap",
+			};			
+		}
+		
+	};
+
+	/*
 		Apply a mouse click interaction to the level map image
 	*/
 	mouseInteraction() {
@@ -287,6 +447,7 @@ class Level {
 			"mousemove",
 			function (e) {
 				var canvasCoordinates = getXandY(e);
+				console.log(`Level ${that.mapLevel} mouse move`);
 				var tileSideLength = that.getTilePixelImageSize();
 				var x = canvasCoordinates.x;
 				var y = canvasCoordinates.y;
@@ -446,7 +607,6 @@ class Level {
     if (newTower) {
       this.gameEngine.addEntity(newTower);
       this.changeStateOfTowerTerrain(row, column);
-//	  this.placedTowers.push(newTower);
 	  this.mapOfTowers[row][column] = newTower;
 	  this.newestTower = this.mapOfTowers[row][column];
     }
@@ -502,6 +662,24 @@ class Level {
 		this.terrainGridTiles.getSquareTileSidePixelLength() * this.drawScale
 		);
 	};
+	
+	deleteLevelProperties() {
+		
+		// Delete all placed towers
+		this.newestTower = null;
+		
+		for (var i = 0; i < this.terrainGridTiles.numOfTileRows; i++) {
+			for (var j = 0; j < this.terrainGridTiles.numOfTileColumns; j++) {
+				this.mapOfTowers[i][j] = null;
+			}			
+		}	
+
+		// Delete tile terrain grid
+		this.terrainGridTiles = null;
+		
+		// Delete the base
+		this.base = null
+	}
 }
 
 class LevelTerrainMap {
@@ -527,7 +705,6 @@ class LevelTerrainMap {
 		
 		// tile where fixed path begins
 		this.startTile = null;
-	//	this.startDirection = null;
 		
 		// tile where fixed path ends
 		this.destinationTile = null;
@@ -538,6 +715,7 @@ class LevelTerrainMap {
 		
 		// initiailize the grip map for the specific level
 		this.initializeGridMap();
+		console.log(this.mapArray);
 
 		this.path = 0;
 		this.towerTerrainOpen = 1;
@@ -569,16 +747,20 @@ class LevelTerrainMap {
 		@levelFile		the pre-defined data stored in a JSON file
 	*/
 	setLevelMapGridProperities(levelFile) {
-		this.numOfTileRows = levelFile.tileRows;
-		this.numOfTileColumns = levelFile.tileColumns;
-		this.squareTileSidePixelLength = levelFile.tilePixelLength;
-		this.squareTileBorderPixelWeight = levelFile.tileBorderPixelWeight;
-
-		this.mapArray = levelFile.mapArray;		
-		this.startTiles = levelFile.startTiles;
-		this.destinationTiles = levelFile.destinationTiles;
 		
-		var tileTurns = levelFile.tileTurns;
+		// make deep copy of level map code properties from levelMapProperties.js file
+		var levelFileData = JSON.parse(JSON.stringify(levelFile));
+		
+		this.numOfTileRows = levelFileData.tileRows;
+		this.numOfTileColumns = levelFileData.tileColumns;
+		this.squareTileSidePixelLength = levelFileData.tilePixelLength;
+		this.squareTileBorderPixelWeight = levelFileData.tileBorderPixelWeight;
+
+		this.mapArray = levelFileData.mapArray;		
+		this.startTiles = levelFileData.startTiles;
+		this.destinationTiles = levelFileData.destinationTiles;
+		
+		var tileTurns = levelFileData.tileTurns;
 		this.initializePathTurns(tileTurns);	
 	};
 

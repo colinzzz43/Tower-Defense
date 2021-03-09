@@ -56,7 +56,16 @@ class GameEngine {
       },
       false
     );
-
+	
+	this.ctx.canvas.addEventListener(
+		"mouseout",
+		function (e) {
+			that.mouse = null;
+			that.click = null;
+		},
+		false
+	);
+	
     // this.ctx.canvas.addEventListener("wheel", function (e) {
     //     //console.log(getXandY(e));
     //     that.wheel = e;
@@ -81,6 +90,7 @@ class GameEngine {
     const index = this.entities.indexOf(entity);
     if (index > -1) {
       this.entities.splice(index, 1);
+	  entity = null;
     } else {
       // debug purpose
       console.log(entity, " does not exist.");
@@ -121,6 +131,7 @@ class GameEngine {
 
     for (var i = this.entities.length - 1; i >= 0; --i) {
       if (this.entities[i].removeFromWorld) {
+		delete this.entities[i];
         this.entities.splice(i, 1);
       }
     }
