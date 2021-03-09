@@ -16,8 +16,8 @@ class Matter extends Tower {
   // lvl 3
   static maxHP3 = 300;
   static fireRate3 = 1;
+  static shootingRadius3 = 110;
   static damage3 = 4;
-  static shootingRadius3 = 110; 
   static cost3 = 100;
 
   constructor(gameEngine, x, y, level) {
