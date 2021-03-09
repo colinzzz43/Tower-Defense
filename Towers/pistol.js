@@ -56,6 +56,7 @@ class Pistol extends Tower {
     this.shootingRadius = Pistol.shootingRadius * this.scale; 
     this.damage = Pistol.damage; 
     this.cost = Pistol.cost;
+    this.upgradeCost = Pistol.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -120,17 +121,19 @@ class Pistol extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Pistol.cost2);
         this.HP = Pistol.maxHP;
         this.fireRate = Pistol.fireRate;
         this.shootingRadius = Pistol.shootingRadius * this.scale; 
         this.damage = Pistol.damage; 
+        this.upgradeCost = Pistol.cost3;
 
         this.frameHeight = 44;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(Pistol.cost3);
         this.HP = Pistol.maxHP;
         this.fireRate = Pistol.fireRate;
         this.shootingRadius = Pistol.shootingRadius * this.scale; 

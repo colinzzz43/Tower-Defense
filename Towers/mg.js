@@ -56,6 +56,7 @@ class MG extends Tower {
     this.shootingRadius = MG.shootingRadius * this.scale; 
     this.damage = MG.damage; 
     this.cost = MG.cost;
+    this.upgradeCost = MG.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -119,18 +120,20 @@ class MG extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(MG.cost2);
         this.HP = MG.maxHP2;
         this.fireRate = MG.fireRate2;
         this.shootingRadius = MG.shootingRadius2 * this.scale; 
         this.damage = MG.damage2; 
+        this.upgradeCost = MG.cost3;
 
         this.frameHeight = 46;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
       } else {
-        this.user.decreaseBalance(MG.cost3);
         this.HP = MG.maxHP3;
         this.fireRate = MG.fireRate3;
         this.shootingRadius = MG.shootingRadius3 * this.scale; 

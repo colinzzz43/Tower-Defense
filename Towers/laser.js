@@ -56,6 +56,7 @@ class Laser extends Tower {
     this.shootingRadius = Laser.shootingRadius * this.scale;
     this.damage = Laser.damage;
     this.cost = Laser.cost;
+    this.upgradeCost = Laser.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -118,18 +119,20 @@ class Laser extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Laser.cost2);
         this.HP = Laser.maxHP2;
         this.fireRate = Laser.fireRate2;
         this.shootingRadius = Laser.shootingRadius2 * this.scale;
         this.damage = Laser.damage2;
+        this.upgradeCost = Laser.cost3;
 
         this.frameHeight = 44;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
       } else {
-        this.user.decreaseBalance(Laser.cost3);
         this.HP = Laser.maxHP3;
         this.fireRate = Laser.fireRate3;
         this.shootingRadius = Laser.shootingRadius3 * this.scale;

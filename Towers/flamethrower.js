@@ -57,6 +57,7 @@ class Flamethrower extends Tower {
     this.shootingRadius = Flamethrower.shootingRadius * this.scale;
     this.damage = Flamethrower.damage;
     this.cost = Flamethrower.cost;
+    this.upgradeCost = Flamethrower.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -282,18 +283,20 @@ class Flamethrower extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Flamethrower.cost2);
         this.HP = Flamethrower.maxHP2;
         this.fireRate = Flamethrower.fireRate2;
         this.shootingRadius = Flamethrower.shootingRadius2 * this.scale;
         this.damage = Flamethrower.damage2;
+        this.upgradeCost = Flamethrower.cost3;
 
         this.frameHeight = 48;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
         
       } else {
-        this.user.decreaseBalance(Flamethrower.cost3);
         this.HP = Flamethrower.maxHP3;
         this.fireRate = Flamethrower.fireRate3;
         this.shootingRadius = Flamethrower.shootingRadius3  * this.scale;

@@ -59,6 +59,7 @@ class Spazer extends Tower {
     this.damage = 0;
     this.controlTime = Spazer.controlTime;
     this.cost = Spazer.cost;
+    this.upgradeCost = Spazer.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -121,17 +122,19 @@ class Spazer extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Spazer.cost2);
         this.HP = Spazer.maxHP2;
         this.fireRate = Spazer.fireRate2;
         this.shootingRadius = Spazer.shootingRadius2 * this.scale; 
         this.controlTime = Spazer.controlTime2;
+        this.upgradeCost = Spazer.cost3;
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(Spazer.cost3);
         this.HP = Spazer.maxHP3;
         this.fireRate = Spazer.fireRate3;
         this.shootingRadius = Spazer.shootingRadius3 * this.scale; 

@@ -56,6 +56,7 @@ class Matter extends Tower {
     this.shootingRadius = Matter.shootingRadius * this.scale; 
     this.damage = Matter.damage; 
     this.cost = Matter.cost;
+    this.upgradeCost = Matter.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -117,18 +118,20 @@ class Matter extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Matter.cost2);
         this.HP = Matter.maxHP2;
         this.fireRate = Matter.fireRate2;
         this.shootingRadius = Matter.shootingRadius2 * this.scale; 
         this.damage = Matter.damage2; 
+        this.upgradeCost = Matter.cost3;
 
         this.frameHeight = 45;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale; 
                
       } else {
-        this.user.decreaseBalance(Matter.cost3);
         this.HP = Matter.maxHP3;
         this.fireRate = Matter.fireRate3;
         this.shootingRadius = Matter.shootingRadius3 * this.scale; 

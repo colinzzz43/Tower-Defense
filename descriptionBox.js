@@ -40,6 +40,10 @@ class DescriptionBox {
     this.initializeIcons();
     this.mouseInteraction();
     this.widthScale = widthScaling();
+
+    // sell and upgrade price totals
+    this.sellTotal = 0;
+    this.upgradeTotal = 0;
   }
 
   /*
@@ -53,6 +57,18 @@ class DescriptionBox {
 		Update the state of the user menu
 	*/
   update() {
+    this.sellTotal = 0;
+    this.upgradeTotal = 0;
+
+    var that = this;
+    this.gameEngine.entities.forEach(function (entity) {
+      if (entity instanceof Tower) {
+        if (entity.selected) {
+          that.sellTotal += entity.cost * 0.8;
+          that.upgradeTotal += entity.upgradeCost;
+        }
+      }
+    });
     // do nothing for now
   }
 
@@ -1627,14 +1643,14 @@ class DescriptionBox {
         //   this.ctx.drawImage(this.upgradeIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 200, 75);
 
         this.ctx.strokeText(
-          "Upgrade your tower to a better one,",
-          this.topLeftCornerX + 380,
+          "Upgrade your tower to a more powerful one!",
+          this.topLeftCornerX + 370,
           this.topLeftCornerY + 55
         );
         this.ctx.strokeText(
-          "You will need it for the upcoming waves!",
-          this.topLeftCornerX + 350,
-          this.topLeftCornerY + 75
+          "Upgrade cost of selected tower: " + this.upgradeTotal + " coins",
+          this.topLeftCornerX + 370,
+          this.topLeftCornerY + 85
         );
 
         break;
@@ -1648,14 +1664,14 @@ class DescriptionBox {
         // this.ctx.drawImage(this.sellIcon, this.topLeftCornerX + 35, this.topLeftCornerY + 30, 150, 75);
 
         this.ctx.strokeText(
-          "Sell it when you don't need it,",
-          this.topLeftCornerX + 380,
+          "Sell for 80% of your money back!",
+          this.topLeftCornerX + 370,
           this.topLeftCornerY + 55
         );
         this.ctx.strokeText(
-          "You will get 80% of your money back!",
-          this.topLeftCornerX + 350,
-          this.topLeftCornerY + 75
+          "Sale price of selected towers: " + this.sellTotal + " coins",
+          this.topLeftCornerX + 370,
+          this.topLeftCornerY + 85
         );
         break;
     }

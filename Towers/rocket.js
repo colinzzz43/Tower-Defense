@@ -56,6 +56,7 @@ class Rocket extends Tower {
     this.shootingRadius = Rocket.shootingRadius * this.scale; 
     this.damage = Rocket.damage; 
     this.cost = Rocket.cost;
+    this.upgradeCost = Rocket.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -118,18 +119,20 @@ class Rocket extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Rocket.cost2);
         this.HP = Rocket.maxHP2;
         this.fireRate = Rocket.fireRate2;
         this.shootingRadius = Rocket.shootingRadius2 * this.scale; 
         this.damage = Rocket.damage2; 
-
+        this.upgradeCost = Rocket.cost3;
 
         this.frameHeight = 47;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
+
       } else {
-        this.user.decreaseBalance(Rocket.cost3);
         this.HP = Rocket.maxHP3;
         this.fireRate = Rocket.fireRate3;
         this.shootingRadius = Rocket.shootingRadius3 * this.scale; 

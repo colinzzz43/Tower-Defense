@@ -56,6 +56,7 @@ class Shotgun extends Tower {
     this.shootingRadius = Shotgun.shootingRadius * this.scale; 
     this.damage = Shotgun.damage; 
     this.cost = Shotgun.cost;
+    this.upgradeCost = Shotgun.cost2;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -163,17 +164,19 @@ class Shotgun extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Shotgun.cost2);
         this.HP = Shotgun.maxHP2;
         this.fireRate = Shotgun.fireRate2;
         this.shootingRadius = Shotgun.shootingRadius2 * this.scale; 
         this.damage = Shotgun.damage2; 
+        this.upgradeCost = Shotgun.cost3;
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(Shotgun.cost3);
         this.HP = Shotgun.maxHP3;
         this.fireRate = Shotgun.fireRate3;
         this.shootingRadius = Shotgun.shootingRadius3 * this.scale; 

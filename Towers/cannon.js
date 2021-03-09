@@ -60,6 +60,9 @@ class Cannon extends Tower {
     this.shootingRadius = Cannon.shootingRadius * this.scale; // Range: Medium
     this.damage = Cannon.damage; // Damage: Strong
     this.cost = Cannon.cost; // Cost: 40 coins
+    this.upgradeCost = Cannon.cost2;
+    console.log(this.upgradeCost);
+
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -133,18 +136,21 @@ class Cannon extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      console.log(this.upgradeCost);
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(Cannon.cost2);
         this.HP = Cannon.maxHP2;
         this.fireRate = Cannon.fireRate2;
         this.shootingRadius = Cannon.shootingRadius2 * this.scale;
         this.damage = Cannon.damage2;
+        this.upgradeCost = Cannon.cost3;
 
         this.frameHeight = 43;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
       } else {
-        this.user.decreaseBalance(Cannon.cost3);
         this.HP = Cannon.maxHP3;
         this.fireRate = Cannon.fireRate3;
         this.shootingRadius = Cannon.shootingRadius3 * this.scale;
