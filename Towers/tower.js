@@ -37,16 +37,23 @@ class Tower {
       // tower detection
       this.gameEngine.entities.forEach(function (entity) {
         // tower detection
-        // Spazer tower does not shoot controlled enemies
+        // Spazer towers do not target controlled enemies
         if (entity instanceof Enemy && !(that instanceof Spazer && entity.controlled)) {
-          // tower shoots enemy in shooting bounds
-          if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
-            entity.exist) {
-            that.elapsedTime = 0;
-            that.facing = getFacing(entity, that);
-            that.shoot(entity);
-            // console.log("Slime HP: ", entity.HP);
-            // that.printMonsterHP(entity.HP);
+
+          // Towers do not target enemies in dying animation
+          if (!((entity instanceof Skeleton || entity instanceof Mushroom || entity instanceof Goblin
+            || entity instanceof FlyingEye) && entity.state == 3)) {
+
+            // tower shoots enemy in shooting bounds
+            if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
+              entity.exist) {
+              that.elapsedTime = 0;
+              that.facing = getFacing(entity, that);
+              that.shoot(entity);
+              // console.log("Slime HP: ", entity.HP);
+              // that.printMonsterHP(entity.HP);
+            }
+
           }
         }
       });
@@ -175,7 +182,7 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-    //    this.showBoundingCircle(context);
+    this.showBoundingCircle(context);
 
     var width = this.scale > 2 ? 100 : 50;
     this.drawHealth(
