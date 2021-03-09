@@ -17,6 +17,6 @@ class Cannonball extends Projectile {
         // stats
         this.canRotate = false;
         this.radius = 8.5 * this.scale;
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 180; // pixels per second
     }
 }
