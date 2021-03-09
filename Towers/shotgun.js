@@ -1,5 +1,25 @@
 class Shotgun extends Tower {
-  static cost = 40;
+  // lvl 1
+  static maxHP = 300;
+  static fireRate = 1; 
+  static shootingRadius = 30; 
+  static damage = 20; 
+  static cost = 40; 
+  
+  // lvl 2
+  static maxHP2 = 400;
+  static fireRate2 = 1;
+  static shootingRadius2 = 50;
+  static damage2 = 20;
+  static cost2 = 60;
+
+  // lvl 3
+  static maxHP3 = 500;
+  static fireRate3 = 0.8;
+  static shootingRadius3 = 50;
+  static damage3 = 30;
+  static cost3 = 80;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,13 +51,11 @@ class Shotgun extends Tower {
     }
 
     //stats
-    this.HP = 300;
-    this.maxHP = this.HP;
-    this.fireRate = 1; // Fire rate: Moderate
-    this.shootingRadius = 30 * this.scale; // Range: Short
-    this.damage = 20; // Damage: Strong
-    this.cost = 25; // 25 coins
-    this.upgradeCost = 40;
+    this.HP = Shotgun.maxHP;
+    this.fireRate = Shotgun.fireRate;
+    this.shootingRadius = Shotgun.shootingRadius * this.scale; 
+    this.damage = Shotgun.damage; 
+    this.cost = Shotgun.cost;
 
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
@@ -146,19 +164,20 @@ class Shotgun extends Tower {
     if (this.towerLevel < 3) {
       this.towerLevel++;
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(40);
-        this.maxHP += 20;
-        this.HP = this.maxHP;
-        this.fireRate -= .3;
+        this.user.decreaseBalance(Shotgun.cost2);
+        this.HP = Shotgun.maxHP2;
+        this.fireRate = Shotgun.fireRate2;
+        this.shootingRadius = Shotgun.shootingRadius2 * this.scale; 
+        this.damage = Shotgun.damage2; 
 
         this.frameHeight = 41;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(60);
-        this.maxHP += 40;
-        this.HP = this.maxHP;
-        this.damage += 15;
-        this.shootingRadius +=  20 * this.scale;
+        this.user.decreaseBalance(Shotgun.cost3);
+        this.HP = Shotgun.maxHP3;
+        this.fireRate = Shotgun.fireRate3;
+        this.shootingRadius = Shotgun.shootingRadius3 * this.scale; 
+        this.damage = Shotgun.damage3; 
 
         this.frameHeight = 44;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;

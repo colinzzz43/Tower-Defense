@@ -818,31 +818,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 30",
+          "HP : " + MG.maxHP,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 25",
+          "Cost: " + MG.cost,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + MG.shootingRadius,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + MG.damage,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Fast",
+          "Fire Rate : " + MG.fireRate,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 95
         );
@@ -875,31 +875,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 50^",
+          "HP : " + MG.maxHP2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 40",
+          "Cost: " + MG.cost2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + MG.shootingRadius2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + MG.damage2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Fast",
+          "Fire Rate : " + MG.fireRate2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 95
         );
@@ -933,31 +933,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 90^",
+          "HP : " + MG.maxHP3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 60",
+          "Cost: " + MG.cost3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + MG.shootingRadius3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + MG.damage3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Fast",
+          "Fire Rate : " + MG.fireRate3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 95
         );
@@ -982,31 +982,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 100",
+          "HP : " + Pistol.maxHP,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 10",
+          "Cost: " + Pistol.cost,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Pistol.shootingRadius,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + Pistol.damage,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Pistol.fireRate,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 95
         );
@@ -1039,31 +1039,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 120^",
+          "HP : " + Pistol.maxHP2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 20",
+          "Cost: " + Pistol.cost2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Pistol.shootingRadius2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + Pistol.damage2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Pistol.fireRate2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 95
         );
@@ -1097,31 +1097,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 160^",
+          "HP : " + Pistol.maxHP3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 30",
+          "Cost: " + Pistol.cost3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Pistol.shootingRadius3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Moderate",
+          "Damage: " + Pistol.damage3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Pistol.fireRate3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 95
         );
@@ -1146,31 +1146,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 10",
+          "HP : " + Rocket.maxHP,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 75",
+          "Cost: " + Rocket.cost,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Long",
+          "Range : " + Rocket.shootingRadius,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Rocket.damage,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Rocket.fireRate,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 95
         );
@@ -1203,31 +1203,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 40^",
+          "HP : " + Rocket.maxHP2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 120",
+          "Cost: " + Rocket.cost2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Long",
+          "Range : " + Rocket.shootingRadius2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Rocket.damage2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Rocket.fireRate2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 95
         );
@@ -1261,31 +1261,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 100^",
+          "HP : " + Rocket.maxHP3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 160",
+          "Cost: " + Rocket.cost3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Long",
+          "Range : " + Rocket.shootingRadius3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Rocket.damage3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Rocket.fireRate3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 95
         );
@@ -1309,31 +1309,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 50",
+          "HP : " + Shotgun.maxHP,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 25",
+          "Cost: " + Shotgun.cost,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Short",
+          "Range : " + Shotgun.shootingRadius,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Shotgun.damage,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Shotgun.fireRate,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 95
         );
@@ -1366,31 +1366,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 70^",
+          "HP : " + Shotgun.maxHP2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 40",
+          "Cost: " + Shotgun.cost2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Short",
+          "Range : " + Shotgun.shootingRadius2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Shotgun.damage2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Shotgun.fireRate2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 95
         );
@@ -1424,31 +1424,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 110^",
+          "HP : " + Shotgun.maxHP3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 60",
+          "Cost: " + Shotgun.cost3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Short",
+          "Range : " + Shotgun.shootingRadius3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Strong",
+          "Damage: " + Shotgun.damage3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Moderate",
+          "Fire Rate : " + Shotgun.fireRate3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 95
         );
@@ -1473,31 +1473,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 100",
+          "HP : " + Spazer.maxHP,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 75",
+          "Cost: " + Spazer.cost,
           this.topLeftCornerX + 100,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Spazer.shootingRadius,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Weak",
+          "Control: " + Spazer.controlTime + "secs",
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Slow",
+          "Fire Rate : " + Spazer.fireRate,
           this.topLeftCornerX + 200,
           this.topLeftCornerY + 95
         );
@@ -1530,31 +1530,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 105^",
+          "HP : " + Spazer.maxHP2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 120",
+          "Cost: " + Spazer.cost2,
           this.topLeftCornerX + 500,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Spazer.shootingRadius2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Weak",
+          "Control: " + Spazer.controlTime2 + "secs",
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Slow",
+          "Fire Rate : " + Spazer.fireRate2,
           this.topLeftCornerX + 600,
           this.topLeftCornerY + 95
         );
@@ -1588,31 +1588,31 @@ class DescriptionBox {
         );
 
         this.ctx.strokeText(
-          "HP : 165^",
+          "HP : " + Spazer.maxHP3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Cost: 160",
+          "Cost: " + Spazer.cost3,
           this.topLeftCornerX + 900,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Range : Medium",
+          "Range : " + Spazer.shootingRadius3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 65
         );
 
         this.ctx.strokeText(
-          "Damage: Weak",
+          "Control: " + Spazer.controlTime3 + "secs",
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 80
         );
 
         this.ctx.strokeText(
-          "Fire Rate : Slow",
+          "Fire Rate : " + Spazer.fireRate3,
           this.topLeftCornerX + 995,
           this.topLeftCornerY + 95
         );

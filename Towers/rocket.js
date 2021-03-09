@@ -1,5 +1,25 @@
 class Rocket extends Tower {
-  static cost = 60;
+  // lvl 1
+  static maxHP = 100;
+  static fireRate = 1.2; 
+  static shootingRadius = 90; 
+  static damage = 50; 
+  static cost = 70; 
+  
+  // lvl 2
+  static maxHP2 = 200;
+  static fireRate2 = 1;
+  static shootingRadius2 = 90;
+  static damage2 = 50;
+  static cost2 = 90;
+
+  // lvl 3
+  static maxHP3 = 300;
+  static fireRate3 = 1;
+  static shootingRadius3 = 110;
+  static damage3 = 80;
+  static cost3 = 110;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,13 +51,12 @@ class Rocket extends Tower {
     }
 
     //stats
-    this.HP = 100;
-    this.maxHP = this.HP;
-    this.fireRate = 1.15; // Fire rate: Moderately Slow
-    this.shootingRadius = 90 * this.scale; // Range: Long
-    this.damage = 50; // Damage: Strong
-    this.cost = 75; // Cost: 75 coins
-    this.upgradeCost = 120;
+    this.HP = Rocket.maxHP;
+    this.fireRate = Rocket.fireRate;
+    this.shootingRadius = Rocket.shootingRadius * this.scale; 
+    this.damage = Rocket.damage; 
+    this.cost = Rocket.cost;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -100,20 +119,21 @@ class Rocket extends Tower {
     if (this.towerLevel < 3) {
       this.towerLevel++;
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(65);
-        this.fireRate += 0.75;
-        this.maxHP += 30;
-        this.HP = this.maxHP;
+        this.user.decreaseBalance(Rocket.cost2);
+        this.HP = Rocket.maxHP2;
+        this.fireRate = Rocket.fireRate2;
+        this.shootingRadius = Rocket.shootingRadius2 * this.scale; 
+        this.damage = Rocket.damage2; 
 
 
         this.frameHeight = 47;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(90);
-        this.shootingRadius += 5 * this.scale;
-        this.damage += 10;
-        this.maxHP += 60;
-        this.HP = this.maxHP;
+        this.user.decreaseBalance(Rocket.cost3);
+        this.HP = Rocket.maxHP3;
+        this.fireRate = Rocket.fireRate3;
+        this.shootingRadius = Rocket.shootingRadius3 * this.scale; 
+        this.damage = Rocket.damage3; 
       }
 
       this.animations = [];

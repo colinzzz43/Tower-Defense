@@ -1,5 +1,25 @@
 class Pistol extends Tower {
-  static cost = 20;
+  // lvl 1
+  static maxHP = 150;
+  static fireRate = 1; 
+  static shootingRadius = 70; 
+  static damage = 20; 
+  static cost = 20; 
+  
+  // lvl 2
+  static maxHP2 = 250;
+  static fireRate2 = 0.8;
+  static shootingRadius2 = 70;
+  static damage2 = 20;
+  static cost2 = 40;
+
+  // lvl 3
+  static maxHP3 = 350;
+  static fireRate3 = 1;
+  static shootingRadius3 = 90;
+  static damage3 = 30;
+  static cost3 = 60;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,13 +51,12 @@ class Pistol extends Tower {
     }
 
     // stats
-    this.HP = 150;
-    this.maxHP = this.HP;
-    this.fireRate = 1; // Fire rate: Moderate
-    this.shootingRadius = 70 * this.scale; // Range: Medium
-    this.damage = 20; // Damage: Moderate
-    this.cost = 20; // Cost: 20 coins
-    this.upgradeCost = 15;
+    this.HP = Pistol.maxHP;
+    this.fireRate = Pistol.fireRate;
+    this.shootingRadius = Pistol.shootingRadius * this.scale; 
+    this.damage = Pistol.damage; 
+    this.cost = Pistol.cost;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -102,19 +121,20 @@ class Pistol extends Tower {
     if (this.towerLevel < 3) {
       this.towerLevel++;
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(20);
-        this.maxHP += 20;
-        this.HP = this.maxHP;
-        this.fireRate -= .3;
+        this.user.decreaseBalance(Pistol.cost2);
+        this.HP = Pistol.maxHP;
+        this.fireRate = Pistol.fireRate;
+        this.shootingRadius = Pistol.shootingRadius * this.scale; 
+        this.damage = Pistol.damage; 
 
         this.frameHeight = 44;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
       } else {
-        this.user.decreaseBalance(30);
-        this.maxHP += 40;
-        this.HP = this.maxHP;
-        this.damage += 15;
-        this.shootingRadius +=  20 * this.scale;
+        this.user.decreaseBalance(Pistol.cost3);
+        this.HP = Pistol.maxHP;
+        this.fireRate = Pistol.fireRate;
+        this.shootingRadius = Pistol.shootingRadius * this.scale; 
+        this.damage = Pistol.damage; 
 
         this.frameHeight = 45;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
