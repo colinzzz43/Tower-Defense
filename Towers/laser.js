@@ -1,5 +1,25 @@
 class Laser extends Tower {
-  static cost = 50;
+  // lvl 1
+  static maxHP = 200;
+  static fireRate = 0.2; 
+  static shootingRadius = 90; 
+  static damage = 10; 
+  static cost = 50; 
+  
+  // lvl 2
+  static maxHP2 = 300;
+  static fireRate2 = 0.2; 
+  static shootingRadius2 = 110;
+  static damage2 = 10; 
+  static cost2 = 70;
+
+  // lvl 3
+  static maxHP3 = 400;
+  static fireRate3 = 0.2; 
+  static shootingRadius3 = 110;
+  static damage3 = 15;
+  static cost3 = 90;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,13 +51,12 @@ class Laser extends Tower {
     }
 
     //stats
-    this.HP = 200;
-    this.maxHP = this.HP;
-    this.fireRate = 0.2; // Fire rate: Very Fast
-    this.shootingRadius = 90 * this.scale; // Range: Long
-    this.damage = 10; // Damage: Weak
-    this.cost = 50; // Cost: 50 coins
-    this.upgradeCost = 140;
+    this.HP = Laser.maxHP;
+    this.fireRate = Laser.fireRate;
+    this.shootingRadius = Laser.shootingRadius * this.scale;
+    this.damage = Laser.damage;
+    this.cost = Laser.cost;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -100,21 +119,21 @@ class Laser extends Tower {
     if (this.towerLevel < 3) {
       this.towerLevel++;
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(90);
-        this.shootingRadius += 10 * this.scale;
-        this.maxHP += 10;
-        this.HP = this.maxHP;
-
+        this.user.decreaseBalance(Laser.cost2);
+        this.HP = Laser.maxHP2;
+        this.fireRate = Laser.fireRate2;
+        this.shootingRadius = Laser.shootingRadius2 * this.scale;
+        this.damage = Laser.damage2;
 
         this.frameHeight = 44;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
       } else {
-        this.user.decreaseBalance(120);
-        this.damage += 20;
-        this.maxHP += 30;
-        this.HP = this.maxHP;
-
+        this.user.decreaseBalance(Laser.cost3);
+        this.HP = Laser.maxHP3;
+        this.fireRate = Laser.fireRate3;
+        this.shootingRadius = Laser.shootingRadius3 * this.scale;
+        this.damage = Laser.damage3;
 
         this.frameHeight = 46;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;

@@ -1,5 +1,24 @@
 class Flamethrower extends Tower {
-  static cost = 40; // Cost: 40 coins
+  // lvl 1
+  static maxHP = 300;
+  static fireRate = 0.3; 
+  static shootingRadius = 30; 
+  static damage = 0.1; 
+  static cost = 40; 
+  
+  // lvl 2
+  static maxHP2 = 400;
+  static fireRate2 = 0.3; 
+  static shootingRadius2 = 50;
+  static damage2 = 0.1; 
+  static cost2 = 60;
+
+  // lvl 3
+  static maxHP3 = 500;
+  static fireRate3 = 0.3; 
+  static shootingRadius3 = 50;
+  static damage3 = 0.2;
+  static cost3 = 80;
 
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
@@ -33,13 +52,12 @@ class Flamethrower extends Tower {
     }
 
     //stats
-    this.HP = 300;
-    this.maxHP = this.HP;
-    this.fireRate = 0.2; // Fire rate: Very Fast
-    this.shootingRadius = 30 * this.scale; // Range: Short
-    this.damage = 0.05; // Damage: Weak (scaled for multiple lingering flames)
-    this.cost = 40; // Cost: 40 coins
-    this.upgradeCost = 40;
+    this.HP = Flamethrower.maxHP;
+    this.fireRate = Flamethrower.fireRate;
+    this.shootingRadius = Flamethrower.shootingRadius * this.scale;
+    this.damage = Flamethrower.damage;
+    this.cost = Flamethrower.cost;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -265,19 +283,21 @@ class Flamethrower extends Tower {
     if (this.towerLevel < 3) {
       this.towerLevel++;
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(65);
-        this.shootingRadius += 20 * this.scale;
-        this.maxHP += 20;
-        this.HP = this.maxHP;
+        this.user.decreaseBalance(Flamethrower.cost2);
+        this.HP = Flamethrower.maxHP2;
+        this.fireRate = Flamethrower.fireRate2;
+        this.shootingRadius = Flamethrower.shootingRadius2 * this.scale;
+        this.damage = Flamethrower.damage2;
 
         this.frameHeight = 48;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
         
       } else {
-        this.user.decreaseBalance(90);
-        this.damage += 15;
-        this.maxHP += 40;
-        this.HP = this.maxHP;
+        this.user.decreaseBalance(Flamethrower.cost3);
+        this.HP = Flamethrower.maxHP3;
+        this.fireRate = Flamethrower.fireRate3;
+        this.shootingRadius = Flamethrower.shootingRadius3  * this.scale;
+        this.damage = Flamethrower.damage3
       }
 
       this.animations = [];
