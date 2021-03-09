@@ -28,6 +28,14 @@ function widthScaling() {
   return cssCanvasWidth / htmlCanvasWidth;
 }
 
+// get the xy coordinates of the mouse when it does an event
+function getXandY(that, e) {
+	var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+	var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+
+	return { x: x, y: y };
+};
+
 // determing which direction each tower will be facing
 function getFacing(enemy, tower) {
 

@@ -871,7 +871,7 @@ class RestartIcon extends UserMenuIcon {
     //		this.user = new User(this.gameEngine);
 
     // Fourth, reset the displayed game stats
-    this.gameEngine.camera.user.balance = this.user.balance;
+    this.gameEngine.camera.user.balance = this.gameEngine.camera.user.DEFAULT_BALANCE;
     this.gameEngine.camera.user.scores = 0;
     this.gameEngine.camera.base.HP = 5;
     this.gameEngine.camera.timeLeft = this.gameEngine.camera.TIME_LIMIT;
@@ -918,6 +918,9 @@ class ExitIcon extends UserMenuIcon {
 			execute the primary function of the 'Exit' icon when clicked
 		*/
   userIconFunction() {
+	this.level.removeMouseInteractions();
+	this.level.towerStoreMenu.removeMouseInteractions();
+	  
 	this.gameEngine.camera.clearEntities();
 	this.gameEngine.camera.sceneType = "levelselect";
 	this.gameEngine.addEntity(new Transition(this.gameEngine.camera.sceneType));
