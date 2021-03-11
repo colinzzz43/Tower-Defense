@@ -59,8 +59,8 @@ class Mushroom extends Enemy {
 
     // stats
     this.score = 50;
-    this.scale = 2;
-    this.HP = 200;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
+    this.HP = 250;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 50;
     this.reward = 120;

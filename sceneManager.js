@@ -8,10 +8,6 @@ class SceneManager {
 		ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
 		this.BGM = new Audio("./soundeffects/BGM.mp3");
 
-		//  this.user = this.game.user;
-
-		//	this.base = this.game.base;
-
 		this.currentWave = 0;
 		this.scores = 0;
 
@@ -30,11 +26,9 @@ class SceneManager {
 
 		// Pause Screen
 		this.paused = false;
-		//	this.game.paused = this.paused;
 
 		// Game Speed
 		this.speed = 1;
-		//	this.game.speed = this.speed;
 
 		// Game Mute
 		this.muted = false;
@@ -44,8 +38,6 @@ class SceneManager {
 		this.timerRestarted = false;
 		this.speedChanged = false;
 		this.timerInterval = null;
-
-		this.currentWave = 0;
 
 		this.transition = true;
 		this.sceneType = "title";
@@ -126,6 +118,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;		
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -165,6 +158,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -203,6 +197,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;			
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -242,6 +237,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;			
 		this.game.addEntity(userMenu);
 
 		// description box

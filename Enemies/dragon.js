@@ -85,15 +85,15 @@ class Dragon extends Enemy {
 
     // stats
     this.score = 100;
-    this.scale = 1.5;
-    this.HP = 1000;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1 : 1.5;
+    this.HP = 10000;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 250;
     this.reward = 250;
     this.radius = (this.frameWidth / 2 - 10) * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 50) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
-    this.yOffset = this.frameHeight * this.scale;
+    this.yOffset = (this.frameHeight - 45) * this.scale;
     this.fireRate = 2;
 
     // level grid and enemy movement

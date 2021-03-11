@@ -62,7 +62,7 @@ class Skeleton extends Enemy {
     // stats
     this.score = 30;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
-    this.HP = 150;
+    this.HP = 300;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 40;
     this.reward = 30;
