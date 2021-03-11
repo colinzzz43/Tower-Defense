@@ -918,9 +918,24 @@ class ExitIcon extends UserMenuIcon {
 			execute the primary function of the 'Exit' icon when clicked
 		*/
   userIconFunction() {
+	// remove mouse event listeners in which the mouse cursor
+	// interacts with the level map and tower store
 	this.level.removeMouseInteractions();
 	this.level.towerStoreMenu.removeMouseInteractions();
-	  
+	
+	// set the speed, mute, and pause states of game to default
+	this.gameEngine.camera.speed = 1;
+	this.gameEngine.camera.muted = false;
+	this.gameEngine.camera.paused = false;
+	
+	console.log(`Does Exit Work?`);
+	
+	console.log(`Speed = ${this.gameEngine.camera.speed}`);
+	console.log(`Muted = ${this.gameEngine.camera.muted}`);
+	console.log(`Paused = ${this.gameEngine.camera.paused}`);
+	
+	// clear all entities that make up the level and then
+	// transition to the level select screen
 	this.gameEngine.camera.clearEntities();
 	this.gameEngine.camera.sceneType = "levelselect";
 	this.gameEngine.addEntity(new Transition(this.gameEngine.camera.sceneType));

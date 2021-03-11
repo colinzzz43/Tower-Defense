@@ -37,13 +37,18 @@ var levelOneWaves = {
 		[
 			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 390, direction: "right"}, 
 			{enemyType: "Skeleton", initialSpawnTime: 125, interval: 3, number: 5, x: 200, y: 390, direction: "right"}
+		],
+		
+		// wave 6 (final boss)
+		[
+			{enemyType: "Dragon", initialSpawnTime: 160, interval: 1.5, number: 1, x: 200, y: 390, direction: "right"}
 		]
 	
 	],
 
 	// Time to next wave for waves 0-4.
 	// To find time to next wave, next wave intialSpawnTime - current wave initialSpawnTime.
-	waveTimes: [5, 30, 35, 25, 30]
+	waveTimes: [5, 30, 35, 25, 30, 40]
 	
 };
 
