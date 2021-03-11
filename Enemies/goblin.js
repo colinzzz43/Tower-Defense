@@ -60,7 +60,7 @@ class Goblin extends Enemy {
     // stats
     this.score = 20;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
-    this.HP = 100;
+    this.HP = 150;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 25; 
     this.reward = 15;

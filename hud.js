@@ -331,7 +331,12 @@ class HUD {
 			(this.levelMap.width * 0.85);
 			ctx.fillText("LEVEL " + this.game.camera.currentLevel, horizontalAlign + 630, verticalAlign * 0.7);
 		if (this.gameStarted) {
-			ctx.fillText("WAVES " + this.game.camera.currentWave + "/5", horizontalAlign + 780, verticalAlign * 0.7);
+			if (this.game.camera.currentWave < 6) {
+				ctx.fillText("WAVES " + this.game.camera.currentWave + "/5", horizontalAlign + 780, verticalAlign * 0.7);	
+			} else {
+				ctx.fillText("BOSS WAVE", horizontalAlign + 780, verticalAlign * 0.7);				
+			}
+
 
 		} else {
 			ctx.fillText("TIME:", horizontalAlign + 780, verticalAlign * 0.7);

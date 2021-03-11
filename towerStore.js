@@ -36,8 +36,6 @@ class TowerStoreMenu {
 	this.towerStoreClick = this.createMouseClick(this);
 	this.towerStoreMove = this.createMouseMove(this);
 	this.implementMouseInteractions();
-//    this.mouseInteraction();
-
   };
 
 	/*
@@ -354,7 +352,7 @@ class TowerStoreMenu {
 
 	/*
 		Add all mouse event listeners needed for interaction with 
-		this level to HTML canvas.
+		this TowerStoreMenu object to HTML canvas.
 	*/
 	implementMouseInteractions() {		
 		// mouse click interactions
@@ -365,7 +363,7 @@ class TowerStoreMenu {
 	};
 	
 	/*
-		Remove all mouse event listeners associated with this TowerStore object 
+		Remove all mouse event listeners associated with this TowerStoreMenu object 
 		from the HTML canvas.
 	*/	
 	removeMouseInteractions() {			

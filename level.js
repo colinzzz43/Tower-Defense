@@ -107,7 +107,6 @@ class Level {
 		Update does nothing to level
 	*/
 	update() {
-//		this.mouseFunction();	
 		if (this.removeFromWorld) {
 			this.removeMouseInteractions();
 		}
@@ -245,7 +244,7 @@ class Level {
 	
 	/*
 		Create the actions that will happen with the Level object when
-		the mouse is clicked within canvas.
+		the mouse is clicked within canvas.  
 	*/
 	createMouseClick(that) {
 		return function (e) {
