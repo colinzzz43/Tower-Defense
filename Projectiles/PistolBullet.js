@@ -17,6 +17,6 @@ class PistolBullet extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 4 * this.scale;
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 200; // pixels per second
     }
 }

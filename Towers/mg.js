@@ -1,5 +1,25 @@
 class MG extends Tower {
-  static cost = 25; // Cost: 25 coins
+  // lvl 1
+  static maxHP = 200;
+  static fireRate = 0.5; 
+  static shootingRadius = 70; 
+  static damage = 20; 
+  static cost = 40; 
+  
+  // lvl 2
+  static maxHP2 = 300;
+  static fireRate2 = 0.3;
+  static shootingRadius2 = 70;
+  static damage2 = 20;
+  static cost2 = 60;
+
+  // lvl 3
+  static maxHP3 = 400;
+  static fireRate3 = 0.3;
+  static shootingRadius3 = 90;
+  static damage3 = 30;
+  static cost3 = 80;
+
   constructor(gameEngine, x, y, level) {
     super(gameEngine, x, y, level);
 
@@ -31,13 +51,13 @@ class MG extends Tower {
     }
 
     //stats
-    this.HP = 30;
-    this.maxHP = this.HP;
-    this.fireRate = 0.5; // Fire rate: Fast
-    this.shootingRadius = 50 * this.scale; // Range: Medium
-    this.damage = 10; // Damage: Moderate
-    this.cost = 25; // Cost: 25 coins
-    this.upgradeCost = 25;
+    this.HP = MG.maxHP;
+    this.fireRate = MG.fireRate;
+    this.shootingRadius = MG.shootingRadius * this.scale; 
+    this.damage = MG.damage; 
+    this.cost = MG.cost;
+    this.upgradeCost = MG.cost2;
+
     this.depreciated = 0.8;
     this.radius = 10 * this.scale;
 
@@ -100,21 +120,24 @@ class MG extends Tower {
   upgrade() {
     if (this.towerLevel < 3) {
       this.towerLevel++;
+      this.user.decreaseBalance(this.upgradeCost);
+      this.cost += this.upgradeCost;
+
       if (this.towerLevel == 2) {
-        this.user.decreaseBalance(40);
-        this.maxHP += 20;
-        this.HP = this.maxHP;
-        this.fireRate -= .3;
+        this.HP = MG.maxHP2;
+        this.fireRate = MG.fireRate2;
+        this.shootingRadius = MG.shootingRadius2 * this.scale; 
+        this.damage = MG.damage2; 
+        this.upgradeCost = MG.cost3;
 
         this.frameHeight = 46;
         this.yOffset = this.frameHeight * this.scale - 5 * this.scale;
 
       } else {
-        this.user.decreaseBalance(60);
-        this.maxHP += 40;
-        this.HP = this.maxHP;
-        this.damage += 15;
-        this.shootingRadius +=  20 * this.scale;
+        this.HP = MG.maxHP3;
+        this.fireRate = MG.fireRate3;
+        this.shootingRadius = MG.shootingRadius3 * this.scale; 
+        this.damage = MG.damage3; 
       }
 
       this.animations = [];

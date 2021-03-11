@@ -24,7 +24,7 @@ class Skeleton extends Enemy {
       150,
       150,
       8,
-      0.2,
+      0.09,
       0,
       false,
       true
@@ -62,18 +62,18 @@ class Skeleton extends Enemy {
     // stats
     this.score = 30;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
-    this.HP = 40;
+    this.HP = 150;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 15;
+    this.damage = 40;
     this.reward = 30;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 3) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
-    this.attackRate = 4.5;
+    this.attackRate = 1;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, this.direction, this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
   }
 
   loadAnimation() {
@@ -87,7 +87,7 @@ class Skeleton extends Enemy {
   update() {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-    this.movement.speed = 1.7 * this.enemySpeedMultipler;
+    this.movement.speed = 1.25 * this.enemySpeedMultipler;
 
     if (this.enemyPaused) {
       // pause animation at certain frame

@@ -17,7 +17,7 @@ class SpazerRay extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 8.5;
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 400; // pixels per second
     }
 
     update() {
@@ -41,7 +41,7 @@ class SpazerRay extends Projectile {
               this.target.takeHit(this.shootingEntity.damage);
               this.removeFromWorld = true;
               this.target.controlled = true;
-              this.target.controlTime = 3;
+              this.target.controlTime = this.shootingEntity.controlTime;
             }
     
             if (this.target.removeFromWorld) {
