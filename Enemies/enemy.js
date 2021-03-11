@@ -171,11 +171,15 @@ class Enemy {
 		@entityPosition			the enemy's current xy-coordinates on canvas
 	*/
 	drawHealth(ctx, x, y, HP, maxHP, movement, entityPosition) {
-		var width = this.gameEngine.camera.currentLevel > 1 ? 50 : 100;
-		var thickness = 10;
+//		var width = this.gameEngine.camera.currentLevel > 1 ? 50 : 50;
+		var width = 50;
+		var thickness = 6;
 		var percentage = width * (HP / maxHP);
+		var maxHealthOutline = width;
 		var healthPercent = (HP / maxHP) * 100;
 		ctx.beginPath();
+		ctx.lineWidth = 3;
+		ctx.strokeRect(x - width / 2, y, width, thickness);
 		ctx.rect(x - width / 2, y, percentage, thickness);
 		if (healthPercent > 63) {
 			ctx.fillStyle = "green";

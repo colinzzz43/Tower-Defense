@@ -30,11 +30,17 @@ class UserMenu {
 
     this.menuBoxWidth = 140;
     this.menuBoxHeight = 590;
-    this.userIcons = [];
-
-    this.initializeIcons();
-    this.mouseInteraction();
     this.widthScale = widthScaling();
+	
+	// create the button icons for the user menu
+    this.userIcons = [];
+    this.initializeIcons();
+
+	// create the mouse click and move listeners for 
+	// interacting with the user menu
+	this.userMenuClick = this.createMouseClick(this);
+	this.userMenuMove = this.createMouseMove(this);	
+	this.implementMouseInteractions();
   }
 
   /*
@@ -190,7 +196,89 @@ class UserMenu {
     this.gameEngine.addEntity(pauseIcon);
     this.gameEngine.addEntity(restartIcon);
 	this.gameEngine.addEntity(exitIcon);
-  }
+  };
+
+
+	/*
+		Add all mouse event listeners needed for interaction with 
+		this UserMenu object to HTML canvas.
+	*/
+	implementMouseInteractions() {
+		this.ctx.canvas.addEventListener("click", this.userMenuClick, false);
+		
+		this.ctx.canvas.addEventListener("mousemove", this.userMenuMove, false);
+	};
+	
+	/*
+		Remove all mouse event listeners associated with this UserMenu object 
+		from the HTML canvas.
+	*/	
+	removeMouseInteractions() {
+		this.ctx.canvas.removeEventListener("click", this.userMenuClick);
+		
+		this.ctx.canvas.removeEventListener("mousemove", this.userMenuMove);		
+	};
+	
+	/*
+		Create the actions that will happen with the UserMenu object when
+		the mouse is clicked within canvas	
+	*/	
+	createMouseClick(that) {
+		return function (e) {
+			var canvasCoordinates = getXandY(that, e);
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+
+			for (var i = 0; i < that.userIcons.length; i++) {
+				var icon = that.userIcons[i];
+				var topLeftX = icon.xCanvas * that.widthScale;
+				var topLeftY = icon.yCanvas * that.widthScale;
+				var iconWidth = icon.iconBoxWidth * that.widthScale;
+				var iconHeight = icon.iconBoxHeight * that.widthScale;
+				if ( x >= topLeftX &&
+					 x <= topLeftX + iconWidth &&
+					 y >= topLeftY &&
+					 y <= topLeftY + iconHeight
+				) {
+					if ( icon instanceof SpeedIcon ||
+						 icon instanceof MuteIcon ||
+						 icon instanceof PauseIcon
+					) {
+					  icon.changeLabel();
+					}
+					icon.userIconFunction();
+				}
+			}			
+		}
+	};
+	
+	/*
+		Create the actions that will happen with the UserMenu object when
+		the mouse is moved within canvas	
+	*/
+	createMouseMove(that) {
+		return function (e) {
+			var canvasCoordinates = getXandY(that, e);
+			var x = canvasCoordinates.x;
+			var y = canvasCoordinates.y;
+			for (var i = 0; i < that.userIcons.length; i++) {
+				var icon = that.userIcons[i];
+				var topLeftX = icon.xCanvas * that.widthScale;
+				var topLeftY = icon.yCanvas * that.widthScale;
+				var iconWidth = icon.iconBoxWidth * that.widthScale;
+				var iconHeight = icon.iconBoxHeight * that.widthScale;
+				if ( x >= topLeftX &&
+					 x <= topLeftX + iconWidth &&
+					 y >= topLeftY &&
+					 y <= topLeftY + iconHeight
+				) {
+					icon.mouseover = true;
+				} else {
+					icon.mouseover = false;
+				}
+			}			
+		}
+	};
 
   /*
 		apply the mouse interaction for the user menu and its icons
@@ -810,14 +898,14 @@ class RestartIcon extends UserMenuIcon {
 
     // the label for the 'Restart' icon
     this.label = "Restart";
-  }
+  };
 
   /*
 		update the state of the icon
 	*/
   update() {
     // do nothing for now
-  }
+  };
 
   /*
 		draw the 'Restart' icon
@@ -828,7 +916,7 @@ class RestartIcon extends UserMenuIcon {
     super.drawLabel(ctx, this.label, false);
     super.drawIconHighlight(ctx);
     ctx.closePath();
-  }
+  };
 
   /*
 		execute the primary function of the 'Restart' icon when clicked
@@ -874,10 +962,11 @@ class RestartIcon extends UserMenuIcon {
     this.gameEngine.camera.user.balance = this.gameEngine.camera.user.DEFAULT_BALANCE;
     this.gameEngine.camera.user.scores = 0;
     this.gameEngine.camera.base.HP = 5;
+	this.gameEngine.camera.currentWave = 0;
     this.gameEngine.camera.timeLeft = this.gameEngine.camera.TIME_LIMIT;
     this.gameEngine.camera.timePassed = 0;
     this.gameEngine.camera.timerRestarted = true;
-  }
+  };
 }
 class ExitIcon extends UserMenuIcon {
   /*
@@ -894,14 +983,14 @@ class ExitIcon extends UserMenuIcon {
 
     // the label for the 'Exit' icon
     this.label = "Exit";
-  }
+  };
 
   /*
 			update the state of the icon
 		*/
   update() {
     // do nothing for now
-  }
+  };
 
   /*
 			draw the 'Exit' icon
@@ -912,33 +1001,31 @@ class ExitIcon extends UserMenuIcon {
     super.drawLabel(ctx, this.label, false);
     super.drawIconHighlight(ctx);
     ctx.closePath();
-  }
+  };
 
   /*
 			execute the primary function of the 'Exit' icon when clicked
 		*/
   userIconFunction() {
-	// remove mouse event listeners in which the mouse cursor
-	// interacts with the level map and tower store
-	this.level.removeMouseInteractions();
-	this.level.towerStoreMenu.removeMouseInteractions();
 	
-	// set the speed, mute, and pause states of game to default
+	// set the current wave and speed, mute, and pause states of game to default
 	this.gameEngine.camera.speed = 1;
 	this.gameEngine.camera.muted = false;
 	this.gameEngine.camera.paused = false;
-	
-	console.log(`Does Exit Work?`);
-	
-	console.log(`Speed = ${this.gameEngine.camera.speed}`);
-	console.log(`Muted = ${this.gameEngine.camera.muted}`);
-	console.log(`Paused = ${this.gameEngine.camera.paused}`);
+	this.gameEngine.camera.currentWave = 0;
 	
 	// clear all entities that make up the level and then
 	// transition to the level select screen
+	
+	// remove mouse event listeners in which the mouse cursor
+	// interacts with the level map, user menu, and tower store
+	this.level.removeMouseInteractions();
+	this.level.towerStoreMenu.removeMouseInteractions();
+	this.level.userMenu.removeMouseInteractions();	
+	
 	this.gameEngine.camera.clearEntities();
 	this.gameEngine.camera.sceneType = "levelselect";
 	this.gameEngine.addEntity(new Transition(this.gameEngine.camera.sceneType));
-
-  }
+  };
+  
 }

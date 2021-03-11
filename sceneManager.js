@@ -118,6 +118,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;		
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -157,6 +158,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -195,6 +197,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;			
 		this.game.addEntity(userMenu);
 
 		// description box
@@ -234,6 +237,7 @@ class SceneManager {
 
 		// user menu
 		var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+		level.userMenu = userMenu;			
 		this.game.addEntity(userMenu);
 
 		// description box

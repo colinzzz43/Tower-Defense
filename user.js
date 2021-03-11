@@ -8,7 +8,7 @@ class User {
     this.removeFromWorld = false;
     this.scores = 0;
 	
-	this.DEFAULT_BALANCE = 10000;
+	this.DEFAULT_BALANCE = 100;
 
     // initialization for the user
     this.balance = this.DEFAULT_BALANCE;

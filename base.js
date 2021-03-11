@@ -22,7 +22,7 @@ class Base {
 
     // stats
     this.HP = 5;
-    this.SCALE = 2; // SCALE = 3.75, to take up 3x3 of grid on map, SCALE = 2 for snow level
+    this.SCALE = this.gameEngine.camera.currentLevel > 1 ? 2 : 3.75; // SCALE = 3.75 for small prototype map, SCALE = 2 for the other maps
     this.diameter = 48 * this.SCALE;
     this.radius = this.diameter / 2;
   }

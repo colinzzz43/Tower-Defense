@@ -67,6 +67,7 @@ class Tower {
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fillStyle = "#FD0";
+	context.closePath();
     context.fill();
     context.stroke();
 
@@ -75,6 +76,7 @@ class Tower {
     context.setLineDash([8, 15]);
     context.beginPath();
     context.arc(this.x, this.y, this.shootingRadius, 0, 2 * Math.PI);
+	context.closePath();
     context.stroke();
   }
 
@@ -89,6 +91,7 @@ class Tower {
       context.lineWidth = 3;
       context.rect(this.x - tileLength / 2, this.y - tileLength / 2,
         tileLength, tileLength);
+	  context.closePath();		
       context.stroke();
       context.globalAlpha = 0.1;
       context.fill();
@@ -182,8 +185,8 @@ class Tower {
 
   draw(context) {
     this.drawTileHighlight(context);
-    // this.showBoundingCircle(context);
-
+//    this.showBoundingCircle(context);
+ 
     var width = this.scale > 2 ? 100 : 50;
     this.drawHealth(
       context,
@@ -226,5 +229,6 @@ class Tower {
     }
     ctx.closePath();
     ctx.fill();
+	ctx.stroke();
   }
 }
