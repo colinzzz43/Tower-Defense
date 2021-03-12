@@ -218,6 +218,7 @@ class Dragon extends Enemy {
 
   isDead() {
     this.removeFromWorld = true;
+	this.level.levelEnemyWaves.decrementEnemiesLeft();
     this.user.increaseBalance(this.reward);
     console.log("Dragon+$", this.reward);
     this.user.increaseScores(this.score);

@@ -104,24 +104,24 @@ class Level {
 	};
 
 	/*
-		Update does nothing to level
+		Update the state of the level
 	*/
 	update() {
-		if (this.removeFromWorld) {
-			this.removeMouseInteractions();
-		}
-		
-		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
-		this.levelPaused = this.gameEngine.camera.paused;
-			
-		// update towers
-		for (var i = 0; i < this.mapOfTowers.length; i++) {
-			for (var j = 0; j < this.mapOfTowers[i].length; j++) {
-				if (this.mapOfTowers[i][j] != null) {
-					this.mapOfTowers[i][j].update();
-				}
-			}			
-		}			
+		if (this.levelEnemyWaves.allEnemiesDefeated()) {
+			this.gameEngine.camera.allWavesDefeated = true;
+		} else {
+			this.levelSpeedMultiplier = this.gameEngine.camera.speed;
+			this.levelPaused = this.gameEngine.camera.paused;
+				
+			// update towers
+			for (var i = 0; i < this.mapOfTowers.length; i++) {
+				for (var j = 0; j < this.mapOfTowers[i].length; j++) {
+					if (this.mapOfTowers[i][j] != null) {
+						this.mapOfTowers[i][j].update();
+					}
+				}			
+			}				
+		}		
 	};
 
 	/*
