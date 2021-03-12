@@ -139,25 +139,10 @@ class Tower {
 
   dead() {
     this.removeFromWorld = true;
-    //	var index = this.level.placedTowers.indexOf(this);
-    //	this.level.placedTowers.splice(index, 1);
 
     // After tower is removed from world, set the terrain tile it was on to open tower terrain
     var tilePosition = this.getTilePosition();
     this.level.removeTower(tilePosition.row, tilePosition.column);
-    //   this.level.changeStateOfTowerTerrain(tilePosition.row, tilePosition.column);
-
-    // If the tower removed is the newest tower placed, set the level's 'newestTower' variable
-    // to null so that the 'Undo' icon linked to 'newestTower' can be disabled.
-    /*
-    if ( this.level.newestTower !== null) {
-      var tileOfNewestTower = this.level.newestTower.getTilePosition();
-      if ( tilePosition.row === tileOfNewestTower.row 
-        && tilePosition.column === tileOfNewestTower.column )
-          this.level.newestTower = null;
-    }
-    */
-
   }
 
   getShootingRange() {

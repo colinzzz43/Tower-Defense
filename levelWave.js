@@ -5,6 +5,7 @@ class LevelWave {
 		Object.assign( this, {level} );
 		this.levelWaves = null;
 		this.waveTimes = [];
+		this.numberOfEnemies = 0;
 		this.initializeWaves();
 		
 	};
@@ -32,6 +33,7 @@ class LevelWave {
 		Begin spawning the enemies for this level
 	*/
 	spawnEnemies() {
+		this.numberOfEnemies = 0;		
 		for (var i = 0; i < this.levelWaves.waves.length; i++) {
 			for (var j = 0; j < this.levelWaves.waves[i].length; j++) {
 				addEnemySpawn(
@@ -45,7 +47,30 @@ class LevelWave {
 					this.levelWaves.waves[i][j].enemyType,
 					this.levelWaves.waves[i][j].number
 				);
+				this.numberOfEnemies += this.levelWaves.waves[i][j].number;
 			}
+		}
+	};
+	
+	/*
+		Decrease the number of enemies left to kill by one,
+		in the instance an enemy is confirmed dead
+	*/
+	decrementEnemiesLeft() {
+		this.numberOfEnemies -= 1;	
+		console.log(`Enemies left: ${this.numberOfEnemies}`);
+	};
+	
+	/*
+		Return if the remaining number of enemies left
+		in the level is zero
+	*/
+	allEnemiesDefeated() {
+		if (this.numberOfEnemies <= 0) {
+			console.log('All enemies defeated');
+			return true;
+		} else {
+			return false;
 		}
 	};
 }

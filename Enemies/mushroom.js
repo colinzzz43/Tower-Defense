@@ -220,6 +220,7 @@ class Mushroom extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
+	this.level.levelEnemyWaves.decrementEnemiesLeft();	
     console.log("Mushroom+$", this.reward);
     this.user.increaseScores(this.score);
   }
