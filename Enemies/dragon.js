@@ -220,7 +220,7 @@ class Dragon extends Enemy {
     this.removeFromWorld = true;
 	this.level.levelEnemyWaves.decrementEnemiesLeft();
     this.user.increaseBalance(this.reward);
-    console.log("Dragon+$", this.reward);
+//    console.log("Dragon+$", this.reward);
     this.user.increaseScores(this.score);
     this.gameEngine.addEntity(new Coin(this.gameEngine, this.x, this.y));
   };

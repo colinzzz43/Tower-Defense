@@ -223,7 +223,7 @@ class Goblin extends Enemy {
   isDead() {
     this.user.increaseBalance(this.reward);
 	this.level.levelEnemyWaves.decrementEnemiesLeft();	
-    console.log("Goblin+$", this.reward);
+//    console.log("Goblin+$", this.reward);
     this.user.increaseScores(this.score);
   }
 }

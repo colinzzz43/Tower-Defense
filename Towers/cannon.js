@@ -134,7 +134,7 @@ class Cannon extends Tower {
   };
 
   upgrade() {
-    if (this.towerLevel < 3) {
+    if (this.towerLevel < 3 && this.user.balance >= this.upgradeCost) {
       this.towerLevel++;
       console.log(this.upgradeCost);
       this.user.decreaseBalance(this.upgradeCost);
