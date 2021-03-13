@@ -4,58 +4,39 @@ class Goblin extends Enemy {
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/goblin/Attack.png"
-    );
+      "./sprites/monster/goblin/Attack.png");
     this.deathImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/goblin/Death.png"
-    );
-    this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run.png");
-    this.takehitImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/goblin/Take Hit.png"
-    );
+      "./sprites/monster/goblin/Death.png");
+    this.runImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/goblin/Run.png");
+
+    this.attackLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/goblin/Attack_Left.png");
+    this.deathLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/goblin/Death_Left.png");
+    this.runLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/goblin/Run_Left.png");
 
     // animations
-    this.attackAnim = new Animator(
-      this.attackImg,
-      0,
-      0,
-      150,
-      150,
-      8,
-      0.12,
-      0,
-      false,
-      true
-    );
-    this.deathAnim = new Animator(
-      this.deathImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.3,
-      0,
-      false,
-      false
-    );
-    this.runAnim = new Animator(
-      this.runImg,
-      0,
-      0,
-      150,
-      150,
-      8,
-      0.2,
-      0,
-      false,
-      true
-    );
+    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 0.12, 0,
+      false, true);
+    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 0.3, 0,
+      false, false);
+    this.runAnim = new Animator(this.runImg, 0, 0, 150, 150, 8, 0.2, 0, false,
+      true);
+
+    this.attackLeftAnim = new Animator(this.attackLeftImg, 0, 0, 150, 150, 8, 0.12, 1,
+      false, true);
+    this.deathLeftAnim = new Animator(this.deathLeftImg, 0, 0, 150, 150, 4, 0.3, 1,
+      false, false);
+    this.runLeftAnim = new Animator(this.runLeftImg, 0, 0, 150, 150, 8, 0.2, 1,
+      false, true);
 
     this.loadAnimation();
 
     // state
-    this.state = 0; // 0: run, 1: attack, 2: takehit, 3: dead
+    this.facing = 0; // 0: right, 1: left
+    this.state = 0; // 0: run, 1: attack, 2: dead
 
     // stats
     this.score = 20;
@@ -76,10 +57,21 @@ class Goblin extends Enemy {
 
   loadAnimation() {
     this.animations = [];
-    this.animations.push(this.runAnim);
-    this.animations.push(this.attackAnim);
-    this.animations.push(this.takehitAnim);
-    this.animations.push(this.deathAnim);
+
+    for (var i = 0; i < 3; i++) { // 3 states
+        this.animations.push([]);
+        for (var j = 0; j < 2; j++) { // 2 ways to face
+            this.animations[i].push([]);
+        }
+    }
+
+    this.animations[0][0] = this.runAnim;
+    this.animations[1][0] = this.attackAnim;    
+    this.animations[2][0] = this.deathAnim;
+    
+    this.animations[0][1] = this.runLeftAnim;
+    this.animations[1][1] = this.attackLeftAnim;
+    this.animations[2][1] = this.deathLeftAnim;  
   }
 
   update() {
@@ -92,6 +84,13 @@ class Goblin extends Enemy {
     } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+      // check direction for left/right animations
+      if (this.movement.direction == "left") {
+        this.facing = 1;
+      } else if (this.movement.direction == "right") {
+        this.facing = 0;
+      }
 
       // spawn enemy if elapsed game time is greater than time to spawn
       // else do not do anything
@@ -118,7 +117,7 @@ class Goblin extends Enemy {
 
         if (this.controlled) {
           if (ent instanceof Enemy && ent.exist && ent !== this) {
-            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 3) {
+            if (this.state != 2 && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 2) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -127,7 +126,7 @@ class Goblin extends Enemy {
           }
         } else {
           if (ent instanceof Tower) {
-            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 3) {
+            if (this.state != 2 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 2) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -138,7 +137,7 @@ class Goblin extends Enemy {
       }
 
       if (this.target)
-        if (this.target.removeFromWorld || !collide(this, this.target)  && this.state != 3)
+        if (this.target.removeFromWorld || !collide(this, this.target)  && this.state != 2)
           this.state = 0;
 
           
@@ -155,7 +154,7 @@ class Goblin extends Enemy {
       }
 
       // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      if (this.state == 3) {
+      if (this.state == 2) {
         this.deathAnimationTime += this.gameEngine.clockTick;
         if (this.deathAnimationTime > 1) {
           this.removeFromWorld = true;
@@ -199,7 +198,7 @@ class Goblin extends Enemy {
       speedMultiplier = 0;
     };
 
-    this.animations[this.state].drawFrame(
+    this.animations[this.state][this.facing].drawFrame(
       this.gameEngine.clockTick * speedMultiplier,
       context,
       this.x - this.xOffset,
@@ -209,10 +208,9 @@ class Goblin extends Enemy {
   }
 
   takeHit(damage) {
-    // this.state = 2;
     this.HP = Math.max(0, this.HP - damage);
     if (this.HP === 0) {
-      this.state = 3;
+      this.state = 2;
     }
   };
 
