@@ -10,6 +10,7 @@ class SceneManager {
 
 		this.currentWave = 0;
 		this.scores = 0;
+		this.allWavesDefeated = false;
 
 		this.levelMap = {
 			xCanvas: 150,
@@ -22,7 +23,6 @@ class SceneManager {
 			width: PARAMS.WIDTH,
 			height: PARAMS.HEIGHT
 		};
-
 
 		// Pause Screen
 		this.paused = false;
@@ -42,19 +42,6 @@ class SceneManager {
 		this.transition = true;
 		this.sceneType = "title";
 		this.game.addEntity(new Transition(this.sceneType));
-		// Load the prototype level, along with user and tower store menus, to the game engine
-		// this.loadGamePrototype();
-
-		// Load the snow level(level 2)
-		// this.loadGameLevel2();
-
-
-		// Load the desert level(level 3)
-		// this.loadGameLevel3();
-
-		// Load the grass level(level 4)
-		// this.loadGameLevel4();
-
 	}
 
 	resetStats() {
@@ -66,10 +53,14 @@ class SceneManager {
 
 	startTimer() {
 		if (this.timerRestarted || this.speedChanged) {
+			if (this.timerRestarted) {	
+				this.waveTimer = 5;
+			}
 			clearInterval(this.timerInterval);
 			this.timerRestarted = false;
 			this.speedChanged = false;
 		}
+		
 		this.timerInterval = setInterval(() => {
 			if (!this.paused) {
 				// The amount of time passed increments by one
@@ -77,17 +68,18 @@ class SceneManager {
 
 				// Countdown to next wave. When 0, increment current wave
 				// and reset waveTimer to that wave's time
-				if (this.waveTimer <= 0) {
-					// just to get wave to increase to 5th one.
-					if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
-						this.currentWave++;
-						this.waveTimer = this.waveTimes[this.currentWave];
+				if (this.waveTimer !== '∞') {
+					if (this.waveTimer <= 0) {
+						// just to get wave to increase to 5th one.
+						if (this.currentWave < this.waveTimes.length - 1) {
+							this.currentWave++;
+							this.waveTimer = this.waveTimes[this.currentWave];
 
-					} else {
-						this.waveTimer = -1;
-					}
+						} else {
+							this.waveTimer = -1;
+						}
+					}						
 				}
-				
 			}
 		}, (100 / this.speed));
 	};
@@ -254,30 +246,42 @@ class SceneManager {
 			if (!(entity instanceof SceneManager)) {
 				entity.removeFromWorld = true;
 			}
+			
+			if ( entity instanceof UserMenu ||
+				 entity instanceof TowerStoreMenu ||
+				 entity instanceof Level ) {
+				entity.removeMouseInteractions();
+			}
 		});
 		console.log(this.game.entities);
 	}
 
 	update() {
-		if (this.timerRestarted || this.speedChanged && !this.transition) {
+		if ( (this.timerRestarted || this.speedChanged) && !this.transition) {
 			this.startTimer();
 		}
 
 		// in the middle of game
 		if (!this.transition) {
 			if (this.sceneType == "level") {
-//				console.log(this.base.HP);
+				
+				// if the base is destroyed before all enemies are killed,
+				// transition scene from level to game over screen
 				if (this.base.HP <= 0) {
 					this.transition = true;
 					this.sceneType = "gameover";
 					this.clearEntities();
 					this.game.addEntity(new Transition(this.sceneType));
-				}
-				else if (this.currentLevel == 5) {
-					this.transition = true;
-					this.sceneType = "gamewon";
-					this.clearEntities();
-					this.game.addEntity(new Transition(this.sceneType));
+					
+				// if all waves of enemies are killed before the base HP reaches zero,
+				// transition scene from level to game won screen
+				} else {
+					if (this.currentLevel === 5) {
+						this.transition = true;
+						this.sceneType = "gamewon";
+						this.clearEntities();
+						this.game.addEntity(new Transition(this.sceneType));
+					}
 				}
 			}
 		}
@@ -307,7 +311,6 @@ class SceneManager {
 						this.sceneType = "level";
 						this.currentLevel = 1;
 						this.clearEntities();
-						console.log('Clicked Prototype Level');
 						this.loadGamePrototype();
 					}
 

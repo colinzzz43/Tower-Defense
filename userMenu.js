@@ -953,6 +953,7 @@ class RestartIcon extends UserMenuIcon {
     }
 
     // Third, respawn the level's pre-defined waves from the beginning
+	this.level.levelEnemyWaves
     this.level.levelEnemyWaves.spawnEnemies();
 
     //		this.sceneManager = new SceneManager(this.gameEngine, this.ctx);

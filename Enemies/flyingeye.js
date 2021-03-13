@@ -210,11 +210,11 @@ class FlyingEye extends Enemy {
   };
 
   takeHit(damage) {
-    this.HP = Math.max(0, this.HP - damage);
+	this.HP = Math.max(0, this.HP - damage);
 
-    if (this.HP === 0) {
-      this.state = 3;
-    }
+	if (this.HP === 0) {
+		 this.state = 3;
+	}
   };
 
   attack(tower) {
@@ -224,7 +224,8 @@ class FlyingEye extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-    console.log("Flyingeye+$", this.reward);
+	this.level.levelEnemyWaves.decrementEnemiesLeft();	
+//    console.log("Flyingeye+$", this.reward);
 
     this.user.increaseScores(this.score);
   };

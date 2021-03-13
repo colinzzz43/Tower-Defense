@@ -118,7 +118,6 @@ class Slime extends Enemy {
       let position = this.getMovement(this.movement, this.x, this.y);
       this.x = position.x;
       this.y = position.y;
-//	  console.log(`Enemy: {${this.x}, ${this.y}} going ${this.movement.getDirection()}`);
       this.movement.updatePosition(this.x, this.y);		
 	  }
 
@@ -188,8 +187,9 @@ class Slime extends Enemy {
 
   isDead() {
     this.removeFromWorld = true;
+	this.level.levelEnemyWaves.decrementEnemiesLeft();	
     this.user.increaseBalance(this.reward);
-    console.log("Slime+$", this.reward);
+//    console.log("Slime+$", this.reward);
     this.user.increaseScores(this.score);
 
     // add coins when dropped

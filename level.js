@@ -46,8 +46,6 @@ class Level {
 		this.gameEngine.level = this;
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
-		
-//		console.log(levelOneGrid.mapArray);
 
 		// Initialize terrain map grid for this level
 		this.terrainGridTiles = new LevelTerrainMap(this);
@@ -104,13 +102,12 @@ class Level {
 	};
 
 	/*
-		Update does nothing to level
+		Update the state of the level
 	*/
 	update() {
-		if (this.removeFromWorld) {
-			this.removeMouseInteractions();
+		if (this.levelEnemyWaves.allEnemiesDefeated()) {
+			this.gameEngine.camera.allWavesDefeated = true;
 		}
-		
 		this.levelSpeedMultiplier = this.gameEngine.camera.speed;
 		this.levelPaused = this.gameEngine.camera.paused;
 			
@@ -121,7 +118,7 @@ class Level {
 					this.mapOfTowers[i][j].update();
 				}
 			}			
-		}			
+		}						
 	};
 
 	/*

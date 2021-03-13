@@ -50,7 +50,7 @@ class HUD {
 		this.userIcons = [];
 		
 		// this.initializeIcons();
-		this.mouseInteraction();
+//		this.mouseInteraction();
 		this.widthScale = widthScaling();		
 		
         this.waves = 1;
@@ -80,7 +80,7 @@ class HUD {
 		this.speedChanged = false;
 		this.timeLeft = this.TIME_LIMIT;
 		this.timerInterval = null;
-		this.startTimer();
+//		this.startTimer();
 	};
 
     startTimer() {
@@ -94,13 +94,14 @@ class HUD {
             // The amount of time passed increments by one
             this.timePassed += 0.01;
             this.timeLeft = this.TIME_LIMIT - this.timePassed;
+//			console.log(`HUD Timer = ${this.timeLeft}`);
             if (this.timeLeft < 0) {
                 this.timeLeft = 0;
 				this.gameStarted = true;
 
             }
           }
-        }, (100 / this.speed) );
+        }, (1000 / this.speed) );
 
       };
 	
@@ -112,9 +113,9 @@ class HUD {
         this.coins = this.user.balance;
         this.scores = this.game.camera.user.scores;
 		this.drawMenuBox();
-		for (var i = 0; i < this.userIcons.length; i++) {
-			this.userIcons[i].draw(ctx);
-		}		
+//		for (var i = 0; i < this.userIcons.length; i++) {
+//			this.userIcons[i].draw(ctx);
+//		}		
 	};
 	
 	/*
@@ -155,7 +156,7 @@ class HUD {
 		this.ctx.fill();
 		
 		// Draw the Tower Store Sign on HUD
-		this.ctx.strokeStyle = "navy";
+		this.ctx.strokeStyle = "green";
 		this.ctx.lineWidth = 3;
 		// this.ctx.strokeRect(this.topLeftCornerX + 5, this.topLeftCornerY + 10, this.menuBoxWidth - 10, 25);		
 		this.ctx.strokeStyle = "black";
@@ -174,58 +175,13 @@ class HUD {
         this.coinAnimation.drawFrame(
             this.game.clockTick,
             this.ctx,
-			horizontalAlign + 800,
+			horizontalAlign + 750,
 			verticalAlign * 0.7,
             1.8
         );
 
 		this.ctx.closePath();		
 	};
-	
-	/*
-		Create icons for user feature type and fill the user menu with them
-	*/	
-	// initializeIcons() {
-		
-	// 	// Centerize the rows of icons in the menu
-	// 	var centerX = this.topLeftCornerX + (this.menuBoxWidth/15);
-	// 	var y = this.topLeftCornerY + (this.menuBoxHeight / 12);
-		
-	// 	// Vertical pixel space between the top left corners of the rows of icons in the menu
-	// 	var verticalSpace = 90;
-
-	// 	// Create the 'Undo' Icon
-	// 	var undoIcon = new UndoIcon(this.gameEngine, centerX, y, this.ctx, this.level);
-	// 	this.userIcons.push(undoIcon);
-	// 	y += verticalSpace;
-		
-	// 	// Create the 'Speed' Icon
-	// 	var speedIcon = new SpeedIcon(this.gameEngine, centerX, y, this.ctx, this.level);
-	// 	this.userIcons.push(speedIcon);
-	// 	y += verticalSpace;
-		
-	// 	// Create the 'Mute' Icon
-	// 	var muteIcon = new MuteIcon(this.gameEngine, centerX, y, this.ctx, this.level);
-	// 	this.userIcons.push(muteIcon);
-	// 	y += verticalSpace;
-		
-	// 	// Create the 'Pause' Icon
-	// 	var pauseIcon = new PauseIcon(this.gameEngine, centerX, y, this.ctx, this.level);
-	// 	this.userIcons.push(pauseIcon);
-	// 	y += verticalSpace;		
-		
-	// 	// Create the 'Restart' Icon
-	// 	var restartIcon = new RestartIcon(this.gameEngine, centerX, y, this.ctx, this.level);
-	// 	this.userIcons.push(restartIcon);	
-
-	// 	// Add user icon entities to game engine
-	// 	this.gameEngine.addEntity(undoIcon);
-	// 	this.gameEngine.addEntity(speedIcon);		
-	// 	this.gameEngine.addEntity(muteIcon);
-	// 	this.gameEngine.addEntity(pauseIcon);
-	// 	this.gameEngine.addEntity(restartIcon);	
-		
-	// };
 	
 	/*
 		apply the mouse interaction for the user menu and its icons
@@ -305,7 +261,7 @@ class HUD {
 		
 		// Coin Currency
 		horizontalAlign = this.levelMap.xCanvas + 
-			(this.levelMap.width * 0.6);
+			(this.levelMap.width * 0.4);
 		ctx.fillText(
 			" x" + (this.coins < 10 ? "0" : "") + this.coins,
 			horizontalAlign + 785,
@@ -330,20 +286,25 @@ class HUD {
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.85);
 			ctx.fillText("LEVEL " + this.game.camera.currentLevel, horizontalAlign + 630, verticalAlign * 0.7);
-		if (this.gameStarted) {
-			if (this.game.camera.currentWave < 6) {
+//		if (this.gameStarted) {
+			if (this.game.camera.waveTimer !== -1) {
 				ctx.fillText("WAVES " + this.game.camera.currentWave + "/5", horizontalAlign + 780, verticalAlign * 0.7);	
 			} else {
 				ctx.fillText("BOSS WAVE", horizontalAlign + 780, verticalAlign * 0.7);				
 			}
 
 
-		} else {
-			ctx.fillText("TIME:", horizontalAlign + 780, verticalAlign * 0.7);
-			horizontalAlign = this.levelMap.xCanvas + 
-				(this.levelMap.width * 0.885);
-			ctx.fillText(Math.floor(this.timeLeft), horizontalAlign + 855, verticalAlign * 0.7);
-		}
+//		} else {
+			if (this.gameEngine.camera.waveTimer !== -1) {
+				ctx.fillText(`NEXT WAVE:${Math.floor(this.gameEngine.camera.waveTimer)}`, horizontalAlign + 750, verticalAlign * 1.3);				
+			} else {
+				ctx.fillText(`NEXT WAVE:∞`, horizontalAlign + 750, verticalAlign * 1.3);					
+			}
+
+//			horizontalAlign = this.levelMap.xCanvas + 
+//				(this.levelMap.width * 0.885);
+//			ctx.fillText(Math.floor(this.gameEngine.camera.waveTimer), horizontalAlign + 855, verticalAlign * 1.3);
+//		}
 
 	};
 }
