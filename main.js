@@ -32,15 +32,27 @@ ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slim
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Attack.png"); // goblin
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Attack_Left.png"); // goblin left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Run_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Attack.png"); // skeleton
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Walk.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Attack_Left.png"); // skeleton left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Walk_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Attack.png"); // flying eye
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Flight.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Attack_Left.png"); // flying eye left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Flight_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Attack.png"); // mushroom
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Attack_Left.png"); // mushroom left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Run_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-gold.png"); // dragon
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-red.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon-blue.png");
