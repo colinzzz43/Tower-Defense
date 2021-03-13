@@ -296,7 +296,6 @@ class HUD {
 
 //		} else {
 			if (this.gameEngine.camera.waveTimer !== -1) {
-				console.log(this.gameEngine.camera.waveTimer);
 				ctx.fillText(`NEXT WAVE:${Math.floor(this.gameEngine.camera.waveTimer)}`, horizontalAlign + 750, verticalAlign * 1.3);				
 			} else {
 				ctx.fillText(`NEXT WAVE:∞`, horizontalAlign + 750, verticalAlign * 1.3);					
