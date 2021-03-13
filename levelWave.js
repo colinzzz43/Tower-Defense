@@ -17,15 +17,18 @@ class LevelWave {
 	initializeWaves() {
 		if (this.level.mapLevel === 1) {
 			this.levelWaves = levelOneWaves;  // from 'levelEnemyWaves.js'
+			this.waveTimes = levelOneWaves.waveTimes;			
 		} else if (this.level.mapLevel === 2) {
-			this.levelWaves = levelTwoWaves;  // from 'levelEnemyWaves.js'		
+			this.levelWaves = levelTwoWaves;  // from 'levelEnemyWaves.js'	
+			this.waveTimes = levelTwoWaves.waveTimes;				
 		} else if (this.level.mapLevel === 3) {
-			this.levelWaves = levelThreeWaves;  // from 'levelEnemyWaves.js'		
+			this.levelWaves = levelThreeWaves;  // from 'levelEnemyWaves.js'	
+			this.waveTimes = levelThreeWaves.waveTimes;				
 		} else {
-			this.levelWaves = levelFourWaves;  // from 'levelEnemyWaves.js'			
+			this.levelWaves = levelFourWaves;  // from 'levelEnemyWaves.js'	
+			this.waveTimes = levelFourWaves.waveTimes;				
 		}
-		
-		this.waveTimes = levelOneWaves.waveTimes;
+
 		this.spawnEnemies();	
 	};
 	

@@ -189,7 +189,7 @@ class Slime extends Enemy {
     this.removeFromWorld = true;
 	this.level.levelEnemyWaves.decrementEnemiesLeft();	
     this.user.increaseBalance(this.reward);
-    console.log("Slime+$", this.reward);
+//    console.log("Slime+$", this.reward);
     this.user.increaseScores(this.score);
 
     // add coins when dropped

@@ -11,7 +11,7 @@ var levelOneWaves = {
 	
 	waves: [
 
-		// wave 1, time interval: 5 - 35 seconds
+		// wave 1, time interval: 5 - 30 seconds
 		[			
 			{enemyType: "Slime", initialSpawnTime: 5, interval: 1, number: 3, x: 200, y: 390, direction: "right"},
 			{enemyType: "Slime", initialSpawnTime: 10, interval: 1, number: 3, x: 200, y: 390, direction: "right"},
@@ -19,50 +19,50 @@ var levelOneWaves = {
 			
 		], 
 
-		// wave 2, time interval: 35 - 70 seconds
+		// wave 2, time interval: 30 - 65 seconds
 		[
-			{enemyType: "Slime", initialSpawnTime: 35, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
-			{enemyType: "Goblin", initialSpawnTime: 38, interval: 6, number: 4, x: 200, y: 390, direction: "right"},
-			{enemyType: "Slime", initialSpawnTime: 41, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
-			{enemyType: "Slime", initialSpawnTime: 47, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
-			{enemyType: "Slime", initialSpawnTime: 53, interval: 1, number: 2, x: 200, y: 390, direction: "right"}
+			{enemyType: "Slime", initialSpawnTime: 30, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
+			{enemyType: "Goblin", initialSpawnTime: 33, interval: 6, number: 4, x: 200, y: 390, direction: "right"},
+			{enemyType: "Slime", initialSpawnTime: 38, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
+			{enemyType: "Slime", initialSpawnTime: 42, interval: 1, number: 2, x: 200, y: 390, direction: "right"},
+			{enemyType: "Slime", initialSpawnTime: 50, interval: 1, number: 2, x: 200, y: 390, direction: "right"}
 			
 
 		], 
 		
-		// wave 3, time interval: 70 - 105 seconds
+		// wave 3, time interval: 65 - 100 seconds
 		[
-			{enemyType: "Slime", initialSpawnTime: 70, interval: 1, number: 3, x: 200, y: 390, direction: "right"}, 
-			{enemyType: "Slime", initialSpawnTime: 76, interval: 1, number: 3, x: 200, y: 390, direction: "right"},
-			{enemyType: "Slime", initialSpawnTime: 82, interval: 1, number: 3, x: 200, y: 390, direction: "right"},		
-			{enemyType: "Slime", initialSpawnTime: 88, interval: 1, number: 3, x: 200, y: 390, direction: "right"},				
+			{enemyType: "Slime", initialSpawnTime: 65, interval: 1, number: 3, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Slime", initialSpawnTime: 71, interval: 1, number: 3, x: 200, y: 390, direction: "right"},
+			{enemyType: "Slime", initialSpawnTime: 77, interval: 1, number: 3, x: 200, y: 390, direction: "right"},		
+			{enemyType: "Slime", initialSpawnTime: 83, interval: 1, number: 3, x: 200, y: 390, direction: "right"},				
 			
-			{enemyType: "Flying Eye", initialSpawnTime: 85, interval: 3, number: 5, x: 200, y: 390, direction: "right"}
+			{enemyType: "Flying Eye", initialSpawnTime: 80, interval: 3, number: 5, x: 200, y: 390, direction: "right"}
 		],
 
-		// wave 4, time interval: 105 - 140 seconds
+		// wave 4, time interval: 100 - 135 seconds
 		[
-			{enemyType: "Slime", initialSpawnTime: 95, interval: 5, number: 5, x: 200, y: 390, direction: "right"}, 
-			{enemyType: "Goblin", initialSpawnTime: 96, interval: 3, number: 6, x: 200, y: 390, direction: "right"},
-			{enemyType: "Flying Eye", initialSpawnTime: 100, interval: 3, number: 3, x: 200, y: 390, direction: "right"}		
+			{enemyType: "Slime", initialSpawnTime: 100, interval: 5, number: 5, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Goblin", initialSpawnTime: 105, interval: 3, number: 6, x: 200, y: 390, direction: "right"},
+			{enemyType: "Flying Eye", initialSpawnTime: 110, interval: 3, number: 3, x: 200, y: 390, direction: "right"}	
 		],
 
-		// wave 5, time interval: 140 - 180 seconds
+		// wave 5, time interval: 135 - 175 seconds
 		[
-			{enemyType: "Goblin", initialSpawnTime: 125, interval: 1.5, number: 10, x: 200, y: 390, direction: "right"}, 
-			{enemyType: "Skeleton", initialSpawnTime: 128, interval: 3, number: 6, x: 200, y: 390, direction: "right"}
+			{enemyType: "Goblin", initialSpawnTime: 135, interval: 1.5, number: 10, x: 200, y: 390, direction: "right"}, 
+			{enemyType: "Skeleton", initialSpawnTime: 140, interval: 3, number: 6, x: 200, y: 390, direction: "right"}
 		],
 		
-		// wave 6 (final boss), time interval: 180+ seconds
+		// wave 6 (final boss), time interval: 175+ seconds
 		[
-			{enemyType: "Dragon", initialSpawnTime: 160, interval: 1.5, number: 1, x: 200, y: 390, direction: "right"}
+			{enemyType: "Dragon", initialSpawnTime: 175, interval: 1.5, number: 1, x: 200, y: 390, direction: "right"}
 		]
 	
 	],
 
 	// Time to next wave for waves 0-4.
 	// To find time to next wave, next wave intialSpawnTime - current wave initialSpawnTime.
-	waveTimes: [5, 30, 35, 35, 35, 40]
+	waveTimes: [5, 25, 35, 35, 35, 40]
 	
 };
 
@@ -403,7 +403,7 @@ var levelThreeWaves = {
 
 	],
 
-	waveTimes: [5, 60, 45, 40, 40, 55]
+	waveTimes: [5, 30, 30, 35, 40, 55]
 };
 
 // grass map: skeleton, flying eye, mushroom, dragon
@@ -600,6 +600,7 @@ var levelFourWaves = {
 			{enemyType: "Mushroom", initialSpawnTime: 220, interval: 3, number: 4, x: 165, y: 525, direction: "right"}
 		],
 		
+		// wave 6 (final boss), Time Interval: 235+ seconds
 		[
 			{enemyType: "Dragon", initialSpawnTime: 235, interval: 1, number: 1, x: 195, y: 75, direction: "down"},
 			{enemyType: "Dragon", initialSpawnTime: 235, interval: 1, number: 1, x: 1005, y: 75, direction: "down"},	

@@ -224,7 +224,7 @@ class Skeleton extends Enemy {
   isDead() {
     this.user.increaseBalance(this.reward);
 	this.level.levelEnemyWaves.decrementEnemiesLeft();	
-    console.log("Skeleton+$", this.reward);
+//    console.log("Skeleton+$", this.reward);
     this.user.increaseScores(this.score);
   }
 }

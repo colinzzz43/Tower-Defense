@@ -281,7 +281,7 @@ class Flamethrower extends Tower {
   };
 
   upgrade() {
-    if (this.towerLevel < 3) {
+    if (this.towerLevel < 3 && this.user.balance >= this.upgradeCost) {
       this.towerLevel++;
       this.user.decreaseBalance(this.upgradeCost);
       this.cost += this.upgradeCost;

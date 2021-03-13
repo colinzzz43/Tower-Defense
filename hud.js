@@ -80,7 +80,7 @@ class HUD {
 		this.speedChanged = false;
 		this.timeLeft = this.TIME_LIMIT;
 		this.timerInterval = null;
-		this.startTimer();
+//		this.startTimer();
 	};
 
     startTimer() {
@@ -113,9 +113,9 @@ class HUD {
         this.coins = this.user.balance;
         this.scores = this.game.camera.user.scores;
 		this.drawMenuBox();
-		for (var i = 0; i < this.userIcons.length; i++) {
-			this.userIcons[i].draw(ctx);
-		}		
+//		for (var i = 0; i < this.userIcons.length; i++) {
+//			this.userIcons[i].draw(ctx);
+//		}		
 	};
 	
 	/*
@@ -286,20 +286,26 @@ class HUD {
 		horizontalAlign = this.levelMap.xCanvas + 
 			(this.levelMap.width * 0.85);
 			ctx.fillText("LEVEL " + this.game.camera.currentLevel, horizontalAlign + 630, verticalAlign * 0.7);
-		if (this.gameStarted) {
-			if (this.game.camera.currentWave < 6) {
+//		if (this.gameStarted) {
+			if (this.game.camera.waveTimer !== -1) {
 				ctx.fillText("WAVES " + this.game.camera.currentWave + "/5", horizontalAlign + 780, verticalAlign * 0.7);	
 			} else {
 				ctx.fillText("BOSS WAVE", horizontalAlign + 780, verticalAlign * 0.7);				
 			}
 
 
-		} else {
-			ctx.fillText("TIME:", horizontalAlign + 780, verticalAlign * 1.3);
-			horizontalAlign = this.levelMap.xCanvas + 
-				(this.levelMap.width * 0.885);
-			ctx.fillText(Math.floor(this.timeLeft), horizontalAlign + 855, verticalAlign * 1.3);
-		}
+//		} else {
+			if (this.gameEngine.camera.waveTimer !== -1) {
+				console.log(this.gameEngine.camera.waveTimer);
+				ctx.fillText(`NEXT WAVE:${Math.floor(this.gameEngine.camera.waveTimer)}`, horizontalAlign + 750, verticalAlign * 1.3);				
+			} else {
+				ctx.fillText(`NEXT WAVE:∞`, horizontalAlign + 750, verticalAlign * 1.3);					
+			}
+
+//			horizontalAlign = this.levelMap.xCanvas + 
+//				(this.levelMap.width * 0.885);
+//			ctx.fillText(Math.floor(this.gameEngine.camera.waveTimer), horizontalAlign + 855, verticalAlign * 1.3);
+//		}
 
 	};
 }

@@ -53,10 +53,14 @@ class SceneManager {
 
 	startTimer() {
 		if (this.timerRestarted || this.speedChanged) {
+			if (this.timerRestarted) {	
+				this.waveTimer = 5;
+			}
 			clearInterval(this.timerInterval);
 			this.timerRestarted = false;
 			this.speedChanged = false;
 		}
+		
 		this.timerInterval = setInterval(() => {
 			if (!this.paused) {
 				// The amount of time passed increments by one
@@ -64,16 +68,18 @@ class SceneManager {
 
 				// Countdown to next wave. When 0, increment current wave
 				// and reset waveTimer to that wave's time
-				if (this.waveTimer <= 0) {
-					// just to get wave to increase to 5th one.
-					if (this.currentWave == 0 || this.currentWave < this.waveTimes.length - 1) {
-						this.currentWave++;
-						this.waveTimer = this.waveTimes[this.currentWave];
+				if (this.waveTimer !== '∞') {
+					if (this.waveTimer <= 0) {
+						// just to get wave to increase to 5th one.
+						if (this.currentWave < this.waveTimes.length - 1) {
+							this.currentWave++;
+							this.waveTimer = this.waveTimes[this.currentWave];
 
-					} else {
-						this.waveTimer = -1;
-					}
-				}	
+						} else {
+							this.waveTimer = -1;
+						}
+					}						
+				}
 			}
 		}, (100 / this.speed));
 	};
@@ -251,7 +257,7 @@ class SceneManager {
 	}
 
 	update() {
-		if (this.timerRestarted || this.speedChanged && !this.transition) {
+		if ( (this.timerRestarted || this.speedChanged) && !this.transition) {
 			this.startTimer();
 		}
 
