@@ -39,12 +39,12 @@ class FlyingEye extends Enemy {
     this.state = 0; // 0: fly, 1: attack, 2: dead
 
     // stats
-    this.score = 40;
+    this.score = 30;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     this.HP = 125;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 20;
-    this.reward = 60;
+    this.reward = 30;
     this.radius = 20 * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 5) * this.scale;

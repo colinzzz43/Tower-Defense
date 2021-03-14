@@ -44,7 +44,7 @@ class Goblin extends Enemy {
     this.HP = 150;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 25; 
-    this.reward = 15;
+    this.reward = 20;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;

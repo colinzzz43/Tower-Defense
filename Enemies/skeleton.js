@@ -39,12 +39,12 @@ class Skeleton extends Enemy {
     this.state = 0; // 0: walk, 1: attack, 2: dead
 
     // stats
-    this.score = 30;
+    this.score = 60;
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
     this.HP = 300;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 40;
-    this.reward = 30;
+    this.reward = 60;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 3) * this.scale;

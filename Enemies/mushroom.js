@@ -45,7 +45,7 @@ class Mushroom extends Enemy {
     this.HP = 250;
     this.maxHP = this.HP; // used in calculating health bar
     this.damage = 50;
-    this.reward = 120;
+    this.reward = 50;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
