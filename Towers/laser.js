@@ -1,16 +1,16 @@
 class Laser extends Tower {
   // lvl 1
   static maxHP = 200;
-  static fireRate = 0.2; 
+  static fireRate = 0.4; 
   static shootingRadius = 90; 
   static damage = 10; 
   static cost = 60; 
   
   // lvl 2
   static maxHP2 = 300;
-  static fireRate2 = 0.2; 
+  static fireRate2 = 0.3; 
   static shootingRadius2 = 110;
-  static damage2 = 10; 
+  static damage2 = 12.5; 
   static cost2 = 80;
 
   // lvl 3

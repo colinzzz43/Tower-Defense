@@ -1,16 +1,16 @@
 class Rocket extends Tower {
   // lvl 1
   static maxHP = 100;
-  static fireRate = 1.2; 
+  static fireRate = 1.5; 
   static shootingRadius = 90; 
   static damage = 50; 
   static cost = 60; 
   
   // lvl 2
   static maxHP2 = 200;
-  static fireRate2 = 1;
+  static fireRate2 = 1.25;
   static shootingRadius2 = 90;
-  static damage2 = 50;
+  static damage2 = 75;
   static cost2 = 80;
 
   // lvl 3

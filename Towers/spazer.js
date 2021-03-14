@@ -1,23 +1,23 @@
 class Spazer extends Tower {
   // lvl 1
   static maxHP = 100;
-  static fireRate = 1; 
+  static fireRate = 1.5; 
   static shootingRadius = 70; 
-  static controlTime = 5;
+  static controlTime = 3;
   static cost = 80;
   
   // lvl 2
   static maxHP2 = 200;
-  static fireRate2 = 1;
+  static fireRate2 = 1.25;
   static shootingRadius2 = 70;
-  static controlTime2 = 7.5;
+  static controlTime2 = 5;
   static cost2 = 100;
 
   // lvl 3
   static maxHP3 = 300;
-  static fireRate3 = 0.8;
+  static fireRate3 = 1;
   static shootingRadius3 = 90;
-  static controlTime3 = 10;
+  static controlTime3 = 7;
   static cost3 = 120;
 
   constructor(gameEngine, x, y, level) {

@@ -10,12 +10,12 @@ class Pistol extends Tower {
   static maxHP2 = 250;
   static fireRate2 = 0.8;
   static shootingRadius2 = 70;
-  static damage2 = 20;
+  static damage2 = 25;
   static cost2 = 40;
 
   // lvl 3
   static maxHP3 = 350;
-  static fireRate3 = 1;
+  static fireRate3 = 0.8;
   static shootingRadius3 = 90;
   static damage3 = 30;
   static cost3 = 60;
