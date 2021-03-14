@@ -7,15 +7,15 @@ class Shotgun extends Tower {
   static cost = 40; 
   
   // lvl 2
-  static maxHP2 = 400;
+  static maxHP2 = 500;
   static fireRate2 = 1;
-  static shootingRadius2 = 50;
-  static damage2 = 20;
+  static shootingRadius2 = 30;
+  static damage2 = 25;
   static cost2 = 60;
 
   // lvl 3
-  static maxHP3 = 500;
-  static fireRate3 = 0.8;
+  static maxHP3 = 700;
+  static fireRate3 = 1;
   static shootingRadius3 = 50;
   static damage3 = 30;
   static cost3 = 80;

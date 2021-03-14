@@ -1,14 +1,14 @@
 class Cannon extends Tower {
   // lvl 1
   static maxHP = 200;
-  static fireRate = 1.3;
+  static fireRate = 1.5;
   static shootingRadius = 70;
   static damage = 50;
   static cost = 40;
   
   // lvl 2
   static maxHP2 = 300;
-  static fireRate2 = 1;
+  static fireRate2 = 1.25;
   static shootingRadius2 = 70;
   static damage2 = 50;
   static cost2 = 60;

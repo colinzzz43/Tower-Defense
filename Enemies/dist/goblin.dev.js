@@ -33,16 +33,23 @@ function (_Enemy) {
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death.png");
     _this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run.png");
-    _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Take Hit.png"); // animations
+    _this.attackLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack_Left.png");
+    _this.deathLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death_Left.png");
+    _this.runLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run_Left.png"); // animations
 
     _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.12, 0, false, true);
     _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, false);
     _this.runAnim = new Animator(_this.runImg, 0, 0, 150, 150, 8, 0.2, 0, false, true);
+    _this.attackLeftAnim = new Animator(_this.attackLeftImg, 0, 0, 150, 150, 8, 0.12, 1, false, true);
+    _this.deathLeftAnim = new Animator(_this.deathLeftImg, 0, 0, 150, 150, 4, 0.3, 1, false, false);
+    _this.runLeftAnim = new Animator(_this.runLeftImg, 0, 0, 150, 150, 8, 0.2, 1, false, true);
 
     _this.loadAnimation(); // state
 
 
-    _this.state = 0; // 0: run, 1: attack, 2: takehit, 3: dead
+    _this.facing = 0; // 0: right, 1: left
+
+    _this.state = 0; // 0: run, 1: attack, 2: dead
     // stats
 
     _this.score = 20;
@@ -51,7 +58,7 @@ function (_Enemy) {
     _this.maxHP = _this.HP; // used in calculating health bar
 
     _this.damage = 25;
-    _this.reward = 15;
+    _this.reward = 20;
     _this.radius = 16 * _this.scale; // entity radius
 
     _this.visualRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
@@ -68,10 +75,23 @@ function (_Enemy) {
     key: "loadAnimation",
     value: function loadAnimation() {
       this.animations = [];
-      this.animations.push(this.runAnim);
-      this.animations.push(this.attackAnim);
-      this.animations.push(this.takehitAnim);
-      this.animations.push(this.deathAnim);
+
+      for (var i = 0; i < 3; i++) {
+        // 3 states
+        this.animations.push([]);
+
+        for (var j = 0; j < 2; j++) {
+          // 2 ways to face
+          this.animations[i].push([]);
+        }
+      }
+
+      this.animations[0][0] = this.runAnim;
+      this.animations[1][0] = this.attackAnim;
+      this.animations[2][0] = this.deathAnim;
+      this.animations[0][1] = this.runLeftAnim;
+      this.animations[1][1] = this.attackLeftAnim;
+      this.animations[2][1] = this.deathLeftAnim;
     }
   }, {
     key: "update",
@@ -90,7 +110,7 @@ function (_Enemy) {
       } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
 
 
-      if (this.state == 3) {
+      if (this.state == 2) {
         this.deathAnimationTime += this.gameEngine.clockTick;
 
         if (this.deathAnimationTime > 1) {
@@ -98,7 +118,14 @@ function (_Enemy) {
           this.isDead();
         }
       } else {
-        // enemy controlled by spazer
+        // check direction for left/right animations
+        if (this.movement.direction == "left") {
+          this.facing = 1;
+        } else if (this.movement.direction == "right") {
+          this.facing = 0;
+        } // enemy controlled by spazer
+
+
         if (this.controlled) {
           this.movement.speed = 0.2;
           this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
@@ -114,7 +141,7 @@ function (_Enemy) {
 
           if (this.controlled) {
             if (ent instanceof Enemy && ent.exist && ent !== this) {
-              if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+              if (this.state != 2 && collide(this, ent) && this.cooldownTime > this.attackRate) {
                 this.state = 1;
                 this.cooldownTime = 0;
                 this.target = ent;
@@ -123,7 +150,7 @@ function (_Enemy) {
             }
           } else {
             if (ent instanceof Tower) {
-              if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+              if (this.state != 2 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 2) {
                 this.state = 1;
                 this.cooldownTime = 0;
                 this.target = ent;
@@ -133,7 +160,7 @@ function (_Enemy) {
           }
         }
 
-        if (this.target) if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3) this.state = 0; // only move when running
+        if (this.target) if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 2) this.state = 0; // only move when running
 
         if (this.state == 0) {
           // goblin direction
@@ -174,16 +201,15 @@ function (_Enemy) {
       }
 
       ;
-      this.animations[this.state].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.animations[this.state][this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",
     value: function takeHit(damage) {
-      // this.state = 2;
       this.HP = Math.max(0, this.HP - damage);
 
       if (this.HP === 0) {
-        this.state = 3;
+        this.state = 2;
       }
     }
   }, {
