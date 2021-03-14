@@ -227,6 +227,7 @@ class TowerStoreMenu {
     y += verticalSpace;
 
     // Third Row: Flamethrower and Laser
+
     var flamethrowerIcon = new TowerIcon(
       this.gameEngine,
       "Flame",
@@ -240,35 +241,6 @@ class TowerStoreMenu {
       this.level
     );
     this.storeIcons.push(flamethrowerIcon);
-    var laserIcon = new TowerIcon(
-      this.gameEngine,
-      "Laser",
-      Laser.cost,
-      this.towerImagesArray[5],
-      rightX,
-      y,
-      22,
-      35,
-      this.ctx,
-      this.level
-    );
-    this.storeIcons.push(laserIcon);
-    y += verticalSpace;
-
-    // Fourth Row: Matter and Rocket
-    var matterIcon = new TowerIcon(
-      this.gameEngine,
-      "Matter",
-      Matter.cost,
-      this.towerImagesArray[6],
-      leftX,
-      y,
-      24,
-      37,
-      this.ctx,
-      this.level
-    );
-    this.storeIcons.push(matterIcon);
     var rocketIcon = new TowerIcon(
       this.gameEngine,
       "Rocket",
@@ -282,6 +254,35 @@ class TowerStoreMenu {
       this.level
     );
     this.storeIcons.push(rocketIcon);
+    y += verticalSpace;
+
+    // Fourth Row: Laser and Matter
+    var laserIcon = new TowerIcon(
+      this.gameEngine,
+      "Laser",
+      Laser.cost,
+      this.towerImagesArray[5],
+      leftX,
+      y,
+      22,
+      35,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(laserIcon);
+    var matterIcon = new TowerIcon(
+      this.gameEngine,
+      "Matter",
+      Matter.cost,
+      this.towerImagesArray[6],
+      rightX,
+      y,
+      24,
+      37,
+      this.ctx,
+      this.level
+    );
+    this.storeIcons.push(matterIcon);
     y += verticalSpace;
 
     // Fifth Row: Spazer, upgrade, and sell
