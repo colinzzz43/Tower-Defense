@@ -9,74 +9,42 @@ class Dragon extends Enemy {
     switch (this.color) {
       case 0:
         this.goldImg = ASSET_MANAGER.getAsset(
-          "./sprites/monster/dragons/flying_dragon-gold.png"
-        );
-        this.animation = new Animator(
-          this.goldImg,
-          0,
-          128,
-          144,
-          128,
-          3,
-          time,
-          0,
-          false,
-          true
-        );
+          "./sprites/monster/dragons/flying_dragon-gold.png");
+        this.animation = new Animator(this.goldImg, 0, 128, 144, 128, 3, time,
+          0, false, true);
+        // animation for left direction
+        this.animationLeft = new Animator(this.goldImg, 0, 384, 144, 128, 3, time,
+          1, false, true);
         break;
 
       case 1:
         this.redImg = ASSET_MANAGER.getAsset(
-          "./sprites/monster/dragons/flying_dragon-red.png"
-        );
-        this.animation = new Animator(
-          this.redImg,
-          0,
-          128,
-          144,
-          128,
-          3,
-          time,
-          0,
-          false,
-          true
-        );
+          "./sprites/monster/dragons/flying_dragon-red.png");
+        this.animation = new Animator(this.redImg, 0, 128, 144, 128, 3, time,
+          0, false, true);
+        // animation for left direction
+        this.animationLeft = new Animator(this.redImg, 0, 384, 144, 128, 3, time,
+          1, false, true);
         break;
 
       case 2:
         this.twinBlueImg = ASSET_MANAGER.getAsset(
-          "./sprites/monster/dragons/flying_twin_headed_dragon-blue.png"
-        );
-        this.animation = new Animator(
-          this.twinBlueImg,
-          0,
-          128,
-          144,
-          128,
-          3,
-          time,
-          0,
-          false,
-          true
-        );
+          "./sprites/monster/dragons/flying_twin_headed_dragon-blue.png");
+        this.animation = new Animator(this.twinBlueImg, 0, 128, 144, 128, 3,
+          time, 0, false, true);
+        // animation for left direction
+        this.animationLeft = new Animator(this.twinBlueImg, 0, 384, 144,
+          128, 3, time, 1, false, true);
         break;
 
       case 3:
         this.twinRedImg = ASSET_MANAGER.getAsset(
-          "./sprites/monster/dragons/flying_twin_headed_dragon-red.png"
-        );
-        this.animation = new Animator(
-          this.twinRedImg,
-          0,
-          128,
-          144,
-          128,
-          3,
-          time,
-          0,
-          false,
-          true
-        );
+          "./sprites/monster/dragons/flying_twin_headed_dragon-red.png");
+        this.animation = new Animator(this.twinRedImg, 0, 128, 144, 128, 3,
+          time, 0, false, true);
+        // animation for left direction
+        this.animationLeft = new Animator(this.twinRedImg, 0, 384, 144, 128, 3,
+          time, 1, false, true);
         break;
     }
 
@@ -98,6 +66,9 @@ class Dragon extends Enemy {
 
     // level grid and enemy movement
     this.movement = new EnemyMovement(0.5, this.direction, this.x, this.y, this.grid);
+
+    // direction dragon is facing
+    this.facing = 0 // 0: right, 1: left
   }
 
   update() {
@@ -111,6 +82,13 @@ class Dragon extends Enemy {
 			
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+      // check direction for left/right animations
+      if (this.movement.direction == "left") {
+        this.facing = 1;
+      } else if (this.movement.direction == "right") {
+        this.facing = 0;
+      }
 
       // spawn enemy if elapsed game time is greater than time to spawn
       // else do not do anything
@@ -186,26 +164,26 @@ class Dragon extends Enemy {
       position
     );
 
-	// the animation speed multiplier
-	var speedMultiplier = this.enemySpeedMultipler;
-	
-	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
-	if (this.enemyPaused) {
-		speedMultiplier = 0;
-	};
-	
-    this.animation.drawFrame(
-      this.gameEngine.clockTick * speedMultiplier,
-      context,
-      this.x - this.xOffset,
-      this.y - this.yOffset,
-      this.scale
-    );
+    // the animation speed multiplier
+    var speedMultiplier = this.enemySpeedMultipler;
+    
+    // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+    if (this.enemyPaused) {
+      speedMultiplier = 0;
+    };
+
+
+    if (this.facing == 0) {
+      this.animation.drawFrame(this.gameEngine.clockTick * speedMultiplier,
+        context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+    } else {
+      this.animationLeft.drawFrame(this.gameEngine.clockTick * speedMultiplier,
+        context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+    }
   };
 
   attack(tower) {
     tower.takeHit(this.damage);
-    // this.gameEngine.addEntity(new FlamethrowerFlames(this.gameEngine, this.x + this.xOffset, this.y - this.yOffset + 10, tower, this, 0));
   };
 
   takeHit(damage) {
@@ -218,9 +196,8 @@ class Dragon extends Enemy {
 
   isDead() {
     this.removeFromWorld = true;
-	this.level.levelEnemyWaves.decrementEnemiesLeft();
+	  this.level.levelEnemyWaves.decrementEnemiesLeft();
     this.user.increaseBalance(this.reward);
-//    console.log("Dragon+$", this.reward);
     this.user.increaseScores(this.score);
     this.gameEngine.addEntity(new Coin(this.gameEngine, this.x, this.y));
   };
