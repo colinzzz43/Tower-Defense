@@ -89,8 +89,13 @@ class Skeleton extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.25 * this.enemySpeedMultipler;
 
-    if (this.enemyPaused) {
-      // pause animation at certain frame
+    // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+    if (this.state == 3) {
+      this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.deathAnimationTime > 0.8) {
+        this.removeFromWorld = true;
+        this.isDead();
+      }
     } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
@@ -107,13 +112,13 @@ class Skeleton extends Enemy {
       if (this.controlled) {
         this.movement.speed = 0.2;
         this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-  
+
         if (this.controlTime <= 0) {
           this.controlled = false;
           this.state = 0;
 
         }
-      }      
+      }
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
@@ -138,7 +143,6 @@ class Skeleton extends Enemy {
         }
       }
 
-
       if (this.target)
         if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3)
           this.state = 0;
@@ -153,15 +157,6 @@ class Skeleton extends Enemy {
         this.x = position.x;
         this.y = position.y;
         this.movement.updatePosition(this.x, this.y);
-      }
-
-      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 0.8) {
-          this.removeFromWorld = true;
-          this.isDead();
-        }
       }
     }
   };
@@ -223,8 +218,8 @@ class Skeleton extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-	this.level.levelEnemyWaves.decrementEnemiesLeft();	
-//    console.log("Skeleton+$", this.reward);
+    this.level.levelEnemyWaves.decrementEnemiesLeft();
+    //    console.log("Skeleton+$", this.reward);
     this.user.increaseScores(this.score);
   }
 }

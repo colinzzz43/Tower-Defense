@@ -23,19 +23,19 @@ var Mushroom =
 function (_Enemy) {
   _inherits(Mushroom, _Enemy);
 
-  function Mushroom(gameEngine, x, y, level, spawnTime) {
+  function Mushroom(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, Mushroom);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Mushroom).call(this, gameEngine, x, y, level, spawnTime)); // sprites
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Mushroom).call(this, gameEngine, x, y, direction, level, spawnTime)); // sprites
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Death.png");
     _this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Run.png");
     _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/mushroom/Take Hit.png"); // animations
 
-    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.15, 0, false, true);
+    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.2, 0, false, true);
     _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, false);
     _this.runAnim = new Animator(_this.runImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
 
@@ -46,11 +46,11 @@ function (_Enemy) {
     // stats
 
     _this.score = 50;
-    _this.scale = 2;
-    _this.HP = 100;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
+    _this.HP = 250;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5;
+    _this.damage = 50;
     _this.reward = 120;
     _this.radius = 16 * _this.scale; // entity radius
 
@@ -58,9 +58,9 @@ function (_Enemy) {
 
     _this.xOffset = _this.frameWidth / 2 * _this.scale;
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
-    _this.attackRate = 1.2; // level grid and enemy movement
+    _this.attackRate = 1.8; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -78,21 +78,27 @@ function (_Enemy) {
     value: function update() {
       this.enemyPaused = this.level.levelPaused;
       this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-      this.movement.speed = 1.3 * this.enemySpeedMultipler;
+      this.movement.speed = this.enemySpeedMultipler;
+      this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+      this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
 
-      if (this.enemyPaused) {// pause animation at certain frame
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
       } else {
-        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
-        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
-        // else do not do anything
-
-        if (this.gameTime >= this.spawnTime) {
-          this.exist = true;
-        } else {
-          return;
-        } // enemy controlled by spazer
+        return;
+      } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
 
 
+      if (this.state == 3) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+
+        if (this.deathAnimationTime > 1.2) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
+      } else {
+        // enemy controlled by spazer
         if (this.controlled) {
           this.movement.speed = 0.2;
           this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
@@ -137,16 +143,6 @@ function (_Enemy) {
           this.x = position.x;
           this.y = position.y;
           this.movement.updatePosition(this.x, this.y);
-        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-
-
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
-
-          if (this.deathAnimationTime > 1.2) {
-            this.removeFromWorld = true;
-            this.isDead();
-          }
         }
       }
     }
@@ -199,7 +195,8 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.user.increaseBalance(this.reward);
-      console.log("Mushroom+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft(); //   console.log("Mushroom+$", this.reward);
+
       this.user.increaseScores(this.score);
     }
   }]);

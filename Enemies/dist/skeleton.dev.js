@@ -35,7 +35,7 @@ function (_Enemy) {
     _this.walkImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Walk.png");
     _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/skeleton/Take Hit.png"); // animations
 
-    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.2, 0, false, true);
+    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.09, 0, false, true);
     _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.2, 0, false, false);
     _this.walkAnim = new Animator(_this.walkImg, 0, 0, 150, 150, 4, 0.2, 0, false, true);
 
@@ -47,10 +47,10 @@ function (_Enemy) {
 
     _this.score = 30;
     _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
-    _this.HP = 40;
+    _this.HP = 300;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 15;
+    _this.damage = 40;
     _this.reward = 30;
     _this.radius = 16 * _this.scale; // entity radius
 
@@ -58,9 +58,9 @@ function (_Enemy) {
 
     _this.xOffset = (_this.frameWidth / 2 + 3) * _this.scale;
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
-    _this.attackRate = 4.5; // level grid and enemy movement
+    _this.attackRate = 1; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.5, _this.direction, _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.25, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -78,9 +78,15 @@ function (_Enemy) {
     value: function update() {
       this.enemyPaused = this.level.levelPaused;
       this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-      this.movement.speed = 1.7 * this.enemySpeedMultipler;
+      this.movement.speed = 1.25 * this.enemySpeedMultipler; // ensures enemy is removed properly once dead and currency is rewarded exactly once.
 
-      if (this.enemyPaused) {// pause animation at certain frame
+      if (this.state == 3) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+
+        if (this.deathAnimationTime > 0.8) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
       } else {
         this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
         this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
@@ -137,16 +143,6 @@ function (_Enemy) {
           this.x = position.x;
           this.y = position.y;
           this.movement.updatePosition(this.x, this.y);
-        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-
-
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
-
-          if (this.deathAnimationTime > 0.8) {
-            this.removeFromWorld = true;
-            this.isDead();
-          }
         }
       }
     }
@@ -198,7 +194,8 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.user.increaseBalance(this.reward);
-      console.log("Skeleton+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft(); //    console.log("Skeleton+$", this.reward);
+
       this.user.increaseScores(this.score);
     }
   }]);

@@ -87,35 +87,33 @@ class FlyingEye extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.5 * this.enemySpeedMultipler;
 
-    if (this.enemyPaused) {
-      // pause animation at certain frame
+
+    this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+    this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
     } else {
-      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      return;
+    }
 
-      // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
-      } else {
-        return;
+    // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+    // console.log(this.state == 3);
+    if (this.state == 3) {
+      this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.deathAnimationTime > 0.5) {
+        this.removeFromWorld = true;
+        this.isDead();
       }
-
-      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      // console.log(this.state == 3);
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 0.5) {
-          this.removeFromWorld = true;
-          this.isDead();
-        }
-      }	
+    } else {
 
       // enemy controlled by spazer
       if (this.controlled) {
         this.movement.speed = 0.2;
         this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-  
+
         if (this.controlTime <= 0) {
           this.controlled = false;
           this.state = 0;
@@ -127,8 +125,8 @@ class FlyingEye extends Enemy {
         var ent = this.gameEngine.entities[i];
 
         if (this.controlled) {
-          if (ent instanceof Enemy && ent.exist && canShoot(this, ent) 
-            && this.cooldownTime > this.fireRate && ent !== this  && this.state != 3) {
+          if (ent instanceof Enemy && ent.exist && canShoot(this, ent)
+            && this.cooldownTime > this.fireRate && ent !== this && this.state != 3) {
             this.cooldownTime = 0;
             this.state = 1;
             this.target = ent;
@@ -160,10 +158,12 @@ class FlyingEye extends Enemy {
         this.movement.updatePosition(this.x, this.y);
       }
 
-      
-	  }
 
-    
+    }
+
+
+
+
   };
 
   draw(context) {
@@ -192,14 +192,14 @@ class FlyingEye extends Enemy {
       position
     );
 
-	// the animation speed multiplier
-	var speedMultiplier = this.enemySpeedMultipler;
-	
-	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
-	if (this.enemyPaused) {
-		speedMultiplier = 0;
-	};
-	
+    // the animation speed multiplier
+    var speedMultiplier = this.enemySpeedMultipler;
+
+    // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+    if (this.enemyPaused) {
+      speedMultiplier = 0;
+    };
+
     this.animations[this.state].drawFrame(
       this.gameEngine.clockTick * speedMultiplier,
       context,
@@ -210,22 +210,22 @@ class FlyingEye extends Enemy {
   };
 
   takeHit(damage) {
-	this.HP = Math.max(0, this.HP - damage);
+    this.HP = Math.max(0, this.HP - damage);
 
-	if (this.HP === 0) {
-		 this.state = 3;
-	}
+    if (this.HP === 0) {
+      this.state = 3;
+    }
   };
 
   attack(tower) {
     tower.takeHit(this.damage);
-    this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x + 5 * this.scale, this.y - this.yOffset/4, tower, this));
+    this.gameEngine.addEntity(new LaserBullet(this.gameEngine, this.x + 5 * this.scale, this.y - this.yOffset / 4, tower, this));
   };
 
   isDead() {
     this.user.increaseBalance(this.reward);
-	this.level.levelEnemyWaves.decrementEnemiesLeft();	
-//    console.log("Flyingeye+$", this.reward);
+    this.level.levelEnemyWaves.decrementEnemiesLeft();
+    //    console.log("Flyingeye+$", this.reward);
 
     this.user.increaseScores(this.score);
   };

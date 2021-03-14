@@ -87,32 +87,38 @@ class Mushroom extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = this.enemySpeedMultipler;
 
-    if (this.enemyPaused) {
-      // pause animation at certain frame
+
+    this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+    this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
     } else {
-      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      return;
+    }
 
-      // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
-      } else {
-        return;
+    // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+    if (this.state == 3) {
+      this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.deathAnimationTime > 1.2) {
+        this.removeFromWorld = true;
+        this.isDead();
       }
-
+    } else {
       // enemy controlled by spazer
       if (this.controlled) {
         this.movement.speed = 0.2;
         this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-  
+
         if (this.controlTime <= 0) {
           this.controlled = false;
           this.state = 0;
 
         }
       }
-      
+
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
         if (this.controlled) {
@@ -137,7 +143,7 @@ class Mushroom extends Enemy {
       }
 
       if (this.target)
-        if (this.target.removeFromWorld || !collide(this, this.target)  && this.state != 3)
+        if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3)
           this.state = 0;
 
       // only move when running
@@ -150,15 +156,6 @@ class Mushroom extends Enemy {
         this.x = position.x;
         this.y = position.y;
         this.movement.updatePosition(this.x, this.y);
-      }
-
-      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 1.2) {
-          this.removeFromWorld = true;
-          this.isDead();
-        }
       }
     }
   }
@@ -189,14 +186,14 @@ class Mushroom extends Enemy {
       position
     );
 
-	// the animation speed multiplier
-	var speedMultiplier = this.enemySpeedMultipler;
-	
-	// if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
-	if (this.enemyPaused) {
-		speedMultiplier = 0;
-	};
-	
+    // the animation speed multiplier
+    var speedMultiplier = this.enemySpeedMultipler;
+
+    // if the enemy is paused, then set animation speed to 0 to make enemy's current animation freeze
+    if (this.enemyPaused) {
+      speedMultiplier = 0;
+    };
+
     this.animations[this.state].drawFrame(
       this.gameEngine.clockTick * speedMultiplier,
       context,
@@ -220,8 +217,8 @@ class Mushroom extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-	this.level.levelEnemyWaves.decrementEnemiesLeft();	
- //   console.log("Mushroom+$", this.reward);
+    this.level.levelEnemyWaves.decrementEnemiesLeft();
+    //   console.log("Mushroom+$", this.reward);
     this.user.increaseScores(this.score);
   }
 }

@@ -133,9 +133,9 @@ class Transition {
                     if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
                         var scaleup = homeScale + 0.1;
                         var offset = (137 * scaleup - 137 * homeScale) / 2;
-                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * scaleup)/3.5, 400 - offset, scaleup);
+                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * scaleup) / 3.5, 400 - offset, scaleup);
                     } else {
-                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * homeScale)/3.5, 400, homeScale);
+                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * homeScale) / 3.5, 400, homeScale);
                     }
 
                     // hover effect for "restart"
@@ -161,49 +161,74 @@ class Transition {
                 break;
 
             case "gamewon":
+                // drawing stars
+                var count = 0;
+                let baseHP = gameEngine.camera.base.HP;
+                if (baseHP >= 4) {
+                    count = 3;
+                } else if (baseHP <= 1) {
+                    count = 1;
+                } else {
+                    count = 2;
+                }
 
+                var goldstar = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Star1.png"), 0, 0, 24, 25, 1, 1, 0, 0, 1);
+                var blankstar = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Star2.png"), 0, 0, 24, 25, 1, 1, 0, 0, 1);
+
+                const starScale = 5;
+                goldstar.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 3 - 12 * starScale, 200, starScale);
+
+                if (count >= 2) {
+                    goldstar.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 2 - 12 * starScale, 200, starScale);
+                } else {
+                    blankstar.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 2 - 12 * starScale, 200, starScale);
+                }
+
+                if (count == 3) {
+                    goldstar.drawFrame(gameEngine.clockTick, ctx, canvasWidth * 2 / 3 - 12 * starScale, 200, starScale);
+                } else {
+                    blankstar.drawFrame(gameEngine.clockTick, ctx, canvasWidth * 2 / 3 - 12 * starScale, 200, starScale);
+                }
+
+                // drawing buttons
                 var home = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Home.png"), 0, 0, 454, 137, 1, 1, 0, 0, 1);
                 var restart = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Restart.png"), 0, 0, 792, 137, 1, 1, 0, 0, 1);
 
-                const gameoverScale = 1;
-                var homeScale = 0.4;
-                var restartScale = 0.4;
-
+                var homeScale = 0.5;
+                var restartScale = 0.5;
 
                 if (gameEngine.mouse) {
                     var mouseX = gameEngine.mouse.x;
                     var mouseY = gameEngine.mouse.y;
 
+                    console.log(gameEngine.mouse);
+
                     // hover effect for "home"
-                    var startX = 245;
-                    var endX = 400;
-                    var startY = 338;
-                    var endY = 380;
+                    var startX = 260;
+                    var endX = 410;
+                    var startY = 410;
+                    var endY = 450;
                     if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
                         var scaleup = homeScale + 0.1;
-                        var offset = (137 * scaleup - 137 * homeScale) / 2;
-                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * scaleup)/3.5, 400 - offset, scaleup);
+                        home.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 3 - 454 * scaleup / 2, canvasHeight * 2 / 3 - 137 * scaleup / 2, scaleup);
+
                     } else {
-                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * homeScale)/3.5, 400, homeScale);
+                        home.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 3 - 454 * homeScale / 2, canvasHeight * 2 / 3 - 137 * homeScale / 2, homeScale);
                     }
 
-                    // hover effect for "restart"
-                    startX = 555;
-                    startY = 332;
-                    endX = 820;
-                    endY = 381;
+                    startX = 535;
+                    endX = 800;
+                    // same startY and endY
                     if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
                         var scaleup = restartScale + 0.1;
-                        var offset = (137 * scaleup - 137 * restartScale) / 2;
-                        restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * scaleup) * 3 / 4, 400 - offset, scaleup);
-                    } else {
-                        restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * restartScale) * 3 / 4, 400, restartScale);
-                    }
+                        restart.drawFrame(gameEngine.clockTick, ctx, canvasWidth * 2 / 3 - 792 * scaleup / 2, canvasHeight * 2 / 3 - 137 * scaleup / 2, scaleup);
 
-                    // restart lvl
+                    } else {
+                        restart.drawFrame(gameEngine.clockTick, ctx, canvasWidth * 2 / 3 - 792 * restartScale / 2, canvasHeight * 2 / 3 - 137 * restartScale / 2, restartScale);
+                    }
                 } else {
-                    home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 600 * gameoverScale) / 2, 400, homeScale);
-                    restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * restartScale) * 3 / 4, 400, restartScale);
+                    home.drawFrame(gameEngine.clockTick, ctx, canvasWidth / 3 - 454 * homeScale / 2, canvasHeight * 2 / 3 - 137 * homeScale / 2, homeScale);
+                    restart.drawFrame(gameEngine.clockTick, ctx, canvasWidth * 2 / 3 - 792 * restartScale / 2, canvasHeight * 2 / 3 - 137 * restartScale / 2, restartScale);
                 }
                 break;
         }

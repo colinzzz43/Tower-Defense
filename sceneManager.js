@@ -41,8 +41,7 @@ class SceneManager {
 
 		this.transition = true;
 		this.sceneType = "title";
-		console.log(new Transition(this.sceneType));
-		// this.game.addEntity(transition);
+		this.game.addEntity(new Transition(this.sceneType));
 	}
 
 	resetStats() {
@@ -276,13 +275,13 @@ class SceneManager {
 					
 				// if all waves of enemies are killed before the base HP reaches zero,
 				// transition scene from level to game won screen
-				} else {
-					if (this.currentLevel === 5) {
-						this.transition = true;
-						this.sceneType = "gamewon";
-						this.clearEntities();
-						this.game.addEntity(new Transition(this.sceneType));
-					}
+				} else { // will add when boolean is added
+					// if (this.currentLevel === 5) {
+					// 	this.transition = true;
+					// 	this.sceneType = "gamewon";
+					// 	this.clearEntities();
+					// 	this.game.addEntity(new Transition(this.sceneType));
+					// }
 				}
 			}
 		}
@@ -396,7 +395,49 @@ class SceneManager {
 				}
 				break;
 			case "gamewon":
-				console.log("Gamewon update");
+				if (this.game.click) {
+					var mouseX = this.game.click.x;
+                    var mouseY = this.game.click.y;					
+					
+					// home button
+					var startX = 260;
+                    var endX = 410;
+                    var startY = 410;
+                    var endY = 450;
+                    if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+						this.transition = true;
+                        this.sceneType = "levelselect";
+						this.clearEntities();
+						this.game.addEntity(new Transition(this.sceneType));
+					}
+
+					// restart button
+					startX = 535;
+                    endX = 800;
+                    // same startY and endY
+                    if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+						this.transition = false;
+						this.timerRestarted = true;
+						this.sceneType = "level";
+						this.clearEntities();
+						this.resetStats();
+
+						switch(this.currentLevel) {
+							case 1:
+								this.loadGamePrototype();
+								break;
+							case 2:
+								this.loadGameLevel2();
+								break;
+							case 3:
+								this.loadGameLevel3();
+								break;
+							case 4:
+								this.loadGameLevel4();
+								break;
+						}
+					}
+				}
 				break;
 			
 

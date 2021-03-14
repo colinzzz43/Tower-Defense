@@ -20,6 +20,9 @@ ASSET_MANAGER.queueDownload("./sprites/levelselect/Level4.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Gameover.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Home.png");
 ASSET_MANAGER.queueDownload("./sprites/levelselect/Restart.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Star1.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Star2.png");
+
 
 // map
 ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");

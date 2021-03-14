@@ -62,7 +62,7 @@ class Goblin extends Enemy {
     this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
     this.HP = 150;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 25; 
+    this.damage = 25;
     this.reward = 15;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
@@ -87,25 +87,32 @@ class Goblin extends Enemy {
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
     this.movement.speed = 1.25 * this.enemySpeedMultipler;
 
-    if (this.enemyPaused) {
-      // pause animation at certain frame
-    } else {
-      this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
-      this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
 
-      // spawn enemy if elapsed game time is greater than time to spawn
-      // else do not do anything
-      if (this.gameTime >= this.spawnTime) {
-        this.exist = true;
-      } else {
-        return;
+    this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+    this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+
+    // spawn enemy if elapsed game time is greater than time to spawn
+    // else do not do anything
+    if (this.gameTime >= this.spawnTime) {
+      this.exist = true;
+    } else {
+      return;
+    }
+
+    // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+    if (this.state == 3) {
+      this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.deathAnimationTime > 1) {
+        this.removeFromWorld = true;
+        this.isDead();
       }
+    } else {
 
       // enemy controlled by spazer
       if (this.controlled) {
         this.movement.speed = 0.2;
         this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-  
+
         if (this.controlTime <= 0) {
           this.controlled = false;
           this.state = 0;
@@ -118,7 +125,7 @@ class Goblin extends Enemy {
 
         if (this.controlled) {
           if (ent instanceof Enemy && ent.exist && ent !== this) {
-            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 3) {
+            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -127,7 +134,7 @@ class Goblin extends Enemy {
           }
         } else {
           if (ent instanceof Tower) {
-            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate  && this.state != 3) {
+            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -138,10 +145,10 @@ class Goblin extends Enemy {
       }
 
       if (this.target)
-        if (this.target.removeFromWorld || !collide(this, this.target)  && this.state != 3)
+        if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3)
           this.state = 0;
 
-          
+
       // only move when running
       if (this.state == 0) {
         // goblin direction
@@ -154,15 +161,8 @@ class Goblin extends Enemy {
         this.movement.updatePosition(this.x, this.y);
       }
 
-      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 1) {
-          this.removeFromWorld = true;
-          this.isDead();
-        }
-      }
     }
+
   };
 
   draw(context) {
@@ -222,8 +222,8 @@ class Goblin extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-	this.level.levelEnemyWaves.decrementEnemiesLeft();	
-//    console.log("Goblin+$", this.reward);
+    this.level.levelEnemyWaves.decrementEnemiesLeft();
+    //    console.log("Goblin+$", this.reward);
     this.user.increaseScores(this.score);
   }
 }

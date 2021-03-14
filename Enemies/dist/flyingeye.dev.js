@@ -46,17 +46,17 @@ function (_Enemy) {
 
     _this.score = 40;
     _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
-    _this.HP = 70;
+    _this.HP = 125;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5;
+    _this.damage = 20;
     _this.reward = 60;
     _this.radius = 20 * _this.scale; // entity radius
 
     _this.shootingRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
 
     _this.xOffset = (_this.frameWidth / 2 + 5) * _this.scale;
-    _this.yOffset = (_this.frameHeight - 50) * _this.scale;
+    _this.yOffset = (_this.frameHeight - 60) * _this.scale;
     _this.fireRate = 0.8; // level grid and enemy movement
 
     _this.movement = new EnemyMovement(1.25, _this.direction, _this.x, _this.y, _this.grid);
@@ -78,31 +78,27 @@ function (_Enemy) {
       this.enemyPaused = this.level.levelPaused;
       this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
       this.movement.speed = 1.5 * this.enemySpeedMultipler;
+      this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+      this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
 
-      if (this.enemyPaused) {// pause animation at certain frame
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
       } else {
-        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
-        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
-        // else do not do anything
-
-        if (this.gameTime >= this.spawnTime) {
-          this.exist = true;
-        } else {
-          return;
-        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-        // console.log(this.state == 3);
+        return;
+      } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+      // console.log(this.state == 3);
 
 
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.state == 3) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
 
-          if (this.deathAnimationTime > 0.5) {
-            this.removeFromWorld = true;
-            this.isDead();
-          }
-        } // enemy controlled by spazer
-
-
+        if (this.deathAnimationTime > 0.5) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
+      } else {
+        // enemy controlled by spazer
         if (this.controlled) {
           this.movement.speed = 0.2;
           this.controlTime -= this.gameEngine.clockTick * this.enemySpeedMultipler;
@@ -195,7 +191,8 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.user.increaseBalance(this.reward);
-      console.log("Flyingeye+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft(); //    console.log("Flyingeye+$", this.reward);
+
       this.user.increaseScores(this.score);
     }
   }]);
