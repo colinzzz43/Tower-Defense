@@ -42,7 +42,7 @@ class Tower {
 
           // Towers do not target enemies in dying animation
           if (!((entity instanceof Skeleton || entity instanceof Mushroom || entity instanceof Goblin
-            || entity instanceof FlyingEye) && entity.state == 3)) {
+            || entity instanceof FlyingEye) && entity.state == 2)) {
 
             // tower shoots enemy in shooting bounds
             if (canShoot(that, entity) && that.elapsedTime > that.fireRate &&
