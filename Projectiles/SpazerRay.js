@@ -17,7 +17,7 @@ class SpazerRay extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 8.5;
-        this.maxSpeed = 400; // pixels per second
+        this.maxSpeed = 180; // pixels per second
     }
 
     update() {

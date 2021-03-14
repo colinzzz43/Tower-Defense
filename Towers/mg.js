@@ -1,7 +1,7 @@
 class MG extends Tower {
   // lvl 1
   static maxHP = 200;
-  static fireRate = 0.5; 
+  static fireRate = 0.7; 
   static shootingRadius = 70; 
   static damage = 20; 
   static cost = 40; 

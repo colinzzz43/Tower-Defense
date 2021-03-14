@@ -7,15 +7,15 @@ class Flamethrower extends Tower {
   static cost = 60; 
   
   // lvl 2
-  static maxHP2 = 400;
+  static maxHP2 = 500;
   static fireRate2 = 0.3; 
-  static shootingRadius2 = 50;
-  static damage2 = 0.1; 
+  static shootingRadius2 = 30;
+  static damage2 = 0.15; 
   static cost2 = 80;
 
   // lvl 3
-  static maxHP3 = 500;
-  static fireRate3 = 0.1; 
+  static maxHP3 = 700;
+  static fireRate3 = 0.3; 
   static shootingRadius3 = 50;
   static damage3 = 0.2;
   static cost3 = 100;

@@ -26,7 +26,7 @@ class Slime extends Enemy {
     this.HP = 100;
     this.damage = 15;
     this.maxHP = this.HP;
-    this.reward = 5;
+    this.reward = 10;
     this.score = 10;
     this.radius = (this.frameWidth / 2 + 1) * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * this.scale; // shooting radius
