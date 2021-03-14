@@ -161,6 +161,50 @@ class Transition {
                 break;
 
             case "gamewon":
+
+                var home = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Home.png"), 0, 0, 454, 137, 1, 1, 0, 0, 1);
+                var restart = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Restart.png"), 0, 0, 792, 137, 1, 1, 0, 0, 1);
+
+                const gameoverScale = 1;
+                var homeScale = 0.4;
+                var restartScale = 0.4;
+
+
+                if (gameEngine.mouse) {
+                    var mouseX = gameEngine.mouse.x;
+                    var mouseY = gameEngine.mouse.y;
+
+                    // hover effect for "home"
+                    var startX = 245;
+                    var endX = 400;
+                    var startY = 338;
+                    var endY = 380;
+                    if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+                        var scaleup = homeScale + 0.1;
+                        var offset = (137 * scaleup - 137 * homeScale) / 2;
+                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * scaleup)/3.5, 400 - offset, scaleup);
+                    } else {
+                        home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 454 * homeScale)/3.5, 400, homeScale);
+                    }
+
+                    // hover effect for "restart"
+                    startX = 555;
+                    startY = 332;
+                    endX = 820;
+                    endY = 381;
+                    if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
+                        var scaleup = restartScale + 0.1;
+                        var offset = (137 * scaleup - 137 * restartScale) / 2;
+                        restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * scaleup) * 3 / 4, 400 - offset, scaleup);
+                    } else {
+                        restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * restartScale) * 3 / 4, 400, restartScale);
+                    }
+
+                    // restart lvl
+                } else {
+                    home.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 600 * gameoverScale) / 2, 400, homeScale);
+                    restart.drawFrame(gameEngine.clockTick, ctx, (canvasWidth - 792 * restartScale) * 3 / 4, 400, restartScale);
+                }
                 break;
         }
     };

@@ -19,11 +19,10 @@ function () {
     this.game = game;
     this.game.camera = this;
     ASSET_MANAGER.getAsset("./soundeffects/BGM.mp3");
-    this.BGM = new Audio("./soundeffects/BGM.mp3"); //  this.user = this.game.user;
-    //	this.base = this.game.base;
-
+    this.BGM = new Audio("./soundeffects/BGM.mp3");
     this.currentWave = 0;
     this.scores = 0;
+    this.allWavesDefeated = false;
     this.levelMap = {
       xCanvas: 150,
       yCanvas: 60,
@@ -35,11 +34,9 @@ function () {
       height: PARAMS.HEIGHT
     }; // Pause Screen
 
-    this.paused = false; //	this.game.paused = this.paused;
-    // Game Speed
+    this.paused = false; // Game Speed
 
-    this.speed = 1; //	this.game.speed = this.speed;
-    // Game Mute
+    this.speed = 1; // Game Mute
 
     this.muted = false; // Timer
 
@@ -47,17 +44,9 @@ function () {
     this.timerRestarted = false;
     this.speedChanged = false;
     this.timerInterval = null;
-    this.currentWave = 0;
     this.transition = true;
     this.sceneType = "title";
-    this.game.addEntity(new Transition(this.sceneType)); // Load the prototype level, along with user and tower store menus, to the game engine
-    // this.loadGamePrototype();
-    // Load the snow level(level 2)
-    // this.loadGameLevel2();
-    // Load the desert level(level 3)
-    // this.loadGameLevel3();
-    // Load the grass level(level 4)
-    // this.loadGameLevel4();
+    console.log(new Transition(this.sceneType)); // this.game.addEntity(transition);
   }
 
   _createClass(SceneManager, [{
@@ -74,6 +63,10 @@ function () {
       var _this = this;
 
       if (this.timerRestarted || this.speedChanged) {
+        if (this.timerRestarted) {
+          this.waveTimer = 5;
+        }
+
         clearInterval(this.timerInterval);
         this.timerRestarted = false;
         this.speedChanged = false;
@@ -85,13 +78,15 @@ function () {
           _this.waveTimer -= 0.1; // Countdown to next wave. When 0, increment current wave
           // and reset waveTimer to that wave's time
 
-          if (_this.waveTimer <= 0) {
-            // just to get wave to increase to 5th one.
-            if (_this.currentWave == 0 || _this.currentWave < _this.waveTimes.length - 1) {
-              _this.currentWave++;
-              _this.waveTimer = _this.waveTimes[_this.currentWave];
-            } else {
-              _this.waveTimer = -1;
+          if (_this.waveTimer !== '∞') {
+            if (_this.waveTimer <= 0) {
+              // just to get wave to increase to 5th one.
+              if (_this.currentWave < _this.waveTimes.length - 1) {
+                _this.currentWave++;
+                _this.waveTimer = _this.waveTimes[_this.currentWave];
+              } else {
+                _this.waveTimer = -1;
+              }
             }
           }
         }
@@ -120,6 +115,7 @@ function () {
       this.game.addEntity(towerStoreMenu); // user menu
 
       var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+      level.userMenu = userMenu;
       this.game.addEntity(userMenu); // description box
 
       var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
@@ -151,6 +147,7 @@ function () {
       this.game.addEntity(towerStoreMenu); // user menu
 
       var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+      level.userMenu = userMenu;
       this.game.addEntity(userMenu); // description box
 
       var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
@@ -182,6 +179,7 @@ function () {
       this.game.addEntity(towerStoreMenu); // user menu
 
       var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+      level.userMenu = userMenu;
       this.game.addEntity(userMenu); // description box
 
       var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
@@ -213,6 +211,7 @@ function () {
       this.game.addEntity(towerStoreMenu); // user menu
 
       var userMenu = new UserMenu(gameEngine, 5, 65, this.ctx, level);
+      level.userMenu = userMenu;
       this.game.addEntity(userMenu); // description box
 
       var descriptionMenu = new DescriptionBox(gameEngine, 5, 665, this.ctx, level);
@@ -225,32 +224,41 @@ function () {
     key: "clearEntities",
     value: function clearEntities() {
       this.game.entities.forEach(function (entity) {
-        if (!(entity instanceof SceneManager)) entity.removeFromWorld = true;
+        if (!(entity instanceof SceneManager)) {
+          entity.removeFromWorld = true;
+        }
+
+        if (entity instanceof UserMenu || entity instanceof TowerStoreMenu || entity instanceof Level) {
+          entity.removeMouseInteractions();
+        }
       });
       console.log(this.game.entities);
     }
   }, {
     key: "update",
     value: function update() {
-      if (this.timerRestarted || this.speedChanged && !this.transition) {
+      if ((this.timerRestarted || this.speedChanged) && !this.transition) {
         this.startTimer();
       } // in the middle of game
 
 
       if (!this.transition) {
         if (this.sceneType == "level") {
-          console.log(this.base.HP);
-
+          // if the base is destroyed before all enemies are killed,
+          // transition scene from level to game over screen
           if (this.base.HP <= 0) {
             this.transition = true;
             this.sceneType = "gameover";
             this.clearEntities();
-            this.game.addEntity(new Transition(this.sceneType));
-          } else if (this.currentLevel == 5) {
-            this.transition = true;
-            this.sceneType = "gamewon";
-            this.clearEntities();
-            this.game.addEntity(new Transition(this.sceneType));
+            this.game.addEntity(new Transition(this.sceneType)); // if all waves of enemies are killed before the base HP reaches zero,
+            // transition scene from level to game won screen
+          } else {
+            if (this.currentLevel === 5) {
+              this.transition = true;
+              this.sceneType = "gamewon";
+              this.clearEntities();
+              this.game.addEntity(new Transition(this.sceneType));
+            }
           }
         }
       } // switch b/w transition scenes
@@ -264,7 +272,8 @@ function () {
 
             if (mouseX > 385 && mouseY > 335 && mouseX < 615 && mouseY < 390) {
               this.transition = true;
-              this.sceneType = "levelselect";
+              this.sceneType = "levelselect"; // this.sceneType = "gamewon";
+
               this.clearEntities();
               this.game.addEntity(new Transition(this.sceneType));
             }
@@ -369,6 +378,10 @@ function () {
             }
           }
 
+          break;
+
+        case "gamewon":
+          console.log("Gamewon update");
           break;
       }
     }

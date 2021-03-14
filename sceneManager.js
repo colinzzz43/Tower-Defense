@@ -41,7 +41,8 @@ class SceneManager {
 
 		this.transition = true;
 		this.sceneType = "title";
-		this.game.addEntity(new Transition(this.sceneType));
+		console.log(new Transition(this.sceneType));
+		// this.game.addEntity(transition);
 	}
 
 	resetStats() {
@@ -295,6 +296,8 @@ class SceneManager {
 					if (mouseX > 385 && mouseY > 335 && mouseX < 615 && mouseY < 390) {
 						this.transition = true;
 						this.sceneType = "levelselect";
+						// this.sceneType = "gamewon";
+
 						this.clearEntities();
 						this.game.addEntity(new Transition(this.sceneType));
 					}
@@ -392,6 +395,10 @@ class SceneManager {
                     } 
 				}
 				break;
+			case "gamewon":
+				console.log("Gamewon update");
+				break;
+			
 
 		}
 

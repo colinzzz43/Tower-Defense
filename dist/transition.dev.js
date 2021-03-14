@@ -16,6 +16,7 @@ function () {
     Object.assign(this, {
       type: type
     });
+    this.background = ASSET_MANAGER.getAsset("./sprites/background.jpg");
   }
 
   _createClass(Transition, [{
@@ -27,8 +28,10 @@ function () {
       switch (this.type) {
         case "title":
           var title = new Animator(ASSET_MANAGER.getAsset("./sprites/title.png"), 0, 0, 1372, 139, 1, 1, 0, 0, 1);
-          var play = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Start.png"), 0, 0, 558, 137, 1, 1, 0, 0, 1);
-          ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+          var play = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Start.png"), 0, 0, 558, 137, 1, 1, 0, 0, 1); // ctx.drawImage(this.background, canvasWidth, canvasHeight);
+          // ctx.fillStyle = '#4d6091';
+          // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
           var titleScale = 0.75;
           var playScale = 0.5;
           var playScale2 = 0.6;
@@ -113,7 +116,7 @@ function () {
           break;
 
         case "gameover":
-          ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+          // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
           var gameover = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Gameover.png"), 0, 0, 715, 134, 1, 1, 0, 0, 1);
           var home = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Home.png"), 0, 0, 454, 137, 1, 1, 0, 0, 1);
           var restart = new Animator(ASSET_MANAGER.getAsset("./sprites/levelselect/Restart.png"), 0, 0, 792, 137, 1, 1, 0, 0, 1);
