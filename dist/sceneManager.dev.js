@@ -252,14 +252,14 @@ function () {
             this.clearEntities();
             this.game.addEntity(new Transition(this.sceneType)); // if all waves of enemies are killed before the base HP reaches zero,
             // transition scene from level to game won screen
-          } else {// will add when boolean is added
-              // if (this.currentLevel === 5) {
-              // 	this.transition = true;
-              // 	this.sceneType = "gamewon";
-              // 	this.clearEntities();
-              // 	this.game.addEntity(new Transition(this.sceneType));
-              // }
-            }
+          }
+
+          if (this.allWavesDefeated) {
+            this.transition = true;
+            this.sceneType = "gamewon";
+            this.clearEntities();
+            this.game.addEntity(new Transition(this.sceneType));
+          }
         }
       } // switch b/w transition scenes
 
