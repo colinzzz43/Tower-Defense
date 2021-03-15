@@ -33,6 +33,7 @@ class Slime extends Enemy {
     this.xOffset = (this.frameWidth / 2) * this.scale;
     this.yOffset = (this.frameHeight / 2) * this.scale + 1;
     this.fireRate = 1;
+    this.dead = false;
 
     // level grid and enemy movement
     this.movement = new EnemyMovement(0.5, this.direction, this.x, this.y, this.grid);
@@ -173,7 +174,8 @@ class Slime extends Enemy {
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
 
-    if (this.HP === 0) {
+    if (this.HP === 0 && !this.dead) {
+      this.dead = true;
       this.isDead();
     }
   }

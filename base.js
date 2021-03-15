@@ -45,6 +45,7 @@ class Base {
         if (collide(that, entity)) {
           entity.attackBase(); // enemies disapear on collision with base
           that.HP -= entity.damageAgainstBase; // base loses 1 hp
+          that.gameEngine.level.levelEnemyWaves.decrementEnemiesLeft();
           that.playSoundEffect();
         }
       }
