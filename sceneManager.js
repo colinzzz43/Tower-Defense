@@ -405,8 +405,11 @@ class SceneManager {
                     var endY = 450;
                     if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
 						this.transition = true;
+						this.allWavesDefeated = false;
+						this.timerRestarted = true;
                         this.sceneType = "levelselect";
 						this.clearEntities();
+						this.resetStats();
 						this.game.addEntity(new Transition(this.sceneType));
 					}
 
@@ -417,6 +420,7 @@ class SceneManager {
                     if (mouseX > startX && mouseX < endX && mouseY > startY && mouseY < endY) {
 						this.transition = false;
 						this.timerRestarted = true;
+						this.allWavesDefeated = false;
 						this.sceneType = "level";
 						this.clearEntities();
 						this.resetStats();
