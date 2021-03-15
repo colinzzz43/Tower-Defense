@@ -17,7 +17,7 @@ class ShotgunBullet extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 4 * this.scale;
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 200; // pixels per second
 
         var dist = distance(this, this.target);
         this.velocity = {
@@ -43,6 +43,8 @@ class ShotgunBullet extends Projectile {
 					this.removeFromWorld = true;
 				}
 			}
+
+            if (this.x < 150 || this.x > 1045 || this.y < 70 || this.y > 658) this.removeFromWorld = true;
 		}
     };
     

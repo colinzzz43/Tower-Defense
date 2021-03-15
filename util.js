@@ -28,6 +28,14 @@ function widthScaling() {
   return cssCanvasWidth / htmlCanvasWidth;
 }
 
+// get the xy coordinates of the mouse when it does an event
+function getXandY(that, e) {
+	var x = e.clientX - that.ctx.canvas.getBoundingClientRect().left;
+	var y = e.clientY - that.ctx.canvas.getBoundingClientRect().top;
+
+	return { x: x, y: y };
+};
+
 // determing which direction each tower will be facing
 function getFacing(enemy, tower) {
 
@@ -57,46 +65,46 @@ function getFacing(enemy, tower) {
  * @enemyType String of type of enemy
  * @n Total # of enemies to be spawned
  **/
-function addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
+function addEnemySpawn(gameEngine, x, y, direction, level, initalSpawnTime, spawnIntervalTime, enemyType, n) {
   switch (enemyType) {
     case "Slime":
       while (n > 0) {
-        gameEngine.addEntity(new Slime(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Slime(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Goblin":
       while (n > 0) {
-        gameEngine.addEntity(new Goblin(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Goblin(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Skeleton":
       while (n > 0) {
-        gameEngine.addEntity(new Skeleton(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Skeleton(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Flying Eye":
       while (n > 0) {
-        gameEngine.addEntity(new FlyingEye(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new FlyingEye(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Mushroom":
       while (n > 0) {
-        gameEngine.addEntity(new Mushroom(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Mushroom(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
       break;
     case "Dragon":
       while (n > 0) {
-        gameEngine.addEntity(new Dragon(gameEngine, x, y, level, initalSpawnTime));
+        gameEngine.addEntity(new Dragon(gameEngine, x, y, direction, level, initalSpawnTime));
         initalSpawnTime += spawnIntervalTime;
         n--;
       }
@@ -139,7 +147,6 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 var PARAMS = {
-  SCALE: 3,
   WIDTH: 1200,
-  HEIGHT: 600
+  HEIGHT: 700
 };

@@ -2,8 +2,7 @@ class FlamethrowerFlames extends Projectile {
     constructor(gameEngine, x, y, target, shootingEntity, bulletOffset) {
         super(gameEngine, x, y, target, shootingEntity); 
         this.bulletOffset = bulletOffset;
-        this.xStart = x;
-        this.yStart = y;     
+   
 
         // animations
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/other/flamethrower_bullet.png");
@@ -42,11 +41,11 @@ class FlamethrowerFlames extends Projectile {
           let ent = this.gameEngine.entities[i];
           if (ent instanceof Enemy && ent.exist && collide(this, ent)) {
             ent.takeHit(this.shootingEntity.damage);
-            this.removeFromWorld = true;
+            console.log(ent.HP);
           }
 
-          let dx = this.x - this.xStart;
-          let dy = this.y - this.yStart;
+          let dx = this.x - this.shootingEntity.x;
+          let dy = this.y - this.shootingEntity.y;
           let distTraveled = Math.sqrt(dx * dx + dy * dy);
 
 

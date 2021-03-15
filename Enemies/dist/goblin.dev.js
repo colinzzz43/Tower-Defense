@@ -23,45 +23,51 @@ var Goblin =
 function (_Enemy) {
   _inherits(Goblin, _Enemy);
 
-  function Goblin(gameEngine, x, y, level, spawnTime) {
+  function Goblin(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, Goblin);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Goblin).call(this, gameEngine, x, y, level, spawnTime)); // sprites
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Goblin).call(this, gameEngine, x, y, direction, level, spawnTime)); // sprites
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death.png");
     _this.runImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run.png");
-    _this.takehitImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Take Hit.png"); // animations
+    _this.attackLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Attack_Left.png");
+    _this.deathLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Death_Left.png");
+    _this.runLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/goblin/Run_Left.png"); // animations
 
-    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
+    _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.12, 0, false, true);
     _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.3, 0, false, false);
     _this.runAnim = new Animator(_this.runImg, 0, 0, 150, 150, 8, 0.2, 0, false, true);
+    _this.attackLeftAnim = new Animator(_this.attackLeftImg, 0, 0, 150, 150, 8, 0.12, 1, false, true);
+    _this.deathLeftAnim = new Animator(_this.deathLeftImg, 0, 0, 150, 150, 4, 0.3, 1, false, false);
+    _this.runLeftAnim = new Animator(_this.runLeftImg, 0, 0, 150, 150, 8, 0.2, 1, false, true);
 
     _this.loadAnimation(); // state
 
 
-    _this.state = 0; // 0: run, 1: attack, 2: takehit, 3: dead
+    _this.facing = 0; // 0: right, 1: left
+
+    _this.state = 0; // 0: run, 1: attack, 2: dead
     // stats
 
     _this.score = 20;
-    _this.scale = 2;
-    _this.HP = 30;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
+    _this.HP = 150;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 10; //8;
-
-    _this.reward = 15;
+    _this.damage = 25;
+    _this.reward = 20;
     _this.radius = 16 * _this.scale; // entity radius
 
     _this.visualRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
 
     _this.xOffset = _this.frameWidth / 2 * _this.scale;
     _this.yOffset = (_this.frameHeight - 50) * _this.scale;
-    _this.attackRate = 0.7; // level grid and enemy movement
+    _this.attackRate = 1; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -69,10 +75,23 @@ function (_Enemy) {
     key: "loadAnimation",
     value: function loadAnimation() {
       this.animations = [];
-      this.animations.push(this.runAnim);
-      this.animations.push(this.attackAnim);
-      this.animations.push(this.takehitAnim);
-      this.animations.push(this.deathAnim);
+
+      for (var i = 0; i < 3; i++) {
+        // 3 states
+        this.animations.push([]);
+
+        for (var j = 0; j < 2; j++) {
+          // 2 ways to face
+          this.animations[i].push([]);
+        }
+      }
+
+      this.animations[0][0] = this.runAnim;
+      this.animations[1][0] = this.attackAnim;
+      this.animations[2][0] = this.deathAnim;
+      this.animations[0][1] = this.runLeftAnim;
+      this.animations[1][1] = this.attackLeftAnim;
+      this.animations[2][1] = this.deathLeftAnim;
     }
   }, {
     key: "update",
@@ -80,17 +99,30 @@ function (_Enemy) {
       this.enemyPaused = this.level.levelPaused;
       this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
       this.movement.speed = 1.25 * this.enemySpeedMultipler;
+      this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+      this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
 
-      if (this.enemyPaused) {// pause animation at certain frame
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
       } else {
-        this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
-        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
-        // else do not do anything
+        return;
+      } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
 
-        if (this.gameTime >= this.spawnTime) {
-          this.exist = true;
-        } else {
-          return;
+
+      if (this.state == 2) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+
+        if (this.deathAnimationTime > 1) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
+      } else {
+        // check direction for left/right animations
+        if (this.movement.direction == "left") {
+          this.facing = 1;
+        } else if (this.movement.direction == "right") {
+          this.facing = 0;
         } // enemy controlled by spazer
 
 
@@ -109,7 +141,7 @@ function (_Enemy) {
 
           if (this.controlled) {
             if (ent instanceof Enemy && ent.exist && ent !== this) {
-              if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+              if (this.state != 2 && collide(this, ent) && this.cooldownTime > this.attackRate) {
                 this.state = 1;
                 this.cooldownTime = 0;
                 this.target = ent;
@@ -118,7 +150,7 @@ function (_Enemy) {
             }
           } else {
             if (ent instanceof Tower) {
-              if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+              if (this.state != 2 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 2) {
                 this.state = 1;
                 this.cooldownTime = 0;
                 this.target = ent;
@@ -128,7 +160,7 @@ function (_Enemy) {
           }
         }
 
-        if (this.target) if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3) this.state = 0; // only move when running
+        if (this.target) if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 2) this.state = 0; // only move when running
 
         if (this.state == 0) {
           // goblin direction
@@ -138,16 +170,6 @@ function (_Enemy) {
           this.x = position.x;
           this.y = position.y;
           this.movement.updatePosition(this.x, this.y);
-        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-
-
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
-
-          if (this.deathAnimationTime > 1) {
-            this.removeFromWorld = true;
-            this.isDead();
-          }
         }
       }
     }
@@ -179,16 +201,15 @@ function (_Enemy) {
       }
 
       ;
-      this.animations[this.state].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.animations[this.state][this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",
     value: function takeHit(damage) {
-      // this.state = 2;
       this.HP = Math.max(0, this.HP - damage);
 
       if (this.HP === 0) {
-        this.state = 3;
+        this.state = 2;
       }
     }
   }, {
@@ -200,7 +221,8 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.user.increaseBalance(this.reward);
-      console.log("Goblin+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft(); //    console.log("Goblin+$", this.reward);
+
       this.user.increaseScores(this.score);
     }
   }]);

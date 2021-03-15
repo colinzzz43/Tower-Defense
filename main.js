@@ -2,9 +2,27 @@ var gameEngine = new GameEngine();
 
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/other/coin2.png");
+ASSET_MANAGER.queueDownload("./sprites/other/heart.png");
 
 //queue download
+// transition scenes
 ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/background.jpg");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/arrow.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Sell.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Upgrade.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Start.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/LevelScreen.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level1.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level2.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level3.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Level4.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Gameover.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Home.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Restart.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Star1.png");
+ASSET_MANAGER.queueDownload("./sprites/levelselect/Star2.png");
+
 
 // map
 ASSET_MANAGER.queueDownload("./Level/images/map_prototype.png");
@@ -17,15 +35,27 @@ ASSET_MANAGER.queueDownload("./sprites/monster/slime/slime1_front.png"); // slim
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Attack.png"); // goblin
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Attack_Left.png"); // goblin left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/goblin/Run_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Attack.png"); // skeleton
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Walk.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Attack_Left.png"); // skeleton left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/skeleton/Walk_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Attack.png"); // flying eye
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Flight.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Attack_Left.png"); // flying eye left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/flyingeye/Flight_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Attack.png"); // mushroom
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Death.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Run.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Attack_Left.png"); // mushroom left facing
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Death_Left.png");
+ASSET_MANAGER.queueDownload("./sprites/monster/mushroom/Run_Left.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-gold.png"); // dragon
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_dragon-red.png");
 ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon-blue.png");
@@ -33,15 +63,42 @@ ASSET_MANAGER.queueDownload("./sprites/monster/dragons/flying_twin_headed_dragon
 
 // towers + base
 ASSET_MANAGER.queueDownload("./sprites/other/base.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/flamethrower/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/laser/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/matter/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/mg/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/pistol/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/rocket/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/shotgun/Level3/3_sheet.png");
+
 ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level1/1_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level2/2_sheet.png");
+ASSET_MANAGER.queueDownload("./sprites/towers/spazer/Level3/3_sheet.png");
 
 // tower icons
 ASSET_MANAGER.queueDownload("./sprites/towers/cannon/Level1/1_left.png");
@@ -79,95 +136,11 @@ ASSET_MANAGER.downloadAll(function () {
   var ctx = canvas.getContext("2d");
   ctx.imageSmoothingEnabled = false;
   
-  var width = document.getElementById("gameWorld").width;
   
   gameEngine.init(ctx);
   var Scene = new SceneManager(gameEngine, ctx);
   gameEngine.addEntity(Scene);
-  
-/*
-  var user = new User(gameEngine);
-  var map = ASSET_MANAGER.getAsset("./Level/map_prototype.png");
-  var level = new Level(gameEngine, map, 150, 0, 0, 0, 600, 400, 1.5, 1, ctx);
 
-  // tower icon buttons
-  var towerIconImages = [];
-  var pistolImage = ASSET_MANAGER.getAsset("./sprites/towers/pistol/Level1/1_left.png");
-  towerIconImages.push(pistolImage);
-  var mgImage = ASSET_MANAGER.getAsset("./sprites/towers/mg/Level1/1_left.png");
-  towerIconImages.push(mgImage);
-  var shotgunImage = ASSET_MANAGER.getAsset("./sprites/towers/shotgun/Level1/1_left.png");
-  towerIconImages.push(shotgunImage);
-  var cannonImage = ASSET_MANAGER.getAsset("./sprites/towers/cannon/Level1/1_left.png");
-  towerIconImages.push(cannonImage);
-  var flamethrowerImage = ASSET_MANAGER.getAsset("./sprites/towers/flamethrower/Level1/1_left.png");
-  towerIconImages.push(flamethrowerImage);
-  var laserImage = ASSET_MANAGER.getAsset("./sprites/towers/laser/Level1/1_left.png");
-  towerIconImages.push(laserImage);
-  var matterImage = ASSET_MANAGER.getAsset("./sprites/towers/matter/Level1/1_left.png");
-  towerIconImages.push(matterImage);
-  var rocketImage = ASSET_MANAGER.getAsset("./sprites/towers/rocket/Level1/1_left.png");
-  towerIconImages.push(rocketImage);
-  var spazerImage = ASSET_MANAGER.getAsset("./sprites/towers/spazer/Level1/1_left.png");
-  towerIconImages.push(spazerImage);
-  var towerStoreMenu = new TowerStoreMenu(gameEngine, 1055, 5, towerIconImages, ctx, level);
-  
-  var userMenu = new UserMenu(gameEngine, 5, 5, ctx, level);
-
-  var base = new Base(gameEngine, 960, 270);
-
-
-  gameEngine.addEntity(user);
-  gameEngine.addEntity(level);
-  level.levelEnemyWaves = new LevelWave(level);
-  gameEngine.addEntity(base);
-  gameEngine.addEntity(towerStoreMenu);
-  gameEngine.addEntity(userMenu);
-
-  // enemy spawner
-
-  let x = 200;
-  let y = 330;
-  let initalSpawnTime = 5;
-  let interval = 2;
-  let n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Slime", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 10;
-   interval = 12;
-   n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Flying Eye", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 15;
-   interval = 2;
-   n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Mushroom", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 20;
-   interval = 2;
-   n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Skeleton", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 25;
-   interval = 2;
-   n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Goblin", n);
-
-   x = 200;
-   y = 330;
-   initalSpawnTime = 30;
-   interval = 2;
-   n = 1;
-  addEnemySpawn(gameEngine, x, y, level, initalSpawnTime, interval, "Dragon", n);
-*/
   
   gameEngine.start();
 });

@@ -1,99 +1,101 @@
 class Skeleton extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // sprites
     this.attackImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/skeleton/Attack.png"
-    );
+      "./sprites/monster/skeleton/Attack.png");
     this.deathImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/skeleton/Death.png"
-    );
+      "./sprites/monster/skeleton/Death.png");
     this.walkImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/skeleton/Walk.png"
-    );
-    this.takehitImg = ASSET_MANAGER.getAsset(
-      "./sprites/monster/skeleton/Take Hit.png"
-    );
+      "./sprites/monster/skeleton/Walk.png");
+
+    this.attackLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/skeleton/Attack_Left.png");
+    this.deathLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/skeleton/Death_Left.png");
+    this.walkLeftImg = ASSET_MANAGER.getAsset(
+      "./sprites/monster/skeleton/Walk_Left.png");
 
     // animations
-    this.attackAnim = new Animator(
-      this.attackImg,
-      0,
-      0,
-      150,
-      150,
-      8,
-      0.2,
-      0,
-      false,
-      true
-    );
-    this.deathAnim = new Animator(
-      this.deathImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.2,
-      0,
-      false,
-      false
-    );
-    this.walkAnim = new Animator(
-      this.walkImg,
-      0,
-      0,
-      150,
-      150,
-      4,
-      0.2,
-      0,
-      false,
-      true
-    );
+    this.attackAnim = new Animator(this.attackImg, 0, 0, 150, 150, 8, 0.09, 0,
+      false, true);
+    this.deathAnim = new Animator(this.deathImg, 0, 0, 150, 150, 4, 0.2, 0,
+      false, false);
+    this.walkAnim = new Animator(this.walkImg, 0, 0, 150, 150, 4, 0.2, 0, false,
+      true);
+
+    this.attackLeftAnim = new Animator(this.attackLeftImg, 0, 0, 150, 150, 8, 0.09, 1,
+      false, true);
+    this.deathLeftAnim = new Animator(this.deathLeftImg, 0, 0, 150, 150, 4, 0.2, 1,
+      false, false);
+    this.walkLeftAnim = new Animator(this.walkLeftImg, 0, 0, 150, 150, 4, 0.2, 1, false,
+      true);
 
     this.loadAnimation();
 
     // state
-    this.state = 0; // 0: walk, 1: attack, 2: takehit, 3: dead
+    this.facing = 0; // 0: right, 1: left
+    this.state = 0; // 0: walk, 1: attack, 2: dead
 
     // stats
-    this.score = 30;
-    this.scale = 2;
-    this.HP = 40;
+    this.score = 60;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 1.5 : 2;
+    this.HP = 300;
     this.maxHP = this.HP; // used in calculating health bar
-    this.damage = 15;
-    this.reward = 30;
+    this.damage = 40;
+    this.reward = 60;
     this.radius = 16 * this.scale; // entity radius
     this.visualRadius = (this.frameWidth / 3) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2 + 3) * this.scale;
     this.yOffset = (this.frameHeight - 50) * this.scale;
-    this.attackRate = 4.5;
+    this.attackRate = 1;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(1.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(1.25, this.direction, this.x, this.y, this.grid);
   }
 
   loadAnimation() {
     this.animations = [];
-    this.animations.push(this.walkAnim);
-    this.animations.push(this.attackAnim);
-    this.animations.push(this.takehitAnim);
-    this.animations.push(this.deathAnim);
+
+    for (var i = 0; i < 3; i++) { // 3 states
+        this.animations.push([]);
+        for (var j = 0; j < 2; j++) { // 2 ways to face
+            this.animations[i].push([]);
+        }
+    }
+
+    this.animations[0][0] = this.walkAnim;
+    this.animations[1][0] = this.attackAnim;    
+    this.animations[2][0] = this.deathAnim;
+    
+    this.animations[0][1] = this.walkLeftAnim;
+    this.animations[1][1] = this.attackLeftAnim;
+    this.animations[2][1] = this.deathLeftAnim;  
   }
 
   update() {
     this.enemyPaused = this.level.levelPaused;
     this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
-    this.movement.speed = 1.7 * this.enemySpeedMultipler;
+    this.movement.speed = 1.25 * this.enemySpeedMultipler;
 
-    if (this.enemyPaused) {
-      // pause animation at certain frame
+    // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+    if (this.state == 3) {
+      this.deathAnimationTime += this.gameEngine.clockTick;
+      if (this.deathAnimationTime > 0.8) {
+        this.removeFromWorld = true;
+        this.isDead();
+      }
     } else {
       this.cooldownTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
       this.gameTime += (this.gameEngine.clockTick * this.enemySpeedMultipler);
+      
+      // check direction for left/right animations
+      if (this.movement.direction == "left") {
+        this.facing = 1;
+      } else if (this.movement.direction == "right") {
+        this.facing = 0;
+      }
 
       // spawn enemy if elapsed game time is greater than time to spawn
       // else do not do anything
@@ -103,23 +105,32 @@ class Skeleton extends Enemy {
         return;
       }
 
+      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+      if (this.state == 2) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+        if (this.deathAnimationTime > 0.5) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
+      }	      
+
       // enemy controlled by spazer
       if (this.controlled) {
         this.movement.speed = 0.2;
         this.controlTime -= (this.gameEngine.clockTick * this.enemySpeedMultipler);
-  
+
         if (this.controlTime <= 0) {
           this.controlled = false;
           this.state = 0;
 
         }
-      }      
+      }
 
       for (var i = 0; i < this.gameEngine.entities.length; i++) {
         var ent = this.gameEngine.entities[i];
         if (this.controlled) {
           if (ent instanceof Enemy && ent.exist && ent !== this) {
-            if (this.state != 3 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+            if (this.state != 2 && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 2) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -128,7 +139,7 @@ class Skeleton extends Enemy {
           }
         } else {
           if (ent instanceof Tower) {
-            if (this.state != 3 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 3) {
+            if (this.state != 2 && canSee(this, ent) && collide(this, ent) && this.cooldownTime > this.attackRate && this.state != 2) {
               this.state = 1;
               this.cooldownTime = 0;
               this.target = ent;
@@ -138,9 +149,8 @@ class Skeleton extends Enemy {
         }
       }
 
-
       if (this.target)
-        if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 3)
+        if (this.target.removeFromWorld || !collide(this, this.target) && this.state != 2)
           this.state = 0;
 
       // only move when running
@@ -153,15 +163,6 @@ class Skeleton extends Enemy {
         this.x = position.x;
         this.y = position.y;
         this.movement.updatePosition(this.x, this.y);
-      }
-
-      // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-      if (this.state == 3) {
-        this.deathAnimationTime += this.gameEngine.clockTick;
-        if (this.deathAnimationTime > 0.8) {
-          this.removeFromWorld = true;
-          this.isDead();
-        }
       }
     }
   };
@@ -200,7 +201,7 @@ class Skeleton extends Enemy {
       speedMultiplier = 0;
     };
 
-    this.animations[this.state].drawFrame(
+    this.animations[this.state][this.facing].drawFrame(
       this.gameEngine.clockTick * speedMultiplier,
       context,
       this.x - this.xOffset,
@@ -213,7 +214,7 @@ class Skeleton extends Enemy {
     this.HP = Math.max(0, this.HP - damage);
 
     if (this.HP === 0) {
-      this.state = 3;
+      this.state = 2;
     }
   }
 
@@ -223,7 +224,7 @@ class Skeleton extends Enemy {
 
   isDead() {
     this.user.increaseBalance(this.reward);
-    console.log("Skeleton+$", this.reward);
+	  this.level.levelEnemyWaves.decrementEnemiesLeft();	
     this.user.increaseScores(this.score);
   }
 }

@@ -22,7 +22,7 @@ class Base {
 
     // stats
     this.HP = 5;
-    this.SCALE = 3.75; // SCALE = 3.75, to take up 3x3 of grid on map
+    this.SCALE = this.gameEngine.camera.currentLevel > 1 ? 2 : 3.75; // SCALE = 3.75 for small prototype map, SCALE = 2 for the other maps
     this.diameter = 48 * this.SCALE;
     this.radius = this.diameter / 2;
   }
@@ -45,6 +45,7 @@ class Base {
         if (collide(that, entity)) {
           entity.attackBase(); // enemies disapear on collision with base
           that.HP -= entity.damageAgainstBase; // base loses 1 hp
+          that.gameEngine.level.levelEnemyWaves.decrementEnemiesLeft();
           that.playSoundEffect();
         }
       }
@@ -65,8 +66,7 @@ class Base {
 
   draw(context) {
     // show bounds for collision testing
-//    this.showBoundingCircle(context);
-
+ // this.showBoundingCircle(context);
     // x an y are center coordinates, subtract radius for drawing offset
     this.animation.drawFrame(
       this.gameEngine.clockTick,

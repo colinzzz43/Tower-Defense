@@ -30,8 +30,6 @@ class LevelScreen {
 		this.user = this.gameEngine.camera.user;
         this.game = this.gameEngine;
 
-
-
 		this.menuBoxWidth = 1190;
 		this.menuBoxHeight = 535;
 		this.userIcons = [];
@@ -54,14 +52,14 @@ class LevelScreen {
         };
         
         
-        	    // Timer
-    this.TIME_LIMIT = 20;
-    this.timePassed = 0;
-	  this.timerRestarted = false;
-	  this.speedChanged = false;
-    this.timeLeft = this.TIME_LIMIT;
-    this.timerInterval = null;
-    this.startTimer();
+        // Timer
+		this.TIME_LIMIT = 20;
+		this.timePassed = 0;
+		this.timerRestarted = false;
+		this.speedChanged = false;
+		this.timeLeft = this.TIME_LIMIT;
+		this.timerInterval = null;
+		this.startTimer();
 	};
 
     startTimer() {

@@ -8,7 +8,7 @@ class Cannonball extends Projectile {
         this.animation = new Animator(this.spritesheet, 0, 0, 17, 17, 1, 1, 0, false, true);
 
         // animation stats
-        this.scale = 1;
+        this.scale = 2;
         this.xOffset = 8.5 * this.scale;
         this.yOffset = 8.5 * this.scale;
         this.frameWidth = 17;
@@ -17,6 +17,6 @@ class Cannonball extends Projectile {
         // stats
         this.canRotate = false;
         this.radius = 8.5 * this.scale;
-        this.maxSpeed = 150; // pixels per second
+        this.maxSpeed = 180; // pixels per second
     }
 }

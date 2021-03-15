@@ -1,6 +1,6 @@
 class Slime extends Enemy {
-  constructor(gameEngine, x, y, level, spawnTime) {
-    super(gameEngine, x, y, level, spawnTime);
+  constructor(gameEngine, x, y, direction, level, spawnTime) {
+    super(gameEngine, x, y, direction, level, spawnTime);
 
     // animation
     this.spritesheet = ASSET_MANAGER.getAsset(
@@ -22,20 +22,21 @@ class Slime extends Enemy {
     this.frameWidth = 16;
 
     // stats
-    this.scale = 3;
+    this.scale = this.gameEngine.camera.currentLevel > 1 ? 2 : 3;
     this.HP = 100;
-    this.damage = 5;
+    this.damage = 15;
     this.maxHP = this.HP;
-    this.reward = 5;
+    this.reward = 10;
     this.score = 10;
     this.radius = (this.frameWidth / 2 + 1) * this.scale; // entity radius
     this.shootingRadius = (this.frameWidth / 2 + 5) * this.scale; // shooting radius
     this.xOffset = (this.frameWidth / 2) * this.scale;
     this.yOffset = (this.frameHeight / 2) * this.scale + 1;
     this.fireRate = 1;
+    this.dead = false;
 
     // level grid and enemy movement
-    this.movement = new EnemyMovement(0.5, "right", this.x, this.y, this.grid);
+    this.movement = new EnemyMovement(0.5, this.direction, this.x, this.y, this.grid);
   }
 
   update() {
@@ -173,7 +174,8 @@ class Slime extends Enemy {
   takeHit(damage) {
     this.HP = Math.max(0, this.HP - damage);
 
-    if (this.HP === 0) {
+    if (this.HP === 0 && !this.dead) {
+      this.dead = true;
       this.isDead();
     }
   }
@@ -187,8 +189,9 @@ class Slime extends Enemy {
 
   isDead() {
     this.removeFromWorld = true;
+	this.level.levelEnemyWaves.decrementEnemiesLeft();	
     this.user.increaseBalance(this.reward);
-    console.log("Slime+$", this.reward);
+//    console.log("Slime+$", this.reward);
     this.user.increaseScores(this.score);
 
     // add coins when dropped

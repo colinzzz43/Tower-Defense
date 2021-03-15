@@ -23,43 +23,51 @@ var FlyingEye =
 function (_Enemy) {
   _inherits(FlyingEye, _Enemy);
 
-  function FlyingEye(gameEngine, x, y, level, spawnTime) {
+  function FlyingEye(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, FlyingEye);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(FlyingEye).call(this, gameEngine, x, y, level, spawnTime)); // sprites
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FlyingEye).call(this, gameEngine, x, y, direction, level, spawnTime)); // sprites
 
     _this.attackImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Attack.png");
     _this.deathImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Death.png");
-    _this.flyImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Flight.png"); // animations
+    _this.flyImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Flight.png");
+    _this.attackLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Attack_Left.png");
+    _this.deathLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Death_Left.png");
+    _this.flyLeftImg = ASSET_MANAGER.getAsset("./sprites/monster/flyingeye/Flight_Left.png"); // animations
 
     _this.attackAnim = new Animator(_this.attackImg, 0, 0, 150, 150, 8, 0.1, 0, false, true);
     _this.deathAnim = new Animator(_this.deathImg, 0, 0, 150, 150, 4, 0.2, 0, false, false);
     _this.flyAnim = new Animator(_this.flyImg, 0, 0, 150, 150, 8, 0.07, 0, false, true);
+    _this.attackLeftAnim = new Animator(_this.attackLeftImg, 0, 0, 150, 150, 8, 0.1, 1, false, true);
+    _this.deathLeftAnim = new Animator(_this.deathLeftImg, 0, 0, 150, 150, 4, 0.2, 1, false, false);
+    _this.flyLeftAnim = new Animator(_this.flyLeftImg, 0, 0, 150, 150, 8, 0.07, 1, false, true);
 
     _this.loadAnimation(); // state
 
 
-    _this.state = 0; // 0: fly, 1: attack, 2: takehit, 3: dead
+    _this.facing = 0; // 0: right, 1: left
+
+    _this.state = 0; // 0: fly, 1: attack, 2: dead
     // stats
 
-    _this.score = 40;
-    _this.scale = 2;
-    _this.HP = 70;
+    _this.score = 30;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 1.6 : 2;
+    _this.HP = 125;
     _this.maxHP = _this.HP; // used in calculating health bar
 
-    _this.damage = 5;
-    _this.reward = 60;
+    _this.damage = 20;
+    _this.reward = 30;
     _this.radius = 20 * _this.scale; // entity radius
 
     _this.shootingRadius = _this.frameWidth / 3 * _this.scale; // shooting radius
 
     _this.xOffset = (_this.frameWidth / 2 + 5) * _this.scale;
-    _this.yOffset = (_this.frameHeight - 50) * _this.scale;
+    _this.yOffset = (_this.frameHeight - 60) * _this.scale;
     _this.fireRate = 0.8; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(1.25, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(1.25, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -67,10 +75,23 @@ function (_Enemy) {
     key: "loadAnimation",
     value: function loadAnimation() {
       this.animations = [];
-      this.animations.push(this.flyAnim);
-      this.animations.push(this.attackAnim);
-      this.animations.push(this.takehitAnim);
-      this.animations.push(this.deathAnim);
+
+      for (var i = 0; i < 3; i++) {
+        // 3 states
+        this.animations.push([]);
+
+        for (var j = 0; j < 2; j++) {
+          // 2 ways to face
+          this.animations[i].push([]);
+        }
+      }
+
+      this.animations[0][0] = this.flyAnim;
+      this.animations[1][0] = this.attackAnim;
+      this.animations[2][0] = this.deathAnim;
+      this.animations[0][1] = this.flyLeftAnim;
+      this.animations[1][1] = this.attackLeftAnim;
+      this.animations[2][1] = this.deathLeftAnim;
     }
   }, {
     key: "update",
@@ -78,29 +99,40 @@ function (_Enemy) {
       this.enemyPaused = this.level.levelPaused;
       this.enemySpeedMultipler = this.level.levelSpeedMultiplier;
       this.movement.speed = 1.5 * this.enemySpeedMultipler;
+      this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
+      this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+      // else do not do anything
 
-      if (this.enemyPaused) {// pause animation at certain frame
+      if (this.gameTime >= this.spawnTime) {
+        this.exist = true;
+      } else {
+        return;
+      } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
+
+
+      if (this.state == 2) {
+        this.deathAnimationTime += this.gameEngine.clockTick;
+
+        if (this.deathAnimationTime > 0.5) {
+          this.removeFromWorld = true;
+          this.isDead();
+        }
       } else {
         this.cooldownTime += this.gameEngine.clockTick * this.enemySpeedMultipler;
-        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // spawn enemy if elapsed game time is greater than time to spawn
+        this.gameTime += this.gameEngine.clockTick * this.enemySpeedMultipler; // check direction for left/right animations
+
+        if (this.movement.direction == "left") {
+          this.facing = 1;
+        } else if (this.movement.direction == "right") {
+          this.facing = 0;
+        } // spawn enemy if elapsed game time is greater than time to spawn
         // else do not do anything
+
 
         if (this.gameTime >= this.spawnTime) {
           this.exist = true;
         } else {
           return;
-        } // ensures enemy is removed properly once dead and currency is rewarded exactly once.
-
-
-        console.log(this.state == 3);
-
-        if (this.state == 3) {
-          this.deathAnimationTime += this.gameEngine.clockTick;
-
-          if (this.deathAnimationTime > 0.6) {
-            this.removeFromWorld = true;
-            this.isDead();
-          }
         } // enemy controlled by spazer
 
 
@@ -118,14 +150,14 @@ function (_Enemy) {
           var ent = this.gameEngine.entities[i];
 
           if (this.controlled) {
-            if (ent instanceof Enemy && ent.exist && canShoot(this, ent) && this.cooldownTime > this.fireRate && ent !== this && this.state != 3) {
+            if (ent instanceof Enemy && ent.exist && canShoot(this, ent) && this.cooldownTime > this.fireRate && ent !== this && this.state != 2) {
               this.cooldownTime = 0;
               this.state = 1;
               this.target = ent;
               this.attack(this.target);
             }
           } else {
-            if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && this.state != 3) {
+            if (ent instanceof Tower && canShoot(this, ent) && this.cooldownTime > this.fireRate && this.state != 2) {
               this.cooldownTime = 0;
               this.state = 1;
               this.target = ent;
@@ -134,7 +166,7 @@ function (_Enemy) {
           }
         }
 
-        if (this.target) if ((this.target.removeFromWorld || !canShoot(this, this.target)) && this.state != 3) this.state = 0; // only move when flying
+        if (this.target) if ((this.target.removeFromWorld || !canShoot(this, this.target)) && this.state != 2) this.state = 0; // only move when flying
 
         if (this.state == 0) {
           // direction
@@ -175,7 +207,7 @@ function (_Enemy) {
       }
 
       ;
-      this.animations[this.state].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
+      this.animations[this.state][this.facing].drawFrame(this.gameEngine.clockTick * speedMultiplier, context, this.x - this.xOffset, this.y - this.yOffset, this.scale);
     }
   }, {
     key: "takeHit",
@@ -183,7 +215,7 @@ function (_Enemy) {
       this.HP = Math.max(0, this.HP - damage);
 
       if (this.HP === 0) {
-        this.state = 3;
+        this.state = 2;
       }
     }
   }, {
@@ -196,7 +228,7 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.user.increaseBalance(this.reward);
-      console.log("Flyingeye+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft();
       this.user.increaseScores(this.score);
     }
   }]);

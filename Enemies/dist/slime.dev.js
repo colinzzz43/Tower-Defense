@@ -23,23 +23,23 @@ var Slime =
 function (_Enemy) {
   _inherits(Slime, _Enemy);
 
-  function Slime(gameEngine, x, y, level, spawnTime) {
+  function Slime(gameEngine, x, y, direction, level, spawnTime) {
     var _this;
 
     _classCallCheck(this, Slime);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Slime).call(this, gameEngine, x, y, level, spawnTime)); // animation
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Slime).call(this, gameEngine, x, y, direction, level, spawnTime)); // animation
 
     _this.spritesheet = ASSET_MANAGER.getAsset("./sprites/monster/slime/slime1_front.png");
     _this.animation = new Animator(_this.spritesheet, 0, 0, 16, 16, 4, 0.15, 0, false, true);
     _this.frameHeight = 16;
     _this.frameWidth = 16; // stats
 
-    _this.scale = 3;
+    _this.scale = _this.gameEngine.camera.currentLevel > 1 ? 2 : 3;
     _this.HP = 100;
-    _this.damage = 5;
+    _this.damage = 15;
     _this.maxHP = _this.HP;
-    _this.reward = 5;
+    _this.reward = 10;
     _this.score = 10;
     _this.radius = (_this.frameWidth / 2 + 1) * _this.scale; // entity radius
 
@@ -47,9 +47,10 @@ function (_Enemy) {
 
     _this.xOffset = _this.frameWidth / 2 * _this.scale;
     _this.yOffset = _this.frameHeight / 2 * _this.scale + 1;
-    _this.fireRate = 1; // level grid and enemy movement
+    _this.fireRate = 1;
+    _this.dead = false; // level grid and enemy movement
 
-    _this.movement = new EnemyMovement(0.5, "right", _this.x, _this.y, _this.grid);
+    _this.movement = new EnemyMovement(0.5, _this.direction, _this.x, _this.y, _this.grid);
     return _this;
   }
 
@@ -169,7 +170,8 @@ function (_Enemy) {
     value: function takeHit(damage) {
       this.HP = Math.max(0, this.HP - damage);
 
-      if (this.HP === 0) {
+      if (this.HP === 0 && !this.dead) {
+        this.dead = true;
         this.isDead();
       }
     }
@@ -183,8 +185,9 @@ function (_Enemy) {
     key: "isDead",
     value: function isDead() {
       this.removeFromWorld = true;
-      this.user.increaseBalance(this.reward);
-      console.log("Slime+$", this.reward);
+      this.level.levelEnemyWaves.decrementEnemiesLeft();
+      this.user.increaseBalance(this.reward); //    console.log("Slime+$", this.reward);
+
       this.user.increaseScores(this.score); // add coins when dropped
 
       this.gameEngine.addEntity(new Coin(this.gameEngine, this.x, this.y));

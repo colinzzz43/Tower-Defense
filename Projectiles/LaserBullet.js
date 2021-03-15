@@ -16,6 +16,6 @@ class LaserBullet extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 67 * this.scale;
-        this.maxSpeed = 100; // pixels per second
+        this.maxSpeed = 700; // pixels per second
     }
 }

@@ -16,6 +16,6 @@ class RocketMissile extends Projectile {
         // stats
         this.canRotate = true;
         this.radius = 4 * this.scale;
-        this.maxSpeed = 100; // pixels per second
+        this.maxSpeed = 150; // pixels per second
     }
 }
